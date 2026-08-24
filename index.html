@@ -16,9 +16,7 @@
   --line:rgba(91,31,42,.16);
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 html,body{
   margin:0;
@@ -28,9 +26,7 @@ html,body{
   color:var(--ink);
 }
 
-body{
-  padding:12px;
-}
+body{padding:12px}
 
 .shell{
   max-width:1080px;
@@ -120,17 +116,9 @@ button.active{
   display:inline-block;
 }
 
-.available{
-  background:var(--wine2);
-}
-
-.booked-dot{
-  background:var(--wine);
-}
-
-.unavailable-dot{
-  background:#B9ADA6;
-}
+.available{background:var(--wine2)}
+.booked-dot{background:var(--wine)}
+.unavailable-dot{background:#B9ADA6}
 
 .wrap{
   padding:22px 24px 26px;
@@ -165,19 +153,24 @@ button.active{
   padding:12px;
   position:relative;
   transition:.18s ease;
-  text-decoration:none;
-  color:inherit;
-  display:block;
-  -webkit-tap-highlight-color:transparent;
 }
 
 .day.available-day{
   cursor:pointer;
-  touch-action:manipulation;
 }
 
 .day.available-day:hover{
   border-color:rgba(91,31,42,.35);
+}
+
+.day-link{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  border-radius:inherit;
+  text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
 }
 
 .day:hover{
@@ -288,9 +281,7 @@ button.active{
 
 @media(max-width:760px){
 
-  body{
-    padding:4px;
-  }
+  body{padding:4px}
 
   .shell{
     border-radius:20px;
@@ -355,6 +346,7 @@ button.active{
 }
 
 @media(max-width:480px){
+
   .status .label{
     display:none;
   }
@@ -373,9 +365,7 @@ button.active{
   <div class="top">
 
     <div>
-      <div class="eyebrow">
-        Rafa Pizza · Réservations
-      </div>
+      <div class="eyebrow">Rafa Pizza · Réservations</div>
 
       <h1 id="monthTitle">
         Septembre 2026
@@ -387,17 +377,9 @@ button.active{
     </div>
 
     <div class="controls">
-      <button class="active" data-month="8">
-        Septembre
-      </button>
-
-      <button data-month="9">
-        Octobre
-      </button>
-
-      <button data-month="10">
-        Novembre
-      </button>
+      <button class="active" data-month="8">Septembre</button>
+      <button data-month="9">Octobre</button>
+      <button data-month="10">Novembre</button>
     </div>
 
   </div>
@@ -445,9 +427,7 @@ button.active{
   <div class="cta">
 
     <div>
-      <strong>
-        Une date vous intéresse?
-      </strong>
+      <strong>Une date vous intéresse?</strong>
 
       <span>
         Écrivez-nous pour réserver votre soirée.
@@ -455,7 +435,7 @@ button.active{
     </div>
 
     <a
-      class="badge"
+      class="badge reserve-btn"
       id="reserveBtn"
       href="#"
     >
@@ -463,7 +443,6 @@ button.active{
     </a>
 
   </div>
-
 
   <div class="footer">
     Les disponibilités peuvent changer rapidement.
@@ -474,28 +453,12 @@ button.active{
 
 <script>
 
-/* ================================
-   ANNÉE
-================================ */
-
 const YEAR = 2026;
 
 
-/* ================================
-   DISPONIBILITÉS
-
-   C'est ICI que tu modifies
-   tes journées réservées ou
-   indisponibles.
-
-   Exemple :
-
-   unavailable:[4,5,12]
-
-   signifie que les 4, 5 et 12
-   sont indisponibles.
-
-================================ */
+/* =========================================
+   MODIFIE SEULEMENT CES LISTES
+========================================= */
 
 const availability = {
 
@@ -516,17 +479,6 @@ const availability = {
 
 };
 
-
-/* ================================
-   COURRIEL RAFA
-================================ */
-
-const RAFA_EMAIL = "lapizzaderafa@gmail.com";
-
-
-/* ================================
-   MOIS
-================================ */
 
 const monthNames = [
   "Janvier",
@@ -549,24 +501,20 @@ function mondayIndex(jsDay){
 }
 
 
-/* ================================
-   STATUT D'UNE JOURNÉE
-================================ */
+function getStatus(month,day){
 
-function getStatus(month, day){
-
-  const data =
+  const d =
     availability[month] ||
     {
       booked:[],
       unavailable:[]
     };
 
-  if(data.booked.includes(day)){
+  if(d.booked.includes(day)){
     return "booked";
   }
 
-  if(data.unavailable.includes(day)){
+  if(d.unavailable.includes(day)){
     return "unavailable";
   }
 
@@ -588,31 +536,40 @@ function getLabel(status){
 }
 
 
-/* ================================
-   CRÉER LE LIEN COURRIEL
-================================ */
+/* =========================================
+   LIEN DE RÉSERVATION
+========================================= */
 
-function reservationUrl(day = null, month = null){
+const RAFA_EMAIL =
+  "lapizzaderafa@gmail.com";
+
+
+function reservationUrl(
+  day = null,
+  month = null
+){
 
   const hasDate =
     day !== null &&
     month !== null;
 
+
   const dateText =
     hasDate
-    ? `${day} ${monthNames[month]} ${YEAR}`
-    : "";
+      ? `${day} ${monthNames[month]} ${YEAR}`
+      : "";
 
 
   const subject =
     hasDate
-    ? `Réservation Rafa Pizza — ${dateText}`
-    : "Réservation Rafa Pizza";
+      ? `Réservation Rafa Pizza — ${dateText}`
+      : "Réservation Rafa Pizza";
 
 
   const body =
     hasDate
-    ? `Bonjour Rafa,
+
+      ? `Bonjour Rafa,
 
 J'aimerais réserver une soirée Rafa Pizza le ${dateText}.
 
@@ -623,7 +580,7 @@ Téléphone :
 
 Merci!`
 
-    : `Bonjour Rafa,
+      : `Bonjour Rafa,
 
 J'aimerais réserver une soirée Rafa Pizza.
 
@@ -644,17 +601,21 @@ Merci!`;
     "&body=" +
     encodeURIComponent(body)
   );
+
 }
 
 
-/* ================================
-   AFFICHER LE CALENDRIER
-================================ */
+/* =========================================
+   CRÉATION DU CALENDRIER
+========================================= */
 
 function render(month){
 
   const grid =
-    document.getElementById("calendarGrid");
+    document.getElementById(
+      "calendarGrid"
+    );
+
 
   document.getElementById(
     "monthTitle"
@@ -697,18 +658,18 @@ function render(month){
     i++
   ){
 
-    const empty =
+    const e =
       document.createElement("div");
 
-    empty.className =
+    e.className =
       "day empty";
 
-    grid.appendChild(empty);
+    grid.appendChild(e);
 
   }
 
 
-  /* Journées */
+  /* Toutes les dates */
 
   for(
     let day = 1;
@@ -723,44 +684,33 @@ function render(month){
       );
 
 
-    /*
-      IMPORTANT :
-
-      Une date disponible
-      devient un vrai lien <a>.
-
-      C'est beaucoup plus fiable
-      sur mobile qu'un simple
-      événement JavaScript.
-    */
-
-    const cell =
+    const c =
       document.createElement(
-        status === "available"
-        ? "a"
-        : "div"
+        "div"
       );
 
 
-    cell.className =
+    c.className =
       "day " +
       status +
       (
         status === "available"
-        ? " available-day"
-        : ""
+          ? " available-day"
+          : ""
       );
 
 
-    let dotClass =
+    const dotClass =
       status === "booked"
-      ? "booked-dot"
-      : status === "unavailable"
-      ? "unavailable-dot"
-      : "available";
+        ? "booked-dot"
+
+        : status === "unavailable"
+        ? "unavailable-dot"
+
+        : "available";
 
 
-    cell.innerHTML =
+    c.innerHTML =
       '<div class="num">' +
       day +
       '</div>' +
@@ -778,17 +728,28 @@ function render(month){
       '</div>';
 
 
-    /* Date disponible */
+    /* VRAI LIEN PAR-DESSUS LA CASE */
 
     if(status === "available"){
 
-      cell.href =
+      const link =
+        document.createElement(
+          "a"
+        );
+
+
+      link.className =
+        "day-link";
+
+
+      link.href =
         reservationUrl(
           day,
           month
         );
 
-      cell.setAttribute(
+
+      link.setAttribute(
         "aria-label",
         "Réserver le " +
         day +
@@ -798,10 +759,13 @@ function render(month){
         YEAR
       );
 
+
+      c.appendChild(link);
+
     }
 
 
-    grid.appendChild(cell);
+    grid.appendChild(c);
 
   }
 
@@ -823,13 +787,15 @@ function render(month){
     i++
   ){
 
-    const empty =
-      document.createElement("div");
+    const e =
+      document.createElement(
+        "div"
+      );
 
-    empty.className =
+    e.className =
       "day empty";
 
-    grid.appendChild(empty);
+    grid.appendChild(e);
 
   }
 
@@ -854,9 +820,9 @@ function render(month){
 }
 
 
-/* ================================
-   CHANGEMENT DE MOIS
-================================ */
+/* =========================================
+   BOUTONS SEPT / OCT / NOV
+========================================= */
 
 document
   .querySelectorAll(
@@ -880,9 +846,9 @@ document
   });
 
 
-/* ================================
-   BOUTON RÉSERVER DU BAS
-================================ */
+/* =========================================
+   BOUTON RÉSERVER EN BAS
+========================================= */
 
 const reserveBtn =
   document.getElementById(
@@ -893,9 +859,9 @@ reserveBtn.href =
   reservationUrl();
 
 
-/* ================================
-   MOIS AFFICHÉ AU DÉPART
-================================ */
+/* =========================================
+   SEPTEMBRE AU DÉPART
+========================================= */
 
 render(8);
 
