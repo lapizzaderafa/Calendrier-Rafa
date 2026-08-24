@@ -93,7 +93,7 @@ button.active{background:var(--wine);color:var(--cream2);border-color:var(--wine
       <strong>Une date vous intéresse?</strong>
       <span>Écrivez-nous pour réserver votre soirée.</span>
     </div>
-    <a class="badge reserve-btn" id="reserveBtn" href="#" target="_blank" rel="noopener">Réserver</a>
+    <a class="badge reserve-btn" id="reserveBtn" href="#" target="_top" rel="noopener">Réserver</a>
   </div>
 
   <div class="footer">Les disponibilités peuvent changer rapidement.</div>
@@ -202,12 +202,23 @@ Téléphone :
 
 Merci!`;
 
-  const mailtoUrl =
-    "mailto:" + RAFA_EMAIL +
-    "?subject=" + encodeURIComponent(subject) +
+  const gmailUrl =
+    "https://mail.google.com/mail/?view=cm&fs=1" +
+    "&to=" + encodeURIComponent(RAFA_EMAIL) +
+    "&su=" + encodeURIComponent(subject) +
     "&body=" + encodeURIComponent(body);
 
-  window.location.href = mailtoUrl;
+  // Google Sites affiche ce calendrier dans un iframe.
+  // Sur mobile, window.open(..., "_blank") peut être bloqué.
+  // Un vrai lien vers la fenêtre principale (_top) est plus fiable.
+  const link = document.createElement("a");
+  link.href = gmailUrl;
+  link.target = "_top";
+  link.rel = "noopener";
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 }
 
 const reserveBtn = document.getElementById("reserveBtn");
