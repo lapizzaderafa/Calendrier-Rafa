@@ -1,24 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
-<title>
-Réserver — Rafa Pizza
-</title>
-
+<title>Réserver — Rafa Pizza</title>
 
 <style>
-
 :root{
-
   --cream:#F6F0E7;
   --cream2:#FBF8F3;
   --wine:#5B1F2A;
@@ -26,289 +15,550 @@ Réserver — Rafa Pizza
   --ink:#2B2524;
   --muted:#8A7D77;
   --line:rgba(91,31,42,.16);
-
 }
-
 
 *{
   box-sizing:border-box;
 }
 
-
 html,
 body{
-
   margin:0;
   padding:0;
   min-height:100%;
-
   background:var(--cream);
-
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   color:var(--ink);
-
 }
-
 
 body{
-
   min-height:100vh;
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  padding:24px;
-
+  padding:18px;
 }
 
+.page{
+  width:100%;
+  max-width:680px;
+  margin:0 auto;
+}
 
 .card{
-
   width:100%;
-
-  max-width:600px;
-
   background:var(--cream2);
-
-  border:
-    1px solid
-    var(--line);
-
+  border:1px solid var(--line);
   border-radius:28px;
-
-  padding:
-    46px
-    34px;
-
-  text-align:center;
-
-  box-shadow:
-    0
-    18px
-    45px
-    rgba(65,35,39,.10);
-
+  padding:38px 32px;
+  box-shadow:0 18px 45px rgba(65,35,39,.10);
 }
-
 
 .eyebrow{
-
   font-size:12px;
-
   letter-spacing:.18em;
-
   text-transform:uppercase;
-
   color:var(--wine2);
-
   font-weight:700;
-
-  margin-bottom:16px;
-
+  margin-bottom:13px;
 }
-
 
 h1{
-
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
-
+  font-family:Georgia,"Times New Roman",serif;
   color:var(--wine);
-
-  font-size:
-    clamp(
-      38px,
-      8vw,
-      58px
-    );
-
+  font-size:clamp(38px,8vw,58px);
   line-height:1;
-
   font-weight:500;
-
-  margin:
-    0
-    0
-    18px;
-
+  margin:0 0 12px;
 }
 
+.intro{
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.5;
+  margin:0 0 26px;
+}
+
+.date-box{
+  background:var(--cream);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:15px 17px;
+  margin-bottom:25px;
+}
+
+.date-label{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:5px;
+}
 
 .date{
-
   color:var(--wine);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:24px;
+  font-weight:500;
+}
 
-  font-size:19px;
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
 
+.field{
+  margin-bottom:17px;
+}
+
+.field.full{
+  grid-column:1 / -1;
+}
+
+label{
+  display:block;
+  color:var(--wine);
+  font-size:13px;
   font-weight:800;
-
-  margin-bottom:14px;
-
+  margin-bottom:7px;
 }
 
-
-p{
-
-  color:var(--muted);
-
-  font-size:15px;
-
-  line-height:1.55;
-
-  margin:
-    0
-    auto
-    30px;
-
-  max-width:430px;
-
-}
-
-
-.button{
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
+input,
+select,
+textarea{
   width:100%;
-
-  min-height:58px;
-
-  padding:
-    15px
-    24px;
-
-  border-radius:999px;
-
-  background:var(--wine);
-
-  color:var(--cream2);
-
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--ink);
+  border-radius:13px;
+  min-height:50px;
+  padding:12px 14px;
+  font-family:inherit;
   font-size:16px;
+  outline:none;
+  -webkit-appearance:none;
+  appearance:none;
+}
 
+textarea{
+  min-height:105px;
+  resize:vertical;
+  line-height:1.45;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:var(--wine2);
+  box-shadow:0 0 0 3px rgba(122,45,60,.08);
+}
+
+::placeholder{
+  color:#AAA09A;
+}
+
+.submit{
+  width:100%;
+  min-height:57px;
+  border:0;
+  border-radius:999px;
+  background:var(--wine);
+  color:var(--cream2);
+  font-family:inherit;
+  font-size:16px;
   font-weight:800;
-
-  text-decoration:none;
-
-  -webkit-tap-highlight-color:
-    transparent;
-
-  touch-action:
-    manipulation;
-
+  cursor:pointer;
+  margin-top:5px;
+  -webkit-tap-highlight-color:transparent;
 }
 
-
-.button:active{
-
-  transform:
-    scale(.98);
-
+.submit:active{
+  transform:scale(.99);
 }
 
+.required{
+  color:var(--wine2);
+}
+
+.note{
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.4;
+  margin:14px 5px 0;
+}
 
 .back{
-
-  display:inline-block;
-
-  margin-top:22px;
-
+  display:block;
+  width:max-content;
+  max-width:100%;
+  margin:20px auto 0;
   color:var(--muted);
-
-  font-size:13px;
-
   text-decoration:none;
-
+  font-size:13px;
+  font-weight:600;
 }
 
+.success{
+  display:none;
+  text-align:center;
+  padding:22px 0 8px;
+}
+
+.success-icon{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:var(--wine);
+  color:var(--cream2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 20px;
+  font-size:27px;
+  font-weight:800;
+}
+
+.success h2{
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--wine);
+  font-size:34px;
+  font-weight:500;
+  margin:0 0 10px;
+}
+
+.success p{
+  color:var(--muted);
+  line-height:1.55;
+  font-size:15px;
+  margin:0 auto 25px;
+  max-width:430px;
+}
+
+.success .back{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:54px;
+  margin:0;
+  padding:12px 20px;
+  border-radius:999px;
+  background:var(--wine);
+  color:var(--cream2);
+  font-size:14px;
+  font-weight:800;
+}
+
+.honey{
+  display:none !important;
+}
 
 @media(max-width:600px){
 
   body{
-    padding:16px;
+    padding:8px;
   }
-
 
   .card{
-
-    padding:
-      38px
-      22px;
-
     border-radius:22px;
-
+    padding:28px 19px;
   }
 
+  .form-grid{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  h1{
+    font-size:42px;
+  }
+
+  .date{
+    font-size:22px;
+  }
 }
-
 </style>
-
 </head>
-
-
 
 <body>
 
+<div class="page">
 
-<div class="card">
+  <div class="card">
+
+    <div id="formSection">
+
+      <div class="eyebrow">
+        Rafa Pizza · Réservations
+      </div>
+
+      <h1>
+        Votre soirée
+      </h1>
+
+      <p class="intro">
+        Quelques informations et on vous revient rapidement pour confirmer les détails.
+      </p>
 
 
-  <div class="eyebrow">
-    Rafa Pizza · Réservations
+      <div class="date-box">
+
+        <span class="date-label">
+          Date sélectionnée
+        </span>
+
+        <div
+          class="date"
+          id="selectedDate"
+        >
+          Date à déterminer
+        </div>
+
+      </div>
+
+
+      <form
+        id="reservationForm"
+        action="https://formsubmit.co/lapizzaderafa@gmail.com"
+        method="POST"
+      >
+
+        <!-- Réglages FormSubmit -->
+
+        <input
+          type="hidden"
+          name="_subject"
+          id="subjectField"
+          value="Nouvelle réservation Rafa Pizza"
+        >
+
+        <input
+          type="hidden"
+          name="_template"
+          value="table"
+        >
+
+        <input
+          type="hidden"
+          name="_captcha"
+          value="false"
+        >
+
+        <input
+          type="hidden"
+          name="_next"
+          id="nextField"
+          value=""
+        >
+
+        <input
+          type="hidden"
+          name="Date souhaitée"
+          id="dateField"
+          value=""
+        >
+
+        <!-- Anti-spam invisible -->
+
+        <input
+          type="text"
+          name="_honey"
+          class="honey"
+          tabindex="-1"
+          autocomplete="off"
+        >
+
+
+        <div class="form-grid">
+
+
+          <div class="field">
+
+            <label for="name">
+              Nom <span class="required">*</span>
+            </label>
+
+            <input
+              id="name"
+              name="Nom"
+              type="text"
+              placeholder="Votre nom"
+              required
+              autocomplete="name"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="email">
+              Courriel <span class="required">*</span>
+            </label>
+
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="vous@courriel.com"
+              required
+              autocomplete="email"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="phone">
+              Téléphone
+            </label>
+
+            <input
+              id="phone"
+              name="Téléphone"
+              type="tel"
+              placeholder="418 555-1234"
+              autocomplete="tel"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="people">
+              Nombre de personnes <span class="required">*</span>
+            </label>
+
+            <input
+              id="people"
+              name="Nombre de personnes"
+              type="number"
+              min="1"
+              max="100"
+              inputmode="numeric"
+              placeholder="Ex. 15"
+              required
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="city">
+              Ville / secteur <span class="required">*</span>
+            </label>
+
+            <input
+              id="city"
+              name="Ville / secteur"
+              type="text"
+              placeholder="Ex. Cap-Rouge"
+              required
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="time">
+              Heure souhaitée
+            </label>
+
+            <input
+              id="time"
+              name="Heure souhaitée"
+              type="time"
+            >
+
+          </div>
+
+
+          <div class="field full">
+
+            <label for="message">
+              Détails ou demandes particulières
+            </label>
+
+            <textarea
+              id="message"
+              name="Détails / demandes"
+              placeholder="Type d'événement, allergies, demandes particulières, questions..."
+            ></textarea>
+
+          </div>
+
+
+        </div>
+
+
+        <button
+          class="submit"
+          type="submit"
+        >
+          Envoyer ma demande
+        </button>
+
+
+        <div class="note">
+          L'envoi de cette demande ne confirme pas automatiquement la réservation. Rafa vous contactera pour confirmer la disponibilité et les détails.
+        </div>
+
+      </form>
+
+    </div>
+
+
+    <div
+      class="success"
+      id="successSection"
+    >
+
+      <div class="eyebrow">
+        Rafa Pizza · Réservations
+      </div>
+
+      <div class="success-icon">
+        ✓
+      </div>
+
+      <h2>
+        Demande envoyée!
+      </h2>
+
+      <p>
+        Merci! Votre demande de réservation a bien été transmise. On vous revient rapidement pour confirmer votre soirée.
+      </p>
+
+      <a
+        class="back"
+        href="index.html"
+      >
+        Retour au calendrier
+      </a>
+
+    </div>
+
   </div>
-
-
-  <h1>
-    Réserver votre soirée
-  </h1>
-
-
-  <div
-    class="date"
-    id="selectedDate"
-  ></div>
-
-
-  <p>
-
-    Appuyez sur le bouton
-    ci-dessous pour nous envoyer
-    votre demande de réservation.
-
-  </p>
-
-
-  <a
-    id="emailButton"
-    class="button"
-    href="#"
-  >
-    Envoyer ma demande
-  </a>
 
 
   <a
     class="back"
+    id="bottomBack"
     href="index.html"
   >
     ← Retour au calendrier
   </a>
 
-
 </div>
-
 
 
 <script>
@@ -317,16 +567,9 @@ p{
    CONFIGURATION
 ========================================= */
 
-const YEAR =
-  2026;
-
-
-const RAFA_EMAIL =
-  "lapizzaderafa@gmail.com";
-
+const YEAR = 2026;
 
 const monthNames = [
-
   "Janvier",
   "Février",
   "Mars",
@@ -339,12 +582,11 @@ const monthNames = [
   "Octobre",
   "Novembre",
   "Décembre"
-
 ];
 
 
 /* =========================================
-   RÉCUPÉRER LA DATE CHOISIE
+   LIRE LA DATE DANS L'URL
 ========================================= */
 
 const params =
@@ -352,132 +594,96 @@ const params =
     window.location.search
   );
 
-
 const day =
-  params.get(
-    "day"
-  );
-
+  params.get("day");
 
 const month =
-  params.get(
-    "month"
-  );
+  params.get("month");
 
+const sent =
+  params.get("sent");
 
-let dateText =
-  "";
+let dateText = "";
 
 
 /* =========================================
-   AFFICHER LA DATE
+   SI LE FORMULAIRE VIENT D'ÊTRE ENVOYÉ
+========================================= */
+
+if(sent === "1"){
+
+  document
+    .getElementById("formSection")
+    .style.display = "none";
+
+  document
+    .getElementById("successSection")
+    .style.display = "block";
+
+  document
+    .getElementById("bottomBack")
+    .style.display = "none";
+
+}
+
+
+/* =========================================
+   CONSTRUIRE LA DATE
 ========================================= */
 
 if(
   day !== null &&
   month !== null &&
-  monthNames[
-    Number(month)
-  ]
+  monthNames[Number(month)]
 ){
 
   dateText =
-
     day +
     " " +
-    monthNames[
-      Number(month)
-    ] +
+    monthNames[Number(month)] +
     " " +
     YEAR;
 
 
   document
-    .getElementById(
-      "selectedDate"
-    )
+    .getElementById("selectedDate")
     .textContent =
+      dateText;
+
+
+  document
+    .getElementById("dateField")
+    .value =
+      dateText;
+
+
+  document
+    .getElementById("subjectField")
+    .value =
+      "Réservation Rafa Pizza — " +
       dateText;
 
 }
 
 
 /* =========================================
-   OBJET DU COURRIEL
+   PAGE DE RETOUR APRÈS ENVOI
+
+   FormSubmit exige une URL complète.
 ========================================= */
 
-const subject =
-
-  dateText
-
-  ? "Réservation Rafa Pizza — " +
-    dateText
-
-  : "Réservation Rafa Pizza";
-
-
-/* =========================================
-   CONTENU DU COURRIEL
-========================================= */
-
-const body =
-
-  dateText
-
-  ? `Bonjour Rafa,
-
-J'aimerais réserver une soirée Rafa Pizza le ${dateText}.
-
-Nombre de personnes :
-Ville / secteur :
-Heure souhaitée :
-Téléphone :
-
-Merci!`
-
-  : `Bonjour Rafa,
-
-J'aimerais réserver une soirée Rafa Pizza.
-
-Date souhaitée :
-Nombre de personnes :
-Ville / secteur :
-Heure souhaitée :
-Téléphone :
-
-Merci!`;
-
-
-/* =========================================
-   VRAI LIEN MAILTO
-========================================= */
-
-const mailto =
-
-  "mailto:" +
-  RAFA_EMAIL +
-
-  "?subject=" +
-  encodeURIComponent(
-    subject
-  ) +
-
-  "&body=" +
-  encodeURIComponent(
-    body
-  );
+const nextUrl =
+  window.location.origin +
+  window.location.pathname +
+  "?sent=1";
 
 
 document
-  .getElementById(
-    "emailButton"
-  )
-  .href =
-    mailto;
+  .getElementById("nextField")
+  .value =
+    nextUrl;
 
 </script>
 
-
 </body>
-
 </html>
