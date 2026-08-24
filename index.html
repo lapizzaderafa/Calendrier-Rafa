@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Calendrier Rafa — Automne 2026</title>
 
 <style>
@@ -16,17 +17,21 @@
   --line:rgba(91,31,42,.16);
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 html,body{
   margin:0;
   padding:0;
   background:transparent;
   font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  color:var(--ink)
+  color:var(--ink);
 }
 
-body{padding:12px}
+body{
+  padding:12px;
+}
 
 .shell{
   max-width:1080px;
@@ -35,7 +40,7 @@ body{padding:12px}
   border:1px solid var(--line);
   border-radius:28px;
   box-shadow:0 18px 45px rgba(65,35,39,.10);
-  overflow:hidden
+  overflow:hidden;
 }
 
 .top{
@@ -44,7 +49,7 @@ body{padding:12px}
   align-items:flex-end;
   justify-content:space-between;
   gap:20px;
-  border-bottom:1px solid var(--line)
+  border-bottom:1px solid var(--line);
 }
 
 .eyebrow{
@@ -52,7 +57,7 @@ body{padding:12px}
   letter-spacing:.18em;
   text-transform:uppercase;
   color:var(--wine2);
-  font-weight:700
+  font-weight:700;
 }
 
 h1{
@@ -61,19 +66,19 @@ h1{
   font-size:clamp(34px,5vw,58px);
   line-height:.95;
   margin:6px 0 0;
-  font-weight:500
+  font-weight:500;
 }
 
 .subtitle{
   margin-top:8px;
   color:var(--muted);
-  font-size:14px
+  font-size:14px;
 }
 
 .controls{
   display:flex;
   gap:8px;
-  flex-wrap:wrap
+  flex-wrap:wrap;
 }
 
 button{
@@ -84,13 +89,13 @@ button{
   padding:10px 15px;
   font-size:13px;
   font-weight:700;
-  cursor:pointer
+  cursor:pointer;
 }
 
 button.active{
   background:var(--wine);
   color:var(--cream2);
-  border-color:var(--wine)
+  border-color:var(--wine);
 }
 
 .legend{
@@ -100,39 +105,47 @@ button.active{
   flex-wrap:wrap;
   font-size:12px;
   color:var(--muted);
-  border-bottom:1px solid var(--line)
+  border-bottom:1px solid var(--line);
 }
 
 .legend-item{
   display:flex;
   align-items:center;
-  gap:7px
+  gap:7px;
 }
 
 .dot{
   width:8px;
   height:8px;
   border-radius:50%;
-  display:inline-block
+  display:inline-block;
 }
 
-.available{background:var(--wine2)}
-.booked-dot{background:var(--wine)}
-.unavailable-dot{background:#B9ADA6}
+.available{
+  background:var(--wine2);
+}
+
+.booked-dot{
+  background:var(--wine);
+}
+
+.unavailable-dot{
+  background:#B9ADA6;
+}
 
 .wrap{
-  padding:22px 24px 26px
+  padding:22px 24px 26px;
 }
 
 .weekdays,
 .grid{
   display:grid;
   grid-template-columns:repeat(7,minmax(0,1fr));
-  gap:8px
+  gap:8px;
 }
 
 .weekdays{
-  margin-bottom:8px
+  margin-bottom:8px;
 }
 
 .weekday{
@@ -142,7 +155,7 @@ button.active{
   font-weight:800;
   letter-spacing:.08em;
   text-transform:uppercase;
-  padding:7px 2px
+  padding:7px 2px;
 }
 
 .day{
@@ -152,33 +165,33 @@ button.active{
   background:rgba(255,255,255,.35);
   padding:12px;
   position:relative;
-  transition:.18s ease
+  transition:.18s ease;
 }
 
 .day.available-day{
-  cursor:pointer
+  cursor:pointer;
 }
 
 .day.available-day:hover{
-  border-color:rgba(91,31,42,.35)
+  border-color:rgba(91,31,42,.35);
 }
 
 .day:hover{
   transform:translateY(-2px);
-  box-shadow:0 8px 20px rgba(65,35,39,.08)
+  box-shadow:0 8px 20px rgba(65,35,39,.08);
 }
 
 .day.empty{
   background:transparent;
   border:1px dashed rgba(91,31,42,.08);
   box-shadow:none;
-  transform:none
+  transform:none;
 }
 
 .num{
   font-size:16px;
   font-weight:800;
-  color:var(--wine)
+  color:var(--wine);
 }
 
 .status{
@@ -190,34 +203,33 @@ button.active{
   align-items:center;
   gap:7px;
   font-size:11px;
-  font-weight:800
+  font-weight:800;
 }
 
 .day.booked{
   background:var(--wine);
-  border-color:var(--wine)
+  border-color:var(--wine);
 }
 
 .day.booked .num,
 .day.booked .status{
-  color:var(--cream2)
+  color:var(--cream2);
 }
 
 .day.booked .dot{
-  background:var(--cream2)
+  background:var(--cream2);
 }
 
 .day.unavailable{
-  background:rgba(185,173,166,.18)
+  background:rgba(185,173,166,.18);
 }
 
 .day.unavailable .num,
 .day.unavailable .status{
-  color:#8B817C
+  color:#8B817C;
 }
 
-/* IMPORTANT :
-   vrai lien invisible qui couvre toute la date */
+/* Vrai lien qui couvre toute la case */
 .day-link{
   position:absolute;
   inset:0;
@@ -230,11 +242,6 @@ button.active{
   touch-action:manipulation;
 }
 
-.day-link:focus-visible{
-  outline:2px solid var(--wine2);
-  outline-offset:-3px
-}
-
 .cta{
   margin:0 24px 24px;
   border-radius:18px;
@@ -244,7 +251,7 @@ button.active{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:16px
+  gap:16px;
 }
 
 .cta strong{
@@ -253,12 +260,12 @@ button.active{
   font-family:Georgia,"Times New Roman",serif;
   font-size:20px;
   font-weight:500;
-  margin-bottom:3px
+  margin-bottom:3px;
 }
 
 .cta span{
   color:var(--muted);
-  font-size:13px
+  font-size:13px;
 }
 
 .badge{
@@ -273,95 +280,114 @@ button.active{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  transition:.18s ease
+  transition:.18s ease;
 }
 
 .badge:hover{
   transform:translateY(-1px);
-  box-shadow:0 7px 16px rgba(91,31,42,.16)
+  box-shadow:0 7px 16px rgba(91,31,42,.16);
 }
 
 .footer{
   padding:0 24px 22px;
   color:var(--muted);
   font-size:11px;
-  text-align:center
+  text-align:center;
 }
 
 @media(max-width:760px){
 
-  body{padding:4px}
+  body{
+    padding:4px;
+  }
 
-  .shell{border-radius:20px}
+  .shell{
+    border-radius:20px;
+  }
 
   .top{
     padding:22px 18px 16px;
     align-items:flex-start;
-    flex-direction:column
+    flex-direction:column;
   }
 
-  .legend{padding:12px 18px}
+  .legend{
+    padding:12px 18px;
+  }
 
-  .wrap{padding:14px 10px 18px}
+  .wrap{
+    padding:14px 10px 18px;
+  }
 
   .weekdays,
-  .grid{gap:5px}
+  .grid{
+    gap:5px;
+  }
 
-  .weekday{font-size:9px}
+  .weekday{
+    font-size:9px;
+  }
 
   .day{
     min-height:86px;
     padding:8px;
-    border-radius:12px
+    border-radius:12px;
   }
 
-  .num{font-size:13px}
+  .num{
+    font-size:13px;
+  }
 
   .status{
     left:8px;
     right:8px;
     bottom:7px;
     font-size:9px;
-    gap:5px
+    gap:5px;
   }
 
   .dot{
     width:6px;
-    height:6px
+    height:6px;
   }
 
   .cta{
     margin:0 10px 14px;
     padding:14px;
     align-items:flex-start;
-    flex-direction:column
+    flex-direction:column;
   }
 
   .footer{
-    padding:0 12px 16px
+    padding:0 12px 16px;
   }
 }
 
 @media(max-width:480px){
 
   .status .label{
-    display:none
+    display:none;
   }
 
   .day{
-    min-height:76px
+    min-height:76px;
   }
 }
 </style>
 </head>
+
 
 <body>
 
 <div class="shell">
 
   <div class="top">
+
     <div>
-      <div class="eyebrow">Rafa Pizza · Réservations</div>
+
+      <div class="eyebrow">
+        Rafa Pizza · Réservations
+      </div>
 
       <h1 id="monthTitle">
         Septembre 2026
@@ -370,13 +396,29 @@ button.active{
       <div class="subtitle">
         Choisissez votre date pour votre prochaine soirée pizza.
       </div>
+
     </div>
 
+
     <div class="controls">
-      <button class="active" data-month="8">Septembre</button>
-      <button data-month="9">Octobre</button>
-      <button data-month="10">Novembre</button>
+
+      <button
+        class="active"
+        data-month="8"
+      >
+        Septembre
+      </button>
+
+      <button data-month="9">
+        Octobre
+      </button>
+
+      <button data-month="10">
+        Novembre
+      </button>
+
     </div>
+
   </div>
 
 
@@ -403,6 +445,7 @@ button.active{
   <div class="wrap">
 
     <div class="weekdays">
+
       <div class="weekday">Lun</div>
       <div class="weekday">Mar</div>
       <div class="weekday">Mer</div>
@@ -410,9 +453,13 @@ button.active{
       <div class="weekday">Ven</div>
       <div class="weekday">Sam</div>
       <div class="weekday">Dim</div>
+
     </div>
 
-    <div id="calendarGrid" class="grid"></div>
+    <div
+      id="calendarGrid"
+      class="grid"
+    ></div>
 
   </div>
 
@@ -420,16 +467,22 @@ button.active{
   <div class="cta">
 
     <div>
-      <strong>Une date vous intéresse?</strong>
-      <span>Écrivez-nous pour réserver votre soirée.</span>
+
+      <strong>
+        Une date vous intéresse?
+      </strong>
+
+      <span>
+        Écrivez-nous pour réserver votre soirée.
+      </span>
+
     </div>
 
+
     <a
-      class="badge reserve-btn"
-      id="reserveBtn"
-      href="#"
+      class="badge"
+      href="reserve.html"
       target="_top"
-      rel="noopener"
     >
       Réserver
     </a>
@@ -444,29 +497,37 @@ button.active{
 </div>
 
 
+
 <script>
+
+/* =========================================
+   ANNÉE
+========================================= */
 
 const YEAR = 2026;
 
-const RAFA_EMAIL = "lapizzaderafa@gmail.com";
 
+/* =========================================
+   DISPONIBILITÉS
 
-/* ==========================================
-   MODIFIE SEULEMENT CES LISTES
-========================================== */
+   MODIFIE SEULEMENT CETTE SECTION
+========================================= */
 
 const availability = {
 
+  /* SEPTEMBRE */
   8: {
     booked: [],
     unavailable: []
   },
 
+  /* OCTOBRE */
   9: {
     booked: [],
     unavailable: []
   },
 
+  /* NOVEMBRE */
   10: {
     booked: [],
     unavailable: []
@@ -475,7 +536,12 @@ const availability = {
 };
 
 
+/* =========================================
+   NOMS DES MOIS
+========================================= */
+
 const monthNames = [
+
   "Janvier",
   "Février",
   "Mars",
@@ -488,125 +554,28 @@ const monthNames = [
   "Octobre",
   "Novembre",
   "Décembre"
+
 ];
 
 
-/* ==========================================
-   DÉTECTION FACEBOOK / INSTAGRAM
-========================================== */
-
-function isMetaBrowser(){
-
-  const ua =
-    navigator.userAgent ||
-    navigator.vendor ||
-    "";
-
-  return /FBAN|FBAV|FB_IAB|Instagram|Messenger/i.test(ua);
-}
-
-
-/* ==========================================
-   CRÉATION DU LIEN DE RÉSERVATION
-========================================== */
-
-function reservationUrl(day=null, month=null){
-
-  const hasDate =
-    day !== null &&
-    month !== null;
-
-
-  const dateText =
-    hasDate
-      ? `${day} ${monthNames[month]} ${YEAR}`
-      : "";
-
-
-  const subject =
-    hasDate
-      ? `Réservation Rafa Pizza — ${dateText}`
-      : "Réservation Rafa Pizza";
-
-
-  const body =
-    hasDate
-
-      ? `Bonjour Rafa,
-
-J'aimerais réserver une soirée Rafa Pizza le ${dateText}.
-
-Nombre de personnes :
-Ville / secteur :
-Heure souhaitée :
-Téléphone :
-
-Merci!`
-
-      : `Bonjour Rafa,
-
-J'aimerais réserver une soirée Rafa Pizza.
-
-Date souhaitée :
-Nombre de personnes :
-Ville / secteur :
-Heure souhaitée :
-Téléphone :
-
-Merci!`;
-
-
-  /*
-     FACEBOOK / INSTAGRAM
-
-     Leur navigateur intégré peut bloquer mailto:.
-
-     On utilise donc une vraie URL HTTPS vers Gmail.
-  */
-
-  if(isMetaBrowser()){
-
-    return (
-      "https://mail.google.com/mail/?view=cm&fs=1" +
-      "&to=" + encodeURIComponent(RAFA_EMAIL) +
-      "&su=" + encodeURIComponent(subject) +
-      "&body=" + encodeURIComponent(body)
-    );
-
-  }
-
-
-  /*
-     SAFARI / CHROME / NAVIGATEUR NORMAL
-
-     On utilise mailto: pour ouvrir l'application
-     de courriel installée sur le téléphone.
-  */
-
-  return (
-    "mailto:" +
-    RAFA_EMAIL +
-    "?subject=" +
-    encodeURIComponent(subject) +
-    "&body=" +
-    encodeURIComponent(body)
-  );
-
-}
-
-
-/* ==========================================
-   CALENDRIER
-========================================== */
+/* =========================================
+   CALCUL DU JOUR DE LA SEMAINE
+========================================= */
 
 function mondayIndex(jsDay){
-  return (jsDay+6)%7;
+
+  return (jsDay + 6) % 7;
+
 }
 
 
-function getStatus(month,day){
+/* =========================================
+   STATUT D'UNE DATE
+========================================= */
 
-  const d =
+function getStatus(month, day){
+
+  const data =
     availability[month] ||
     {
       booked:[],
@@ -614,35 +583,45 @@ function getStatus(month,day){
     };
 
 
-  if(d.booked.includes(day)){
+  if(data.booked.includes(day)){
     return "booked";
   }
 
 
-  if(d.unavailable.includes(day)){
+  if(data.unavailable.includes(day)){
     return "unavailable";
   }
 
 
   return "available";
+
 }
 
 
+/* =========================================
+   TEXTE DU STATUT
+========================================= */
+
 function getLabel(status){
 
-  if(status==="booked"){
+  if(status === "booked"){
     return "Réservé";
   }
 
 
-  if(status==="unavailable"){
+  if(status === "unavailable"){
     return "Indisponible";
   }
 
 
   return "Disponible";
+
 }
 
+
+/* =========================================
+   AFFICHAGE DU CALENDRIER
+========================================= */
 
 function render(month){
 
@@ -660,7 +639,7 @@ function render(month){
     YEAR;
 
 
-  grid.innerHTML="";
+  grid.innerHTML = "";
 
 
   const first =
@@ -674,7 +653,7 @@ function render(month){
   const count =
     new Date(
       YEAR,
-      month+1,
+      month + 1,
       0
     ).getDate();
 
@@ -685,24 +664,36 @@ function render(month){
     );
 
 
-  /* Cases vides avant le 1er */
+  /* CASES VIDES AVANT LE PREMIER JOUR */
 
-  for(let i=0;i<offset;i++){
+  for(
+    let i = 0;
+    i < offset;
+    i++
+  ){
 
-    const e =
-      document.createElement("div");
+    const empty =
+      document.createElement(
+        "div"
+      );
 
-    e.className =
+    empty.className =
       "day empty";
 
-    grid.appendChild(e);
+    grid.appendChild(
+      empty
+    );
 
   }
 
 
-  /* Dates */
+  /* DATES DU MOIS */
 
-  for(let day=1;day<=count;day++){
+  for(
+    let day = 1;
+    day <= count;
+    day++
+  ){
 
     const status =
       getStatus(
@@ -711,33 +702,34 @@ function render(month){
       );
 
 
-    const c =
+    const cell =
       document.createElement(
         "div"
       );
 
 
-    c.className =
+    cell.className =
       "day " +
       status +
       (
-        status==="available"
-          ? " available-day"
-          : ""
+        status === "available"
+        ? " available-day"
+        : ""
       );
 
 
     const dotClass =
-      status==="booked"
-        ? "booked-dot"
+      status === "booked"
+      ? "booked-dot"
 
-        : status==="unavailable"
-        ? "unavailable-dot"
+      : status === "unavailable"
+      ? "unavailable-dot"
 
-        : "available";
+      : "available";
 
 
-    c.innerHTML =
+    cell.innerHTML =
+
       '<div class="num">' +
       day +
       '</div>' +
@@ -755,20 +747,14 @@ function render(month){
       '</div>';
 
 
-    /*
-       IMPORTANT
+    /* =====================================
+       DATE DISPONIBLE = VRAI LIEN
 
-       On ne fait PLUS :
-       addEventListener("click", openReservation)
+       Exemple :
+       reserve.html?day=12&month=8
+    ===================================== */
 
-       On place un VRAI lien directement
-       sur la case.
-
-       Le clic provient donc réellement
-       du doigt de l'utilisateur.
-    */
-
-    if(status==="available"){
+    if(status === "available"){
 
       const link =
         document.createElement(
@@ -781,23 +767,19 @@ function render(month){
 
 
       link.href =
-        reservationUrl(
-          day,
-          month
-        );
+        "reserve.html?day=" +
+        encodeURIComponent(day) +
+        "&month=" +
+        encodeURIComponent(month);
 
 
       /*
-         _top fait sortir le lien
-         de l'iframe Google Sites.
+        Sort de l'iframe Google Sites.
+        Fonctionne aussi depuis Facebook.
       */
 
       link.target =
         "_top";
-
-
-      link.rel =
-        "noopener";
 
 
       link.setAttribute(
@@ -811,53 +793,70 @@ function render(month){
       );
 
 
-      c.appendChild(link);
+      cell.appendChild(
+        link
+      );
 
     }
 
 
-    grid.appendChild(c);
+    grid.appendChild(
+      cell
+    );
 
   }
 
 
-  /* Cases vides après la dernière date */
+  /* CASES VIDES À LA FIN */
 
   const trailing =
     (
       7 -
       (
-        (offset+count)%7
+        (offset + count) % 7
       )
-    )%7;
+    ) % 7;
 
 
-  for(let i=0;i<trailing;i++){
+  for(
+    let i = 0;
+    i < trailing;
+    i++
+  ){
 
-    const e =
+    const empty =
       document.createElement(
         "div"
       );
 
-    e.className =
+
+    empty.className =
       "day empty";
 
-    grid.appendChild(e);
+
+    grid.appendChild(
+      empty
+    );
 
   }
 
+
+  /* BOUTON DU MOIS ACTIF */
 
   document
     .querySelectorAll(
       "button[data-month]"
     )
-    .forEach(b => {
+    .forEach(button => {
 
-      b.classList.toggle(
+      button.classList.toggle(
+
         "active",
+
         Number(
-          b.dataset.month
-        )===month
+          button.dataset.month
+        ) === month
+
       );
 
     });
@@ -865,23 +864,23 @@ function render(month){
 }
 
 
-/* ==========================================
-   CHANGER DE MOIS
-========================================== */
+/* =========================================
+   CHANGEMENT DE MOIS
+========================================= */
 
 document
   .querySelectorAll(
     "button[data-month]"
   )
-  .forEach(b => {
+  .forEach(button => {
 
-    b.addEventListener(
+    button.addEventListener(
       "click",
       () => {
 
         render(
           Number(
-            b.dataset.month
+            button.dataset.month
           )
         );
 
@@ -891,25 +890,9 @@ document
   });
 
 
-/* ==========================================
-   BOUTON RÉSERVER EN BAS
-
-   Lui aussi est maintenant un vrai lien.
-========================================== */
-
-const reserveBtn =
-  document.getElementById(
-    "reserveBtn"
-  );
-
-
-reserveBtn.href =
-  reservationUrl();
-
-
-/* ==========================================
+/* =========================================
    SEPTEMBRE AU DÉPART
-========================================== */
+========================================= */
 
 render(8);
 
