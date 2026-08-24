@@ -149,7 +149,7 @@ function render(month){
     if(status==="available"){
       c.href=reservationUrl(day,month);
       c.target="_blank";
-      c.rel="noopener noreferrer";
+      c.rel="noopener";
       c.setAttribute("aria-label","Réserver le "+day+" "+monthNames[month]+" "+YEAR);
     }
 
@@ -166,7 +166,7 @@ document.querySelectorAll("button[data-month]").forEach(b=>b.addEventListener("c
 render(8);
 
 /* ==========================================
-   RÉSERVATION PAR GMAIL
+   RÉSERVATION PAR COURRIEL — COMPATIBLE MOBILE / GOOGLE SITES
    Remplace l'adresse ci-dessous par ton courriel.
    ========================================== */
 const RAFA_EMAIL = "lapizzaderafa@gmail.com";
@@ -202,15 +202,16 @@ Téléphone :
 
 Merci!`;
 
-  return "https://mail.google.com/mail/?view=cm&fs=1" +
-    "&to=" + encodeURIComponent(RAFA_EMAIL) +
-    "&su=" + encodeURIComponent(subject) +
+  return "mailto:" + RAFA_EMAIL +
+    "?subject=" + encodeURIComponent(subject) +
     "&body=" + encodeURIComponent(body);
 }
 
 // Le bouton du bas est lui aussi un vrai lien direct.
 const reserveBtn = document.getElementById("reserveBtn");
 reserveBtn.href = reservationUrl();
+reserveBtn.target = "_blank";
+reserveBtn.rel = "noopener";
 </script>
 </body>
 </html>
