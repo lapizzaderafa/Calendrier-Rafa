@@ -166,8 +166,11 @@ document.querySelectorAll("button[data-month]").forEach(b=>b.addEventListener("c
 render(8);
 
 /* ==========================================
-   RÉSERVATION PAR GMAIL
-   Remplace l'adresse ci-dessous par ton courriel.
+   RÉSERVATION PAR COURRIEL (mailto)
+   Remplace l'adresse ci-dessous par ton courriel si besoin.
+   mailto: fonctionne de façon fiable sur ordi ET mobile,
+   même dans un iframe (contrairement au lien Gmail web qui
+   est bloqué par le sandbox iframe sur Safari iOS).
    ========================================== */
 const RAFA_EMAIL = "lapizzaderafa@gmail.com";
 
@@ -180,42 +183,20 @@ function openReservation(day=null, month=null){
     : "Réservation Rafa Pizza";
 
   const body = hasDate
-    ? `Bonjour Rafa,
+    ? `Bonjour Rafa,\n\nJ'aimerais réserver une soirée Rafa Pizza le ${dateText}.\n\nNombre de personnes :\nVille / secteur :\nHeure souhaitée :\nTéléphone :\n\nMerci!`
+    : `Bonjour Rafa,\n\nJ'aimerais réserver une soirée Rafa Pizza.\n\nDate souhaitée :\nNombre de personnes :\nVille / secteur :\nHeure souhaitée :\nTéléphone :\n\nMerci!`;
 
-J'aimerais réserver une soirée Rafa Pizza le ${dateText}.
-
-Nombre de personnes :
-Ville / secteur :
-Heure souhaitée :
-Téléphone :
-
-Merci!`
-    : `Bonjour Rafa,
-
-J'aimerais réserver une soirée Rafa Pizza.
-
-Date souhaitée :
-Nombre de personnes :
-Ville / secteur :
-Heure souhaitée :
-Téléphone :
-
-Merci!`;
-
-  const gmailUrl =
-    "https://mail.google.com/mail/?view=cm&fs=1" +
-    "&to=" + encodeURIComponent(RAFA_EMAIL) +
-    "&su=" + encodeURIComponent(subject) +
+  const mailtoUrl =
+    "mailto:" + RAFA_EMAIL +
+    "?subject=" + encodeURIComponent(subject) +
     "&body=" + encodeURIComponent(body);
 
-  // Google Sites affiche ce calendrier dans un iframe.
-  // Sur mobile, window.open(..., "_blank") peut être bloqué.
-  // Un vrai lien vers la fenêtre principale (_top) est plus fiable.
+  // mailto: n'est pas une navigation de page, donc ce n'est
+  // presque jamais bloqué par le sandbox d'un iframe (Google Sites),
+  // que ce soit sur ordi ou sur iPhone/Safari.
   const link = document.createElement("a");
-  link.href = gmailUrl;
+  link.href = mailtoUrl;
   link.target = "_top";
-  link.rel = "noopener";
-  link.style.display = "none";
   document.body.appendChild(link);
   link.click();
   link.remove();
