@@ -61,8 +61,6 @@ body{
   font-size:clamp(22px,4vw,44px);
   line-height:1;
   font-weight:700;
-
-  /* Toujours sur une ligne */
   white-space:nowrap;
 }
 
@@ -241,6 +239,14 @@ button.active{
   padding:7px 2px;
 }
 
+
+/*
+  IMPORTANT :
+  .day peut maintenant être un DIV ou un A.
+  On enlève donc complètement le système
+  du lien transparent par-dessus.
+*/
+
 .day{
   min-height:118px;
   border:1px solid var(--line);
@@ -250,10 +256,17 @@ button.active{
   position:relative;
   transition:.18s ease;
   overflow:hidden;
+
+  display:block;
+  text-decoration:none;
+  color:inherit;
+
+  -webkit-tap-highlight-color:rgba(91,31,42,.08);
 }
 
 .day.available-day{
   cursor:pointer;
+  touch-action:manipulation;
 }
 
 .day.available-day:hover{
@@ -262,25 +275,15 @@ button.active{
   box-shadow:0 8px 20px rgba(65,35,39,.08);
 }
 
+.day.available-day:active{
+  transform:scale(.98);
+}
+
 .day.empty{
   background:transparent;
   border:1px dashed rgba(91,31,42,.08);
   box-shadow:none;
   transform:none;
-}
-
-
-/* Toute la case disponible est cliquable */
-
-.day-link{
-  position:absolute;
-  inset:0;
-  z-index:10;
-  display:block;
-  border-radius:inherit;
-  text-decoration:none;
-  -webkit-tap-highlight-color:rgba(91,31,42,.08);
-  touch-action:manipulation;
 }
 
 .num{
@@ -617,13 +620,9 @@ button.active{
 
         <div class="concept-detail">
 
-          <span>
-            Le menu
-          </span>
+          <span>Le menu</span>
 
-          <strong>
-            4 créations
-          </strong>
+          <strong>4 créations</strong>
 
           <small>
             Un menu unique pour votre soirée
@@ -634,9 +633,7 @@ button.active{
 
         <div class="concept-detail">
 
-          <span>
-            Le forfait
-          </span>
+          <span>Le forfait</span>
 
           <strong>
             4 pointes / personne
@@ -651,9 +648,7 @@ button.active{
 
         <div class="concept-detail">
 
-          <span>
-            Le service
-          </span>
+          <span>Le service</span>
 
           <strong>
             30 $ / personne
@@ -777,10 +772,10 @@ const YEAR = 2026;
    EXEMPLE :
 
    booked:[12,19]
-   = 12 et 19 sont RÉSERVÉS
+   = 12 et 19 réservés
 
    unavailable:[5,6]
-   = 5 et 6 sont INDISPONIBLES
+   = 5 et 6 indisponibles
 ===================================================== */
 
 const availability = {
@@ -820,9 +815,7 @@ const monthNames = [
 
 
 function mondayIndex(jsDay){
-
   return (jsDay + 6) % 7;
-
 }
 
 
@@ -834,19 +827,15 @@ function getStatus(month,day){
       unavailable:[]
     };
 
-
   if(data.booked.includes(day)){
     return "booked";
   }
-
 
   if(data.unavailable.includes(day)){
     return "unavailable";
   }
 
-
   return "available";
-
 }
 
 
@@ -856,14 +845,11 @@ function getLabel(status){
     return "Réservé";
   }
 
-
   if(status === "unavailable"){
     return "Indisponible";
   }
 
-
   return "Disponible";
-
 }
 
 
@@ -874,7 +860,7 @@ function getLabel(status){
 function reservationUrl(day,month){
 
   return (
-    "reserve.html?day=" +
+    "./reserve.html?day=" +
     encodeURIComponent(day) +
     "&month=" +
     encodeURIComponent(month)
@@ -889,12 +875,10 @@ function reservationUrl(day,month){
 
 function render(month){
 
-
   const grid =
     document.getElementById(
       "calendarGrid"
     );
-
 
   grid.innerHTML = "";
 
@@ -921,39 +905,32 @@ function render(month){
     );
 
 
-  /* CASES VIDES AVANT */
+  /* =========================
+     CASES VIDES AVANT
+  ========================= */
 
-  for(
-    let i=0;
-    i<offset;
-    i++
-  ){
+  for(let i=0;i<offset;i++){
 
     const empty =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     empty.className =
       "day empty";
 
-
-    grid.appendChild(
-      empty
-    );
+    grid.appendChild(empty);
 
   }
 
 
-  /* JOURS DU MOIS */
+  /* =========================
+     JOURS DU MOIS
+  ========================= */
 
   for(
     let day=1;
     day<=count;
     day++
   ){
-
 
     const status =
       getStatus(
@@ -962,9 +939,18 @@ function render(month){
       );
 
 
+    /*
+      CORRECTION IMPORTANTE :
+
+      Disponible = véritable balise <a>
+      Réservé / indisponible = <div>
+    */
+
     const cell =
       document.createElement(
-        "div"
+        status === "available"
+        ? "a"
+        : "div"
       );
 
 
@@ -988,37 +974,32 @@ function render(month){
       '</div>';
 
 
-    /* DATE DISPONIBLE */
+    /* =========================
+       DATE DISPONIBLE
+    ========================= */
 
     if(status === "available"){
 
-
-      const link =
-        document.createElement(
-          "a"
-        );
-
-
-      link.className =
-        "day-link";
-
-
-      link.href =
+      cell.href =
         reservationUrl(
           day,
           month
         );
 
 
-      link.target =
-        "_top";
+      /*
+        On reste volontairement dans
+        la même fenêtre.
 
+        C'est plus fiable sur :
+        - iPhone
+        - Safari
+        - Facebook
+        - Instagram
+        - GitHub Pages
+      */
 
-      link.rel =
-        "noopener";
-
-
-      link.setAttribute(
+      cell.setAttribute(
         "aria-label",
         "Réserver le " +
         day +
@@ -1028,22 +1009,17 @@ function render(month){
         YEAR
       );
 
-
-      cell.appendChild(
-        link
-      );
-
     }
 
 
-    grid.appendChild(
-      cell
-    );
+    grid.appendChild(cell);
 
   }
 
 
-  /* CASES VIDES APRÈS */
+  /* =========================
+     CASES VIDES APRÈS
+  ========================= */
 
   const trailing =
     (
@@ -1057,30 +1033,22 @@ function render(month){
     ) % 7;
 
 
-  for(
-    let i=0;
-    i<trailing;
-    i++
-  ){
+  for(let i=0;i<trailing;i++){
 
     const empty =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     empty.className =
       "day empty";
 
-
-    grid.appendChild(
-      empty
-    );
+    grid.appendChild(empty);
 
   }
 
 
-  /* MOIS ACTIF */
+  /* =========================
+     MOIS ACTIF
+  ========================= */
 
   document
     .querySelectorAll(
@@ -1089,16 +1057,12 @@ function render(month){
     .forEach(
       button => {
 
-
         button.classList.toggle(
           "active",
-
           Number(
             button.dataset.month
           ) === month
-
         );
-
 
       }
     );
@@ -1117,11 +1081,9 @@ document
   .forEach(
     button => {
 
-
       button.addEventListener(
         "click",
         () => {
-
 
           render(
             Number(
@@ -1129,16 +1091,16 @@ document
             )
           );
 
-
         }
       );
-
 
     }
   );
 
 
-/* SEPTEMBRE PAR DÉFAUT */
+/* =========================
+   SEPTEMBRE PAR DÉFAUT
+========================= */
 
 render(8);
 
