@@ -46,7 +46,7 @@ body{
 
 
 /* =========================
-   HAUT DU SITE
+   HAUT
 ========================= */
 
 .top{
@@ -79,7 +79,7 @@ h1{
 
 
 /* =========================
-   L'EXPÉRIENCE RAFA
+   EXPÉRIENCE RAFA
 ========================= */
 
 .concept{
@@ -163,21 +163,35 @@ h1{
 
 
 /* =========================
+   INTRO CALENDRIER
+========================= */
+
+.calendar-intro{
+  padding:22px 30px 5px;
+}
+
+.calendar-intro h2{
+  margin:0;
+  color:var(--wine);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:25px;
+  line-height:1.15;
+  font-weight:500;
+}
+
+.calendar-intro p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:11px;
+}
+
+
+/* =========================
    CHOIX DU MOIS
 ========================= */
 
 .month-selector{
-  padding:20px 30px 0;
-}
-
-.month-selector-label{
-  display:block;
-  margin-bottom:9px;
-  color:var(--muted);
-  font-size:10px;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.12em;
+  padding:13px 30px 3px;
 }
 
 .controls{
@@ -198,10 +212,6 @@ button{
   transition:.18s ease;
 }
 
-button:hover{
-  border-color:rgba(91,31,42,.35);
-}
-
 button.active{
   background:var(--wine);
   color:var(--cream2);
@@ -210,36 +220,11 @@ button.active{
 
 
 /* =========================
-   TITRE CALENDRIER
-========================= */
-
-.calendar-intro{
-  padding:19px 30px 2px;
-}
-
-.calendar-intro h2{
-  margin:0;
-  color:var(--wine);
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:25px;
-  line-height:1.15;
-  font-weight:500;
-}
-
-.calendar-intro p{
-  margin:6px 0 0;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.4;
-}
-
-
-/* =========================
    CALENDRIER
 ========================= */
 
 .wrap{
-  padding:18px 24px 26px;
+  padding:16px 24px 26px;
 }
 
 .weekdays,
@@ -284,22 +269,28 @@ button.active{
   box-shadow:0 8px 20px rgba(65,35,39,.08);
 }
 
-.day-link{
-  position:absolute;
-  inset:0;
-  z-index:5;
-  border-radius:inherit;
-  text-decoration:none;
-  -webkit-tap-highlight-color:transparent;
-  touch-action:manipulation;
-}
-
 .day.empty{
   background:transparent;
   border:1px dashed rgba(91,31,42,.08);
   box-shadow:none;
   transform:none;
 }
+
+
+/* IMPORTANT :
+   lien transparent sur TOUTE la case */
+
+.day-link{
+  position:absolute;
+  inset:0;
+  z-index:10;
+  display:block;
+  border-radius:inherit;
+  text-decoration:none;
+  -webkit-tap-highlight-color:rgba(91,31,42,.08);
+  touch-action:manipulation;
+}
+
 
 .num{
   font-size:16px;
@@ -322,9 +313,7 @@ button.active{
   align-items:center;
   justify-content:center;
 
-  min-width:0;
   padding:4px 5px;
-
   border-radius:999px;
 
   font-size:9px;
@@ -382,7 +371,7 @@ button.active{
 
 
 /* =========================
-   PIED DE PAGE
+   PIED
 ========================= */
 
 .footer{
@@ -454,15 +443,20 @@ button.active{
     line-height:1.3;
   }
 
-
-  /* CHOIX DU MOIS MOBILE */
-
-  .month-selector{
-    padding:18px 18px 0;
+  .calendar-intro{
+    padding:19px 18px 3px;
   }
 
-  .month-selector-label{
-    margin-bottom:8px;
+  .calendar-intro h2{
+    font-size:21px;
+  }
+
+  .calendar-intro p{
+    font-size:10px;
+  }
+
+  .month-selector{
+    padding:12px 18px 2px;
   }
 
   .controls{
@@ -476,21 +470,8 @@ button.active{
     font-size:11px;
   }
 
-
-  .calendar-intro{
-    padding:17px 18px 2px;
-  }
-
-  .calendar-intro h2{
-    font-size:21px;
-  }
-
-  .calendar-intro p{
-    font-size:10px;
-  }
-
   .wrap{
-    padding:14px 10px 18px;
+    padding:12px 10px 18px;
   }
 
   .weekdays,
@@ -518,7 +499,6 @@ button.active{
     bottom:5px;
     padding:3px 2px;
     font-size:clamp(6.5px,1.75vw,8px);
-    font-weight:700;
   }
 
   .footer{
@@ -526,10 +506,6 @@ button.active{
   }
 }
 
-
-/* =========================
-   TRÈS PETIT TÉLÉPHONE
-========================= */
 
 @media(max-width:480px){
 
@@ -559,10 +535,6 @@ button.active{
     font-size:clamp(6px,1.8vw,7.5px);
   }
 
-  .num{
-    font-size:13px;
-  }
-
 }
 
 </style>
@@ -574,9 +546,7 @@ button.active{
 <div class="shell">
 
 
-  <!-- =====================
-       EN-TÊTE
-  ====================== -->
+  <!-- HAUT -->
 
   <div class="top">
 
@@ -595,9 +565,7 @@ button.active{
   </div>
 
 
-  <!-- =====================
-       L'EXPÉRIENCE RAFA
-  ====================== -->
+  <!-- EXPÉRIENCE RAFA -->
 
   <section class="concept">
 
@@ -652,38 +620,7 @@ button.active{
   </section>
 
 
-  <!-- =====================
-       CHOIX DU MOIS
-  ====================== -->
-
-  <div class="month-selector">
-
-    <span class="month-selector-label">
-      Choisissez le mois
-    </span>
-
-    <div class="controls">
-
-      <button class="active" data-month="8">
-        Septembre
-      </button>
-
-      <button data-month="9">
-        Octobre
-      </button>
-
-      <button data-month="10">
-        Novembre
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================
-       TITRE CALENDRIER
-  ====================== -->
+  <!-- INTRO -->
 
   <div class="calendar-intro">
 
@@ -698,9 +635,30 @@ button.active{
   </div>
 
 
-  <!-- =====================
-       CALENDRIER
-  ====================== -->
+  <!-- MOIS JUSTE AVANT CALENDRIER -->
+
+  <div class="month-selector">
+
+    <div class="controls">
+
+      <button type="button" class="active" data-month="8">
+        Septembre
+      </button>
+
+      <button type="button" data-month="9">
+        Octobre
+      </button>
+
+      <button type="button" data-month="10">
+        Novembre
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- CALENDRIER -->
 
   <div class="wrap">
 
@@ -731,11 +689,6 @@ button.active{
 
 <script>
 
-
-/* =========================
-   ANNÉE
-========================= */
-
 const YEAR = 2026;
 
 
@@ -744,15 +697,17 @@ const YEAR = 2026;
 
    TOUT EST DISPONIBLE PAR DÉFAUT.
 
-   booked:[12,19]
-   = 12 et 19 réservés
-
-   unavailable:[5,6]
-   = 5 et 6 indisponibles
-
    SEPTEMBRE = 8
    OCTOBRE = 9
    NOVEMBRE = 10
+
+   Exemple :
+
+   booked:[12,19]
+   = réservé
+
+   unavailable:[5,6]
+   = indisponible
 ===================================================== */
 
 const availability = {
@@ -763,7 +718,7 @@ const availability = {
   },
 
   9:{
-    booked:[4,5],
+    booked:[],
     unavailable:[]
   },
 
@@ -774,10 +729,6 @@ const availability = {
 
 };
 
-
-/* =========================
-   NOMS DES MOIS
-========================= */
 
 const monthNames = [
   "Janvier",
@@ -794,10 +745,6 @@ const monthNames = [
   "Décembre"
 ];
 
-
-/* =========================
-   FONCTIONS
-========================= */
 
 function mondayIndex(jsDay){
   return (jsDay + 6) % 7;
@@ -839,14 +786,13 @@ function getLabel(status){
 
 
 /* =========================
-   LIEN VERS RESERVE.HTML
+   LIEN RÉSERVATION
+
+   EXACTEMENT COMME AVANT :
+   reserve.html?day=...&month=...
 ========================= */
 
-function reservationUrl(day=null,month=null){
-
-  if(day === null || month === null){
-    return "reserve.html";
-  }
+function reservationUrl(day,month){
 
   return (
     "reserve.html?day=" +
@@ -859,7 +805,7 @@ function reservationUrl(day=null,month=null){
 
 
 /* =========================
-   AFFICHAGE DU CALENDRIER
+   CALENDRIER
 ========================= */
 
 function render(month){
@@ -879,11 +825,7 @@ function render(month){
 
 
   const first =
-    new Date(
-      YEAR,
-      month,
-      1
-    );
+    new Date(YEAR,month,1);
 
 
   const count =
@@ -900,7 +842,7 @@ function render(month){
     );
 
 
-  /* CASES VIDES AVANT LE PREMIER JOUR */
+  /* CASES VIDES AVANT */
 
   for(let i=0;i<offset;i++){
 
@@ -915,20 +857,19 @@ function render(month){
   }
 
 
-  /* JOURS DU MOIS */
+  /* JOURS */
 
-  for(
-    let day=1;
-    day<=count;
-    day++
-  ){
+  for(let day=1;day<=count;day++){
 
     const status =
-      getStatus(
-        month,
-        day
-      );
+      getStatus(month,day);
 
+
+    /*
+       IMPORTANT :
+       la case reste un DIV,
+       comme dans la version qui fonctionnait.
+    */
 
     const cell =
       document.createElement("div");
@@ -954,8 +895,11 @@ function render(month){
       '</div>';
 
 
-    /* SEULEMENT LES DATES DISPONIBLES
-       SONT CLIQUABLES */
+    /*
+       DISPONIBLE :
+       on ajoute un vrai lien transparent
+       qui couvre TOUTE la case.
+    */
 
     if(status === "available"){
 
@@ -1017,11 +961,7 @@ function render(month){
     ) % 7;
 
 
-  for(
-    let i=0;
-    i<trailing;
-    i++
-  ){
+  for(let i=0;i<trailing;i++){
 
     const empty =
       document.createElement("div");
@@ -1034,7 +974,7 @@ function render(month){
   }
 
 
-  /* BOUTON DU MOIS ACTIF */
+  /* MOIS ACTIF */
 
   document
     .querySelectorAll(
@@ -1045,9 +985,7 @@ function render(month){
 
         button.classList.toggle(
           "active",
-          Number(
-            button.dataset.month
-          ) === month
+          Number(button.dataset.month) === month
         );
 
       }
@@ -1057,7 +995,7 @@ function render(month){
 
 
 /* =========================
-   CHANGEMENT DE MOIS
+   BOUTONS MOIS
 ========================= */
 
 document
@@ -1072,9 +1010,7 @@ document
         () => {
 
           render(
-            Number(
-              button.dataset.month
-            )
+            Number(button.dataset.month)
           );
 
         }
@@ -1087,7 +1023,6 @@ document
 /* SEPTEMBRE PAR DÉFAUT */
 
 render(8);
-
 
 </script>
 
