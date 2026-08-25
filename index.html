@@ -251,6 +251,7 @@ button.active{
   padding:12px;
   position:relative;
   transition:.18s ease;
+  overflow:hidden;
 }
 
 .day.available-day{
@@ -287,20 +288,40 @@ button.active{
 }
 
 
-/* STATUT DANS CHAQUE CASE */
+/* =========================
+   STATUT DANS CHAQUE CASE
+========================= */
 
 .status{
   position:absolute;
-  left:12px;
-  right:12px;
-  bottom:11px;
-  font-size:10px;
+  left:7px;
+  right:7px;
+  bottom:8px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  min-width:0;
+  padding:4px 5px;
+
+  border-radius:999px;
+
+  font-size:9px;
   font-weight:700;
-  letter-spacing:.02em;
+  line-height:1;
+  letter-spacing:0;
+
+  white-space:nowrap;
+  overflow:hidden;
+
+  transition:.18s ease;
 }
 
 
-/* DISPONIBLE */
+/* =========================
+   DISPONIBLE
+========================= */
 
 .day.available{
   background:rgba(255,255,255,.35);
@@ -308,10 +329,13 @@ button.active{
 
 .day.available .status{
   color:var(--wine2);
+  background:rgba(122,45,60,.07);
 }
 
 
-/* RÉSERVÉ */
+/* =========================
+   RÉSERVÉ
+========================= */
 
 .day.booked{
   background:var(--wine);
@@ -323,11 +347,14 @@ button.active{
 }
 
 .day.booked .status{
-  color:rgba(251,248,243,.82);
+  color:var(--cream2);
+  background:rgba(255,255,255,.12);
 }
 
 
-/* INDISPONIBLE */
+/* =========================
+   INDISPONIBLE
+========================= */
 
 .day.unavailable{
   background:rgba(185,173,166,.18);
@@ -338,7 +365,8 @@ button.active{
 }
 
 .day.unavailable .status{
-  color:#8B817C;
+  color:#776D68;
+  background:rgba(139,129,124,.10);
 }
 
 
@@ -453,10 +481,14 @@ button.active{
   }
 
   .status{
-    left:8px;
-    right:6px;
-    bottom:7px;
-    font-size:8px;
+    left:4px;
+    right:4px;
+    bottom:5px;
+
+    padding:3px 2px;
+
+    font-size:clamp(6.5px,1.75vw,8px);
+    font-weight:700;
   }
 
   .footer{
@@ -465,12 +497,20 @@ button.active{
 }
 
 
-/* Très petit téléphone */
+/* =========================
+   TRÈS PETIT TÉLÉPHONE
+========================= */
 
 @media(max-width:480px){
 
+  .weekdays,
+  .grid{
+    gap:3px;
+  }
+
   .day{
     min-height:76px;
+    padding:6px;
   }
 
   .concept-main-title{
@@ -482,7 +522,17 @@ button.active{
   }
 
   .status{
-    font-size:7px;
+    left:2px;
+    right:2px;
+    bottom:4px;
+
+    padding:3px 1px;
+
+    font-size:clamp(6px,1.8vw,7.5px);
+  }
+
+  .num{
+    font-size:13px;
   }
 
 }
@@ -496,7 +546,9 @@ button.active{
 <div class="shell">
 
 
-  <!-- EN-TÊTE -->
+  <!-- =====================
+       EN-TÊTE
+  ====================== -->
 
   <div class="top">
 
@@ -536,7 +588,9 @@ button.active{
   </div>
 
 
-  <!-- L'EXPÉRIENCE RAFA -->
+  <!-- =====================
+       L'EXPÉRIENCE RAFA
+  ====================== -->
 
   <section class="concept">
 
@@ -591,7 +645,9 @@ button.active{
   </section>
 
 
-  <!-- TITRE CALENDRIER -->
+  <!-- =====================
+       TITRE CALENDRIER
+  ====================== -->
 
   <div class="calendar-intro">
 
@@ -606,7 +662,9 @@ button.active{
   </div>
 
 
-  <!-- CALENDRIER -->
+  <!-- =====================
+       CALENDRIER
+  ====================== -->
 
   <div class="wrap">
 
@@ -646,21 +704,15 @@ const YEAR = 2026;
 
 
 /* =====================================================
-   C'EST LA SEULE PARTIE À MODIFIER POUR TES DISPONIBILITÉS
+   DISPONIBILITÉS
 
-   Tout est DISPONIBLE par défaut.
-
-   Exemple :
+   TOUT EST DISPONIBLE PAR DÉFAUT.
 
    booked:[12,19]
-
-   = les 12 et 19 sont RÉSERVÉS
-
+   = 12 et 19 réservés
 
    unavailable:[5,6]
-
-   = les 5 et 6 sont INDISPONIBLES
-
+   = 5 et 6 indisponibles
 
    SEPTEMBRE = 8
    OCTOBRE = 9
@@ -771,7 +823,7 @@ function reservationUrl(day=null,month=null){
 
 
 /* =========================
-   AFFICHER LE CALENDRIER
+   AFFICHAGE DU CALENDRIER
 ========================= */
 
 function render(month){
@@ -812,7 +864,7 @@ function render(month){
     );
 
 
-  /* Cases vides avant le 1er */
+  /* CASES VIDES AVANT LE PREMIER JOUR */
 
   for(let i=0;i<offset;i++){
 
@@ -827,7 +879,7 @@ function render(month){
   }
 
 
-  /* Jours */
+  /* JOURS DU MOIS */
 
   for(
     let day=1;
@@ -866,8 +918,8 @@ function render(month){
       '</div>';
 
 
-    /* Seulement les dates disponibles
-       peuvent être sélectionnées */
+    /* SEULEMENT LES DATES DISPONIBLES
+       SONT CLIQUABLES */
 
     if(status === "available"){
 
@@ -915,7 +967,7 @@ function render(month){
   }
 
 
-  /* Cases vides après */
+  /* CASES VIDES APRÈS LE DERNIER JOUR */
 
   const trailing =
     (
@@ -946,7 +998,7 @@ function render(month){
   }
 
 
-  /* Met le bon bouton de mois actif */
+  /* BOUTON DU MOIS ACTIF */
 
   document
     .querySelectorAll(
