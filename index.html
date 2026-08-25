@@ -9,13 +9,24 @@
 <style>
 
 :root{
-  --cream:#F6F0E7;
-  --cream2:#FBF8F3;
+  --cream:#F4EFE8;
+  --cream2:#FCFAF7;
+  --paper:#FFFDFC;
+
   --wine:#5B1F2A;
-  --wine2:#7A2D3C;
-  --ink:#2B2524;
-  --muted:#8A7D77;
-  --line:rgba(91,31,42,.16);
+  --wine2:#743342;
+  --wine-soft:rgba(91,31,42,.07);
+
+  --ink:#26211F;
+  --muted:#847973;
+  --muted2:#A0948D;
+
+  --line:rgba(91,31,42,.12);
+  --line-soft:rgba(91,31,42,.07);
+
+  --shadow:
+    0 24px 60px rgba(70,43,44,.08),
+    0 2px 8px rgba(70,43,44,.03);
 }
 
 *{
@@ -25,22 +36,31 @@
 html,body{
   margin:0;
   padding:0;
-  background:transparent;
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:#F8F5F0;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   color:var(--ink);
 }
 
 body{
-  padding:12px;
+  padding:18px;
 }
 
 .shell{
   max-width:1080px;
   margin:auto;
+
   background:var(--cream);
-  border:1px solid var(--line);
-  border-radius:28px;
-  box-shadow:0 18px 45px rgba(65,35,39,.10);
+
+  border:1px solid rgba(91,31,42,.10);
+  border-radius:30px;
+
+  box-shadow:var(--shadow);
+
   overflow:hidden;
 }
 
@@ -50,19 +70,35 @@ body{
 ========================= */
 
 .top{
-  padding:26px 30px 24px;
+  padding:31px 34px 29px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.28),
+      rgba(255,255,255,0)
+    );
+
   border-bottom:1px solid var(--line);
 }
 
 .main-title{
   margin:0;
-  font-family:Georgia,"Times New Roman",serif;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
   color:var(--wine);
+
   font-size:clamp(22px,4vw,44px);
   line-height:1;
+
   font-weight:700;
 
-  /* Toujours sur une ligne */
+  letter-spacing:-.025em;
+
   white-space:nowrap;
 }
 
@@ -72,49 +108,77 @@ body{
 ========================= */
 
 .concept{
-  padding:24px 30px;
+  padding:31px 34px;
+
   background:var(--cream2);
+
   border-bottom:1px solid var(--line);
 }
 
 .concept-inner{
   display:grid;
-  grid-template-columns:1.55fr 1fr;
-  gap:34px;
+
+  grid-template-columns:
+    minmax(0,1.55fr)
+    minmax(250px,1fr);
+
+  gap:48px;
+
   align-items:center;
 }
 
 .concept-main-title{
-  margin:0 0 13px;
+  margin:0 0 15px;
+
   color:var(--wine);
-  font-family:Georgia,"Times New Roman",serif;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
   font-size:28px;
   line-height:1;
+
   font-weight:500;
+
+  letter-spacing:-.025em;
 }
 
 .concept-text p{
   margin:0;
-  max-width:650px;
-  color:var(--ink);
-  font-size:13px;
-  line-height:1.65;
+
+  max-width:660px;
+
+  color:#3A3230;
+
+  font-size:13.5px;
+  line-height:1.72;
+
+  letter-spacing:.002em;
 }
 
 .concept-text strong{
   color:var(--wine);
+  font-weight:700;
 }
+
+
+/* DÉTAILS À DROITE */
 
 .concept-details{
   display:grid;
   grid-template-columns:1fr;
+
   border-left:1px solid var(--line);
-  padding-left:25px;
+
+  padding-left:30px;
 }
 
 .concept-detail{
-  padding:7px 0;
-  border-bottom:1px solid var(--line);
+  padding:12px 0;
+
+  border-bottom:1px solid var(--line-soft);
 }
 
 .concept-detail:first-child{
@@ -128,26 +192,39 @@ body{
 
 .concept-detail span{
   display:block;
-  color:var(--muted);
+
+  margin-bottom:4px;
+
+  color:var(--muted2);
+
   font-size:9px;
   font-weight:800;
+
   text-transform:uppercase;
-  letter-spacing:.11em;
-  margin-bottom:2px;
+
+  letter-spacing:.15em;
 }
 
 .concept-detail strong{
   display:block;
+
   color:var(--wine);
+
   font-size:14px;
   line-height:1.25;
+
+  font-weight:700;
 }
 
 .concept-detail small{
   display:block;
+
+  margin-top:3px;
+
   color:var(--muted);
+
   font-size:10px;
-  margin-top:1px;
+  line-height:1.4;
 }
 
 
@@ -156,22 +233,34 @@ body{
 ========================= */
 
 .calendar-intro{
-  padding:22px 30px 5px;
+  padding:28px 34px 6px;
 }
 
 .calendar-intro h2{
   margin:0;
+
   color:var(--wine);
-  font-family:Georgia,"Times New Roman",serif;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
   font-size:25px;
-  line-height:1.15;
+  line-height:1.16;
+
   font-weight:500;
+
+  letter-spacing:-.02em;
 }
 
 .calendar-intro p{
-  margin:6px 0 0;
+  margin:7px 0 0;
+
   color:var(--muted);
+
   font-size:11px;
+  line-height:1.5;
 }
 
 
@@ -180,7 +269,7 @@ body{
 ========================= */
 
 .month-selector{
-  padding:13px 30px 3px;
+  padding:15px 34px 5px;
 }
 
 .controls{
@@ -190,25 +279,52 @@ body{
 }
 
 button{
+  appearance:none;
+
   border:1px solid var(--line);
-  background:var(--cream2);
+
+  background:rgba(255,255,255,.55);
+
   color:var(--wine);
+
   border-radius:999px;
-  padding:10px 15px;
-  font-size:13px;
+
+  padding:10px 17px;
+
+  font-size:12px;
   font-weight:700;
+
+  letter-spacing:.01em;
+
   cursor:pointer;
-  transition:.18s ease;
+
+  box-shadow:
+    0 1px 2px rgba(91,31,42,.02);
+
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    color .18s ease,
+    transform .18s ease,
+    box-shadow .18s ease;
 }
 
 button:hover{
-  border-color:rgba(91,31,42,.35);
+  border-color:rgba(91,31,42,.24);
+
+  background:var(--paper);
+
+  transform:translateY(-1px);
 }
 
 button.active{
   background:var(--wine);
   color:var(--cream2);
+
   border-color:var(--wine);
+
+  box-shadow:
+    0 6px 16px rgba(91,31,42,.14);
 }
 
 
@@ -217,13 +333,16 @@ button.active{
 ========================= */
 
 .wrap{
-  padding:16px 24px 26px;
+  padding:17px 26px 30px;
 }
 
 .weekdays,
 .grid{
   display:grid;
-  grid-template-columns:repeat(7,minmax(0,1fr));
+
+  grid-template-columns:
+    repeat(7,minmax(0,1fr));
+
   gap:8px;
 }
 
@@ -233,23 +352,47 @@ button.active{
 
 .weekday{
   text-align:center;
-  color:var(--muted);
-  font-size:11px;
+
+  color:var(--muted2);
+
+  font-size:10px;
   font-weight:800;
-  letter-spacing:.08em;
+
+  letter-spacing:.12em;
+
   text-transform:uppercase;
-  padding:7px 2px;
+
+  padding:8px 2px;
 }
 
 .day{
   min-height:118px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:rgba(255,255,255,.35);
-  padding:12px;
+
   position:relative;
-  transition:.18s ease;
+
+  padding:13px;
+
   overflow:hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.72),
+      rgba(255,255,255,.42)
+    );
+
+  border:1px solid rgba(91,31,42,.10);
+
+  border-radius:17px;
+
+  box-shadow:
+    0 1px 2px rgba(91,31,42,.015);
+
+  transition:
+    transform .18s ease,
+    border-color .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
 }
 
 .day.available-day{
@@ -257,36 +400,60 @@ button.active{
 }
 
 .day.available-day:hover{
-  border-color:rgba(91,31,42,.35);
   transform:translateY(-2px);
-  box-shadow:0 8px 20px rgba(65,35,39,.08);
+
+  border-color:rgba(91,31,42,.22);
+
+  background:var(--paper);
+
+  box-shadow:
+    0 10px 24px rgba(65,35,39,.07);
 }
 
 .day.empty{
   background:transparent;
-  border:1px dashed rgba(91,31,42,.08);
+
+  border:
+    1px dashed
+    rgba(91,31,42,.065);
+
   box-shadow:none;
+
   transform:none;
 }
 
 
-/* Toute la case disponible est cliquable */
+/* TOUTE LA CASE EST CLIQUABLE */
 
 .day-link{
   position:absolute;
+
   inset:0;
+
   z-index:10;
+
   display:block;
+
   border-radius:inherit;
+
   text-decoration:none;
-  -webkit-tap-highlight-color:rgba(91,31,42,.08);
+
+  -webkit-tap-highlight-color:
+    rgba(91,31,42,.06);
+
   touch-action:manipulation;
 }
 
+
+/* NUMÉRO */
+
 .num{
-  font-size:16px;
-  font-weight:800;
+  font-size:15px;
+  font-weight:750;
+
   color:var(--wine);
+
+  letter-spacing:-.01em;
 }
 
 
@@ -296,20 +463,28 @@ button.active{
 
 .status{
   position:absolute;
-  left:7px;
-  right:7px;
+
+  left:8px;
+  right:8px;
   bottom:8px;
 
   display:flex;
+
   align-items:center;
   justify-content:center;
 
-  padding:4px 5px;
+  min-width:0;
+
+  padding:5px 5px;
+
   border-radius:999px;
 
   font-size:9px;
   font-weight:700;
+
   line-height:1;
+
+  letter-spacing:.005em;
 
   white-space:nowrap;
   overflow:hidden;
@@ -318,21 +493,33 @@ button.active{
 
 /* DISPONIBLE */
 
-.day.available{
-  background:rgba(255,255,255,.35);
-}
-
 .day.available .status{
   color:var(--wine2);
-  background:rgba(122,45,60,.07);
+
+  background:
+    rgba(91,31,42,.055);
+
+  border:
+    1px solid
+    rgba(91,31,42,.045);
 }
 
 
 /* RÉSERVÉ */
 
 .day.booked{
-  background:var(--wine);
+  background:
+    linear-gradient(
+      155deg,
+      #5B1F2A,
+      #682835
+    );
+
   border-color:var(--wine);
+
+  box-shadow:
+    0 8px 22px
+    rgba(91,31,42,.13);
 }
 
 .day.booked .num{
@@ -341,14 +528,24 @@ button.active{
 
 .day.booked .status{
   color:var(--cream2);
-  background:rgba(255,255,255,.12);
+
+  background:
+    rgba(255,255,255,.10);
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
 }
 
 
 /* INDISPONIBLE */
 
 .day.unavailable{
-  background:rgba(185,173,166,.18);
+  background:
+    rgba(185,173,166,.13);
+
+  border-color:
+    rgba(139,129,124,.13);
 }
 
 .day.unavailable .num{
@@ -357,7 +554,13 @@ button.active{
 
 .day.unavailable .status{
   color:#776D68;
-  background:rgba(139,129,124,.10);
+
+  background:
+    rgba(139,129,124,.08);
+
+  border:
+    1px solid
+    rgba(139,129,124,.07);
 }
 
 
@@ -366,10 +569,16 @@ button.active{
 ========================= */
 
 .footer{
-  padding:0 24px 22px;
-  color:var(--muted);
-  font-size:11px;
+  padding:0 24px 24px;
+
+  color:var(--muted2);
+
+  font-size:10px;
+  line-height:1.4;
+
   text-align:center;
+
+  letter-spacing:.01em;
 }
 
 
@@ -380,107 +589,141 @@ button.active{
 @media(max-width:760px){
 
   body{
-    padding:4px;
+    padding:5px;
+
+    background:#F7F3EE;
   }
 
   .shell{
-    border-radius:20px;
+    border-radius:22px;
+
+    box-shadow:
+      0 10px 30px rgba(70,43,44,.07);
   }
 
+
+  /* HEADER */
+
   .top{
-    padding:21px 18px 19px;
+    padding:23px 19px 21px;
   }
 
   .main-title{
-    font-size:clamp(21px,6.3vw,28px);
+    font-size:
+      clamp(21px,6.3vw,28px);
+
     white-space:nowrap;
   }
 
 
-  /* EXPÉRIENCE RAFA */
+  /* EXPÉRIENCE */
 
   .concept{
-    padding:20px 18px;
+    padding:23px 19px;
   }
 
   .concept-inner{
     grid-template-columns:1fr;
-    gap:17px;
+
+    gap:20px;
   }
 
   .concept-main-title{
-    font-size:25px;
-    margin-bottom:11px;
+    font-size:24px;
+
+    margin-bottom:12px;
   }
 
   .concept-text p{
     font-size:12.5px;
-    line-height:1.58;
+
+    line-height:1.67;
   }
 
   .concept-details{
     border-left:0;
+
     border-top:1px solid var(--line);
+
     padding-left:0;
-    padding-top:12px;
+
+    padding-top:15px;
 
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
+
+    grid-template-columns:
+      repeat(3,1fr);
+
+    gap:12px;
   }
 
   .concept-detail{
     border-bottom:0;
+
     padding:0;
   }
 
+  .concept-detail span{
+    font-size:8px;
+  }
+
   .concept-detail strong{
-    font-size:12px;
+    font-size:11.5px;
   }
 
   .concept-detail small{
-    font-size:9px;
-    line-height:1.3;
+    font-size:8.5px;
+
+    line-height:1.35;
   }
 
 
-  /* CALENDRIER */
+  /* INTRO */
 
   .calendar-intro{
-    padding:19px 18px 3px;
+    padding:22px 19px 4px;
   }
 
   .calendar-intro h2{
     font-size:21px;
+
+    line-height:1.18;
   }
 
   .calendar-intro p{
     font-size:10px;
+
+    margin-top:6px;
   }
 
 
   /* MOIS */
 
   .month-selector{
-    padding:12px 18px 2px;
+    padding:13px 19px 3px;
   }
 
   .controls{
     width:100%;
+
     gap:6px;
   }
 
   .controls button{
     flex:1;
+
     padding:9px 7px;
+
     font-size:11px;
+
+    box-shadow:none;
   }
 
 
-  /* GRILLE */
+  /* CALENDRIER */
 
   .wrap{
-    padding:12px 10px 18px;
+    padding:13px 10px 20px;
   }
 
   .weekdays,
@@ -489,12 +732,16 @@ button.active{
   }
 
   .weekday{
-    font-size:9px;
+    font-size:8.5px;
+
+    padding:6px 1px;
   }
 
   .day{
-    min-height:86px;
+    min-height:84px;
+
     padding:8px;
+
     border-radius:12px;
   }
 
@@ -506,12 +753,18 @@ button.active{
     left:4px;
     right:4px;
     bottom:5px;
+
     padding:3px 2px;
-    font-size:clamp(6.5px,1.75vw,8px);
+
+    font-size:
+      clamp(6.4px,1.7vw,8px);
   }
 
   .footer{
-    padding:0 12px 16px;
+    padding:
+      0 12px 17px;
+
+    font-size:9px;
   }
 
 }
@@ -529,8 +782,29 @@ button.active{
   }
 
   .main-title{
-    font-size:clamp(19px,5.9vw,25px);
+    font-size:
+      clamp(19px,5.9vw,25px);
+
     white-space:nowrap;
+  }
+
+  .concept{
+    padding-left:16px;
+    padding-right:16px;
+  }
+
+  .concept-main-title{
+    font-size:22px;
+  }
+
+  .calendar-intro{
+    padding-left:16px;
+    padding-right:16px;
+  }
+
+  .month-selector{
+    padding-left:16px;
+    padding-right:16px;
   }
 
   .weekdays,
@@ -539,24 +813,20 @@ button.active{
   }
 
   .day{
-    min-height:76px;
+    min-height:74px;
+
     padding:6px;
-  }
-
-  .concept-main-title{
-    font-size:23px;
-  }
-
-  .concept-details{
-    grid-template-columns:1fr 1fr 1fr;
   }
 
   .status{
     left:2px;
     right:2px;
     bottom:4px;
+
     padding:3px 1px;
-    font-size:clamp(6px,1.8vw,7.5px);
+
+    font-size:
+      clamp(6px,1.8vw,7.3px);
   }
 
 }
@@ -591,6 +861,7 @@ button.active{
 
     <div class="concept-inner">
 
+
       <div class="concept-text">
 
         <h2 class="concept-main-title">
@@ -604,12 +875,17 @@ button.active{
           l’événement et peut être ajusté selon vos goûts et vos préférences.
           L’idée est de créer ensemble une sélection parfaitement adaptée à
           votre soirée, pensée pour surprendre et faire saliver vos invités.
+          Le forfait comprend <strong>4 pointes par personne</strong>.
+          Pour les plus gourmands, des portions supplémentaires peuvent être
+          ajoutées au forfait. Vous assumez les coûts de l'épicerie, et un prix
+          de <strong>30 $ / personne</strong> est chargé.
         </p>
 
       </div>
 
 
       <div class="concept-details">
+
 
         <div class="concept-detail">
 
@@ -660,6 +936,7 @@ button.active{
           </small>
 
         </div>
+
 
       </div>
 
@@ -782,7 +1059,7 @@ const YEAR = 2026;
 const availability = {
 
   8:{
-    booked:[4,5,8,14,15],
+    booked:[],
     unavailable:[]
   },
 
@@ -942,7 +1219,7 @@ function render(month){
   }
 
 
-  /* JOURS DU MOIS */
+  /* JOURS */
 
   for(
     let day=1;
