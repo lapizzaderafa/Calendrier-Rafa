@@ -190,11 +190,11 @@ button.active{
 
 
 /* =========================
-   INVITATION À CHOISIR
+   TITRE CALENDRIER
 ========================= */
 
 .calendar-intro{
-  padding:22px 30px 8px;
+  padding:22px 30px 2px;
 }
 
 .calendar-intro h2{
@@ -206,44 +206,11 @@ button.active{
   font-weight:500;
 }
 
-
-/* =========================
-   LÉGENDE
-========================= */
-
-.legend{
-  padding:12px 30px 14px;
-  display:flex;
-  gap:16px;
-  flex-wrap:wrap;
-  font-size:12px;
+.calendar-intro p{
+  margin:6px 0 0;
   color:var(--muted);
-  border-bottom:1px solid var(--line);
-}
-
-.legend-item{
-  display:flex;
-  align-items:center;
-  gap:7px;
-}
-
-.dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  display:inline-block;
-}
-
-.available{
-  background:var(--wine2);
-}
-
-.booked-dot{
-  background:var(--wine);
-}
-
-.unavailable-dot{
-  background:#B9ADA6;
+  font-size:11px;
+  line-height:1.4;
 }
 
 
@@ -252,7 +219,7 @@ button.active{
 ========================= */
 
 .wrap{
-  padding:22px 24px 26px;
+  padding:18px 24px 26px;
 }
 
 .weekdays,
@@ -319,37 +286,57 @@ button.active{
   color:var(--wine);
 }
 
+
+/* STATUT DANS CHAQUE CASE */
+
 .status{
   position:absolute;
   left:12px;
   right:12px;
   bottom:11px;
-  display:flex;
-  align-items:center;
-  gap:7px;
-  font-size:11px;
-  font-weight:800;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.02em;
 }
+
+
+/* DISPONIBLE */
+
+.day.available{
+  background:rgba(255,255,255,.35);
+}
+
+.day.available .status{
+  color:var(--wine2);
+}
+
+
+/* RÉSERVÉ */
 
 .day.booked{
   background:var(--wine);
   border-color:var(--wine);
 }
 
-.day.booked .num,
-.day.booked .status{
+.day.booked .num{
   color:var(--cream2);
 }
 
-.day.booked .dot{
-  background:var(--cream2);
+.day.booked .status{
+  color:rgba(251,248,243,.82);
 }
+
+
+/* INDISPONIBLE */
 
 .day.unavailable{
   background:rgba(185,173,166,.18);
 }
 
-.day.unavailable .num,
+.day.unavailable .num{
+  color:#8B817C;
+}
+
 .day.unavailable .status{
   color:#8B817C;
 }
@@ -431,15 +418,15 @@ button.active{
   }
 
   .calendar-intro{
-    padding:19px 18px 6px;
+    padding:19px 18px 2px;
   }
 
   .calendar-intro h2{
     font-size:21px;
   }
 
-  .legend{
-    padding:10px 18px 12px;
+  .calendar-intro p{
+    font-size:10px;
   }
 
   .wrap{
@@ -467,15 +454,9 @@ button.active{
 
   .status{
     left:8px;
-    right:8px;
+    right:6px;
     bottom:7px;
-    font-size:9px;
-    gap:5px;
-  }
-
-  .dot{
-    width:6px;
-    height:6px;
+    font-size:8px;
   }
 
   .footer{
@@ -483,11 +464,10 @@ button.active{
   }
 }
 
-@media(max-width:480px){
 
-  .status .label{
-    display:none;
-  }
+/* Très petit téléphone */
+
+@media(max-width:480px){
 
   .day{
     min-height:76px;
@@ -500,10 +480,16 @@ button.active{
   .concept-details{
     grid-template-columns:1fr 1fr 1fr;
   }
+
+  .status{
+    font-size:7px;
+  }
+
 }
 
 </style>
 </head>
+
 
 <body>
 
@@ -605,31 +591,17 @@ button.active{
   </section>
 
 
-  <!-- TITRE AVANT LE CALENDRIER -->
+  <!-- TITRE CALENDRIER -->
 
   <div class="calendar-intro">
-    <h2>Sélectionnez votre date pour l’évènement.</h2>
-  </div>
 
+    <h2>
+      Sélectionnez votre date pour l’évènement.
+    </h2>
 
-  <!-- LÉGENDE -->
-
-  <div class="legend">
-
-    <div class="legend-item">
-      <span class="dot available"></span>
-      Disponible
-    </div>
-
-    <div class="legend-item">
-      <span class="dot booked-dot"></span>
-      Réservé
-    </div>
-
-    <div class="legend-item">
-      <span class="dot unavailable-dot"></span>
-      Indisponible
-    </div>
+    <p>
+      Les disponibilités sont mises à jour au fil des réservations.
+    </p>
 
   </div>
 
@@ -665,16 +637,35 @@ button.active{
 
 <script>
 
+
+/* =========================
+   ANNÉE
+========================= */
+
 const YEAR = 2026;
 
 
-/* =========================
-   DISPONIBILITÉS
+/* =====================================================
+   C'EST LA SEULE PARTIE À MODIFIER POUR TES DISPONIBILITÉS
+
+   Tout est DISPONIBLE par défaut.
+
+   Exemple :
+
+   booked:[12,19]
+
+   = les 12 et 19 sont RÉSERVÉS
+
+
+   unavailable:[5,6]
+
+   = les 5 et 6 sont INDISPONIBLES
+
 
    SEPTEMBRE = 8
    OCTOBRE = 9
    NOVEMBRE = 10
-========================= */
+===================================================== */
 
 const availability = {
 
@@ -696,6 +687,10 @@ const availability = {
 };
 
 
+/* =========================
+   NOMS DES MOIS
+========================= */
+
 const monthNames = [
   "Janvier",
   "Février",
@@ -711,6 +706,10 @@ const monthNames = [
   "Décembre"
 ];
 
+
+/* =========================
+   FONCTIONS
+========================= */
 
 function mondayIndex(jsDay){
   return (jsDay + 6) % 7;
@@ -751,6 +750,10 @@ function getLabel(status){
 }
 
 
+/* =========================
+   LIEN VERS RESERVE.HTML
+========================= */
+
 function reservationUrl(day=null,month=null){
 
   if(day === null || month === null){
@@ -763,19 +766,26 @@ function reservationUrl(day=null,month=null){
     "&month=" +
     encodeURIComponent(month)
   );
+
 }
 
+
+/* =========================
+   AFFICHER LE CALENDRIER
+========================= */
 
 function render(month){
 
   const grid =
     document.getElementById("calendarGrid");
 
+
   document.getElementById("monthTitle")
     .textContent =
     monthNames[month] +
     " " +
     YEAR;
+
 
   grid.innerHTML = "";
 
@@ -802,6 +812,8 @@ function render(month){
     );
 
 
+  /* Cases vides avant le 1er */
+
   for(let i=0;i<offset;i++){
 
     const empty =
@@ -814,6 +826,8 @@ function render(month){
 
   }
 
+
+  /* Jours */
 
   for(
     let day=1;
@@ -842,33 +856,18 @@ function render(month){
       );
 
 
-    const dotClass =
-      status === "booked"
-      ? "booked-dot"
-      :
-      status === "unavailable"
-      ? "unavailable-dot"
-      :
-      "available";
-
-
     cell.innerHTML =
       '<div class="num">' +
       day +
       '</div>' +
 
       '<div class="status">' +
-
-      '<span class="dot ' +
-      dotClass +
-      '"></span>' +
-
-      '<span class="label">' +
       getLabel(status) +
-      '</span>' +
-
       '</div>';
 
+
+    /* Seulement les dates disponibles
+       peuvent être sélectionnées */
 
     if(status === "available"){
 
@@ -916,6 +915,8 @@ function render(month){
   }
 
 
+  /* Cases vides après */
+
   const trailing =
     (
       7 -
@@ -945,6 +946,8 @@ function render(month){
   }
 
 
+  /* Met le bon bouton de mois actif */
+
   document
     .querySelectorAll(
       "button[data-month]"
@@ -964,6 +967,10 @@ function render(month){
 
 }
 
+
+/* =========================
+   CHANGEMENT DE MOIS
+========================= */
 
 document
   .querySelectorAll(
@@ -989,7 +996,10 @@ document
   );
 
 
+/* SEPTEMBRE PAR DÉFAUT */
+
 render(8);
+
 
 </script>
 
