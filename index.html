@@ -46,7 +46,7 @@ body{
 
 
 /* =========================
-   HAUT DU SITE
+   HAUT
 ========================= */
 
 .top{
@@ -79,7 +79,7 @@ h1{
 
 
 /* =========================
-   L'EXPÉRIENCE RAFA
+   EXPÉRIENCE RAFA
 ========================= */
 
 .concept{
@@ -183,7 +183,6 @@ h1{
   margin:6px 0 0;
   color:var(--muted);
   font-size:11px;
-  line-height:1.4;
 }
 
 
@@ -211,10 +210,6 @@ button{
   font-weight:700;
   cursor:pointer;
   transition:.18s ease;
-}
-
-button:hover{
-  border-color:rgba(91,31,42,.35);
 }
 
 button.active{
@@ -262,26 +257,22 @@ button.active{
   position:relative;
   transition:.18s ease;
   overflow:hidden;
+
+  /* IMPORTANT POUR LES CASES <a> */
+  display:block;
+  text-decoration:none;
+  color:inherit;
 }
 
 .day.available-day{
   cursor:pointer;
+  -webkit-tap-highlight-color:rgba(91,31,42,.08);
 }
 
 .day.available-day:hover{
   border-color:rgba(91,31,42,.35);
   transform:translateY(-2px);
   box-shadow:0 8px 20px rgba(65,35,39,.08);
-}
-
-.day-link{
-  position:absolute;
-  inset:0;
-  z-index:5;
-  border-radius:inherit;
-  text-decoration:none;
-  -webkit-tap-highlight-color:transparent;
-  touch-action:manipulation;
 }
 
 .day.empty{
@@ -312,7 +303,6 @@ button.active{
   align-items:center;
   justify-content:center;
 
-  min-width:0;
   padding:4px 5px;
 
   border-radius:999px;
@@ -372,7 +362,7 @@ button.active{
 
 
 /* =========================
-   PIED DE PAGE
+   PIED
 ========================= */
 
 .footer{
@@ -425,6 +415,7 @@ button.active{
     border-top:1px solid var(--line);
     padding-left:0;
     padding-top:12px;
+
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:10px;
@@ -456,9 +447,6 @@ button.active{
     font-size:10px;
   }
 
-
-  /* MOIS JUSTE AVANT CALENDRIER */
-
   .month-selector{
     padding:12px 18px 2px;
   }
@@ -473,7 +461,6 @@ button.active{
     padding:9px 7px;
     font-size:11px;
   }
-
 
   .wrap{
     padding:12px 10px 18px;
@@ -504,18 +491,14 @@ button.active{
     bottom:5px;
     padding:3px 2px;
     font-size:clamp(6.5px,1.75vw,8px);
-    font-weight:700;
   }
 
   .footer{
     padding:0 12px 16px;
   }
+
 }
 
-
-/* =========================
-   TRÈS PETIT TÉLÉPHONE
-========================= */
 
 @media(max-width:480px){
 
@@ -545,10 +528,6 @@ button.active{
     font-size:clamp(6px,1.8vw,7.5px);
   }
 
-  .num{
-    font-size:13px;
-  }
-
 }
 
 </style>
@@ -560,9 +539,7 @@ button.active{
 <div class="shell">
 
 
-  <!-- =====================
-       EN-TÊTE
-  ====================== -->
+  <!-- HAUT -->
 
   <div class="top">
 
@@ -581,9 +558,7 @@ button.active{
   </div>
 
 
-  <!-- =====================
-       L'EXPÉRIENCE RAFA
-  ====================== -->
+  <!-- EXPÉRIENCE RAFA -->
 
   <section class="concept">
 
@@ -638,9 +613,7 @@ button.active{
   </section>
 
 
-  <!-- =====================
-       TITRE AVANT CALENDRIER
-  ====================== -->
+  <!-- INTRO -->
 
   <div class="calendar-intro">
 
@@ -655,24 +628,21 @@ button.active{
   </div>
 
 
-  <!-- =====================
-       CHOIX DU MOIS
-       JUSTE AVANT LE CALENDRIER
-  ====================== -->
+  <!-- MOIS -->
 
   <div class="month-selector">
 
     <div class="controls">
 
-      <button class="active" data-month="8">
+      <button type="button" class="active" data-month="8">
         Septembre
       </button>
 
-      <button data-month="9">
+      <button type="button" data-month="9">
         Octobre
       </button>
 
-      <button data-month="10">
+      <button type="button" data-month="10">
         Novembre
       </button>
 
@@ -681,9 +651,7 @@ button.active{
   </div>
 
 
-  <!-- =====================
-       CALENDRIER
-  ====================== -->
+  <!-- CALENDRIER -->
 
   <div class="wrap">
 
@@ -708,12 +676,10 @@ button.active{
     Les disponibilités peuvent changer rapidement.
   </div>
 
-
 </div>
 
 
 <script>
-
 
 const YEAR = 2026;
 
@@ -730,10 +696,7 @@ const YEAR = 2026;
    Exemple :
 
    booked:[12,19]
-   = 12 et 19 réservés
-
    unavailable:[5,6]
-   = 5 et 6 indisponibles
 ===================================================== */
 
 const availability = {
@@ -811,14 +774,17 @@ function getLabel(status){
 }
 
 
-function reservationUrl(day=null,month=null){
+/* ============================================
+   PAGE DE RÉSERVATION
 
-  if(day === null || month === null){
-    return "reserve.html";
-  }
+   reserve.html doit être dans le même dossier
+   que index.html.
+============================================ */
+
+function reservationUrl(day,month){
 
   return (
-    "reserve.html?day=" +
+    "./reserve.html?day=" +
     encodeURIComponent(day) +
     "&month=" +
     encodeURIComponent(month)
@@ -826,6 +792,10 @@ function reservationUrl(day=null,month=null){
 
 }
 
+
+/* =========================
+   CALENDRIER
+========================= */
 
 function render(month){
 
@@ -844,11 +814,7 @@ function render(month){
 
 
   const first =
-    new Date(
-      YEAR,
-      month,
-      1
-    );
+    new Date(YEAR,month,1);
 
 
   const count =
@@ -865,7 +831,7 @@ function render(month){
     );
 
 
-  /* CASES VIDES AVANT LE PREMIER JOUR */
+  /* CASES VIDES */
 
   for(let i=0;i<offset;i++){
 
@@ -880,23 +846,28 @@ function render(month){
   }
 
 
-  /* JOURS DU MOIS */
+  /* JOURS */
 
-  for(
-    let day=1;
-    day<=count;
-    day++
-  ){
+  for(let day=1;day<=count;day++){
 
     const status =
-      getStatus(
-        month,
-        day
-      );
+      getStatus(month,day);
 
+
+    /*
+       IMPORTANT :
+
+       Disponible = vrai lien <a>
+
+       Réservé / indisponible = simple <div>
+    */
 
     const cell =
-      document.createElement("div");
+      document.createElement(
+        status === "available"
+        ? "a"
+        : "div"
+      );
 
 
     cell.className =
@@ -919,35 +890,23 @@ function render(month){
       '</div>';
 
 
-    /* SEULEMENT LES DATES DISPONIBLES
-       SONT CLIQUABLES */
+    /* DATE DISPONIBLE */
 
     if(status === "available"){
 
-      const link =
-        document.createElement("a");
-
-
-      link.className =
-        "day-link";
-
-
-      link.href =
+      cell.href =
         reservationUrl(
           day,
           month
         );
 
-
-      link.target =
+      cell.target =
         "_top";
 
-
-      link.rel =
+      cell.rel =
         "noopener";
 
-
-      link.setAttribute(
+      cell.setAttribute(
         "aria-label",
         "Réserver le " +
         day +
@@ -956,9 +915,6 @@ function render(month){
         " " +
         YEAR
       );
-
-
-      cell.appendChild(link);
 
     }
 
@@ -982,11 +938,7 @@ function render(month){
     ) % 7;
 
 
-  for(
-    let i=0;
-    i<trailing;
-    i++
-  ){
+  for(let i=0;i<trailing;i++){
 
     const empty =
       document.createElement("div");
@@ -999,7 +951,7 @@ function render(month){
   }
 
 
-  /* BOUTON DU MOIS ACTIF */
+  /* BOUTON MOIS ACTIF */
 
   document
     .querySelectorAll(
@@ -1010,9 +962,7 @@ function render(month){
 
         button.classList.toggle(
           "active",
-          Number(
-            button.dataset.month
-          ) === month
+          Number(button.dataset.month) === month
         );
 
       }
@@ -1022,7 +972,7 @@ function render(month){
 
 
 /* =========================
-   CHANGEMENT DE MOIS
+   CHANGER DE MOIS
 ========================= */
 
 document
@@ -1037,9 +987,7 @@ document
         () => {
 
           render(
-            Number(
-              button.dataset.month
-            )
+            Number(button.dataset.month)
           );
 
         }
@@ -1049,10 +997,9 @@ document
   );
 
 
-/* SEPTEMBRE PAR DÉFAUT */
+/* SEPTEMBRE AU DÉPART */
 
 render(8);
-
 
 </script>
 
