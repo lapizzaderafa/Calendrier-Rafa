@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calendrier Rafa — Automne 2026</title>
+<title>Rafa Pizza — Réservations</title>
 
 <style>
+
 :root{
   --cream:#F6F0E7;
   --cream2:#FBF8F3;
@@ -42,6 +43,11 @@ body{
   box-shadow:0 18px 45px rgba(65,35,39,.10);
   overflow:hidden;
 }
+
+
+/* =========================
+   HAUT DU SITE
+========================= */
 
 .top{
   padding:28px 30px 18px;
@@ -98,6 +104,105 @@ button.active{
   border-color:var(--wine);
 }
 
+
+/* =========================
+   LE CONCEPT
+========================= */
+
+.concept{
+  padding:23px 30px;
+  background:var(--cream2);
+  border-bottom:1px solid var(--line);
+}
+
+.concept-inner{
+  display:grid;
+  grid-template-columns:1.5fr 1fr;
+  gap:34px;
+  align-items:center;
+}
+
+.concept-label{
+  display:block;
+  margin-bottom:5px;
+  color:var(--wine2);
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+
+.concept h2{
+  margin:0 0 10px;
+  color:var(--wine);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:26px;
+  line-height:1;
+  font-weight:500;
+}
+
+.concept-text p{
+  margin:0;
+  max-width:640px;
+  color:var(--ink);
+  font-size:13px;
+  line-height:1.65;
+}
+
+.concept-text strong{
+  color:var(--wine);
+}
+
+.concept-details{
+  display:grid;
+  grid-template-columns:1fr;
+  border-left:1px solid var(--line);
+  padding-left:25px;
+}
+
+.concept-detail{
+  padding:7px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.concept-detail:first-child{
+  padding-top:0;
+}
+
+.concept-detail:last-child{
+  padding-bottom:0;
+  border-bottom:0;
+}
+
+.concept-detail span{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+  margin-bottom:2px;
+}
+
+.concept-detail strong{
+  display:block;
+  color:var(--wine);
+  font-size:14px;
+  line-height:1.25;
+}
+
+.concept-detail small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:1px;
+}
+
+
+/* =========================
+   LÉGENDE
+========================= */
+
 .legend{
   padding:14px 30px;
   display:flex;
@@ -132,6 +237,11 @@ button.active{
 .unavailable-dot{
   background:#B9ADA6;
 }
+
+
+/* =========================
+   CALENDRIER
+========================= */
 
 .wrap{
   padding:22px 24px 26px;
@@ -174,11 +284,18 @@ button.active{
 
 .day.available-day:hover{
   border-color:rgba(91,31,42,.35);
-}
-
-.day:hover{
   transform:translateY(-2px);
   box-shadow:0 8px 20px rgba(65,35,39,.08);
+}
+
+.day-link{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  border-radius:inherit;
+  text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
 }
 
 .day.empty{
@@ -229,18 +346,10 @@ button.active{
   color:#8B817C;
 }
 
-/* Vrai lien qui couvre toute la case */
-.day-link{
-  position:absolute;
-  inset:0;
-  z-index:10;
-  display:block;
-  border-radius:inherit;
-  text-decoration:none;
-  background:transparent;
-  -webkit-tap-highlight-color:transparent;
-  touch-action:manipulation;
-}
+
+/* =========================
+   BOUTON RÉSERVER
+========================= */
 
 .cta{
   margin:0 24px 24px;
@@ -295,6 +404,11 @@ button.active{
   text-align:center;
 }
 
+
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:760px){
 
   body{
@@ -309,6 +423,48 @@ button.active{
     padding:22px 18px 16px;
     align-items:flex-start;
     flex-direction:column;
+  }
+
+  .concept{
+    padding:20px 18px;
+  }
+
+  .concept-inner{
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+
+  .concept h2{
+    font-size:23px;
+  }
+
+  .concept-text p{
+    font-size:12.5px;
+    line-height:1.6;
+  }
+
+  .concept-details{
+    border-left:0;
+    border-top:1px solid var(--line);
+    padding-left:0;
+    padding-top:11px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+
+  .concept-detail{
+    border-bottom:0;
+    padding:0;
+  }
+
+  .concept-detail strong{
+    font-size:12px;
+  }
+
+  .concept-detail small{
+    font-size:9px;
+    line-height:1.3;
   }
 
   .legend{
@@ -372,7 +528,12 @@ button.active{
   .day{
     min-height:76px;
   }
+
+  .concept-details{
+    grid-template-columns:1fr 1fr 1fr;
+  }
 }
+
 </style>
 </head>
 
@@ -381,13 +542,15 @@ button.active{
 
 <div class="shell">
 
+
+  <!-- =====================
+       EN-TÊTE
+  ====================== -->
+
   <div class="top">
 
     <div>
-
-      <div class="eyebrow">
-        Rafa Pizza · Réservations
-      </div>
+      <div class="eyebrow">Rafa Pizza · Réservations</div>
 
       <h1 id="monthTitle">
         Septembre 2026
@@ -396,16 +559,12 @@ button.active{
       <div class="subtitle">
         Choisissez votre date pour votre prochaine soirée pizza.
       </div>
-
     </div>
 
 
     <div class="controls">
 
-      <button
-        class="active"
-        data-month="8"
-      >
+      <button class="active" data-month="8">
         Septembre
       </button>
 
@@ -421,6 +580,68 @@ button.active{
 
   </div>
 
+
+  <!-- =====================
+       LE CONCEPT
+  ====================== -->
+
+  <section class="concept">
+
+    <div class="concept-inner">
+
+      <div class="concept-text">
+
+        <span class="concept-label">
+          L’expérience Rafa
+        </span>
+
+        <h2>
+          Le concept
+        </h2>
+
+        <p>
+          Une véritable expérience de dégustation autour de la pizza.
+          Pour chaque événement, le chef imagine un menu unique de
+          <strong>4 créations</strong> :
+          2 à base de sauce tomate et 2 à base de sauce blanche.
+          Le menu vous est présenté à l’avance et peut être ajusté
+          selon vos goûts et vos préférences afin de créer une
+          sélection parfaitement adaptée à votre soirée.
+        </p>
+
+      </div>
+
+
+      <div class="concept-details">
+
+        <div class="concept-detail">
+          <span>Le menu</span>
+          <strong>4 créations</strong>
+          <small>2 rouges · 2 blanches</small>
+        </div>
+
+        <div class="concept-detail">
+          <span>Le forfait</span>
+          <strong>4 pointes / personne</strong>
+          <small>Extras disponibles</small>
+        </div>
+
+        <div class="concept-detail">
+          <span>Le service</span>
+          <strong>30 $ / personne</strong>
+          <small>+ frais d’épicerie</small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================
+       LÉGENDE
+  ====================== -->
 
   <div class="legend">
 
@@ -442,6 +663,10 @@ button.active{
   </div>
 
 
+  <!-- =====================
+       CALENDRIER
+  ====================== -->
+
   <div class="wrap">
 
     <div class="weekdays">
@@ -456,33 +681,32 @@ button.active{
 
     </div>
 
-    <div
-      id="calendarGrid"
-      class="grid"
-    ></div>
+    <div id="calendarGrid" class="grid"></div>
 
   </div>
 
 
+  <!-- =====================
+       RÉSERVATION
+  ====================== -->
+
   <div class="cta">
 
     <div>
-
       <strong>
         Une date vous intéresse?
       </strong>
 
       <span>
-        Écrivez-nous pour réserver votre soirée.
+        Envoyez-nous une demande pour réserver votre soirée.
       </span>
-
     </div>
 
-
     <a
-      class="badge"
+      class="badge reserve-btn"
       href="reserve.html"
       target="_top"
+      rel="noopener"
     >
       Réserver
     </a>
@@ -494,54 +718,65 @@ button.active{
     Les disponibilités peuvent changer rapidement.
   </div>
 
-</div>
 
+</div>
 
 
 <script>
 
-/* =========================================
+
+/* =========================
    ANNÉE
-========================================= */
+========================= */
 
 const YEAR = 2026;
 
 
-/* =========================================
+/* =========================
    DISPONIBILITÉS
 
-   MODIFIE SEULEMENT CETTE SECTION
-========================================= */
+   IMPORTANT :
+   C'EST ICI QUE TU MODIFIES
+   TES DATES.
+
+   EXEMPLE :
+
+   booked:[12,19]
+
+   veut dire que le 12 et le 19
+   sont réservés.
+
+   unavailable:[5,6]
+
+   veut dire que le 5 et le 6
+   sont indisponibles.
+========================= */
 
 const availability = {
 
-  /* SEPTEMBRE */
-  8: {
-    booked: [4,5],
-    unavailable: []
+  8:{
+    booked:[],
+    unavailable:[]
   },
 
-  /* OCTOBRE */
-  9: {
-    booked: [],
-    unavailable: []
+  9:{
+    booked:[],
+    unavailable:[]
   },
 
-  /* NOVEMBRE */
-  10: {
-    booked: [],
-    unavailable: []
+  10:{
+    booked:[],
+    unavailable:[]
   }
 
 };
 
 
-/* =========================================
+/* =========================
    NOMS DES MOIS
-========================================= */
+========================= */
 
 const monthNames = [
-
   "Janvier",
   "Février",
   "Mars",
@@ -554,26 +789,19 @@ const monthNames = [
   "Octobre",
   "Novembre",
   "Décembre"
-
 ];
 
 
-/* =========================================
-   CALCUL DU JOUR DE LA SEMAINE
-========================================= */
+/* =========================
+   FONCTIONS CALENDRIER
+========================= */
 
 function mondayIndex(jsDay){
-
   return (jsDay + 6) % 7;
-
 }
 
 
-/* =========================================
-   STATUT D'UNE DATE
-========================================= */
-
-function getStatus(month, day){
+function getStatus(month,day){
 
   const data =
     availability[month] ||
@@ -582,25 +810,17 @@ function getStatus(month, day){
       unavailable:[]
     };
 
-
   if(data.booked.includes(day)){
     return "booked";
   }
-
 
   if(data.unavailable.includes(day)){
     return "unavailable";
   }
 
-
   return "available";
-
 }
 
-
-/* =========================================
-   TEXTE DU STATUT
-========================================= */
 
 function getLabel(status){
 
@@ -608,32 +828,45 @@ function getLabel(status){
     return "Réservé";
   }
 
-
   if(status === "unavailable"){
     return "Indisponible";
   }
 
-
   return "Disponible";
+}
+
+
+/* =========================
+   LIEN VERS RESERVE.HTML
+========================= */
+
+function reservationUrl(day=null,month=null){
+
+  if(day === null || month === null){
+    return "reserve.html";
+  }
+
+  return (
+    "reserve.html?day=" +
+    encodeURIComponent(day) +
+    "&month=" +
+    encodeURIComponent(month)
+  );
 
 }
 
 
-/* =========================================
-   AFFICHAGE DU CALENDRIER
-========================================= */
+/* =========================
+   AFFICHAGE DU MOIS
+========================= */
 
 function render(month){
 
   const grid =
-    document.getElementById(
-      "calendarGrid"
-    );
+    document.getElementById("calendarGrid");
 
-
-  document.getElementById(
-    "monthTitle"
-  ).textContent =
+  document.getElementById("monthTitle")
+    .textContent =
     monthNames[month] +
     " " +
     YEAR;
@@ -664,34 +897,26 @@ function render(month){
     );
 
 
-  /* CASES VIDES AVANT LE PREMIER JOUR */
+  /* Cases vides avant le 1er */
 
-  for(
-    let i = 0;
-    i < offset;
-    i++
-  ){
+  for(let i=0;i<offset;i++){
 
     const empty =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
     empty.className =
       "day empty";
 
-    grid.appendChild(
-      empty
-    );
+    grid.appendChild(empty);
 
   }
 
 
-  /* DATES DU MOIS */
+  /* Jours du mois */
 
   for(
-    let day = 1;
-    day <= count;
+    let day=1;
+    day<=count;
     day++
   ){
 
@@ -703,9 +928,7 @@ function render(month){
 
 
     const cell =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
 
     cell.className =
@@ -721,15 +944,14 @@ function render(month){
     const dotClass =
       status === "booked"
       ? "booked-dot"
-
-      : status === "unavailable"
+      :
+      status === "unavailable"
       ? "unavailable-dot"
-
-      : "available";
+      :
+      "available";
 
 
     cell.innerHTML =
-
       '<div class="num">' +
       day +
       '</div>' +
@@ -747,19 +969,13 @@ function render(month){
       '</div>';
 
 
-    /* =====================================
-       DATE DISPONIBLE = VRAI LIEN
-
-       Exemple :
-       reserve.html?day=12&month=8
-    ===================================== */
+    /* Seulement les dates disponibles
+       sont cliquables */
 
     if(status === "available"){
 
       const link =
-        document.createElement(
-          "a"
-        );
+        document.createElement("a");
 
 
       link.className =
@@ -767,19 +983,18 @@ function render(month){
 
 
       link.href =
-        "reserve.html?day=" +
-        encodeURIComponent(day) +
-        "&month=" +
-        encodeURIComponent(month);
+        reservationUrl(
+          day,
+          month
+        );
 
-
-      /*
-        Sort de l'iframe Google Sites.
-        Fonctionne aussi depuis Facebook.
-      */
 
       link.target =
         "_top";
+
+
+      link.rel =
+        "noopener";
 
 
       link.setAttribute(
@@ -793,108 +1008,103 @@ function render(month){
       );
 
 
-      cell.appendChild(
-        link
-      );
+      cell.appendChild(link);
 
     }
 
 
-    grid.appendChild(
-      cell
-    );
+    grid.appendChild(cell);
 
   }
 
 
-  /* CASES VIDES À LA FIN */
+  /* Cases vides après le dernier jour */
 
   const trailing =
     (
       7 -
       (
-        (offset + count) % 7
+        (
+          offset +
+          count
+        ) % 7
       )
     ) % 7;
 
 
   for(
-    let i = 0;
-    i < trailing;
+    let i=0;
+    i<trailing;
     i++
   ){
 
     const empty =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     empty.className =
       "day empty";
 
-
-    grid.appendChild(
-      empty
-    );
+    grid.appendChild(empty);
 
   }
 
 
-  /* BOUTON DU MOIS ACTIF */
+  /* Bouton du mois actif */
 
   document
     .querySelectorAll(
       "button[data-month]"
     )
-    .forEach(button => {
+    .forEach(
+      button => {
 
-      button.classList.toggle(
-
-        "active",
-
-        Number(
-          button.dataset.month
-        ) === month
-
-      );
-
-    });
-
-}
-
-
-/* =========================================
-   CHANGEMENT DE MOIS
-========================================= */
-
-document
-  .querySelectorAll(
-    "button[data-month]"
-  )
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        render(
+        button.classList.toggle(
+          "active",
           Number(
             button.dataset.month
-          )
+          ) === month
         );
 
       }
     );
 
-  });
+}
 
 
-/* =========================================
-   SEPTEMBRE AU DÉPART
-========================================= */
+/* =========================
+   BOUTONS SEPT / OCT / NOV
+========================= */
+
+document
+  .querySelectorAll(
+    "button[data-month]"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          render(
+            Number(
+              button.dataset.month
+            )
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+/* =========================
+   MOIS AFFICHÉ AU DÉPART
+========================= */
 
 render(8);
+
 
 </script>
 
