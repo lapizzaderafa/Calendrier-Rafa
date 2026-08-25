@@ -257,16 +257,10 @@ button.active{
   position:relative;
   transition:.18s ease;
   overflow:hidden;
-
-  /* IMPORTANT POUR LES CASES <a> */
-  display:block;
-  text-decoration:none;
-  color:inherit;
 }
 
 .day.available-day{
   cursor:pointer;
-  -webkit-tap-highlight-color:rgba(91,31,42,.08);
 }
 
 .day.available-day:hover{
@@ -281,6 +275,22 @@ button.active{
   box-shadow:none;
   transform:none;
 }
+
+
+/* IMPORTANT :
+   lien transparent sur TOUTE la case */
+
+.day-link{
+  position:absolute;
+  inset:0;
+  z-index:10;
+  display:block;
+  border-radius:inherit;
+  text-decoration:none;
+  -webkit-tap-highlight-color:rgba(91,31,42,.08);
+  touch-action:manipulation;
+}
+
 
 .num{
   font-size:16px;
@@ -304,7 +314,6 @@ button.active{
   justify-content:center;
 
   padding:4px 5px;
-
   border-radius:999px;
 
   font-size:9px;
@@ -415,7 +424,6 @@ button.active{
     border-top:1px solid var(--line);
     padding-left:0;
     padding-top:12px;
-
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:10px;
@@ -496,7 +504,6 @@ button.active{
   .footer{
     padding:0 12px 16px;
   }
-
 }
 
 
@@ -628,7 +635,7 @@ button.active{
   </div>
 
 
-  <!-- MOIS -->
+  <!-- MOIS JUSTE AVANT CALENDRIER -->
 
   <div class="month-selector">
 
@@ -676,6 +683,7 @@ button.active{
     Les disponibilités peuvent changer rapidement.
   </div>
 
+
 </div>
 
 
@@ -696,7 +704,10 @@ const YEAR = 2026;
    Exemple :
 
    booked:[12,19]
+   = réservé
+
    unavailable:[5,6]
+   = indisponible
 ===================================================== */
 
 const availability = {
@@ -774,17 +785,17 @@ function getLabel(status){
 }
 
 
-/* ============================================
-   PAGE DE RÉSERVATION
+/* =========================
+   LIEN RÉSERVATION
 
-   reserve.html doit être dans le même dossier
-   que index.html.
-============================================ */
+   EXACTEMENT COMME AVANT :
+   reserve.html?day=...&month=...
+========================= */
 
 function reservationUrl(day,month){
 
   return (
-    "./reserve.html?day=" +
+    "reserve.html?day=" +
     encodeURIComponent(day) +
     "&month=" +
     encodeURIComponent(month)
@@ -831,7 +842,7 @@ function render(month){
     );
 
 
-  /* CASES VIDES */
+  /* CASES VIDES AVANT */
 
   for(let i=0;i<offset;i++){
 
@@ -856,18 +867,12 @@ function render(month){
 
     /*
        IMPORTANT :
-
-       Disponible = vrai lien <a>
-
-       Réservé / indisponible = simple <div>
+       la case reste un DIV,
+       comme dans la version qui fonctionnait.
     */
 
     const cell =
-      document.createElement(
-        status === "available"
-        ? "a"
-        : "div"
-      );
+      document.createElement("div");
 
 
     cell.className =
@@ -890,23 +895,38 @@ function render(month){
       '</div>';
 
 
-    /* DATE DISPONIBLE */
+    /*
+       DISPONIBLE :
+       on ajoute un vrai lien transparent
+       qui couvre TOUTE la case.
+    */
 
     if(status === "available"){
 
-      cell.href =
+      const link =
+        document.createElement("a");
+
+
+      link.className =
+        "day-link";
+
+
+      link.href =
         reservationUrl(
           day,
           month
         );
 
-      cell.target =
+
+      link.target =
         "_top";
 
-      cell.rel =
+
+      link.rel =
         "noopener";
 
-      cell.setAttribute(
+
+      link.setAttribute(
         "aria-label",
         "Réserver le " +
         day +
@@ -915,6 +935,9 @@ function render(month){
         " " +
         YEAR
       );
+
+
+      cell.appendChild(link);
 
     }
 
@@ -951,7 +974,7 @@ function render(month){
   }
 
 
-  /* BOUTON MOIS ACTIF */
+  /* MOIS ACTIF */
 
   document
     .querySelectorAll(
@@ -972,7 +995,7 @@ function render(month){
 
 
 /* =========================
-   CHANGER DE MOIS
+   BOUTONS MOIS
 ========================= */
 
 document
@@ -997,7 +1020,7 @@ document
   );
 
 
-/* SEPTEMBRE AU DÉPART */
+/* SEPTEMBRE PAR DÉFAUT */
 
 render(8);
 
