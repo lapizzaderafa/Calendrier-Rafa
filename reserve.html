@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Réserver — Rafa Pizza</title>
+<title>Rafa Pizza — Réservations</title>
 
 <style>
+
 :root{
   --cream:#F6F0E7;
   --cream2:#FBF8F3;
@@ -21,34 +22,40 @@
   box-sizing:border-box;
 }
 
-html,
-body{
+html,body{
   margin:0;
   padding:0;
-  min-height:100%;
-  background:var(--cream);
+  background:transparent;
   font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   color:var(--ink);
 }
 
 body{
-  min-height:100vh;
-  padding:18px;
+  padding:12px;
 }
 
-.page{
-  width:100%;
-  max-width:680px;
-  margin:0 auto;
-}
-
-.card{
-  width:100%;
-  background:var(--cream2);
+.shell{
+  max-width:1080px;
+  margin:auto;
+  background:var(--cream);
   border:1px solid var(--line);
   border-radius:28px;
-  padding:38px 32px;
   box-shadow:0 18px 45px rgba(65,35,39,.10);
+  overflow:hidden;
+}
+
+
+/* =========================
+   HAUT DU SITE
+========================= */
+
+.top{
+  padding:28px 30px 18px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
+  border-bottom:1px solid var(--line);
 }
 
 .eyebrow{
@@ -57,517 +64,684 @@ body{
   text-transform:uppercase;
   color:var(--wine2);
   font-weight:700;
-  margin-bottom:13px;
 }
 
 h1{
   font-family:Georgia,"Times New Roman",serif;
   color:var(--wine);
-  font-size:clamp(38px,8vw,58px);
+  font-size:clamp(34px,5vw,58px);
+  line-height:.95;
+  margin:6px 0 0;
+  font-weight:500;
+}
+
+.subtitle{
+  margin-top:8px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.controls{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+button{
+  border:1px solid var(--line);
+  background:var(--cream2);
+  color:var(--wine);
+  border-radius:999px;
+  padding:10px 15px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+button.active{
+  background:var(--wine);
+  color:var(--cream2);
+  border-color:var(--wine);
+}
+
+
+/* =========================
+   L'EXPÉRIENCE RAFA
+========================= */
+
+.concept{
+  padding:24px 30px;
+  background:var(--cream2);
+  border-bottom:1px solid var(--line);
+}
+
+.concept-inner{
+  display:grid;
+  grid-template-columns:1.55fr 1fr;
+  gap:34px;
+  align-items:center;
+}
+
+.concept-main-title{
+  margin:0 0 13px;
+  color:var(--wine);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:34px;
   line-height:1;
   font-weight:500;
-  margin:0 0 12px;
 }
 
-.intro{
-  color:var(--muted);
-  font-size:15px;
-  line-height:1.5;
-  margin:0 0 26px;
+.concept-text p{
+  margin:0;
+  max-width:650px;
+  color:var(--ink);
+  font-size:13px;
+  line-height:1.65;
 }
 
-.date-box{
-  background:var(--cream);
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:15px 17px;
-  margin-bottom:25px;
+.concept-text strong{
+  color:var(--wine);
 }
 
-.date-label{
+.concept-details{
+  display:grid;
+  grid-template-columns:1fr;
+  border-left:1px solid var(--line);
+  padding-left:25px;
+}
+
+.concept-detail{
+  padding:7px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.concept-detail:first-child{
+  padding-top:0;
+}
+
+.concept-detail:last-child{
+  padding-bottom:0;
+  border-bottom:0;
+}
+
+.concept-detail span{
   display:block;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+  margin-bottom:2px;
+}
+
+.concept-detail strong{
+  display:block;
+  color:var(--wine);
+  font-size:14px;
+  line-height:1.25;
+}
+
+.concept-detail small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:1px;
+}
+
+
+/* =========================
+   TITRE CALENDRIER
+========================= */
+
+.calendar-intro{
+  padding:22px 30px 2px;
+}
+
+.calendar-intro h2{
+  margin:0;
+  color:var(--wine);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:25px;
+  line-height:1.15;
+  font-weight:500;
+}
+
+.calendar-intro p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.4;
+}
+
+
+/* =========================
+   CALENDRIER
+========================= */
+
+.wrap{
+  padding:18px 24px 26px;
+}
+
+.weekdays,
+.grid{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:8px;
+}
+
+.weekdays{
+  margin-bottom:8px;
+}
+
+.weekday{
+  text-align:center;
   color:var(--muted);
   font-size:11px;
   font-weight:800;
   letter-spacing:.08em;
   text-transform:uppercase;
-  margin-bottom:5px;
+  padding:7px 2px;
 }
 
-.date{
-  color:var(--wine);
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:24px;
-  font-weight:500;
-}
-
-.form-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-}
-
-.field{
-  margin-bottom:17px;
-}
-
-.field.full{
-  grid-column:1 / -1;
-}
-
-label{
-  display:block;
-  color:var(--wine);
-  font-size:13px;
-  font-weight:800;
-  margin-bottom:7px;
-}
-
-input,
-select,
-textarea{
-  width:100%;
+.day{
+  min-height:118px;
   border:1px solid var(--line);
-  background:#fff;
-  color:var(--ink);
-  border-radius:13px;
-  min-height:50px;
-  padding:12px 14px;
-  font-family:inherit;
-  font-size:16px;
-  outline:none;
-  -webkit-appearance:none;
-  appearance:none;
+  border-radius:16px;
+  background:rgba(255,255,255,.35);
+  padding:12px;
+  position:relative;
+  transition:.18s ease;
+  overflow:hidden;
 }
 
-textarea{
-  min-height:105px;
-  resize:vertical;
-  line-height:1.45;
+.day.available-day{
+  cursor:pointer;
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-  border-color:var(--wine2);
-  box-shadow:0 0 0 3px rgba(122,45,60,.08);
+.day.available-day:hover{
+  border-color:rgba(91,31,42,.35);
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(65,35,39,.08);
 }
 
-::placeholder{
-  color:#AAA09A;
+.day-link{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  border-radius:inherit;
+  text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
 }
 
-.submit{
-  width:100%;
-  min-height:57px;
-  border:0;
-  border-radius:999px;
-  background:var(--wine);
-  color:var(--cream2);
-  font-family:inherit;
+.day.empty{
+  background:transparent;
+  border:1px dashed rgba(91,31,42,.08);
+  box-shadow:none;
+  transform:none;
+}
+
+.num{
   font-size:16px;
   font-weight:800;
-  cursor:pointer;
-  margin-top:5px;
-  -webkit-tap-highlight-color:transparent;
+  color:var(--wine);
 }
 
-.submit:active{
-  transform:scale(.99);
-}
 
-.required{
-  color:var(--wine2);
-}
+/* =========================
+   STATUT DANS CHAQUE CASE
+========================= */
 
-.note{
-  text-align:center;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.4;
-  margin:14px 5px 0;
-}
+.status{
+  position:absolute;
+  left:7px;
+  right:7px;
+  bottom:8px;
 
-.back{
-  display:block;
-  width:max-content;
-  max-width:100%;
-  margin:20px auto 0;
-  color:var(--muted);
-  text-decoration:none;
-  font-size:13px;
-  font-weight:600;
-}
-
-.success{
-  display:none;
-  text-align:center;
-  padding:22px 0 8px;
-}
-
-.success-icon{
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  background:var(--wine);
-  color:var(--cream2);
   display:flex;
   align-items:center;
   justify-content:center;
-  margin:0 auto 20px;
-  font-size:27px;
-  font-weight:800;
-}
 
-.success h2{
-  font-family:Georgia,"Times New Roman",serif;
-  color:var(--wine);
-  font-size:34px;
-  font-weight:500;
-  margin:0 0 10px;
-}
+  min-width:0;
+  padding:4px 5px;
 
-.success p{
-  color:var(--muted);
-  line-height:1.55;
-  font-size:15px;
-  margin:0 auto 25px;
-  max-width:430px;
-}
-
-.success .back{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:100%;
-  min-height:54px;
-  margin:0;
-  padding:12px 20px;
   border-radius:999px;
+
+  font-size:9px;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:0;
+
+  white-space:nowrap;
+  overflow:hidden;
+
+  transition:.18s ease;
+}
+
+
+/* =========================
+   DISPONIBLE
+========================= */
+
+.day.available{
+  background:rgba(255,255,255,.35);
+}
+
+.day.available .status{
+  color:var(--wine2);
+  background:rgba(122,45,60,.07);
+}
+
+
+/* =========================
+   RÉSERVÉ
+========================= */
+
+.day.booked{
   background:var(--wine);
+  border-color:var(--wine);
+}
+
+.day.booked .num{
   color:var(--cream2);
-  font-size:14px;
-  font-weight:800;
 }
 
-.honey{
-  display:none !important;
+.day.booked .status{
+  color:var(--cream2);
+  background:rgba(255,255,255,.12);
 }
 
-@media(max-width:600px){
+
+/* =========================
+   INDISPONIBLE
+========================= */
+
+.day.unavailable{
+  background:rgba(185,173,166,.18);
+}
+
+.day.unavailable .num{
+  color:#8B817C;
+}
+
+.day.unavailable .status{
+  color:#776D68;
+  background:rgba(139,129,124,.10);
+}
+
+
+/* =========================
+   PIED DE PAGE
+========================= */
+
+.footer{
+  padding:0 24px 22px;
+  color:var(--muted);
+  font-size:11px;
+  text-align:center;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:760px){
 
   body{
-    padding:8px;
+    padding:4px;
   }
 
-  .card{
-    border-radius:22px;
-    padding:28px 19px;
+  .shell{
+    border-radius:20px;
   }
 
-  .form-grid{
+  .top{
+    padding:22px 18px 16px;
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .concept{
+    padding:20px 18px;
+  }
+
+  .concept-inner{
     grid-template-columns:1fr;
-    gap:0;
+    gap:17px;
   }
 
-  .field.full{
-    grid-column:auto;
+  .concept-main-title{
+    font-size:30px;
+    margin-bottom:11px;
   }
 
-  h1{
-    font-size:42px;
+  .concept-text p{
+    font-size:12.5px;
+    line-height:1.58;
   }
 
-  .date{
-    font-size:22px;
+  .concept-details{
+    border-left:0;
+    border-top:1px solid var(--line);
+    padding-left:0;
+    padding-top:12px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+
+  .concept-detail{
+    border-bottom:0;
+    padding:0;
+  }
+
+  .concept-detail strong{
+    font-size:12px;
+  }
+
+  .concept-detail small{
+    font-size:9px;
+    line-height:1.3;
+  }
+
+  .calendar-intro{
+    padding:19px 18px 2px;
+  }
+
+  .calendar-intro h2{
+    font-size:21px;
+  }
+
+  .calendar-intro p{
+    font-size:10px;
+  }
+
+  .wrap{
+    padding:14px 10px 18px;
+  }
+
+  .weekdays,
+  .grid{
+    gap:5px;
+  }
+
+  .weekday{
+    font-size:9px;
+  }
+
+  .day{
+    min-height:86px;
+    padding:8px;
+    border-radius:12px;
+  }
+
+  .num{
+    font-size:13px;
+  }
+
+  .status{
+    left:4px;
+    right:4px;
+    bottom:5px;
+
+    padding:3px 2px;
+
+    font-size:clamp(6.5px,1.75vw,8px);
+    font-weight:700;
+  }
+
+  .footer{
+    padding:0 12px 16px;
   }
 }
+
+
+/* =========================
+   TRÈS PETIT TÉLÉPHONE
+========================= */
+
+@media(max-width:480px){
+
+  .weekdays,
+  .grid{
+    gap:3px;
+  }
+
+  .day{
+    min-height:76px;
+    padding:6px;
+  }
+
+  .concept-main-title{
+    font-size:29px;
+  }
+
+  .concept-details{
+    grid-template-columns:1fr 1fr 1fr;
+  }
+
+  .status{
+    left:2px;
+    right:2px;
+    bottom:4px;
+
+    padding:3px 1px;
+
+    font-size:clamp(6px,1.8vw,7.5px);
+  }
+
+  .num{
+    font-size:13px;
+  }
+
+}
+
 </style>
 </head>
 
+
 <body>
 
-<div class="page">
+<div class="shell">
 
-  <div class="card">
 
-    <div id="formSection">
+  <!-- =====================
+       EN-TÊTE
+  ====================== -->
+
+  <div class="top">
+
+    <div>
 
       <div class="eyebrow">
         Rafa Pizza · Réservations
       </div>
 
-      <h1>
-        Votre soirée
+      <h1 id="monthTitle">
+        Septembre 2026
       </h1>
 
-      <p class="intro">
-        Quelques informations et on vous revient rapidement pour confirmer les détails.
-      </p>
-
-
-      <div class="date-box">
-
-        <span class="date-label">
-          Date sélectionnée
-        </span>
-
-        <div
-          class="date"
-          id="selectedDate"
-        >
-          Date à déterminer
-        </div>
-
+      <div class="subtitle">
+        Choisissez votre date pour votre prochaine soirée pizza.
       </div>
-
-
-      <form
-        id="reservationForm"
-        action="https://formsubmit.co/lapizzaderafa@gmail.com"
-        method="POST"
-      >
-
-        <!-- Réglages FormSubmit -->
-
-        <input
-          type="hidden"
-          name="_subject"
-          id="subjectField"
-          value="Nouvelle réservation Rafa Pizza"
-        >
-
-        <input
-          type="hidden"
-          name="_template"
-          value="table"
-        >
-
-        <input
-          type="hidden"
-          name="_captcha"
-          value="false"
-        >
-
-        <input
-          type="hidden"
-          name="_next"
-          id="nextField"
-          value=""
-        >
-
-        <input
-          type="hidden"
-          name="Date souhaitée"
-          id="dateField"
-          value=""
-        >
-
-        <!-- Anti-spam invisible -->
-
-        <input
-          type="text"
-          name="_honey"
-          class="honey"
-          tabindex="-1"
-          autocomplete="off"
-        >
-
-
-        <div class="form-grid">
-
-
-          <div class="field">
-
-            <label for="name">
-              Nom <span class="required">*</span>
-            </label>
-
-            <input
-              id="name"
-              name="Nom"
-              type="text"
-              placeholder="Votre nom"
-              required
-              autocomplete="name"
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="email">
-              Courriel <span class="required">*</span>
-            </label>
-
-            <input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="vous@courriel.com"
-              required
-              autocomplete="email"
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="phone">
-              Téléphone
-            </label>
-
-            <input
-              id="phone"
-              name="Téléphone"
-              type="tel"
-              placeholder="418 555-1234"
-              autocomplete="tel"
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="people">
-              Nombre de personnes <span class="required">*</span>
-            </label>
-
-            <input
-              id="people"
-              name="Nombre de personnes"
-              type="number"
-              min="1"
-              max="100"
-              inputmode="numeric"
-              placeholder="Ex. 15"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="city">
-              Ville / secteur <span class="required">*</span>
-            </label>
-
-            <input
-              id="city"
-              name="Ville / secteur"
-              type="text"
-              placeholder="Ex. Cap-Rouge"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="time">
-              Heure souhaitée
-            </label>
-
-            <input
-              id="time"
-              name="Heure souhaitée"
-              type="time"
-            >
-
-          </div>
-
-
-          <div class="field full">
-
-            <label for="message">
-              Détails ou demandes particulières
-            </label>
-
-            <textarea
-              id="message"
-              name="Détails / demandes"
-              placeholder="Type d'événement, allergies, demandes particulières, questions..."
-            ></textarea>
-
-          </div>
-
-
-        </div>
-
-
-        <button
-          class="submit"
-          type="submit"
-        >
-          Envoyer ma demande
-        </button>
-
-
-        <div class="note">
-          L'envoi de cette demande ne confirme pas automatiquement la réservation. Rafa vous contactera pour confirmer la disponibilité et les détails.
-        </div>
-
-      </form>
 
     </div>
 
 
-    <div
-      class="success"
-      id="successSection"
-    >
+    <div class="controls">
 
-      <div class="eyebrow">
-        Rafa Pizza · Réservations
-      </div>
+      <button class="active" data-month="8">
+        Septembre
+      </button>
 
-      <div class="success-icon">
-        ✓
-      </div>
+      <button data-month="9">
+        Octobre
+      </button>
 
-      <h2>
-        Demande envoyée!
-      </h2>
-
-      <p>
-        Merci! Votre demande de réservation a bien été transmise. On vous revient rapidement pour confirmer votre soirée.
-      </p>
-
-      <a
-        class="back"
-        href="index.html"
-      >
-        Retour au calendrier
-      </a>
+      <button data-month="10">
+        Novembre
+      </button>
 
     </div>
 
   </div>
 
 
-  <a
-    class="back"
-    id="bottomBack"
-    href="index.html"
-  >
-    ← Retour au calendrier
-  </a>
+  <!-- =====================
+       L'EXPÉRIENCE RAFA
+  ====================== -->
+
+  <section class="concept">
+
+    <div class="concept-inner">
+
+      <div class="concept-text">
+
+        <h2 class="concept-main-title">
+          L’expérience Rafa
+        </h2>
+
+        <p>
+          Une véritable expérience de dégustation autour de la pizza.
+          Pour chaque événement, le chef imagine un menu unique composé de
+          <strong>4 créations</strong>. Le menu vous est présenté avant
+          l’événement et peut être ajusté selon vos goûts et vos préférences.
+          L’idée est de créer ensemble une sélection parfaitement adaptée à
+          votre soirée, pensée pour surprendre et faire saliver vos invités.
+          Le forfait comprend <strong>4 pointes par personne</strong>.
+          Pour les plus gourmands, des portions supplémentaires peuvent être
+          ajoutées au forfait. Vous assumez les coûts de l'épicerie, et un prix
+          de <strong>30 $ / personne</strong> est chargé.
+        </p>
+
+      </div>
+
+
+      <div class="concept-details">
+
+        <div class="concept-detail">
+          <span>Le menu</span>
+          <strong>4 créations</strong>
+          <small>Un menu unique pour votre soirée</small>
+        </div>
+
+        <div class="concept-detail">
+          <span>Le forfait</span>
+          <strong>4 pointes / personne</strong>
+          <small>Portions supplémentaires disponibles</small>
+        </div>
+
+        <div class="concept-detail">
+          <span>Le service</span>
+          <strong>30 $ / personne</strong>
+          <small>+ frais d’épicerie</small>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================
+       TITRE CALENDRIER
+  ====================== -->
+
+  <div class="calendar-intro">
+
+    <h2>
+      Sélectionnez votre date pour l’évènement.
+    </h2>
+
+    <p>
+      Les disponibilités sont mises à jour au fil des réservations.
+    </p>
+
+  </div>
+
+
+  <!-- =====================
+       CALENDRIER
+  ====================== -->
+
+  <div class="wrap">
+
+    <div class="weekdays">
+
+      <div class="weekday">Lun</div>
+      <div class="weekday">Mar</div>
+      <div class="weekday">Mer</div>
+      <div class="weekday">Jeu</div>
+      <div class="weekday">Ven</div>
+      <div class="weekday">Sam</div>
+      <div class="weekday">Dim</div>
+
+    </div>
+
+    <div id="calendarGrid" class="grid"></div>
+
+  </div>
+
+
+  <div class="footer">
+    Les disponibilités peuvent changer rapidement.
+  </div>
+
 
 </div>
 
 
 <script>
 
-/* =========================================
-   CONFIGURATION
-========================================= */
+
+/* =========================
+   ANNÉE
+========================= */
 
 const YEAR = 2026;
+
+
+/* =====================================================
+   DISPONIBILITÉS
+
+   TOUT EST DISPONIBLE PAR DÉFAUT.
+
+   booked:[12,19]
+   = 12 et 19 réservés
+
+   unavailable:[5,6]
+   = 5 et 6 indisponibles
+
+   SEPTEMBRE = 8
+   OCTOBRE = 9
+   NOVEMBRE = 10
+===================================================== */
+
+const availability = {
+
+  8:{
+    booked:[],
+    unavailable:[]
+  },
+
+  9:{
+    booked:[],
+    unavailable:[]
+  },
+
+  10:{
+    booked:[],
+    unavailable:[]
+  }
+
+};
+
+
+/* =========================
+   NOMS DES MOIS
+========================= */
 
 const monthNames = [
   "Janvier",
@@ -585,103 +759,299 @@ const monthNames = [
 ];
 
 
-/* =========================================
-   LIRE LA DATE DANS L'URL
-========================================= */
+/* =========================
+   FONCTIONS
+========================= */
 
-const params =
-  new URLSearchParams(
-    window.location.search
+function mondayIndex(jsDay){
+  return (jsDay + 6) % 7;
+}
+
+
+function getStatus(month,day){
+
+  const data =
+    availability[month] || {
+      booked:[],
+      unavailable:[]
+    };
+
+  if(data.booked.includes(day)){
+    return "booked";
+  }
+
+  if(data.unavailable.includes(day)){
+    return "unavailable";
+  }
+
+  return "available";
+}
+
+
+function getLabel(status){
+
+  if(status === "booked"){
+    return "Réservé";
+  }
+
+  if(status === "unavailable"){
+    return "Indisponible";
+  }
+
+  return "Disponible";
+}
+
+
+/* =========================
+   LIEN VERS RESERVE.HTML
+========================= */
+
+function reservationUrl(day=null,month=null){
+
+  if(day === null || month === null){
+    return "reserve.html";
+  }
+
+  return (
+    "reserve.html?day=" +
+    encodeURIComponent(day) +
+    "&month=" +
+    encodeURIComponent(month)
   );
-
-const day =
-  params.get("day");
-
-const month =
-  params.get("month");
-
-const sent =
-  params.get("sent");
-
-let dateText = "";
-
-
-/* =========================================
-   SI LE FORMULAIRE VIENT D'ÊTRE ENVOYÉ
-========================================= */
-
-if(sent === "1"){
-
-  document
-    .getElementById("formSection")
-    .style.display = "none";
-
-  document
-    .getElementById("successSection")
-    .style.display = "block";
-
-  document
-    .getElementById("bottomBack")
-    .style.display = "none";
 
 }
 
 
-/* =========================================
-   CONSTRUIRE LA DATE
-========================================= */
+/* =========================
+   AFFICHAGE DU CALENDRIER
+========================= */
 
-if(
-  day !== null &&
-  month !== null &&
-  monthNames[Number(month)]
-){
+function render(month){
 
-  dateText =
-    day +
-    " " +
-    monthNames[Number(month)] +
+  const grid =
+    document.getElementById("calendarGrid");
+
+
+  document.getElementById("monthTitle")
+    .textContent =
+    monthNames[month] +
     " " +
     YEAR;
 
 
+  grid.innerHTML = "";
+
+
+  const first =
+    new Date(
+      YEAR,
+      month,
+      1
+    );
+
+
+  const count =
+    new Date(
+      YEAR,
+      month + 1,
+      0
+    ).getDate();
+
+
+  const offset =
+    mondayIndex(
+      first.getDay()
+    );
+
+
+  /* CASES VIDES AVANT LE PREMIER JOUR */
+
+  for(let i=0;i<offset;i++){
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "day empty";
+
+    grid.appendChild(empty);
+
+  }
+
+
+  /* JOURS DU MOIS */
+
+  for(
+    let day=1;
+    day<=count;
+    day++
+  ){
+
+    const status =
+      getStatus(
+        month,
+        day
+      );
+
+
+    const cell =
+      document.createElement("div");
+
+
+    cell.className =
+      "day " +
+      status +
+      (
+        status === "available"
+        ? " available-day"
+        : ""
+      );
+
+
+    cell.innerHTML =
+      '<div class="num">' +
+      day +
+      '</div>' +
+
+      '<div class="status">' +
+      getLabel(status) +
+      '</div>';
+
+
+    /* SEULEMENT LES DATES DISPONIBLES
+       SONT CLIQUABLES */
+
+    if(status === "available"){
+
+      const link =
+        document.createElement("a");
+
+
+      link.className =
+        "day-link";
+
+
+      link.href =
+        reservationUrl(
+          day,
+          month
+        );
+
+
+      link.target =
+        "_top";
+
+
+      link.rel =
+        "noopener";
+
+
+      link.setAttribute(
+        "aria-label",
+        "Réserver le " +
+        day +
+        " " +
+        monthNames[month] +
+        " " +
+        YEAR
+      );
+
+
+      cell.appendChild(link);
+
+    }
+
+
+    grid.appendChild(cell);
+
+  }
+
+
+  /* CASES VIDES APRÈS LE DERNIER JOUR */
+
+  const trailing =
+    (
+      7 -
+      (
+        (
+          offset +
+          count
+        ) % 7
+      )
+    ) % 7;
+
+
+  for(
+    let i=0;
+    i<trailing;
+    i++
+  ){
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "day empty";
+
+    grid.appendChild(empty);
+
+  }
+
+
+  /* BOUTON DU MOIS ACTIF */
+
   document
-    .getElementById("selectedDate")
-    .textContent =
-      dateText;
+    .querySelectorAll(
+      "button[data-month]"
+    )
+    .forEach(
+      button => {
 
+        button.classList.toggle(
+          "active",
+          Number(
+            button.dataset.month
+          ) === month
+        );
 
-  document
-    .getElementById("dateField")
-    .value =
-      dateText;
-
-
-  document
-    .getElementById("subjectField")
-    .value =
-      "Réservation Rafa Pizza — " +
-      dateText;
+      }
+    );
 
 }
 
 
-/* =========================================
-   PAGE DE RETOUR APRÈS ENVOI
-
-   FormSubmit exige une URL complète.
-========================================= */
-
-const nextUrl =
-  window.location.origin +
-  window.location.pathname +
-  "?sent=1";
-
+/* =========================
+   CHANGEMENT DE MOIS
+========================= */
 
 document
-  .getElementById("nextField")
-  .value =
-    nextUrl;
+  .querySelectorAll(
+    "button[data-month]"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          render(
+            Number(
+              button.dataset.month
+            )
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+/* SEPTEMBRE PAR DÉFAUT */
+
+render(8);
+
 
 </script>
 
