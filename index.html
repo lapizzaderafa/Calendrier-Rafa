@@ -277,8 +277,7 @@ button.active{
 }
 
 
-/* IMPORTANT :
-   lien transparent sur TOUTE la case */
+/* Toute la case est cliquable */
 
 .day-link{
   position:absolute;
@@ -290,7 +289,6 @@ button.active{
   -webkit-tap-highlight-color:rgba(91,31,42,.08);
   touch-action:manipulation;
 }
-
 
 .num{
   font-size:16px;
@@ -314,6 +312,7 @@ button.active{
   justify-content:center;
 
   padding:4px 5px;
+
   border-radius:999px;
 
   font-size:9px;
@@ -504,6 +503,7 @@ button.active{
   .footer{
     padding:0 12px 16px;
   }
+
 }
 
 
@@ -635,7 +635,7 @@ button.active{
   </div>
 
 
-  <!-- MOIS JUSTE AVANT CALENDRIER -->
+  <!-- MOIS -->
 
   <div class="month-selector">
 
@@ -683,7 +683,6 @@ button.active{
     Les disponibilités peuvent changer rapidement.
   </div>
 
-
 </div>
 
 
@@ -701,13 +700,13 @@ const YEAR = 2026;
    OCTOBRE = 9
    NOVEMBRE = 10
 
-   Exemple :
+   EXEMPLE :
 
    booked:[12,19]
-   = réservé
+   = Réservé
 
    unavailable:[5,6]
-   = indisponible
+   = Indisponible
 ===================================================== */
 
 const availability = {
@@ -786,10 +785,7 @@ function getLabel(status){
 
 
 /* =========================
-   LIEN RÉSERVATION
-
-   EXACTEMENT COMME AVANT :
-   reserve.html?day=...&month=...
+   LIEN VERS RESERVE.HTML
 ========================= */
 
 function reservationUrl(day,month){
@@ -865,12 +861,6 @@ function render(month){
       getStatus(month,day);
 
 
-    /*
-       IMPORTANT :
-       la case reste un DIV,
-       comme dans la version qui fonctionnait.
-    */
-
     const cell =
       document.createElement("div");
 
@@ -894,12 +884,6 @@ function render(month){
       getLabel(status) +
       '</div>';
 
-
-    /*
-       DISPONIBLE :
-       on ajoute un vrai lien transparent
-       qui couvre TOUTE la case.
-    */
 
     if(status === "available"){
 
@@ -995,7 +979,7 @@ function render(month){
 
 
 /* =========================
-   BOUTONS MOIS
+   CHANGER DE MOIS
 ========================= */
 
 document
@@ -1019,8 +1003,6 @@ document
     }
   );
 
-
-/* SEPTEMBRE PAR DÉFAUT */
 
 render(8);
 
