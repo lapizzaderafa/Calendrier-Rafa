@@ -18,9 +18,7 @@
   --line:rgba(91,31,42,.16);
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 html,body{
   margin:0;
@@ -30,9 +28,7 @@ html,body{
   color:var(--ink);
 }
 
-body{
-  padding:12px;
-}
+body{padding:12px}
 
 .shell{
   max-width:1080px;
@@ -43,11 +39,6 @@ body{
   box-shadow:0 18px 45px rgba(65,35,39,.10);
   overflow:hidden;
 }
-
-
-/* =========================
-   EN-TÊTE
-========================= */
 
 .top{
   padding:26px 30px 24px;
@@ -63,11 +54,6 @@ body{
   font-weight:700;
   white-space:nowrap;
 }
-
-
-/* =========================
-   EXPÉRIENCE RAFA
-========================= */
 
 .concept{
   padding:24px 30px;
@@ -99,9 +85,7 @@ body{
   line-height:1.65;
 }
 
-.concept-text strong{
-  color:var(--wine);
-}
+.concept-text strong{color:var(--wine)}
 
 .concept-details{
   display:grid;
@@ -115,9 +99,7 @@ body{
   border-bottom:1px solid var(--line);
 }
 
-.concept-detail:first-child{
-  padding-top:0;
-}
+.concept-detail:first-child{padding-top:0}
 
 .concept-detail:last-child{
   padding-bottom:0;
@@ -148,11 +130,6 @@ body{
   margin-top:1px;
 }
 
-
-/* =========================
-   INTRO CALENDRIER
-========================= */
-
 .calendar-intro{
   padding:22px 30px 5px;
 }
@@ -171,11 +148,6 @@ body{
   color:var(--muted);
   font-size:11px;
 }
-
-
-/* =========================
-   CHOIX DU MOIS
-========================= */
 
 .month-selector{
   padding:13px 30px 3px;
@@ -196,11 +168,6 @@ button{
   font-size:13px;
   font-weight:700;
   cursor:pointer;
-  transition:.18s ease;
-}
-
-button:hover{
-  border-color:rgba(91,31,42,.35);
 }
 
 button.active{
@@ -208,11 +175,6 @@ button.active{
   color:var(--cream2);
   border-color:var(--wine);
 }
-
-
-/* =========================
-   CALENDRIER
-========================= */
 
 .wrap{
   padding:16px 24px 26px;
@@ -225,9 +187,7 @@ button.active{
   gap:8px;
 }
 
-.weekdays{
-  margin-bottom:8px;
-}
+.weekdays{margin-bottom:8px}
 
 .weekday{
   text-align:center;
@@ -239,14 +199,6 @@ button.active{
   padding:7px 2px;
 }
 
-
-/*
-  IMPORTANT :
-  .day peut maintenant être un DIV ou un A.
-  On enlève donc complètement le système
-  du lien transparent par-dessus.
-*/
-
 .day{
   min-height:118px;
   border:1px solid var(--line);
@@ -256,12 +208,9 @@ button.active{
   position:relative;
   transition:.18s ease;
   overflow:hidden;
-
   display:block;
   text-decoration:none;
   color:inherit;
-
-  -webkit-tap-highlight-color:rgba(91,31,42,.08);
 }
 
 .day.available-day{
@@ -275,15 +224,9 @@ button.active{
   box-shadow:0 8px 20px rgba(65,35,39,.08);
 }
 
-.day.available-day:active{
-  transform:scale(.98);
-}
-
 .day.empty{
   background:transparent;
   border:1px dashed rgba(91,31,42,.08);
-  box-shadow:none;
-  transform:none;
 }
 
 .num{
@@ -292,46 +235,25 @@ button.active{
   color:var(--wine);
 }
 
-
-/* =========================
-   STATUT
-========================= */
-
 .status{
   position:absolute;
   left:7px;
   right:7px;
   bottom:8px;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   padding:4px 5px;
   border-radius:999px;
-
   font-size:9px;
   font-weight:700;
-  line-height:1;
-
   white-space:nowrap;
-  overflow:hidden;
-}
-
-
-/* DISPONIBLE */
-
-.day.available{
-  background:rgba(255,255,255,.35);
 }
 
 .day.available .status{
   color:var(--wine2);
   background:rgba(122,45,60,.07);
 }
-
-
-/* RÉSERVÉ */
 
 .day.booked{
   background:var(--wine);
@@ -347,9 +269,6 @@ button.active{
   background:rgba(255,255,255,.12);
 }
 
-
-/* INDISPONIBLE */
-
 .day.unavailable{
   background:rgba(185,173,166,.18);
 }
@@ -363,11 +282,6 @@ button.active{
   background:rgba(139,129,124,.10);
 }
 
-
-/* =========================
-   PIED
-========================= */
-
 .footer{
   padding:0 24px 22px;
   color:var(--muted);
@@ -375,20 +289,11 @@ button.active{
   text-align:center;
 }
 
-
-/* =========================
-   MOBILE
-========================= */
-
 @media(max-width:760px){
 
-  body{
-    padding:4px;
-  }
+  body{padding:4px}
 
-  .shell{
-    border-radius:20px;
-  }
+  .shell{border-radius:20px}
 
   .top{
     padding:21px 18px 19px;
@@ -396,11 +301,7 @@ button.active{
 
   .main-title{
     font-size:clamp(21px,6.3vw,28px);
-    white-space:nowrap;
   }
-
-
-  /* EXPÉRIENCE RAFA */
 
   .concept{
     padding:20px 18px;
@@ -413,12 +314,10 @@ button.active{
 
   .concept-main-title{
     font-size:25px;
-    margin-bottom:11px;
   }
 
   .concept-text p{
     font-size:12.5px;
-    line-height:1.58;
   }
 
   .concept-details{
@@ -426,8 +325,6 @@ button.active{
     border-top:1px solid var(--line);
     padding-left:0;
     padding-top:12px;
-
-    display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:10px;
   }
@@ -443,11 +340,7 @@ button.active{
 
   .concept-detail small{
     font-size:9px;
-    line-height:1.3;
   }
-
-
-  /* CALENDRIER */
 
   .calendar-intro{
     padding:19px 18px 3px;
@@ -456,13 +349,6 @@ button.active{
   .calendar-intro h2{
     font-size:21px;
   }
-
-  .calendar-intro p{
-    font-size:10px;
-  }
-
-
-  /* MOIS */
 
   .month-selector{
     padding:12px 18px 2px;
@@ -478,9 +364,6 @@ button.active{
     padding:9px 7px;
     font-size:11px;
   }
-
-
-  /* GRILLE */
 
   .wrap{
     padding:12px 10px 18px;
@@ -513,28 +396,9 @@ button.active{
     font-size:clamp(6.5px,1.75vw,8px);
   }
 
-  .footer{
-    padding:0 12px 16px;
-  }
-
 }
 
-
-/* =========================
-   TRÈS PETIT MOBILE
-========================= */
-
 @media(max-width:480px){
-
-  .top{
-    padding-left:14px;
-    padding-right:14px;
-  }
-
-  .main-title{
-    font-size:clamp(19px,5.9vw,25px);
-    white-space:nowrap;
-  }
 
   .weekdays,
   .grid{
@@ -546,19 +410,10 @@ button.active{
     padding:6px;
   }
 
-  .concept-main-title{
-    font-size:23px;
-  }
-
-  .concept-details{
-    grid-template-columns:1fr 1fr 1fr;
-  }
-
   .status{
     left:2px;
     right:2px;
     bottom:4px;
-    padding:3px 1px;
     font-size:clamp(6px,1.8vw,7.5px);
   }
 
@@ -567,28 +422,15 @@ button.active{
 </style>
 </head>
 
-
 <body>
 
 <div class="shell">
 
-
-  <!-- =====================
-       EN-TÊTE
-  ====================== -->
-
   <div class="top">
-
     <h1 class="main-title">
       Rafa Pizza · Réservations
     </h1>
-
   </div>
-
-
-  <!-- =====================
-       EXPÉRIENCE RAFA
-  ====================== -->
 
   <section class="concept">
 
@@ -611,49 +453,24 @@ button.active{
 
       </div>
 
-
       <div class="concept-details">
 
         <div class="concept-detail">
-
           <span>Le menu</span>
-
           <strong>4 créations</strong>
-
-          <small>
-            Un menu unique pour votre soirée
-          </small>
-
+          <small>Un menu unique pour votre soirée</small>
         </div>
 
-
         <div class="concept-detail">
-
           <span>Le forfait</span>
-
-          <strong>
-            4 pointes / personne
-          </strong>
-
-          <small>
-            Portions supplémentaires disponibles
-          </small>
-
+          <strong>4 pointes / personne</strong>
+          <small>Portions supplémentaires disponibles</small>
         </div>
 
-
         <div class="concept-detail">
-
           <span>Le service</span>
-
-          <strong>
-            30 $ / personne
-          </strong>
-
-          <small>
-            + frais d’épicerie
-          </small>
-
+          <strong>30 $ / personne</strong>
+          <small>+ frais d’épicerie</small>
         </div>
 
       </div>
@@ -662,11 +479,6 @@ button.active{
 
   </section>
 
-
-  <!-- =====================
-       INTRO CALENDRIER
-  ====================== -->
-
   <div class="calendar-intro">
 
     <h2>
@@ -674,50 +486,30 @@ button.active{
     </h2>
 
     <p>
-      Les disponibilités sont mises à jour au fil des réservations.
+      Les disponibilités sont mises à jour automatiquement au fil des réservations.
     </p>
 
   </div>
-
-
-  <!-- =====================
-       CHOIX DU MOIS
-  ====================== -->
 
   <div class="month-selector">
 
     <div class="controls">
 
-      <button
-        type="button"
-        class="active"
-        data-month="8"
-      >
+      <button type="button" class="active" data-month="8">
         Septembre
       </button>
 
-      <button
-        type="button"
-        data-month="9"
-      >
+      <button type="button" data-month="9">
         Octobre
       </button>
 
-      <button
-        type="button"
-        data-month="10"
-      >
+      <button type="button" data-month="10">
         Novembre
       </button>
 
     </div>
 
   </div>
-
-
-  <!-- =====================
-       CALENDRIER
-  ====================== -->
 
   <div class="wrap">
 
@@ -733,65 +525,34 @@ button.active{
 
     </div>
 
-
-    <div
-      id="calendarGrid"
-      class="grid"
-    ></div>
+    <div id="calendarGrid" class="grid"></div>
 
   </div>
-
 
   <div class="footer">
     Les disponibilités peuvent changer rapidement.
   </div>
 
-
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-
 const YEAR = 2026;
 
+const SUPABASE_URL =
+  "https://jetogsbyptglaihktdel.supabase.co";
 
-/* =====================================================
-   DISPONIBILITÉS
+const SUPABASE_KEY =
+  "sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
 
-   TOUT EST DISPONIBLE PAR DÉFAUT.
 
-   SEPTEMBRE = 8
-   OCTOBRE = 9
-   NOVEMBRE = 10
-
-   EXEMPLE :
-
-   booked:[12,19]
-   = 12 et 19 réservés
-
-   unavailable:[5,6]
-   = 5 et 6 indisponibles
-===================================================== */
-
-const availability = {
-
-  8:{
-    booked:[4,5,6,7,9,12,15,16,18,23],
-    unavailable:[]
-  },
-
-  9:{
-    booked:[],
-    unavailable:[]
-  },
-
-  10:{
-    booked:[],
-    unavailable:[]
-  }
-
-};
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
 const monthNames = [
@@ -810,28 +571,45 @@ const monthNames = [
 ];
 
 
+let currentMonth = 8;
+
+const blockedDates =
+  new Map();
+
+
 function mondayIndex(jsDay){
+
   return (jsDay + 6) % 7;
+
+}
+
+
+function isoDate(month,day){
+
+  return (
+    YEAR +
+    "-" +
+    String(month + 1).padStart(2,"0") +
+    "-" +
+    String(day).padStart(2,"0")
+  );
+
 }
 
 
 function getStatus(month,day){
 
-  const data =
-    availability[month] || {
-      booked:[],
-      unavailable:[]
-    };
+  const date =
+    isoDate(
+      month,
+      day
+    );
 
-  if(data.booked.includes(day)){
-    return "booked";
-  }
+  return (
+    blockedDates.get(date) ||
+    "available"
+  );
 
-  if(data.unavailable.includes(day)){
-    return "unavailable";
-  }
-
-  return "available";
 }
 
 
@@ -846,12 +624,9 @@ function getLabel(status){
   }
 
   return "Disponible";
+
 }
 
-
-/* =========================
-   LIEN VERS RESERVE.HTML
-========================= */
 
 function reservationUrl(day,month){
 
@@ -865,18 +640,60 @@ function reservationUrl(day,month){
 }
 
 
-/* =========================
-   AFFICHER CALENDRIER
-========================= */
+async function loadReservations(){
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.rpc(
+      "get_calendar_blocks"
+    );
+
+
+  if(error){
+
+    console.error(
+      "Erreur Supabase",
+      error
+    );
+
+    return;
+
+  }
+
+
+  blockedDates.clear();
+
+
+  (data || []).forEach(
+    row => {
+
+      blockedDates.set(
+        row.event_date,
+        row.display_status
+      );
+
+    }
+  );
+
+}
+
 
 function render(month){
+
+  currentMonth =
+    month;
+
 
   const grid =
     document.getElementById(
       "calendarGrid"
     );
 
-  grid.innerHTML = "";
+
+  grid.innerHTML =
+    "";
 
 
   const first =
@@ -901,30 +718,30 @@ function render(month){
     );
 
 
-  /* =========================
-     CASES VIDES AVANT
-  ========================= */
-
-  for(let i=0;i<offset;i++){
+  for(
+    let i = 0;
+    i < offset;
+    i++
+  ){
 
     const empty =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     empty.className =
       "day empty";
 
-    grid.appendChild(empty);
+    grid.appendChild(
+      empty
+    );
 
   }
 
 
-  /* =========================
-     JOURS DU MOIS
-  ========================= */
-
   for(
-    let day=1;
-    day<=count;
+    let day = 1;
+    day <= count;
     day++
   ){
 
@@ -935,18 +752,11 @@ function render(month){
       );
 
 
-    /*
-      CORRECTION IMPORTANTE :
-
-      Disponible = véritable balise <a>
-      Réservé / indisponible = <div>
-    */
-
     const cell =
       document.createElement(
         status === "available"
-        ? "a"
-        : "div"
+          ? "a"
+          : "div"
       );
 
 
@@ -955,8 +765,8 @@ function render(month){
       status +
       (
         status === "available"
-        ? " available-day"
-        : ""
+          ? " available-day"
+          : ""
       );
 
 
@@ -970,11 +780,10 @@ function render(month){
       '</div>';
 
 
-    /* =========================
-       DATE DISPONIBLE
-    ========================= */
-
-    if(status === "available"){
+    if(
+      status ===
+      "available"
+    ){
 
       cell.href =
         reservationUrl(
@@ -982,40 +791,15 @@ function render(month){
           month
         );
 
-
-      /*
-        On reste volontairement dans
-        la même fenêtre.
-
-        C'est plus fiable sur :
-        - iPhone
-        - Safari
-        - Facebook
-        - Instagram
-        - GitHub Pages
-      */
-
-      cell.setAttribute(
-        "aria-label",
-        "Réserver le " +
-        day +
-        " " +
-        monthNames[month] +
-        " " +
-        YEAR
-      );
-
     }
 
 
-    grid.appendChild(cell);
+    grid.appendChild(
+      cell
+    );
 
   }
 
-
-  /* =========================
-     CASES VIDES APRÈS
-  ========================= */
 
   const trailing =
     (
@@ -1029,22 +813,26 @@ function render(month){
     ) % 7;
 
 
-  for(let i=0;i<trailing;i++){
+  for(
+    let i = 0;
+    i < trailing;
+    i++
+  ){
 
     const empty =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
     empty.className =
       "day empty";
 
-    grid.appendChild(empty);
+    grid.appendChild(
+      empty
+    );
 
   }
 
-
-  /* =========================
-     MOIS ACTIF
-  ========================= */
 
   document
     .querySelectorAll(
@@ -1065,10 +853,6 @@ function render(month){
 
 }
 
-
-/* =========================
-   CHANGER DE MOIS
-========================= */
 
 document
   .querySelectorAll(
@@ -1094,12 +878,37 @@ document
   );
 
 
-/* =========================
-   SEPTEMBRE PAR DÉFAUT
-========================= */
+async function start(){
 
-render(8);
+  await loadReservations();
 
+  render(8);
+
+}
+
+
+start();
+
+
+document.addEventListener(
+  "visibilitychange",
+  async () => {
+
+    if(
+      document.visibilityState ===
+      "visible"
+    ){
+
+      await loadReservations();
+
+      render(
+        currentMonth
+      );
+
+    }
+
+  }
+);
 
 </script>
 
