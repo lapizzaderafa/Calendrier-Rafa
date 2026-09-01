@@ -103,6 +103,56 @@ body{
   color:var(--wine);
 }
 
+.experience-toggle{
+  margin-top:12px;
+  border:0;
+  background:transparent;
+  color:var(--wine);
+  padding:0;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+.experience-toggle:hover{
+  color:var(--wine2);
+}
+
+.experience-arrow{
+  display:inline-block;
+  transition:transform .2s ease;
+}
+
+.experience-toggle.open .experience-arrow{
+  transform:rotate(180deg);
+}
+
+.experience-more{
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  transition:max-height .3s ease, opacity .25s ease, margin-top .25s ease;
+  margin-top:0;
+}
+
+.experience-more.open{
+  max-height:260px;
+  opacity:1;
+  margin-top:12px;
+}
+
+.experience-more p{
+  margin:0;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+  color:var(--ink);
+  font-size:12.5px;
+  line-height:1.65;
+}
+
 .concept-details{
   display:grid;
   grid-template-columns:1fr;
@@ -396,11 +446,9 @@ button.active{
   position:relative;
   transition:.18s ease;
   overflow:hidden;
-
   display:block;
   text-decoration:none;
   color:inherit;
-
   -webkit-tap-highlight-color:rgba(91,31,42,.08);
 }
 
@@ -437,18 +485,14 @@ button.active{
   left:7px;
   right:7px;
   bottom:8px;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   padding:4px 5px;
   border-radius:999px;
-
   font-size:9px;
   font-weight:700;
   line-height:1;
-
   white-space:nowrap;
   overflow:hidden;
 }
@@ -549,7 +593,6 @@ button.active{
     border-top:1px solid var(--line);
     padding-left:0;
     padding-top:12px;
-
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:10px;
@@ -709,20 +752,20 @@ button.active{
 </style>
 </head>
 
-
 <body>
 
 <div class="shell">
 
-
   <div class="top">
-
     <h1 class="main-title">
       Rafa Pizza · Réservations
     </h1>
-
   </div>
 
+
+  <!-- =====================
+       EXPÉRIENCE RAFA
+  ====================== -->
 
   <section class="concept">
 
@@ -735,13 +778,34 @@ button.active{
         </h2>
 
         <p>
-          Une véritable expérience de dégustation autour de la pizza.
-          Pour chaque événement, le chef imagine un menu unique composé de
-          <strong>4 créations</strong>. Le menu vous est présenté avant
-          l’événement et peut être ajusté selon vos goûts et vos préférences.
-          L’idée est de créer ensemble une sélection parfaitement adaptée à
-          votre soirée, pensée pour surprendre et faire saliver vos invités.
+          <strong>4 créations uniques</strong>, pensées pour votre événement.
+          Le menu est présenté à l’avance et peut être ajusté selon vos goûts.
         </p>
+
+        <button
+          id="experienceToggle"
+          class="experience-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="experienceMore"
+        >
+          Découvrir l’expérience Rafa
+          <span class="experience-arrow">⌄</span>
+        </button>
+
+        <div
+          id="experienceMore"
+          class="experience-more"
+        >
+          <p>
+            Une véritable expérience de dégustation autour de la pizza.
+            Pour chaque événement, le chef imagine un menu unique composé de
+            <strong>4 créations</strong>. Le menu vous est présenté avant
+            l’événement et peut être ajusté selon vos goûts et vos préférences.
+            L’idée est de créer ensemble une sélection parfaitement adaptée à
+            votre soirée, pensée pour surprendre et faire saliver vos invités.
+          </p>
+        </div>
 
       </div>
 
@@ -754,13 +818,11 @@ button.active{
           <small>Un menu unique pour votre soirée</small>
         </div>
 
-
         <div class="concept-detail">
           <span>Le forfait</span>
           <strong>4 pointes / personne</strong>
           <small>Portions supplémentaires disponibles</small>
         </div>
-
 
         <div class="concept-detail">
           <span>Le service</span>
@@ -789,22 +851,15 @@ button.active{
       Ajustez le nombre d’invités pour obtenir une estimation de votre événement.
     </p>
 
-
     <div class="estimator-card">
 
-
       <div class="guest-display">
-
-        <span>
-          Votre événement
-        </span>
+        <span>Votre événement</span>
 
         <strong>
           <span id="guestNumber">20</span> invités
         </strong>
-
       </div>
-
 
       <input
         id="guestSlider"
@@ -816,53 +871,25 @@ button.active{
         step="1"
       >
 
-
       <div class="slider-labels">
-
-        <span>
-          1 invité
-        </span>
-
-        <span>
-          50+
-        </span>
-
-        <span>
-          100 invités
-        </span>
-
+        <span>1 invité</span>
+        <span>50+</span>
+        <span>100 invités</span>
       </div>
-
 
       <div class="estimate-results">
 
         <div class="estimate-box">
-
-          <span>
-            Prix / personne
-          </span>
-
-          <strong id="personPrice">
-            25 $
-          </strong>
-
+          <span>Prix / personne</span>
+          <strong id="personPrice">25 $</strong>
         </div>
 
-
         <div class="estimate-box">
-
-          <span>
-            Frais de service & installation
-          </span>
-
-          <strong id="eventFee">
-            250 $
-          </strong>
-
+          <span>Frais de service & installation</span>
+          <strong id="eventFee">250 $</strong>
         </div>
 
       </div>
-
 
       <div
         id="largeEventNote"
@@ -870,7 +897,6 @@ button.active{
       >
         Événement 50+ — tarification adaptée automatiquement aux événements de grande taille.
       </div>
-
 
       <p
         class="estimator-note"
@@ -906,25 +932,15 @@ button.active{
 
     <div class="controls">
 
-      <button
-        type="button"
-        class="active"
-        data-month="8"
-      >
+      <button type="button" class="active" data-month="8">
         Septembre
       </button>
 
-      <button
-        type="button"
-        data-month="9"
-      >
+      <button type="button" data-month="9">
         Octobre
       </button>
 
-      <button
-        type="button"
-        data-month="10"
-      >
+      <button type="button" data-month="10">
         Novembre
       </button>
 
@@ -936,7 +952,6 @@ button.active{
   <div class="wrap">
 
     <div class="weekdays">
-
       <div class="weekday">Lun</div>
       <div class="weekday">Mar</div>
       <div class="weekday">Mer</div>
@@ -944,14 +959,9 @@ button.active{
       <div class="weekday">Ven</div>
       <div class="weekday">Sam</div>
       <div class="weekday">Dim</div>
-
     </div>
 
-
-    <div
-      id="calendarGrid"
-      class="grid"
-    ></div>
+    <div id="calendarGrid" class="grid"></div>
 
   </div>
 
@@ -960,12 +970,10 @@ button.active{
     Les disponibilités peuvent changer rapidement.
   </div>
 
-
 </div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 
 <script>
 
@@ -975,21 +983,17 @@ button.active{
 
 const YEAR = 2026;
 
-
 const SUPABASE_URL =
   "https://jetogsbyptglaihktdel.supabase.co";
 
-
 const SUPABASE_KEY =
   "sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
-
 
 const supabaseClient =
   supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
-
 
 const monthNames = [
   "Janvier",
@@ -1006,12 +1010,51 @@ const monthNames = [
   "Décembre"
 ];
 
-
 let currentMonth = 8;
 
+const blockedDates = new Map();
 
-const blockedDates =
-  new Map();
+
+/* =========================
+   ACCORDÉON EXPÉRIENCE
+========================= */
+
+const experienceToggle =
+  document.getElementById(
+    "experienceToggle"
+  );
+
+const experienceMore =
+  document.getElementById(
+    "experienceMore"
+  );
+
+experienceToggle.addEventListener(
+  "click",
+  () => {
+
+    const open =
+      experienceMore.classList.toggle(
+        "open"
+      );
+
+    experienceToggle.classList.toggle(
+      "open",
+      open
+    );
+
+    experienceToggle.setAttribute(
+      "aria-expanded",
+      String(open)
+    );
+
+    experienceToggle.childNodes[0].nodeValue =
+      open
+        ? "Réduire l’expérience Rafa "
+        : "Découvrir l’expérience Rafa ";
+
+  }
+);
 
 
 /* =========================
@@ -1019,88 +1062,54 @@ const blockedDates =
 ========================= */
 
 function mondayIndex(jsDay){
-
-  return (
-    jsDay + 6
-  ) % 7;
-
+  return (jsDay + 6) % 7;
 }
-
 
 function isoDate(month,day){
 
   return (
     YEAR +
     "-" +
-    String(
-      month + 1
-    ).padStart(
-      2,
-      "0"
-    ) +
+    String(month + 1).padStart(2,"0") +
     "-" +
-    String(
-      day
-    ).padStart(
-      2,
-      "0"
-    )
+    String(day).padStart(2,"0")
   );
 
 }
 
-
 function getStatus(month,day){
 
   const date =
-    isoDate(
-      month,
-      day
-    );
-
+    isoDate(month,day);
 
   return (
-    blockedDates.get(
-      date
-    ) ||
+    blockedDates.get(date) ||
     "available"
   );
 
 }
 
-
 function getLabel(status){
 
-  if(
-    status === "booked"
-  ){
+  if(status === "booked"){
     return "Réservé";
   }
 
-
-  if(
-    status === "unavailable"
-  ){
+  if(status === "unavailable"){
     return "Indisponible";
   }
-
 
   return "Disponible";
 
 }
 
-
 function reservationUrl(day,month){
 
   return (
     "./reserve.html?day=" +
-    encodeURIComponent(
-      day
-    ) +
+    encodeURIComponent(day) +
     "&month=" +
-    encodeURIComponent(
-      month
-    )
+    encodeURIComponent(month)
   );
 
 }
@@ -1120,7 +1129,6 @@ async function loadReservations(){
       "get_calendar_blocks"
     );
 
-
   if(error){
 
     console.error(
@@ -1132,9 +1140,7 @@ async function loadReservations(){
 
   }
 
-
   blockedDates.clear();
-
 
   (data || []).forEach(
     row => {
@@ -1156,19 +1162,14 @@ async function loadReservations(){
 
 function render(month){
 
-  currentMonth =
-    month;
-
+  currentMonth = month;
 
   const grid =
     document.getElementById(
       "calendarGrid"
     );
 
-
-  grid.innerHTML =
-    "";
-
+  grid.innerHTML = "";
 
   const first =
     new Date(
@@ -1177,7 +1178,6 @@ function render(month){
       1
     );
 
-
   const count =
     new Date(
       YEAR,
@@ -1185,18 +1185,13 @@ function render(month){
       0
     ).getDate();
 
-
   const offset =
     mondayIndex(
       first.getDay()
     );
 
 
-  for(
-    let i = 0;
-    i < offset;
-    i++
-  ){
+  for(let i=0;i<offset;i++){
 
     const empty =
       document.createElement(
@@ -1213,11 +1208,7 @@ function render(month){
   }
 
 
-  for(
-    let day = 1;
-    day <= count;
-    day++
-  ){
+  for(let day=1;day<=count;day++){
 
     const status =
       getStatus(
@@ -1225,14 +1216,12 @@ function render(month){
         day
       );
 
-
     const cell =
       document.createElement(
         status === "available"
           ? "a"
           : "div"
       );
-
 
     cell.className =
       "day " +
@@ -1243,29 +1232,22 @@ function render(month){
           : ""
       );
 
-
     cell.innerHTML =
       '<div class="num">' +
       day +
       '</div>' +
-
       '<div class="status">' +
-      getLabel(
-        status
-      ) +
+      getLabel(status) +
       '</div>';
 
 
-    if(
-      status === "available"
-    ){
+    if(status === "available"){
 
       cell.href =
         reservationUrl(
           day,
           month
         );
-
 
       cell.setAttribute(
         "aria-label",
@@ -1278,7 +1260,6 @@ function render(month){
       );
 
     }
-
 
     grid.appendChild(
       cell
@@ -1299,11 +1280,7 @@ function render(month){
     ) % 7;
 
 
-  for(
-    let i = 0;
-    i < trailing;
-    i++
-  ){
+  for(let i=0;i<trailing;i++){
 
     const empty =
       document.createElement(
@@ -1380,7 +1357,6 @@ async function start(){
 
 }
 
-
 start();
 
 
@@ -1414,30 +1390,25 @@ const guestSlider =
     "guestSlider"
   );
 
-
 const guestNumber =
   document.getElementById(
     "guestNumber"
   );
-
 
 const personPrice =
   document.getElementById(
     "personPrice"
   );
 
-
 const eventFee =
   document.getElementById(
     "eventFee"
   );
 
-
 const estimatorNote =
   document.getElementById(
     "estimatorNote"
   );
-
 
 const largeEventNote =
   document.getElementById(
@@ -1445,159 +1416,85 @@ const largeEventNote =
   );
 
 
-function calculateEventPrice(
-  guests
-){
+function calculateEventPrice(guests){
 
   let pricePerPerson;
   let fixedFee;
 
+  if(guests <= 10){
 
-  /* 1 à 10 */
-
-  if(
-    guests <= 10
-  ){
-
-    pricePerPerson =
-      29;
-
-    fixedFee =
-      175;
+    pricePerPerson = 29;
+    fixedFee = 175;
 
   }
 
+  else if(guests <= 15){
 
-  /* 11 à 15 */
-
-  else if(
-    guests <= 15
-  ){
-
-    pricePerPerson =
-      27;
-
-    fixedFee =
-      200;
+    pricePerPerson = 27;
+    fixedFee = 200;
 
   }
 
+  else if(guests <= 20){
 
-  /* 16 à 20 */
-
-  else if(
-    guests <= 20
-  ){
-
-    pricePerPerson =
-      25;
-
-    fixedFee =
-      250;
+    pricePerPerson = 25;
+    fixedFee = 250;
 
   }
 
+  else if(guests <= 25){
 
-  /* 21 à 25 */
-
-  else if(
-    guests <= 25
-  ){
-
-    pricePerPerson =
-      23;
-
-    fixedFee =
-      300;
+    pricePerPerson = 23;
+    fixedFee = 300;
 
   }
 
+  else if(guests <= 30){
 
-  /* 26 à 30 */
-
-  else if(
-    guests <= 30
-  ){
-
-    pricePerPerson =
-      22;
-
-    fixedFee =
-      350;
+    pricePerPerson = 22;
+    fixedFee = 350;
 
   }
 
+  else if(guests <= 40){
 
-  /* 31 à 40 */
-
-  else if(
-    guests <= 40
-  ){
-
-    pricePerPerson =
-      21;
-
-    fixedFee =
-      400;
+    pricePerPerson = 21;
+    fixedFee = 400;
 
   }
 
+  else if(guests <= 50){
 
-  /* 41 à 50 */
-
-  else if(
-    guests <= 50
-  ){
-
-    pricePerPerson =
-      20;
-
-    fixedFee =
-      500;
+    pricePerPerson = 20;
+    fixedFee = 500;
 
   }
 
+  else if(guests <= 75){
 
-  /* 51 à 75 */
-
-  else if(
-    guests <= 75
-  ){
-
-    pricePerPerson =
-      19;
-
-    fixedFee =
-      600;
+    pricePerPerson = 19;
+    fixedFee = 600;
 
   }
-
-
-  /* 76 à 100 */
 
   else{
 
-    pricePerPerson =
-      18;
-
-    fixedFee =
-      750;
+    pricePerPerson = 18;
+    fixedFee = 750;
 
   }
 
 
   return {
-
     pricePerPerson,
     fixedFee
-
   };
 
 }
 
 
 /* =========================
-   METTRE À JOUR ESTIMATEUR
+   MISE À JOUR ESTIMATEUR
 ========================= */
 
 function updateEstimator(){
@@ -1606,7 +1503,6 @@ function updateEstimator(){
     Number(
       guestSlider.value
     );
-
 
   const pricing =
     calculateEventPrice(
@@ -1628,9 +1524,7 @@ function updateEstimator(){
     " $";
 
 
-  if(
-    guests > 50
-  ){
+  if(guests > 50){
 
     largeEventNote.classList.add(
       "show"
@@ -1647,9 +1541,7 @@ function updateEstimator(){
   }
 
 
-  if(
-    guests < 10
-  ){
+  if(guests < 10){
 
     estimatorNote.textContent =
       "Un minimum de facturation s’applique aux petits événements. Estimation à titre indicatif. Le prix final peut varier selon le menu, la localisation et les besoins particuliers de votre événement.";
@@ -1670,7 +1562,6 @@ guestSlider.addEventListener(
   "input",
   updateEstimator
 );
-
 
 updateEstimator();
 
