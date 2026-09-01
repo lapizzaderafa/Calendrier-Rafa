@@ -18,7 +18,9 @@
   --line:rgba(91,31,42,.16);
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 html,body{
   margin:0;
@@ -28,7 +30,9 @@ html,body{
   color:var(--ink);
 }
 
-body{padding:12px}
+body{
+  padding:12px;
+}
 
 .shell{
   max-width:1080px;
@@ -39,6 +43,11 @@ body{padding:12px}
   box-shadow:0 18px 45px rgba(65,35,39,.10);
   overflow:hidden;
 }
+
+
+/* =========================
+   EN-TÊTE
+========================= */
 
 .top{
   padding:26px 30px 24px;
@@ -54,6 +63,11 @@ body{padding:12px}
   font-weight:700;
   white-space:nowrap;
 }
+
+
+/* =========================
+   EXPÉRIENCE RAFA
+========================= */
 
 .concept{
   padding:24px 30px;
@@ -85,7 +99,9 @@ body{padding:12px}
   line-height:1.65;
 }
 
-.concept-text strong{color:var(--wine)}
+.concept-text strong{
+  color:var(--wine);
+}
 
 .concept-details{
   display:grid;
@@ -99,7 +115,9 @@ body{padding:12px}
   border-bottom:1px solid var(--line);
 }
 
-.concept-detail:first-child{padding-top:0}
+.concept-detail:first-child{
+  padding-top:0;
+}
 
 .concept-detail:last-child{
   padding-bottom:0;
@@ -130,6 +148,142 @@ body{padding:12px}
   margin-top:1px;
 }
 
+
+/* =========================
+   ESTIMATEUR DE PRIX
+========================= */
+
+.estimator{
+  padding:26px 30px;
+  border-bottom:1px solid var(--line);
+  background:var(--cream);
+}
+
+.estimator-title{
+  margin:0;
+  color:var(--wine);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:25px;
+  line-height:1.15;
+  font-weight:500;
+}
+
+.estimator-subtitle{
+  margin:6px 0 22px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+}
+
+.estimator-card{
+  background:var(--cream2);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:20px;
+}
+
+.guest-display{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:15px;
+  margin-bottom:15px;
+}
+
+.guest-display span{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.10em;
+}
+
+.guest-display strong{
+  display:block;
+  margin-top:3px;
+  color:var(--wine);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:32px;
+  line-height:1;
+}
+
+.price-slider{
+  width:100%;
+  accent-color:var(--wine);
+  cursor:pointer;
+}
+
+.slider-labels{
+  display:flex;
+  justify-content:space-between;
+  margin-top:5px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+.estimate-results{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:22px;
+}
+
+.estimate-box{
+  padding:13px;
+  border-top:1px solid var(--line);
+}
+
+.estimate-box span{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:4px;
+}
+
+.estimate-box strong{
+  display:block;
+  color:var(--wine);
+  font-size:17px;
+}
+
+.estimate-total{
+  margin-top:13px;
+  padding:17px 15px;
+  background:var(--wine);
+  color:var(--cream2);
+  border-radius:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.estimate-total span{
+  font-size:11px;
+  font-weight:700;
+}
+
+.estimate-total strong{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:27px;
+  white-space:nowrap;
+}
+
+.estimator-note{
+  margin:11px 2px 0;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.45;
+}
+
+
+/* =========================
+   INTRO CALENDRIER
+========================= */
+
 .calendar-intro{
   padding:22px 30px 5px;
 }
@@ -148,6 +302,11 @@ body{padding:12px}
   color:var(--muted);
   font-size:11px;
 }
+
+
+/* =========================
+   CHOIX DU MOIS
+========================= */
 
 .month-selector{
   padding:13px 30px 3px;
@@ -168,6 +327,11 @@ button{
   font-size:13px;
   font-weight:700;
   cursor:pointer;
+  transition:.18s ease;
+}
+
+button:hover{
+  border-color:rgba(91,31,42,.35);
 }
 
 button.active{
@@ -175,6 +339,11 @@ button.active{
   color:var(--cream2);
   border-color:var(--wine);
 }
+
+
+/* =========================
+   CALENDRIER
+========================= */
 
 .wrap{
   padding:16px 24px 26px;
@@ -187,7 +356,9 @@ button.active{
   gap:8px;
 }
 
-.weekdays{margin-bottom:8px}
+.weekdays{
+  margin-bottom:8px;
+}
 
 .weekday{
   text-align:center;
@@ -208,9 +379,12 @@ button.active{
   position:relative;
   transition:.18s ease;
   overflow:hidden;
+
   display:block;
   text-decoration:none;
   color:inherit;
+
+  -webkit-tap-highlight-color:rgba(91,31,42,.08);
 }
 
 .day.available-day{
@@ -224,9 +398,15 @@ button.active{
   box-shadow:0 8px 20px rgba(65,35,39,.08);
 }
 
+.day.available-day:active{
+  transform:scale(.98);
+}
+
 .day.empty{
   background:transparent;
   border:1px dashed rgba(91,31,42,.08);
+  box-shadow:none;
+  transform:none;
 }
 
 .num{
@@ -235,25 +415,46 @@ button.active{
   color:var(--wine);
 }
 
+
+/* =========================
+   STATUT
+========================= */
+
 .status{
   position:absolute;
   left:7px;
   right:7px;
   bottom:8px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   padding:4px 5px;
   border-radius:999px;
+
   font-size:9px;
   font-weight:700;
+  line-height:1;
+
   white-space:nowrap;
+  overflow:hidden;
+}
+
+
+/* DISPONIBLE */
+
+.day.available{
+  background:rgba(255,255,255,.35);
 }
 
 .day.available .status{
   color:var(--wine2);
   background:rgba(122,45,60,.07);
 }
+
+
+/* RÉSERVÉ */
 
 .day.booked{
   background:var(--wine);
@@ -269,6 +470,9 @@ button.active{
   background:rgba(255,255,255,.12);
 }
 
+
+/* INDISPONIBLE */
+
 .day.unavailable{
   background:rgba(185,173,166,.18);
 }
@@ -282,6 +486,11 @@ button.active{
   background:rgba(139,129,124,.10);
 }
 
+
+/* =========================
+   PIED
+========================= */
+
 .footer{
   padding:0 24px 22px;
   color:var(--muted);
@@ -289,11 +498,20 @@ button.active{
   text-align:center;
 }
 
+
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:760px){
 
-  body{padding:4px}
+  body{
+    padding:4px;
+  }
 
-  .shell{border-radius:20px}
+  .shell{
+    border-radius:20px;
+  }
 
   .top{
     padding:21px 18px 19px;
@@ -301,6 +519,7 @@ button.active{
 
   .main-title{
     font-size:clamp(21px,6.3vw,28px);
+    white-space:nowrap;
   }
 
   .concept{
@@ -314,10 +533,12 @@ button.active{
 
   .concept-main-title{
     font-size:25px;
+    margin-bottom:11px;
   }
 
   .concept-text p{
     font-size:12.5px;
+    line-height:1.58;
   }
 
   .concept-details{
@@ -325,6 +546,8 @@ button.active{
     border-top:1px solid var(--line);
     padding-left:0;
     padding-top:12px;
+
+    display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:10px;
   }
@@ -340,6 +563,44 @@ button.active{
 
   .concept-detail small{
     font-size:9px;
+    line-height:1.3;
+  }
+
+  .estimator{
+    padding:20px 18px;
+  }
+
+  .estimator-title{
+    font-size:21px;
+  }
+
+  .estimator-card{
+    padding:16px 13px;
+  }
+
+  .guest-display strong{
+    font-size:27px;
+  }
+
+  .estimate-results{
+    grid-template-columns:1fr 1fr 1fr;
+    gap:3px;
+  }
+
+  .estimate-box{
+    padding:11px 5px;
+  }
+
+  .estimate-box strong{
+    font-size:14px;
+  }
+
+  .estimate-box span{
+    font-size:7.5px;
+  }
+
+  .estimate-total strong{
+    font-size:23px;
   }
 
   .calendar-intro{
@@ -348,6 +609,10 @@ button.active{
 
   .calendar-intro h2{
     font-size:21px;
+  }
+
+  .calendar-intro p{
+    font-size:10px;
   }
 
   .month-selector{
@@ -396,9 +661,28 @@ button.active{
     font-size:clamp(6.5px,1.75vw,8px);
   }
 
+  .footer{
+    padding:0 12px 16px;
+  }
+
 }
 
+
+/* =========================
+   TRÈS PETIT MOBILE
+========================= */
+
 @media(max-width:480px){
+
+  .top{
+    padding-left:14px;
+    padding-right:14px;
+  }
+
+  .main-title{
+    font-size:clamp(19px,5.9vw,25px);
+    white-space:nowrap;
+  }
 
   .weekdays,
   .grid{
@@ -410,10 +694,19 @@ button.active{
     padding:6px;
   }
 
+  .concept-main-title{
+    font-size:23px;
+  }
+
+  .concept-details{
+    grid-template-columns:1fr 1fr 1fr;
+  }
+
   .status{
     left:2px;
     right:2px;
     bottom:4px;
+    padding:3px 1px;
     font-size:clamp(6px,1.8vw,7.5px);
   }
 
@@ -422,15 +715,28 @@ button.active{
 </style>
 </head>
 
+
 <body>
 
 <div class="shell">
 
+
+  <!-- =====================
+       EN-TÊTE
+  ====================== -->
+
   <div class="top">
+
     <h1 class="main-title">
       Rafa Pizza · Réservations
     </h1>
+
   </div>
+
+
+  <!-- =====================
+       EXPÉRIENCE RAFA
+  ====================== -->
 
   <section class="concept">
 
@@ -453,24 +759,51 @@ button.active{
 
       </div>
 
+
       <div class="concept-details">
 
         <div class="concept-detail">
+
           <span>Le menu</span>
-          <strong>4 créations</strong>
-          <small>Un menu unique pour votre soirée</small>
+
+          <strong>
+            4 créations
+          </strong>
+
+          <small>
+            Un menu unique pour votre soirée
+          </small>
+
         </div>
 
+
         <div class="concept-detail">
+
           <span>Le forfait</span>
-          <strong>4 pointes / personne</strong>
-          <small>Portions supplémentaires disponibles</small>
+
+          <strong>
+            4 pointes / personne
+          </strong>
+
+          <small>
+            Portions supplémentaires disponibles
+          </small>
+
         </div>
 
+
         <div class="concept-detail">
+
           <span>Le service</span>
-          <strong>30 $ / personne</strong>
-          <small>+ frais d’épicerie</small>
+
+          <strong>
+            À partir de 20 $ / personne
+          </strong>
+
+          <small>
+            + frais d’événement
+          </small>
+
         </div>
 
       </div>
@@ -478,6 +811,131 @@ button.active{
     </div>
 
   </section>
+
+
+  <!-- =====================
+       ESTIMATEUR DE PRIX
+  ====================== -->
+
+  <section class="estimator">
+
+    <h2 class="estimator-title">
+      Estimateur de prix
+    </h2>
+
+    <p class="estimator-subtitle">
+      Ajustez le nombre d’invités pour obtenir une estimation de votre événement.
+    </p>
+
+    <div class="estimator-card">
+
+      <div class="guest-display">
+
+        <div>
+
+          <span>
+            Votre événement
+          </span>
+
+          <strong>
+            <span id="guestNumber">20</span> invités
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <input
+        id="guestSlider"
+        class="price-slider"
+        type="range"
+        min="10"
+        max="50"
+        value="20"
+        step="1"
+      >
+
+
+      <div class="slider-labels">
+
+        <span>10 invités</span>
+
+        <span>50 invités</span>
+
+      </div>
+
+
+      <div class="estimate-results">
+
+        <div class="estimate-box">
+
+          <span>
+            Prix / personne
+          </span>
+
+          <strong id="personPrice">
+            25 $
+          </strong>
+
+        </div>
+
+
+        <div class="estimate-box">
+
+          <span>
+            Frais d’événement
+          </span>
+
+          <strong id="eventFee">
+            250 $
+          </strong>
+
+        </div>
+
+
+        <div class="estimate-box">
+
+          <span>
+            Invités
+          </span>
+
+          <strong id="guestCountDisplay">
+            20
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="estimate-total">
+
+        <span>
+          Total estimé
+        </span>
+
+        <strong id="estimatedTotal">
+          750 $
+        </strong>
+
+      </div>
+
+
+      <p class="estimator-note">
+        Estimation à titre indicatif. Le prix final peut varier selon le menu,
+        les ingrédients sélectionnés, la localisation et les besoins particuliers
+        de votre événement.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================
+       INTRO CALENDRIER
+  ====================== -->
 
   <div class="calendar-intro">
 
@@ -491,25 +949,45 @@ button.active{
 
   </div>
 
+
+  <!-- =====================
+       CHOIX DU MOIS
+  ====================== -->
+
   <div class="month-selector">
 
     <div class="controls">
 
-      <button type="button" class="active" data-month="8">
+      <button
+        type="button"
+        class="active"
+        data-month="8"
+      >
         Septembre
       </button>
 
-      <button type="button" data-month="9">
+      <button
+        type="button"
+        data-month="9"
+      >
         Octobre
       </button>
 
-      <button type="button" data-month="10">
+      <button
+        type="button"
+        data-month="10"
+      >
         Novembre
       </button>
 
     </div>
 
   </div>
+
+
+  <!-- =====================
+       CALENDRIER
+  ====================== -->
 
   <div class="wrap">
 
@@ -525,24 +1003,38 @@ button.active{
 
     </div>
 
-    <div id="calendarGrid" class="grid"></div>
+
+    <div
+      id="calendarGrid"
+      class="grid"
+    ></div>
 
   </div>
+
 
   <div class="footer">
     Les disponibilités peuvent changer rapidement.
   </div>
 
+
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script>
+
+/* =========================
+   CONFIGURATION
+========================= */
 
 const YEAR = 2026;
 
+
 const SUPABASE_URL =
   "https://jetogsbyptglaihktdel.supabase.co";
+
 
 const SUPABASE_KEY =
   "sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
@@ -573,13 +1065,20 @@ const monthNames = [
 
 let currentMonth = 8;
 
+
 const blockedDates =
   new Map();
 
 
+/* =========================
+   CALENDRIER
+========================= */
+
 function mondayIndex(jsDay){
 
-  return (jsDay + 6) % 7;
+  return (
+    jsDay + 6
+  ) % 7;
 
 }
 
@@ -589,9 +1088,19 @@ function isoDate(month,day){
   return (
     YEAR +
     "-" +
-    String(month + 1).padStart(2,"0") +
+    String(
+      month + 1
+    ).padStart(
+      2,
+      "0"
+    ) +
     "-" +
-    String(day).padStart(2,"0")
+    String(
+      day
+    ).padStart(
+      2,
+      "0"
+    )
   );
 
 }
@@ -605,8 +1114,11 @@ function getStatus(month,day){
       day
     );
 
+
   return (
-    blockedDates.get(date) ||
+    blockedDates.get(
+      date
+    ) ||
     "available"
   );
 
@@ -615,13 +1127,23 @@ function getStatus(month,day){
 
 function getLabel(status){
 
-  if(status === "booked"){
+  if(
+    status === "booked"
+  ){
+
     return "Réservé";
+
   }
 
-  if(status === "unavailable"){
+
+  if(
+    status === "unavailable"
+  ){
+
     return "Indisponible";
+
   }
+
 
   return "Disponible";
 
@@ -632,13 +1154,21 @@ function reservationUrl(day,month){
 
   return (
     "./reserve.html?day=" +
-    encodeURIComponent(day) +
+    encodeURIComponent(
+      day
+    ) +
     "&month=" +
-    encodeURIComponent(month)
+    encodeURIComponent(
+      month
+    )
   );
 
 }
 
+
+/* =========================
+   CHARGER LES RÉSERVATIONS
+========================= */
 
 async function loadReservations(){
 
@@ -679,6 +1209,10 @@ async function loadReservations(){
 
 }
 
+
+/* =========================
+   AFFICHER LE CALENDRIER
+========================= */
 
 function render(month){
 
@@ -774,15 +1308,15 @@ function render(month){
       '<div class="num">' +
       day +
       '</div>' +
-
       '<div class="status">' +
-      getLabel(status) +
+      getLabel(
+        status
+      ) +
       '</div>';
 
 
     if(
-      status ===
-      "available"
+      status === "available"
     ){
 
       cell.href =
@@ -790,6 +1324,17 @@ function render(month){
           day,
           month
         );
+
+
+      cell.setAttribute(
+        "aria-label",
+        "Réserver le " +
+        day +
+        " " +
+        monthNames[month] +
+        " " +
+        YEAR
+      );
 
     }
 
@@ -854,6 +1399,10 @@ function render(month){
 }
 
 
+/* =========================
+   CHANGEMENT DE MOIS
+========================= */
+
 document
   .querySelectorAll(
     "button[data-month]"
@@ -878,6 +1427,10 @@ document
   );
 
 
+/* =========================
+   DÉMARRAGE
+========================= */
+
 async function start(){
 
   await loadReservations();
@@ -889,6 +1442,9 @@ async function start(){
 
 start();
 
+
+/* Vérification lorsque le client
+   revient sur le calendrier */
 
 document.addEventListener(
   "visibilitychange",
@@ -909,6 +1465,202 @@ document.addEventListener(
 
   }
 );
+
+
+/* =========================
+   ESTIMATEUR DE PRIX
+========================= */
+
+const guestSlider =
+  document.getElementById(
+    "guestSlider"
+  );
+
+
+const guestNumber =
+  document.getElementById(
+    "guestNumber"
+  );
+
+
+const guestCountDisplay =
+  document.getElementById(
+    "guestCountDisplay"
+  );
+
+
+const personPrice =
+  document.getElementById(
+    "personPrice"
+  );
+
+
+const eventFee =
+  document.getElementById(
+    "eventFee"
+  );
+
+
+const estimatedTotal =
+  document.getElementById(
+    "estimatedTotal"
+  );
+
+
+function calculateEventPrice(guests){
+
+  let pricePerPerson;
+  let fixedFee;
+
+
+  /* 10 invités */
+
+  if(
+    guests <= 10
+  ){
+
+    pricePerPerson = 29;
+    fixedFee = 175;
+
+  }
+
+
+  /* 11 à 15 invités */
+
+  else if(
+    guests <= 15
+  ){
+
+    pricePerPerson = 27;
+    fixedFee = 200;
+
+  }
+
+
+  /* 16 à 20 invités */
+
+  else if(
+    guests <= 20
+  ){
+
+    pricePerPerson = 25;
+    fixedFee = 250;
+
+  }
+
+
+  /* 21 à 25 invités */
+
+  else if(
+    guests <= 25
+  ){
+
+    pricePerPerson = 23;
+    fixedFee = 300;
+
+  }
+
+
+  /* 26 à 30 invités */
+
+  else if(
+    guests <= 30
+  ){
+
+    pricePerPerson = 22;
+    fixedFee = 350;
+
+  }
+
+
+  /* 31 à 40 invités */
+
+  else if(
+    guests <= 40
+  ){
+
+    pricePerPerson = 21;
+    fixedFee = 400;
+
+  }
+
+
+  /* 41 à 50 invités */
+
+  else{
+
+    pricePerPerson = 20;
+    fixedFee = 500;
+
+  }
+
+
+  const total =
+    (
+      guests *
+      pricePerPerson
+    ) +
+    fixedFee;
+
+
+  return {
+    pricePerPerson,
+    fixedFee,
+    total
+  };
+
+}
+
+
+function updateEstimator(){
+
+  const guests =
+    Number(
+      guestSlider.value
+    );
+
+
+  const pricing =
+    calculateEventPrice(
+      guests
+    );
+
+
+  guestNumber.textContent =
+    guests;
+
+
+  guestCountDisplay.textContent =
+    guests;
+
+
+  personPrice.textContent =
+    pricing.pricePerPerson +
+    " $";
+
+
+  eventFee.textContent =
+    pricing.fixedFee +
+    " $";
+
+
+  estimatedTotal.textContent =
+    pricing.total
+      .toLocaleString(
+        "fr-CA"
+      ) +
+    " $";
+
+}
+
+
+guestSlider.addEventListener(
+  "input",
+  updateEstimator
+);
+
+
+updateEstimator();
 
 </script>
 
