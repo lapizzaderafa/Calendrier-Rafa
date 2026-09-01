@@ -150,7 +150,7 @@ body{
 
 
 /* =========================
-   ESTIMATEUR DE PRIX
+   ESTIMATEUR
 ========================= */
 
 .estimator{
@@ -183,14 +183,11 @@ body{
 }
 
 .guest-display{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  gap:15px;
   margin-bottom:15px;
 }
 
 .guest-display span{
+  display:block;
   color:var(--muted);
   font-size:10px;
   font-weight:800;
@@ -207,6 +204,14 @@ body{
   line-height:1;
 }
 
+.guest-display strong span{
+  display:inline;
+  color:inherit;
+  font:inherit;
+  text-transform:none;
+  letter-spacing:normal;
+}
+
 .price-slider{
   width:100%;
   accent-color:var(--wine);
@@ -214,23 +219,39 @@ body{
 }
 
 .slider-labels{
-  display:flex;
-  justify-content:space-between;
-  margin-top:5px;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  margin-top:6px;
   color:var(--muted);
   font-size:9px;
 }
 
+.slider-labels span:nth-child(1){
+  text-align:left;
+}
+
+.slider-labels span:nth-child(2){
+  text-align:center;
+  color:var(--wine);
+  font-weight:800;
+}
+
+.slider-labels span:nth-child(3){
+  text-align:right;
+}
+
 .estimate-results{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
   margin-top:22px;
 }
 
 .estimate-box{
-  padding:13px;
-  border-top:1px solid var(--line);
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(255,255,255,.38);
 }
 
 .estimate-box span{
@@ -240,43 +261,39 @@ body{
   font-weight:800;
   text-transform:uppercase;
   letter-spacing:.08em;
-  margin-bottom:4px;
+  margin-bottom:5px;
 }
 
 .estimate-box strong{
   display:block;
   color:var(--wine);
-  font-size:17px;
-}
-
-.estimate-total{
-  margin-top:13px;
-  padding:17px 15px;
-  background:var(--wine);
-  color:var(--cream2);
-  border-radius:14px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-}
-
-.estimate-total span{
-  font-size:11px;
-  font-weight:700;
-}
-
-.estimate-total strong{
   font-family:Georgia,"Times New Roman",serif;
-  font-size:27px;
-  white-space:nowrap;
+  font-size:22px;
+  font-weight:600;
 }
 
 .estimator-note{
-  margin:11px 2px 0;
+  margin:13px 2px 0;
   color:var(--muted);
   font-size:9px;
-  line-height:1.45;
+  line-height:1.5;
+}
+
+.large-event-note{
+  display:none;
+  margin-top:12px;
+  padding:10px 12px;
+  background:rgba(91,31,42,.06);
+  border:1px solid var(--line);
+  border-radius:12px;
+  color:var(--wine2);
+  font-size:10px;
+  font-weight:700;
+  line-height:1.4;
+}
+
+.large-event-note.show{
+  display:block;
 }
 
 
@@ -415,11 +432,6 @@ button.active{
   color:var(--wine);
 }
 
-
-/* =========================
-   STATUT
-========================= */
-
 .status{
   position:absolute;
   left:7px;
@@ -441,9 +453,6 @@ button.active{
   overflow:hidden;
 }
 
-
-/* DISPONIBLE */
-
 .day.available{
   background:rgba(255,255,255,.35);
 }
@@ -452,9 +461,6 @@ button.active{
   color:var(--wine2);
   background:rgba(122,45,60,.07);
 }
-
-
-/* RÉSERVÉ */
 
 .day.booked{
   background:var(--wine);
@@ -469,9 +475,6 @@ button.active{
   color:var(--cream2);
   background:rgba(255,255,255,.12);
 }
-
-
-/* INDISPONIBLE */
 
 .day.unavailable{
   background:rgba(185,173,166,.18);
@@ -583,24 +586,20 @@ button.active{
   }
 
   .estimate-results{
-    grid-template-columns:1fr 1fr 1fr;
-    gap:3px;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
   }
 
   .estimate-box{
-    padding:11px 5px;
+    padding:13px 10px;
   }
 
   .estimate-box strong{
-    font-size:14px;
+    font-size:18px;
   }
 
   .estimate-box span{
     font-size:7.5px;
-  }
-
-  .estimate-total strong{
-    font-size:23px;
   }
 
   .calendar-intro{
@@ -667,11 +666,6 @@ button.active{
 
 }
 
-
-/* =========================
-   TRÈS PETIT MOBILE
-========================= */
-
 @media(max-width:480px){
 
   .top{
@@ -721,10 +715,6 @@ button.active{
 <div class="shell">
 
 
-  <!-- =====================
-       EN-TÊTE
-  ====================== -->
-
   <div class="top">
 
     <h1 class="main-title">
@@ -733,10 +723,6 @@ button.active{
 
   </div>
 
-
-  <!-- =====================
-       EXPÉRIENCE RAFA
-  ====================== -->
 
   <section class="concept">
 
@@ -763,47 +749,23 @@ button.active{
       <div class="concept-details">
 
         <div class="concept-detail">
-
           <span>Le menu</span>
-
-          <strong>
-            4 créations
-          </strong>
-
-          <small>
-            Un menu unique pour votre soirée
-          </small>
-
+          <strong>4 créations</strong>
+          <small>Un menu unique pour votre soirée</small>
         </div>
 
 
         <div class="concept-detail">
-
           <span>Le forfait</span>
-
-          <strong>
-            4 pointes / personne
-          </strong>
-
-          <small>
-            Portions supplémentaires disponibles
-          </small>
-
+          <strong>4 pointes / personne</strong>
+          <small>Portions supplémentaires disponibles</small>
         </div>
 
 
         <div class="concept-detail">
-
           <span>Le service</span>
-
-          <strong>
-            À partir de 20 $ / personne
-          </strong>
-
-          <small>
-            + frais d’événement
-          </small>
-
+          <strong>À partir de 18 $ / personne</strong>
+          <small>+ frais de service & installation</small>
         </div>
 
       </div>
@@ -814,7 +776,7 @@ button.active{
 
 
   <!-- =====================
-       ESTIMATEUR DE PRIX
+       ESTIMATEUR
   ====================== -->
 
   <section class="estimator">
@@ -827,21 +789,19 @@ button.active{
       Ajustez le nombre d’invités pour obtenir une estimation de votre événement.
     </p>
 
+
     <div class="estimator-card">
+
 
       <div class="guest-display">
 
-        <div>
+        <span>
+          Votre événement
+        </span>
 
-          <span>
-            Votre événement
-          </span>
-
-          <strong>
-            <span id="guestNumber">20</span> invités
-          </strong>
-
-        </div>
+        <strong>
+          <span id="guestNumber">20</span> invités
+        </strong>
 
       </div>
 
@@ -850,8 +810,8 @@ button.active{
         id="guestSlider"
         class="price-slider"
         type="range"
-        min="10"
-        max="50"
+        min="1"
+        max="100"
         value="20"
         step="1"
       >
@@ -859,9 +819,17 @@ button.active{
 
       <div class="slider-labels">
 
-        <span>10 invités</span>
+        <span>
+          1 invité
+        </span>
 
-        <span>50 invités</span>
+        <span>
+          50+
+        </span>
+
+        <span>
+          100 invités
+        </span>
 
       </div>
 
@@ -884,7 +852,7 @@ button.active{
         <div class="estimate-box">
 
           <span>
-            Frais d’événement
+            Frais de service & installation
           </span>
 
           <strong id="eventFee">
@@ -893,39 +861,23 @@ button.active{
 
         </div>
 
-
-        <div class="estimate-box">
-
-          <span>
-            Invités
-          </span>
-
-          <strong id="guestCountDisplay">
-            20
-          </strong>
-
-        </div>
-
       </div>
 
 
-      <div class="estimate-total">
-
-        <span>
-          Total estimé
-        </span>
-
-        <strong id="estimatedTotal">
-          750 $
-        </strong>
-
+      <div
+        id="largeEventNote"
+        class="large-event-note"
+      >
+        Événement 50+ — tarification adaptée automatiquement aux événements de grande taille.
       </div>
 
 
-      <p class="estimator-note">
+      <p
+        class="estimator-note"
+        id="estimatorNote"
+      >
         Estimation à titre indicatif. Le prix final peut varier selon le menu,
-        les ingrédients sélectionnés, la localisation et les besoins particuliers
-        de votre événement.
+        la localisation et les besoins particuliers de votre événement.
       </p>
 
     </div>
@@ -934,7 +886,7 @@ button.active{
 
 
   <!-- =====================
-       INTRO CALENDRIER
+       CALENDRIER
   ====================== -->
 
   <div class="calendar-intro">
@@ -949,10 +901,6 @@ button.active{
 
   </div>
 
-
-  <!-- =====================
-       CHOIX DU MOIS
-  ====================== -->
 
   <div class="month-selector">
 
@@ -984,10 +932,6 @@ button.active{
 
   </div>
 
-
-  <!-- =====================
-       CALENDRIER
-  ====================== -->
 
   <div class="wrap">
 
@@ -1130,18 +1074,14 @@ function getLabel(status){
   if(
     status === "booked"
   ){
-
     return "Réservé";
-
   }
 
 
   if(
     status === "unavailable"
   ){
-
     return "Indisponible";
-
   }
 
 
@@ -1167,7 +1107,7 @@ function reservationUrl(day,month){
 
 
 /* =========================
-   CHARGER LES RÉSERVATIONS
+   CHARGER SUPABASE
 ========================= */
 
 async function loadReservations(){
@@ -1211,7 +1151,7 @@ async function loadReservations(){
 
 
 /* =========================
-   AFFICHER LE CALENDRIER
+   AFFICHER CALENDRIER
 ========================= */
 
 function render(month){
@@ -1308,6 +1248,7 @@ function render(month){
       '<div class="num">' +
       day +
       '</div>' +
+
       '<div class="status">' +
       getLabel(
         status
@@ -1400,7 +1341,7 @@ function render(month){
 
 
 /* =========================
-   CHANGEMENT DE MOIS
+   CHANGER DE MOIS
 ========================= */
 
 document
@@ -1443,9 +1384,6 @@ async function start(){
 start();
 
 
-/* Vérification lorsque le client
-   revient sur le calendrier */
-
 document.addEventListener(
   "visibilitychange",
   async () => {
@@ -1468,7 +1406,7 @@ document.addEventListener(
 
 
 /* =========================
-   ESTIMATEUR DE PRIX
+   ESTIMATEUR
 ========================= */
 
 const guestSlider =
@@ -1480,12 +1418,6 @@ const guestSlider =
 const guestNumber =
   document.getElementById(
     "guestNumber"
-  );
-
-
-const guestCountDisplay =
-  document.getElementById(
-    "guestCountDisplay"
   );
 
 
@@ -1501,116 +1433,172 @@ const eventFee =
   );
 
 
-const estimatedTotal =
+const estimatorNote =
   document.getElementById(
-    "estimatedTotal"
+    "estimatorNote"
   );
 
 
-function calculateEventPrice(guests){
+const largeEventNote =
+  document.getElementById(
+    "largeEventNote"
+  );
+
+
+function calculateEventPrice(
+  guests
+){
 
   let pricePerPerson;
   let fixedFee;
 
 
-  /* 10 invités */
+  /* 1 à 10 */
 
   if(
     guests <= 10
   ){
 
-    pricePerPerson = 29;
-    fixedFee = 175;
+    pricePerPerson =
+      29;
+
+    fixedFee =
+      175;
 
   }
 
 
-  /* 11 à 15 invités */
+  /* 11 à 15 */
 
   else if(
     guests <= 15
   ){
 
-    pricePerPerson = 27;
-    fixedFee = 200;
+    pricePerPerson =
+      27;
+
+    fixedFee =
+      200;
 
   }
 
 
-  /* 16 à 20 invités */
+  /* 16 à 20 */
 
   else if(
     guests <= 20
   ){
 
-    pricePerPerson = 25;
-    fixedFee = 250;
+    pricePerPerson =
+      25;
+
+    fixedFee =
+      250;
 
   }
 
 
-  /* 21 à 25 invités */
+  /* 21 à 25 */
 
   else if(
     guests <= 25
   ){
 
-    pricePerPerson = 23;
-    fixedFee = 300;
+    pricePerPerson =
+      23;
+
+    fixedFee =
+      300;
 
   }
 
 
-  /* 26 à 30 invités */
+  /* 26 à 30 */
 
   else if(
     guests <= 30
   ){
 
-    pricePerPerson = 22;
-    fixedFee = 350;
+    pricePerPerson =
+      22;
+
+    fixedFee =
+      350;
 
   }
 
 
-  /* 31 à 40 invités */
+  /* 31 à 40 */
 
   else if(
     guests <= 40
   ){
 
-    pricePerPerson = 21;
-    fixedFee = 400;
+    pricePerPerson =
+      21;
+
+    fixedFee =
+      400;
 
   }
 
 
-  /* 41 à 50 invités */
+  /* 41 à 50 */
+
+  else if(
+    guests <= 50
+  ){
+
+    pricePerPerson =
+      20;
+
+    fixedFee =
+      500;
+
+  }
+
+
+  /* 51 à 75 */
+
+  else if(
+    guests <= 75
+  ){
+
+    pricePerPerson =
+      19;
+
+    fixedFee =
+      600;
+
+  }
+
+
+  /* 76 à 100 */
 
   else{
 
-    pricePerPerson = 20;
-    fixedFee = 500;
+    pricePerPerson =
+      18;
+
+    fixedFee =
+      750;
 
   }
 
 
-  const total =
-    (
-      guests *
-      pricePerPerson
-    ) +
-    fixedFee;
-
-
   return {
+
     pricePerPerson,
-    fixedFee,
-    total
+    fixedFee
+
   };
 
 }
 
+
+/* =========================
+   METTRE À JOUR ESTIMATEUR
+========================= */
 
 function updateEstimator(){
 
@@ -1630,10 +1618,6 @@ function updateEstimator(){
     guests;
 
 
-  guestCountDisplay.textContent =
-    guests;
-
-
   personPrice.textContent =
     pricing.pricePerPerson +
     " $";
@@ -1644,12 +1628,40 @@ function updateEstimator(){
     " $";
 
 
-  estimatedTotal.textContent =
-    pricing.total
-      .toLocaleString(
-        "fr-CA"
-      ) +
-    " $";
+  if(
+    guests > 50
+  ){
+
+    largeEventNote.classList.add(
+      "show"
+    );
+
+  }
+
+  else{
+
+    largeEventNote.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  if(
+    guests < 10
+  ){
+
+    estimatorNote.textContent =
+      "Un minimum de facturation s’applique aux petits événements. Estimation à titre indicatif. Le prix final peut varier selon le menu, la localisation et les besoins particuliers de votre événement.";
+
+  }
+
+  else{
+
+    estimatorNote.textContent =
+      "Estimation à titre indicatif. Le prix final peut varier selon le menu, les ingrédients sélectionnés, la localisation et les besoins particuliers de votre événement.";
+
+  }
 
 }
 
