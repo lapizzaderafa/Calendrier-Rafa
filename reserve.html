@@ -385,6 +385,7 @@ textarea{
             <input
               id="fullName"
               type="text"
+              autocomplete="name"
               required
             >
 
@@ -402,6 +403,7 @@ textarea{
             <input
               id="email"
               type="email"
+              autocomplete="email"
               required
             >
 
@@ -419,6 +421,7 @@ textarea{
             <input
               id="phone"
               type="tel"
+              autocomplete="tel"
               required
             >
 
@@ -455,6 +458,7 @@ textarea{
             <input
               id="city"
               type="text"
+              autocomplete="address-level2"
               required
             >
 
@@ -564,21 +568,17 @@ textarea{
 
 const YEAR = 2026;
 
-
 const SUPABASE_URL =
   "https://jetogsbyptglaihktdel.supabase.co";
 
-
 const SUPABASE_KEY =
   "sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
-
 
 const supabaseClient =
   supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
-
 
 const monthNames = [
   "Janvier",
@@ -605,36 +605,30 @@ const params =
     window.location.search
   );
 
-
 const day =
   Number(
     params.get("day")
   );
-
 
 const month =
   Number(
     params.get("month")
   );
 
-
 const dateTitle =
   document.getElementById(
     "dateTitle"
   );
-
 
 const form =
   document.getElementById(
     "reservationForm"
   );
 
-
 const submitButton =
   document.getElementById(
     "submitButton"
   );
-
 
 const errorMessage =
   document.getElementById(
@@ -670,6 +664,23 @@ function isoDate(){
 
 
 /* =========================
+   DATE EN FRANÇAIS
+========================= */
+
+function formattedDate(){
+
+  return (
+    day +
+    " " +
+    monthNames[month] +
+    " " +
+    YEAR
+  );
+
+}
+
+
+/* =========================
    VALIDER LA DATE
 ========================= */
 
@@ -684,7 +695,6 @@ function validDate(){
 
   }
 
-
   if(
     ![8,9,10].includes(
       month
@@ -695,14 +705,12 @@ function validDate(){
 
   }
 
-
   const maxDay =
     new Date(
       YEAR,
       month + 1,
       0
     ).getDate();
-
 
   return (
     day >= 1 &&
@@ -741,27 +749,22 @@ async function checkAvailability(){
       "get_calendar_blocks"
     );
 
-
   if(error){
 
     console.error(
       error
     );
 
-
     showError(
       "Impossible de vérifier cette date pour le moment."
     );
 
-
     form.style.display =
       "none";
-
 
     return;
 
   }
-
 
   const taken =
     (data || []).some(
@@ -770,13 +773,11 @@ async function checkAvailability(){
         isoDate()
     );
 
-
   if(taken){
 
     showError(
       "Cette date vient malheureusement d’être réservée. Retournez au calendrier pour choisir une autre date."
     );
-
 
     form.style.display =
       "none";
@@ -799,30 +800,126 @@ async function initialize(){
     dateTitle.textContent =
       "Date invalide";
 
-
     showError(
       "Retournez au calendrier et choisissez une date disponible."
     );
 
-
     form.style.display =
       "none";
-
 
     return;
 
   }
 
-
   dateTitle.textContent =
-    day +
-    " " +
-    monthNames[month] +
-    " " +
-    YEAR;
-
+    formattedDate();
 
   await checkAvailability();
+
+}
+
+
+/* =========================
+   COURRIEL À RAFA
+========================= */
+
+async function sendReservationEmail(
+  payload
+){
+
+  const emailPayload = {
+
+    _subject:
+      "🍕 Nouvelle réservation Rafa Pizza — " +
+      formattedDate(),
+
+    _template:
+      "table",
+
+    _replyto:
+      payload.p_email,
+
+    _url:
+      window.location.href,
+
+    email:
+      payload.p_email,
+
+    "Date de l'événement":
+      formattedDate(),
+
+    "Nom du client":
+      payload.p_full_name,
+
+    "Courriel du client":
+      payload.p_email,
+
+    "Téléphone":
+      payload.p_phone,
+
+    "Nombre de personnes":
+      payload.p_guest_count,
+
+    "Ville / secteur":
+      payload.p_city,
+
+    "Heure souhaitée":
+      payload.p_preferred_time,
+
+    "Notes / préférences":
+      payload.p_message ||
+      "Aucune note"
+
+  };
+
+
+  const response =
+    await fetch(
+      "https://formsubmit.co/ajax/lapizzaderafa@gmail.com",
+      {
+
+        method:
+          "POST",
+
+        headers:{
+          "Content-Type":
+            "application/json",
+
+          "Accept":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify(
+            emailPayload
+          )
+
+      }
+    );
+
+
+  if(
+    !response.ok
+  ){
+
+    throw new Error(
+      "FormSubmit n'a pas accepté la notification."
+    );
+
+  }
+
+
+  const result =
+    await response.json();
+
+
+  console.log(
+    "Notification Rafa envoyée",
+    result
+  );
+
+
+  return result;
 
 }
 
@@ -934,6 +1031,10 @@ form.addEventListener(
     try{
 
 
+      /* =========================
+         1. ENREGISTRER SUPABASE
+      ========================= */
+
       const {
         data,
         error
@@ -952,13 +1053,50 @@ form.addEventListener(
 
 
       /* =========================
-         RÉSERVATION RÉUSSIE
+         2. RÉSERVATION RÉUSSIE
       ========================= */
 
       if(
         data &&
         data.ok === true
       ){
+
+
+        /* =========================
+           3. ENVOYER LE COURRIEL
+        ========================= */
+
+        try{
+
+          await sendReservationEmail(
+            payload
+          );
+
+        }
+        catch(emailError){
+
+          /*
+            IMPORTANT :
+            La réservation est déjà
+            enregistrée dans Supabase.
+
+            On ne demande donc PAS
+            au client de recommencer,
+            sinon il créerait une
+            tentative en double.
+          */
+
+          console.error(
+            "Réservation enregistrée, mais notification courriel échouée :",
+            emailError
+          );
+
+        }
+
+
+        /* =========================
+           4. CONFIRMATION CLIENT
+        ========================= */
 
         document
           .getElementById(
@@ -985,12 +1123,10 @@ form.addEventListener(
           )
           .textContent =
           "Votre demande pour le " +
-          day +
-          " " +
-          monthNames[month] +
-          " " +
-          YEAR +
-          " a bien été enregistrée. Cette date est maintenant automatiquement bloquée dans le calendrier. Rafa vous contactera pour confirmer les détails.";
+          formattedDate() +
+          " a bien été enregistrée. " +
+          "Cette date est maintenant automatiquement bloquée dans le calendrier. " +
+          "Rafa vous contactera pour confirmer les détails.";
 
 
         return;
@@ -1012,10 +1148,8 @@ form.addEventListener(
           "Oups — quelqu’un vient de réserver cette date avant vous. Aucun double booking n’a été créé."
         );
 
-
         submitButton.textContent =
           "Date déjà réservée";
-
 
         return;
 
@@ -1058,7 +1192,6 @@ form.addEventListener(
           "Soumettre ma réservation";
 
       }
-
 
     }
 
