@@ -10,7 +10,6 @@
   --cream:#F6F0E7;
   --cream2:#FBF8F3;
   --wine:#5B1F2A;
-  --wine2:#7A2D3C;
   --ink:#2B2524;
   --muted:#8A7D77;
   --line:rgba(91,31,42,.16);
@@ -272,15 +271,17 @@ body{
   padding:12px 0;
 }
 
+/* CONNEXION */
+
 .login-wrap{
-  min-height:80vh;
+  min-height:90vh;
   display:grid;
   place-items:center;
   padding:20px;
 }
 
 .login{
-  max-width:460px;
+  width:min(430px,100%);
   background:var(--cream);
   border:1px solid var(--line);
   border-radius:28px;
@@ -293,6 +294,7 @@ body{
   font-family:Georgia,"Times New Roman",serif;
   color:var(--wine);
   margin:0 0 8px;
+  font-size:36px;
 }
 
 .login p{
@@ -301,11 +303,40 @@ body{
   line-height:1.5;
 }
 
+.login-email{
+  font-size:12px;
+  font-weight:800;
+  color:var(--wine);
+  margin:18px 0 7px;
+}
+
+.login input{
+  width:100%;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:14px;
+  padding:14px;
+  font-size:16px;
+  margin-bottom:10px;
+}
+
+.login .btn{
+  width:100%;
+  margin-top:4px;
+}
+
+.login .secondary{
+  margin-top:10px;
+}
+
 .notice{
   font-size:12px;
   margin-top:12px;
   color:var(--muted);
+  line-height:1.5;
 }
+
+/* MODAL */
 
 .modal-back{
   position:fixed;
@@ -446,32 +477,87 @@ body{
 
 <body>
 
+<!-- CONNEXION -->
+
 <div id="loginWrap" class="login-wrap">
+
   <div class="login">
+
     <h1>Rafa Pizza</h1>
-    <p>Tableau de bord privé des réservations.</p>
-    <button id="loginBtn" class="btn primary">
-      Recevoir mon lien de connexion
+
+    <p>
+      Tableau de bord privé des réservations.
+    </p>
+
+    <div class="login-email">
+      lapizzaderafa@gmail.com
+    </div>
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Mot de passe"
+      autocomplete="current-password"
+    >
+
+    <button
+      id="loginBtn"
+      class="btn primary"
+    >
+      Se connecter
     </button>
-    <div id="loginMsg" class="notice"></div>
+
+    <button
+      id="forgotBtn"
+      class="btn secondary"
+    >
+      Créer / réinitialiser mon mot de passe
+    </button>
+
+    <div
+      id="loginMsg"
+      class="notice"
+    ></div>
+
   </div>
+
 </div>
+
+
+<!-- APPLICATION -->
 
 <div id="app" class="app hidden">
 
   <div class="topbar">
+
     <div class="brand">
       <h1>Rafa · Réservations</h1>
-      <p>Un seul endroit pour toutes tes dates et tes clients.</p>
+      <p>
+        Un seul endroit pour toutes tes dates et tes clients.
+      </p>
     </div>
 
     <div>
-      <button id="addBtn" class="btn primary">+ Ajouter</button>
-      <button id="logoutBtn" class="btn secondary">Déconnexion</button>
+      <button
+        id="addBtn"
+        class="btn primary"
+      >
+        + Ajouter
+      </button>
+
+      <button
+        id="logoutBtn"
+        class="btn secondary"
+      >
+        Déconnexion
+      </button>
     </div>
+
   </div>
 
+
   <div class="stats">
+
     <div class="stat">
       <div id="pendingStat" class="n">0</div>
       <div class="t">Demandes en attente</div>
@@ -486,25 +572,49 @@ body{
       <div id="monthStat" class="n">0</div>
       <div class="t">Événements ce mois-ci</div>
     </div>
+
   </div>
+
 
   <div class="grid">
 
     <section class="panel">
+
       <div class="panel-head">
+
         <h2>Calendrier</h2>
-        <button id="todayBtn" class="btn secondary small">
+
+        <button
+          id="todayBtn"
+          class="btn secondary small"
+        >
           Aujourd’hui
         </button>
+
       </div>
 
       <div class="panel-body">
 
         <div class="calendar-head">
-          <button id="prevMonth" class="navbtn">‹</button>
+
+          <button
+            id="prevMonth"
+            class="navbtn"
+          >
+            ‹
+          </button>
+
           <h3 id="monthTitle"></h3>
-          <button id="nextMonth" class="navbtn">›</button>
+
+          <button
+            id="nextMonth"
+            class="navbtn"
+          >
+            ›
+          </button>
+
         </div>
+
 
         <div class="week">
           <div>Lun</div>
@@ -516,83 +626,162 @@ body{
           <div>Dim</div>
         </div>
 
-        <div id="days" class="days"></div>
+        <div
+          id="days"
+          class="days"
+        ></div>
+
 
         <div class="legend">
-          <span><span class="dot" style="background:#D9942B"></span>En attente</span>
-          <span><span class="dot" style="background:#447A54"></span>Confirmé</span>
-          <span><span class="dot" style="background:#4B4B4B"></span>Bloqué</span>
+
+          <span>
+            <span
+              class="dot"
+              style="background:#D9942B"
+            ></span>
+            En attente
+          </span>
+
+          <span>
+            <span
+              class="dot"
+              style="background:#447A54"
+            ></span>
+            Confirmé
+          </span>
+
+          <span>
+            <span
+              class="dot"
+              style="background:#4B4B4B"
+            ></span>
+            Bloqué
+          </span>
+
         </div>
 
       </div>
+
     </section>
+
 
     <div>
 
       <section class="panel">
+
         <div class="panel-head">
           <h2>À traiter</h2>
         </div>
 
         <div class="panel-body">
-          <div id="pendingList" class="list"></div>
+          <div
+            id="pendingList"
+            class="list"
+          ></div>
         </div>
+
       </section>
 
       <br>
 
       <section class="panel">
+
         <div class="panel-head">
           <h2>Prochains événements</h2>
         </div>
 
         <div class="panel-body">
-          <div id="upcomingList" class="list"></div>
+          <div
+            id="upcomingList"
+            class="list"
+          ></div>
         </div>
+
       </section>
 
     </div>
 
   </div>
+
 </div>
 
-<div id="modalBack" class="modal-back hidden">
+
+<!-- FICHE ÉVÉNEMENT -->
+
+<div
+  id="modalBack"
+  class="modal-back hidden"
+>
 
   <div class="modal">
 
     <div class="modal-head">
-      <h2 id="modalTitle">Événement</h2>
-      <button id="closeModal" class="x">×</button>
+
+      <h2 id="modalTitle">
+        Événement
+      </h2>
+
+      <button
+        id="closeModal"
+        class="x"
+      >
+        ×
+      </button>
+
     </div>
 
-    <form id="eventForm" class="form">
 
-      <input type="hidden" id="rid">
+    <form
+      id="eventForm"
+      class="form"
+    >
 
       <div class="form-grid">
 
         <div class="field">
           <label>Date *</label>
-          <input id="eventDate" type="date" required>
+          <input
+            id="eventDate"
+            type="date"
+            required
+          >
         </div>
 
         <div class="field">
+
           <label>Statut</label>
+
           <select id="status">
-            <option value="pending">En attente</option>
-            <option value="confirmed">Confirmé</option>
-            <option value="unavailable">Bloqué / indisponible</option>
-            <option value="cancelled">Refusé / annulé</option>
+            <option value="pending">
+              En attente
+            </option>
+            <option value="confirmed">
+              Confirmé
+            </option>
+            <option value="unavailable">
+              Bloqué / indisponible
+            </option>
+            <option value="cancelled">
+              Refusé / annulé
+            </option>
           </select>
+
         </div>
+
 
         <div class="field">
           <label>Nom</label>
-          <input id="fullName" type="text">
+          <input
+            id="fullName"
+            type="text"
+          >
         </div>
 
+
         <div class="field">
+
           <label>Source</label>
+
           <select id="source">
             <option value="site">Site web</option>
             <option value="instagram">Instagram</option>
@@ -602,83 +791,169 @@ body{
             <option value="manual">Ajout manuel</option>
             <option value="other">Autre</option>
           </select>
+
         </div>
+
 
         <div class="field">
           <label>Courriel</label>
-          <input id="email" type="email">
+          <input
+            id="email"
+            type="email"
+          >
         </div>
+
 
         <div class="field">
           <label>Téléphone</label>
-          <input id="phone" type="tel">
+          <input
+            id="phone"
+            type="tel"
+          >
         </div>
+
 
         <div class="field">
           <label>Nombre de personnes</label>
-          <input id="guestCount" type="number" min="1" max="500">
+          <input
+            id="guestCount"
+            type="number"
+            min="1"
+            max="500"
+          >
         </div>
+
 
         <div class="field">
           <label>Heure</label>
-          <input id="preferredTime" type="time">
+          <input
+            id="preferredTime"
+            type="time"
+          >
         </div>
+
 
         <div class="field">
           <label>Ville / secteur</label>
-          <input id="city" type="text">
+          <input
+            id="city"
+            type="text"
+          >
         </div>
+
 
         <div class="field">
           <label>Adresse</label>
-          <input id="eventAddress" type="text">
+          <input
+            id="eventAddress"
+            type="text"
+          >
         </div>
+
 
         <div class="field">
           <label>Prix prévu ($)</label>
-          <input id="quotedPrice" type="number" step="0.01" min="0">
+          <input
+            id="quotedPrice"
+            type="number"
+            step="0.01"
+            min="0"
+          >
         </div>
+
 
         <div class="field">
           <label>Dépôt ($)</label>
-          <input id="depositAmount" type="number" step="0.01" min="0">
+          <input
+            id="depositAmount"
+            type="number"
+            step="0.01"
+            min="0"
+          >
         </div>
 
+
         <div class="field full">
-          <label>Message / préférences du client</label>
+
+          <label>
+            Message / préférences du client
+          </label>
+
           <textarea id="message"></textarea>
+
         </div>
 
+
         <div class="field full">
-          <label>Notes internes</label>
+
+          <label>
+            Notes internes
+          </label>
+
           <textarea id="internalNotes"></textarea>
+
         </div>
 
       </div>
 
+
       <div class="checks">
+
         <label>
-          <input id="depositReceived" type="checkbox">
+          <input
+            id="depositReceived"
+            type="checkbox"
+          >
           Dépôt reçu
         </label>
 
         <label>
-          <input id="menuSent" type="checkbox">
+          <input
+            id="menuSent"
+            type="checkbox"
+          >
           Menu envoyé
         </label>
+
       </div>
+
 
       <div id="formMsg"></div>
 
+
       <div class="actions">
-        <button class="btn primary" type="submit">Enregistrer</button>
-        <button id="approveBtn" class="btn ok" type="button">Accepter + courriel</button>
-        <button id="refuseBtn" class="btn danger" type="button">Refuser</button>
+
+        <button
+          class="btn primary"
+          type="submit"
+        >
+          Enregistrer
+        </button>
+
+        <button
+          id="approveBtn"
+          class="btn ok"
+          type="button"
+        >
+          Accepter + courriel
+        </button>
+
+        <button
+          id="refuseBtn"
+          class="btn danger"
+          type="button"
+        >
+          Refuser
+        </button>
+
       </div>
 
     </form>
+
   </div>
+
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -693,14 +968,20 @@ const SUPABASE_KEY =
 const ADMIN_EMAIL =
 'lapizzaderafa@gmail.com';
 
+const ADMIN_URL =
+'https://lapizzaderafa.github.io/Calendrier-Rafa/admin.html';
+
+
 const db =
 supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
 
+
 const $ = id =>
 document.getElementById(id);
+
 
 let reservations = [];
 let editing = null;
@@ -708,29 +989,26 @@ let editing = null;
 let viewDate = new Date();
 viewDate.setDate(1);
 
+
 const monthNames = [
-  'Janvier','Février','Mars','Avril',
-  'Mai','Juin','Juillet','Août',
-  'Septembre','Octobre','Novembre','Décembre'
+  'Janvier',
+  'Février',
+  'Mars',
+  'Avril',
+  'Mai',
+  'Juin',
+  'Juillet',
+  'Août',
+  'Septembre',
+  'Octobre',
+  'Novembre',
+  'Décembre'
 ];
 
-const active = r =>
-['pending','confirmed','unavailable']
-.includes(r.status);
 
-function fmtDate(d){
-  return new Intl.DateTimeFormat(
-    'fr-CA',
-    {
-      weekday:'short',
-      day:'numeric',
-      month:'short',
-      year:'numeric'
-    }
-  ).format(
-    new Date(d+'T12:00:00')
-  );
-}
+/* =========================
+   CONNEXION
+========================= */
 
 async function sessionGate(){
 
@@ -742,81 +1020,253 @@ async function sessionGate(){
   if(
     session &&
     (session.user.email || '')
-    .toLowerCase() === ADMIN_EMAIL
+      .toLowerCase() ===
+      ADMIN_EMAIL.toLowerCase()
   ){
 
-    $('loginWrap').classList.add('hidden');
-    $('app').classList.remove('hidden');
+    $('loginWrap')
+      .classList.add('hidden');
+
+    $('app')
+      .classList.remove('hidden');
 
     await loadData();
 
   }else{
 
-    $('loginWrap').classList.remove('hidden');
-    $('app').classList.add('hidden');
+    $('loginWrap')
+      .classList.remove('hidden');
+
+    $('app')
+      .classList.add('hidden');
 
   }
+
 }
+
 
 $('loginBtn').onclick =
 async () => {
 
+  const password =
+  $('password').value;
+
+  if(!password){
+
+    $('loginMsg').textContent =
+    'Entre ton mot de passe.';
+
+    return;
+  }
+
   $('loginMsg').textContent =
-  'Envoi du lien…';
+  'Connexion…';
 
   const {error} =
-  await db.auth.signInWithOtp({
+  await db.auth.signInWithPassword({
 
     email:ADMIN_EMAIL,
-
-    options:{
-      emailRedirectTo:
-      location.origin + location.pathname,
-      shouldCreateUser:true
-    }
+    password:password
 
   });
+
+  if(error){
+
+    $('loginMsg').textContent =
+    'Mot de passe incorrect ou non configuré.';
+
+    return;
+  }
+
+  $('loginMsg').textContent =
+  'Connexion réussie.';
+
+  await sessionGate();
+
+};
+
+
+$('password')
+.addEventListener(
+  'keydown',
+  e => {
+
+    if(e.key === 'Enter'){
+      $('loginBtn').click();
+    }
+
+  }
+);
+
+
+$('forgotBtn').onclick =
+async () => {
+
+  $('loginMsg').textContent =
+  'Envoi du courriel…';
+
+  const {error} =
+  await db.auth.resetPasswordForEmail(
+    ADMIN_EMAIL,
+    {
+      redirectTo:ADMIN_URL
+    }
+  );
 
   $('loginMsg').textContent =
   error
     ? error.message
-    : 'Lien envoyé à ' +
-      ADMIN_EMAIL +
-      '. Ouvre-le pour te connecter.';
+    : 'Courriel envoyé. Ouvre le lien pour choisir ton nouveau mot de passe.';
+
 };
+
 
 $('logoutBtn').onclick =
 async () => {
 
   await db.auth.signOut();
-  location.reload();
+
+  location.href =
+  ADMIN_URL;
 
 };
+
+
+/* =========================
+   RÉCUPÉRATION MOT DE PASSE
+========================= */
+
+let recoveryHandled = false;
+
+db.auth.onAuthStateChange(
+  async (event,session) => {
+
+    if(
+      event === 'PASSWORD_RECOVERY' &&
+      !recoveryHandled
+    ){
+
+      recoveryHandled = true;
+
+      const newPassword =
+      prompt(
+        'Choisis ton nouveau mot de passe Rafa (minimum 8 caractères) :'
+      );
+
+      if(!newPassword){
+
+        alert(
+          'Aucun mot de passe enregistré.'
+        );
+
+        return;
+      }
+
+      if(newPassword.length < 8){
+
+        alert(
+          'Ton mot de passe doit contenir au moins 8 caractères.'
+        );
+
+        recoveryHandled = false;
+
+        return;
+      }
+
+      const {error} =
+      await db.auth.updateUser({
+        password:newPassword
+      });
+
+      if(error){
+
+        alert(
+          'Erreur : ' +
+          error.message
+        );
+
+        recoveryHandled = false;
+
+        return;
+      }
+
+      alert(
+        'Mot de passe enregistré ✅'
+      );
+
+      history.replaceState(
+        {},
+        document.title,
+        ADMIN_URL
+      );
+
+      await sessionGate();
+
+    }
+
+  }
+);
+
+
+/* =========================
+   DONNÉES
+========================= */
+
+const active = r =>
+[
+  'pending',
+  'confirmed',
+  'unavailable'
+].includes(r.status);
+
+
+function fmtDate(d){
+
+  return new Intl.DateTimeFormat(
+    'fr-CA',
+    {
+      weekday:'short',
+      day:'numeric',
+      month:'short',
+      year:'numeric'
+    }
+  ).format(
+    new Date(
+      d + 'T12:00:00'
+    )
+  );
+
+}
+
 
 async function loadData(){
 
   const {data,error} =
   await db
-  .from('reservations')
-  .select('*')
-  .order('event_date',{
-    ascending:true
-  });
+    .from('reservations')
+    .select('*')
+    .order(
+      'event_date',
+      {ascending:true}
+    );
 
   if(error){
 
     alert(
-      'Impossible de charger les réservations: ' +
+      'Impossible de charger les réservations : ' +
       error.message
     );
 
     return;
   }
 
-  reservations = data || [];
+  reservations =
+  data || [];
 
   renderAll();
+
 }
+
 
 function renderAll(){
 
@@ -826,64 +1276,112 @@ function renderAll(){
 
 }
 
+
+/* =========================
+   STATISTIQUES
+========================= */
+
 function renderStats(){
 
   const today =
   new Date()
-  .toISOString()
-  .slice(0,10);
+    .toISOString()
+    .slice(0,10);
+
 
   $('pendingStat').textContent =
   reservations.filter(
-    r => r.status === 'pending'
+    r =>
+    r.status === 'pending'
   ).length;
+
 
   $('confirmedStat').textContent =
   reservations.filter(
     r =>
-      r.status === 'confirmed' &&
-      r.event_date >= today
+    r.status === 'confirmed' &&
+    r.event_date >= today
   ).length;
 
-  const y = viewDate.getFullYear();
-  const m = viewDate.getMonth()+1;
+
+  const y =
+  viewDate.getFullYear();
+
+  const m =
+  viewDate.getMonth()+1;
+
 
   $('monthStat').textContent =
   reservations.filter(
     r =>
-      active(r) &&
-      Number(r.event_date.slice(0,4)) === y &&
-      Number(r.event_date.slice(5,7)) === m
+    active(r) &&
+    Number(
+      r.event_date.slice(0,4)
+    ) === y &&
+    Number(
+      r.event_date.slice(5,7)
+    ) === m
   ).length;
+
 }
+
+
+/* =========================
+   CALENDRIER
+========================= */
 
 function renderCalendar(){
 
-  const y = viewDate.getFullYear();
-  const m = viewDate.getMonth();
+  const y =
+  viewDate.getFullYear();
+
+  const m =
+  viewDate.getMonth();
+
 
   $('monthTitle').textContent =
-  monthNames[m] + ' ' + y;
+  monthNames[m] +
+  ' ' +
+  y;
 
-  const days = $('days');
+
+  const days =
+  $('days');
 
   days.innerHTML = '';
 
+
   const first =
-  new Date(y,m,1);
+  new Date(
+    y,
+    m,
+    1
+  );
+
 
   const offset =
   (first.getDay()+6)%7;
 
+
   const start =
-  new Date(y,m,1-offset);
+  new Date(
+    y,
+    m,
+    1-offset
+  );
+
 
   const today =
   new Date()
-  .toISOString()
-  .slice(0,10);
+    .toISOString()
+    .slice(0,10);
 
-  for(let i=0;i<42;i++){
+
+  for(
+    let i=0;
+    i<42;
+    i++
+  ){
 
     const d =
     new Date(start);
@@ -891,6 +1389,7 @@ function renderCalendar(){
     d.setDate(
       start.getDate()+i
     );
+
 
     const iso = [
       d.getFullYear(),
@@ -902,163 +1401,247 @@ function renderCalendar(){
       ).padStart(2,'0')
     ].join('-');
 
+
     const cell =
-    document.createElement('div');
+    document.createElement(
+      'div'
+    );
+
 
     cell.className =
     'day' +
-    (d.getMonth() !== m
-      ? ' out'
-      : '') +
-    (iso === today
-      ? ' today'
-      : '');
+    (
+      d.getMonth() !== m
+        ? ' out'
+        : ''
+    ) +
+    (
+      iso === today
+        ? ' today'
+        : ''
+    );
+
 
     cell.innerHTML =
     '<div class="daynum">' +
     d.getDate() +
     '</div>';
 
-    const ev =
+
+    const events =
     reservations.filter(
       r =>
-        r.event_date === iso &&
-        active(r)
+      r.event_date === iso &&
+      active(r)
     );
 
-    ev.forEach(r => {
 
-      const pill =
-      document.createElement('div');
+    events.forEach(
+      r => {
 
-      pill.className =
-      'event-pill ' +
-      r.status;
+        const pill =
+        document.createElement(
+          'div'
+        );
 
-      pill.textContent =
-      r.status === 'unavailable'
-        ? 'Bloqué'
-        : (r.full_name || 'Réservation');
+        pill.className =
+        'event-pill ' +
+        r.status;
 
-      pill.onclick =
-      e => {
 
-        e.stopPropagation();
-        openEdit(r);
+        pill.textContent =
+        r.status ===
+        'unavailable'
+          ? 'Bloqué'
+          : (
+              r.full_name ||
+              'Réservation'
+            );
 
-      };
 
-      cell.appendChild(pill);
+        pill.onclick =
+        e => {
 
-    });
+          e.stopPropagation();
+
+          openEdit(r);
+
+        };
+
+
+        cell.appendChild(
+          pill
+        );
+
+      }
+    );
+
 
     cell.onclick =
-    () => openNew(iso);
+    () =>
+    openNew(iso);
 
-    days.appendChild(cell);
+
+    days.appendChild(
+      cell
+    );
+
   }
+
 }
+
+
+/* =========================
+   LISTES
+========================= */
 
 function renderLists(){
 
   const pending =
   reservations
-  .filter(
-    r => r.status === 'pending'
-  )
-  .sort(
-    (a,b) =>
-    a.event_date.localeCompare(
-      b.event_date
+    .filter(
+      r =>
+      r.status === 'pending'
     )
-  );
+    .sort(
+      (a,b) =>
+      a.event_date.localeCompare(
+        b.event_date
+      )
+    );
+
 
   $('pendingList').innerHTML =
   pending.length
     ? ''
     : '<div class="empty">Aucune demande en attente.</div>';
 
+
   pending.forEach(
     r =>
     $('pendingList')
-    .appendChild(
-      cardFor(r)
-    )
+      .appendChild(
+        cardFor(r)
+      )
   );
+
 
   const today =
   new Date()
-  .toISOString()
-  .slice(0,10);
+    .toISOString()
+    .slice(0,10);
+
 
   const upcoming =
   reservations
-  .filter(
-    r =>
+    .filter(
+      r =>
       r.status === 'confirmed' &&
       r.event_date >= today
-  )
-  .slice(0,8);
+    )
+    .slice(0,8);
+
 
   $('upcomingList').innerHTML =
   upcoming.length
     ? ''
     : '<div class="empty">Aucun événement confirmé à venir.</div>';
 
+
   upcoming.forEach(
     r =>
     $('upcomingList')
-    .appendChild(
-      cardFor(r)
-    )
+      .appendChild(
+        cardFor(r)
+      )
   );
+
 }
+
 
 function cardFor(r){
 
   const c =
-  document.createElement('div');
+  document.createElement(
+    'div'
+  );
 
-  c.className = 'card';
+  c.className =
+  'card';
+
 
   const title =
   r.full_name ||
   (
-    r.status === 'unavailable'
+    r.status ===
+    'unavailable'
       ? 'Blocage manuel'
       : 'Réservation'
   );
 
+
   c.innerHTML =
   '<div class="card-top">' +
-  '<div>' +
-  '<h4>' +
-  title +
-  '</h4>' +
-  '<div class="meta">' +
-  fmtDate(r.event_date) +
-  (r.guest_count
-    ? ' · ' + r.guest_count + ' pers.'
-    : '') +
-  (r.city
-    ? ' · ' + r.city
-    : '') +
-  '<br>' +
-  sourceLabel(r.source) +
-  '</div>' +
-  '</div>' +
-  '<span class="badge ' +
-  r.status +
-  '">' +
-  statusLabel(r.status) +
-  '</span>' +
+
+    '<div>' +
+
+      '<h4>' +
+      title +
+      '</h4>' +
+
+      '<div class="meta">' +
+
+        fmtDate(
+          r.event_date
+        ) +
+
+        (
+          r.guest_count
+            ? ' · ' +
+              r.guest_count +
+              ' pers.'
+            : ''
+        ) +
+
+        (
+          r.city
+            ? ' · ' +
+              r.city
+            : ''
+        ) +
+
+        '<br>' +
+
+        sourceLabel(
+          r.source
+        ) +
+
+      '</div>' +
+
+    '</div>' +
+
+    '<span class="badge ' +
+    r.status +
+    '">' +
+
+      statusLabel(
+        r.status
+      ) +
+
+    '</span>' +
+
   '</div>';
 
+
   c.onclick =
-  () => openEdit(r);
+  () =>
+  openEdit(r);
+
 
   return c;
+
 }
+
 
 function statusLabel(s){
 
@@ -1070,6 +1653,7 @@ function statusLabel(s){
   }[s] || s;
 
 }
+
 
 function sourceLabel(s){
 
@@ -1085,6 +1669,11 @@ function sourceLabel(s){
 
 }
 
+
+/* =========================
+   AJOUT / MODIFICATION
+========================= */
+
 function openNew(date=''){
 
   editing = null;
@@ -1094,30 +1683,54 @@ function openNew(date=''){
 
   $('eventForm').reset();
 
-  $('eventDate').value = date;
-  $('status').value = 'confirmed';
-  $('source').value = 'manual';
+  $('eventDate').value =
+  date;
+
+  $('status').value =
+  'confirmed';
+
+  $('source').value =
+  'manual';
+
 
   $('approveBtn')
-  .classList.add('hidden');
+    .classList.add(
+      'hidden'
+    );
 
   $('refuseBtn')
-  .classList.add('hidden');
+    .classList.add(
+      'hidden'
+    );
 
-  $('formMsg').innerHTML = '';
+
+  $('formMsg').innerHTML =
+  '';
+
 
   $('modalBack')
-  .classList.remove('hidden');
+    .classList.remove(
+      'hidden'
+    );
+
 }
+
 
 function openEdit(r){
 
   editing = r;
 
+
   $('modalTitle').textContent =
-  (r.full_name || 'Événement') +
+  (
+    r.full_name ||
+    'Événement'
+  ) +
   ' — ' +
-  fmtDate(r.event_date);
+  fmtDate(
+    r.event_date
+  );
+
 
   $('eventDate').value =
   r.event_date;
@@ -1167,49 +1780,67 @@ function openEdit(r){
   $('menuSent').checked =
   !!r.menu_sent;
 
+
   $('approveBtn')
-  .classList.toggle(
-    'hidden',
-    r.status !== 'pending'
-  );
+    .classList.toggle(
+      'hidden',
+      r.status !== 'pending'
+    );
 
   $('refuseBtn')
-  .classList.toggle(
-    'hidden',
-    r.status !== 'pending'
-  );
+    .classList.toggle(
+      'hidden',
+      r.status !== 'pending'
+    );
 
-  $('formMsg').innerHTML = '';
+
+  $('formMsg').innerHTML =
+  '';
+
 
   $('modalBack')
-  .classList.remove('hidden');
+    .classList.remove(
+      'hidden'
+    );
+
 }
+
 
 function closeModal(){
 
   $('modalBack')
-  .classList.add('hidden');
+    .classList.add(
+      'hidden'
+    );
 
   editing = null;
 
 }
 
+
 $('closeModal').onclick =
 closeModal;
+
 
 $('modalBack').onclick =
 e => {
 
   if(
-    e.target === $('modalBack')
+    e.target ===
+    $('modalBack')
   ){
+
     closeModal();
+
   }
 
 };
 
+
 $('addBtn').onclick =
-() => openNew();
+() =>
+openNew();
+
 
 function payload(){
 
@@ -1222,7 +1853,8 @@ function payload(){
     $('status').value,
 
     block_type:
-    $('status').value === 'unavailable'
+    $('status').value ===
+    'unavailable'
       ? 'unavailable'
       : (
           editing?.block_type ||
@@ -1230,17 +1862,22 @@ function payload(){
         ),
 
     full_name:
-    $('fullName').value.trim() ||
+    $('fullName')
+      .value
+      .trim() ||
     null,
 
     email:
-    $('email').value
-    .trim()
-    .toLowerCase() ||
+    $('email')
+      .value
+      .trim()
+      .toLowerCase() ||
     null,
 
     phone:
-    $('phone').value.trim() ||
+    $('phone')
+      .value
+      .trim() ||
     null,
 
     guest_count:
@@ -1251,7 +1888,9 @@ function payload(){
       : null,
 
     city:
-    $('city').value.trim() ||
+    $('city')
+      .value
+      .trim() ||
     null,
 
     preferred_time:
@@ -1259,18 +1898,24 @@ function payload(){
     null,
 
     message:
-    $('message').value.trim() ||
+    $('message')
+      .value
+      .trim() ||
     null,
 
     source:
     $('source').value,
 
     event_address:
-    $('eventAddress').value.trim() ||
+    $('eventAddress')
+      .value
+      .trim() ||
     null,
 
     internal_notes:
-    $('internalNotes').value.trim() ||
+    $('internalNotes')
+      .value
+      .trim() ||
     null,
 
     quoted_price:
@@ -1297,31 +1942,42 @@ function payload(){
 
 }
 
+
+/* =========================
+   ENREGISTRER
+========================= */
+
 $('eventForm').onsubmit =
 async e => {
 
   e.preventDefault();
 
-  const p = payload();
+  const p =
+  payload();
 
   let res;
+
 
   if(editing){
 
     res =
     await db
-    .from('reservations')
-    .update(p)
-    .eq('id',editing.id);
+      .from('reservations')
+      .update(p)
+      .eq(
+        'id',
+        editing.id
+      );
 
   }else{
 
     res =
     await db
-    .from('reservations')
-    .insert(p);
+      .from('reservations')
+      .insert(p);
 
   }
+
 
   if(res.error){
 
@@ -1333,34 +1989,47 @@ async e => {
     return;
   }
 
+
   msg(
     'Enregistré.',
     true
   );
 
+
   await loadData();
+
 
   setTimeout(
     closeModal,
-    400
+    500
   );
+
 };
+
+
+/* =========================
+   REFUSER
+========================= */
 
 $('refuseBtn').onclick =
 async () => {
 
-  if(!editing) return;
+  if(!editing){
+    return;
+  }
+
 
   const {error} =
   await db
-  .from('reservations')
-  .update({
-    status:'cancelled'
-  })
-  .eq(
-    'id',
-    editing.id
-  );
+    .from('reservations')
+    .update({
+      status:'cancelled'
+    })
+    .eq(
+      'id',
+      editing.id
+    );
+
 
   if(error){
 
@@ -1372,23 +2041,35 @@ async () => {
     return;
   }
 
+
   msg(
     'Demande refusée. La date est maintenant disponible.',
     true
   );
 
+
   await loadData();
+
 
   setTimeout(
     closeModal,
-    600
+    700
   );
+
 };
+
+
+/* =========================
+   ACCEPTER
+========================= */
 
 $('approveBtn').onclick =
 async () => {
 
-  if(!editing) return;
+  if(!editing){
+    return;
+  }
+
 
   const save =
   payload();
@@ -1396,14 +2077,16 @@ async () => {
   save.status =
   'confirmed';
 
+
   const {error} =
   await db
-  .from('reservations')
-  .update(save)
-  .eq(
-    'id',
-    editing.id
-  );
+    .from('reservations')
+    .update(save)
+    .eq(
+      'id',
+      editing.id
+    );
+
 
   if(error){
 
@@ -1415,8 +2098,10 @@ async () => {
     return;
   }
 
+
   let emailText =
   'Événement confirmé.';
+
 
   if(save.email){
 
@@ -1433,6 +2118,7 @@ async () => {
       }
     );
 
+
     emailText =
     mailError
       ? 'Événement confirmé. Le courriel automatique reste à connecter.'
@@ -1440,29 +2126,47 @@ async () => {
 
   }
 
+
   msg(
     emailText,
     true
   );
 
+
   await loadData();
+
 
   setTimeout(
     closeModal,
-    900
+    1000
   );
+
 };
 
-function msg(t,ok){
+
+/* =========================
+   MESSAGE
+========================= */
+
+function msg(text,ok){
 
   $('formMsg').innerHTML =
   '<div class="' +
-  (ok ? 'success' : 'error') +
+  (
+    ok
+      ? 'success'
+      : 'error'
+  ) +
   '">' +
-  t +
+  text +
   '</div>';
 
 }
+
+
+/* =========================
+   NAVIGATION CALENDRIER
+========================= */
 
 $('prevMonth').onclick =
 () => {
@@ -1475,6 +2179,7 @@ $('prevMonth').onclick =
 
 };
 
+
 $('nextMonth').onclick =
 () => {
 
@@ -1486,19 +2191,23 @@ $('nextMonth').onclick =
 
 };
 
+
 $('todayBtn').onclick =
 () => {
 
-  viewDate = new Date();
+  viewDate =
+  new Date();
+
   viewDate.setDate(1);
 
   renderAll();
 
 };
 
-db.auth.onAuthStateChange(
-  () => sessionGate()
-);
+
+/* =========================
+   DÉMARRAGE
+========================= */
 
 sessionGate();
 
