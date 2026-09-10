@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rafa Pizza — Administration</title>
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+  Rafa Pizza — Administration
+</title>
 
 <style>
+
 :root{
   --cream:#F6F0E7;
   --cream2:#FBF8F3;
@@ -20,22 +30,36 @@
   --danger:#9B3E4E;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
   background:#eee8df;
   color:var(--ink);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
-.hidden{display:none!important}
+.hidden{
+  display:none!important;
+}
 
 .app{
   max-width:1180px;
   margin:auto;
   padding:18px;
 }
+
+
+/* =========================
+   HEADER
+========================= */
 
 .topbar{
   display:flex;
@@ -47,7 +71,10 @@ body{
 
 .brand h1{
   margin:0;
-  font-family:Georgia,"Times New Roman",serif;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
   color:var(--wine);
   font-size:34px;
 }
@@ -58,19 +85,65 @@ body{
   font-size:12px;
 }
 
+
+/* =========================
+   BOUTONS
+========================= */
+
 .btn{
   border:0;
   border-radius:999px;
   padding:11px 16px;
   font-weight:800;
   cursor:pointer;
+  transition:.15s ease;
 }
 
-.btn.primary{background:var(--wine);color:#fff}
-.btn.secondary{background:#fff;color:var(--wine);border:1px solid var(--line)}
-.btn.danger{background:var(--danger);color:#fff}
-.btn.ok{background:var(--ok);color:#fff}
-.btn.small{padding:8px 12px;font-size:12px}
+.btn:hover{
+  transform:translateY(-1px);
+}
+
+.btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.btn.primary{
+  background:var(--wine);
+  color:#fff;
+}
+
+.btn.secondary{
+  background:#fff;
+  color:var(--wine);
+  border:1px solid var(--line);
+}
+
+.btn.danger{
+  background:var(--danger);
+  color:#fff;
+}
+
+.btn.ok{
+  background:var(--ok);
+  color:#fff;
+}
+
+.btn.warning{
+  background:#D9942B;
+  color:#fff;
+}
+
+.btn.small{
+  padding:8px 12px;
+  font-size:12px;
+}
+
+
+/* =========================
+   PANELS
+========================= */
 
 .grid{
   display:grid;
@@ -82,7 +155,8 @@ body{
   background:var(--cream);
   border:1px solid var(--line);
   border-radius:24px;
-  box-shadow:0 14px 34px rgba(65,35,39,.08);
+  box-shadow:
+    0 14px 34px rgba(65,35,39,.08);
   overflow:hidden;
 }
 
@@ -97,16 +171,27 @@ body{
 
 .panel-head h2{
   margin:0;
-  font-family:Georgia,"Times New Roman",serif;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
   color:var(--wine);
   font-size:23px;
 }
 
-.panel-body{padding:18px 20px}
+.panel-body{
+  padding:18px 20px;
+}
+
+
+/* =========================
+   STATS
+========================= */
 
 .stats{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:
+    repeat(3,1fr);
   gap:10px;
   margin-bottom:16px;
 }
@@ -130,6 +215,11 @@ body{
   margin-top:2px;
 }
 
+
+/* =========================
+   CALENDRIER
+========================= */
+
 .calendar-head{
   display:flex;
   justify-content:space-between;
@@ -140,13 +230,16 @@ body{
 .calendar-head h3{
   margin:0;
   color:var(--wine);
-  font-family:Georgia,"Times New Roman",serif;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
   font-size:24px;
 }
 
 .navbtn{
   border:1px solid var(--line);
-  background:white;
+  background:#fff;
   color:var(--wine);
   border-radius:10px;
   width:38px;
@@ -155,9 +248,11 @@ body{
   font-size:18px;
 }
 
-.week,.days{
+.week,
+.days{
   display:grid;
-  grid-template-columns:repeat(7,1fr);
+  grid-template-columns:
+    repeat(7,1fr);
   gap:6px;
 }
 
@@ -178,8 +273,17 @@ body{
   cursor:pointer;
 }
 
-.day.out{opacity:.34}
-.day.today{outline:2px solid var(--wine)}
+.day:hover{
+  border-color:var(--wine2);
+}
+
+.day.out{
+  opacity:.34;
+}
+
+.day.today{
+  outline:2px solid var(--wine);
+}
 
 .daynum{
   font-size:11px;
@@ -198,9 +302,17 @@ body{
   text-overflow:ellipsis;
 }
 
-.event-pill.pending{background:var(--pending)}
-.event-pill.confirmed{background:var(--ok)}
-.event-pill.unavailable{background:var(--blocked)}
+.event-pill.pending{
+  background:var(--pending);
+}
+
+.event-pill.confirmed{
+  background:var(--ok);
+}
+
+.event-pill.unavailable{
+  background:var(--blocked);
+}
 
 .legend{
   display:flex;
@@ -219,6 +331,11 @@ body{
   margin-right:5px;
 }
 
+
+/* =========================
+   CARTES
+========================= */
+
 .list{
   display:flex;
   flex-direction:column;
@@ -231,6 +348,10 @@ body{
   border-radius:16px;
   padding:13px;
   cursor:pointer;
+}
+
+.card:hover{
+  border-color:var(--wine2);
 }
 
 .card-top{
@@ -256,16 +377,27 @@ body{
   border-radius:999px;
   padding:5px 8px;
   font-size:9px;
-  color:white;
+  color:#fff;
   font-weight:900;
   text-transform:uppercase;
   white-space:nowrap;
 }
 
-.badge.pending{background:var(--pending)}
-.badge.confirmed{background:var(--ok)}
-.badge.unavailable{background:var(--blocked)}
-.badge.cancelled{background:#aaa}
+.badge.pending{
+  background:var(--pending);
+}
+
+.badge.confirmed{
+  background:var(--ok);
+}
+
+.badge.unavailable{
+  background:var(--blocked);
+}
+
+.badge.cancelled{
+  background:#aaa;
+}
 
 .empty{
   font-size:12px;
@@ -273,7 +405,10 @@ body{
   padding:12px 0;
 }
 
-/* TABLEAU TOUS LES ÉVÉNEMENTS */
+
+/* =========================
+   TOUS LES ÉVÉNEMENTS
+========================= */
 
 .all-events{
   margin-top:18px;
@@ -325,12 +460,13 @@ body{
   vertical-align:middle;
 }
 
-.events-table tr{
+.events-table tbody tr{
   cursor:pointer;
 }
 
 .events-table tbody tr:hover{
-  background:rgba(91,31,42,.04);
+  background:
+    rgba(91,31,42,.04);
 }
 
 .client-name{
@@ -351,7 +487,10 @@ body{
   font-weight:800;
 }
 
-/* LOGIN */
+
+/* =========================
+   LOGIN
+========================= */
 
 .login-wrap{
   min-height:90vh;
@@ -366,12 +505,17 @@ body{
   border:1px solid var(--line);
   border-radius:28px;
   padding:30px;
-  box-shadow:0 18px 45px rgba(65,35,39,.12);
+  box-shadow:
+    0 18px 45px
+    rgba(65,35,39,.12);
   text-align:center;
 }
 
 .login h1{
-  font-family:Georgia,"Times New Roman",serif;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
   color:var(--wine);
   margin:0 0 8px;
   font-size:36px;
@@ -416,12 +560,16 @@ body{
   line-height:1.5;
 }
 
-/* MODAL */
+
+/* =========================
+   MODAL
+========================= */
 
 .modal-back{
   position:fixed;
   inset:0;
-  background:rgba(30,20,20,.48);
+  background:
+    rgba(30,20,20,.48);
   display:grid;
   place-items:center;
   padding:16px;
@@ -452,7 +600,10 @@ body{
 .modal-head h2{
   margin:0;
   color:var(--wine);
-  font-family:Georgia,"Times New Roman",serif;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
 }
 
 .x{
@@ -463,11 +614,14 @@ body{
   cursor:pointer;
 }
 
-.form{padding:18px 20px}
+.form{
+  padding:18px 20px;
+}
 
 .form-grid{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:
+    1fr 1fr;
   gap:14px;
 }
 
@@ -477,7 +631,9 @@ body{
   gap:5px;
 }
 
-.field.full{grid-column:1/-1}
+.field.full{
+  grid-column:1/-1;
+}
 
 .field label{
   font-size:10px;
@@ -519,6 +675,20 @@ body{
   margin-top:18px;
 }
 
+.danger-zone{
+  border-top:1px solid var(--line);
+  margin-top:20px;
+  padding-top:16px;
+}
+
+.danger-zone-title{
+  font-size:10px;
+  text-transform:uppercase;
+  font-weight:900;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
 .error{
   background:#f5e3e6;
   color:#8a2f40;
@@ -527,6 +697,7 @@ body{
   padding:10px;
   font-size:12px;
   margin-top:12px;
+  line-height:1.5;
 }
 
 .success{
@@ -537,36 +708,124 @@ body{
   padding:10px;
   font-size:12px;
   margin-top:12px;
+  line-height:1.5;
 }
 
+
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:850px){
-  .grid{grid-template-columns:1fr}
-  .day{min-height:74px}
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .day{
+    min-height:74px;
+  }
+
 }
 
 @media(max-width:620px){
-  .app{padding:9px}
-  .brand h1{font-size:28px}
-  .form-grid{grid-template-columns:1fr}
-  .field.full{grid-column:auto}
-  .day{min-height:63px;padding:4px}
-  .event-pill{font-size:0;height:8px;padding:0;margin-top:3px}
-  .stats{grid-template-columns:1fr 1fr 1fr}
-  .events-tools{width:100%}
+
+  .app{
+    padding:9px;
+  }
+
+  .topbar{
+    align-items:flex-start;
+  }
+
+  .topbar > div:last-child{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .brand h1{
+    font-size:28px;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  .day{
+    min-height:63px;
+    padding:4px;
+  }
+
+  .event-pill{
+    font-size:0;
+    height:8px;
+    padding:0;
+    margin-top:3px;
+  }
+
+  .stats{
+    grid-template-columns:
+      1fr 1fr 1fr;
+  }
+
+  .stat{
+    padding:10px;
+  }
+
+  .stat .n{
+    font-size:21px;
+  }
+
+  .stat .t{
+    font-size:9px;
+  }
+
+  .events-tools{
+    width:100%;
+  }
+
   .events-tools input,
-  .events-tools select{width:100%}
+  .events-tools select{
+    width:100%;
+  }
+
+  .actions .btn{
+    width:100%;
+  }
+
 }
+
 </style>
+
 </head>
 
 <body>
 
-<div id="loginWrap" class="login-wrap">
+
+<!-- =========================
+     LOGIN
+========================= -->
+
+<div
+  id="loginWrap"
+  class="login-wrap"
+>
+
   <div class="login">
 
-    <h1>Rafa Pizza</h1>
+    <h1>
+      Rafa Pizza
+    </h1>
 
-    <p>Tableau de bord privé des réservations.</p>
+    <p>
+      Tableau de bord privé
+      des réservations.
+    </p>
 
     <div class="login-email">
       raphael.frenette@gmail.com
@@ -579,80 +838,173 @@ body{
       autocomplete="current-password"
     >
 
-    <button id="loginBtn" class="btn primary">
+    <button
+      id="loginBtn"
+      class="btn primary"
+    >
       Se connecter
     </button>
 
-    <button id="forgotBtn" class="btn secondary">
+    <button
+      id="forgotBtn"
+      class="btn secondary"
+    >
       Réinitialiser mon mot de passe
     </button>
 
-    <div id="loginMsg" class="notice"></div>
+    <div
+      id="loginMsg"
+      class="notice"
+    ></div>
 
   </div>
+
 </div>
 
-<div id="app" class="app hidden">
+
+<!-- =========================
+     DASHBOARD
+========================= -->
+
+<div
+  id="app"
+  class="app hidden"
+>
 
   <div class="topbar">
 
     <div class="brand">
-      <h1>Rafa · Réservations</h1>
-      <p>Un seul endroit pour toutes tes dates et tes clients.</p>
+
+      <h1>
+        Rafa · Réservations
+      </h1>
+
+      <p>
+        Toutes tes réservations
+        au même endroit.
+      </p>
+
     </div>
 
     <div>
-      <button id="addBtn" class="btn primary">
+
+      <button
+        id="addBtn"
+        class="btn primary"
+      >
         + Ajouter
       </button>
 
-      <button id="logoutBtn" class="btn secondary">
+      <button
+        id="logoutBtn"
+        class="btn secondary"
+      >
         Déconnexion
       </button>
+
     </div>
 
   </div>
+
+
+  <!-- STATS -->
 
   <div class="stats">
 
     <div class="stat">
-      <div id="pendingStat" class="n">0</div>
-      <div class="t">Demandes en attente</div>
+
+      <div
+        id="pendingStat"
+        class="n"
+      >
+        0
+      </div>
+
+      <div class="t">
+        Demandes en attente
+      </div>
+
     </div>
 
     <div class="stat">
-      <div id="confirmedStat" class="n">0</div>
-      <div class="t">Événements confirmés à venir</div>
+
+      <div
+        id="confirmedStat"
+        class="n"
+      >
+        0
+      </div>
+
+      <div class="t">
+        Confirmés à venir
+      </div>
+
     </div>
 
     <div class="stat">
-      <div id="monthStat" class="n">0</div>
-      <div class="t">Événements ce mois-ci</div>
+
+      <div
+        id="monthStat"
+        class="n"
+      >
+        0
+      </div>
+
+      <div class="t">
+        Événements ce mois
+      </div>
+
     </div>
 
   </div>
 
+
   <div class="grid">
+
+
+    <!-- CALENDRIER -->
 
     <section class="panel">
 
       <div class="panel-head">
-        <h2>Calendrier</h2>
 
-        <button id="todayBtn" class="btn secondary small">
+        <h2>
+          Calendrier
+        </h2>
+
+        <button
+          id="todayBtn"
+          class="btn secondary small"
+        >
           Aujourd’hui
         </button>
+
       </div>
 
       <div class="panel-body">
 
         <div class="calendar-head">
-          <button id="prevMonth" class="navbtn">‹</button>
+
+          <button
+            id="prevMonth"
+            class="navbtn"
+          >
+            ‹
+          </button>
+
           <h3 id="monthTitle"></h3>
-          <button id="nextMonth" class="navbtn">›</button>
+
+          <button
+            id="nextMonth"
+            class="navbtn"
+          >
+            ›
+          </button>
+
         </div>
 
         <div class="week">
+
           <div>Lun</div>
           <div>Mar</div>
           <div>Mer</div>
@@ -660,54 +1012,93 @@ body{
           <div>Ven</div>
           <div>Sam</div>
           <div>Dim</div>
+
         </div>
 
-        <div id="days" class="days"></div>
+        <div
+          id="days"
+          class="days"
+        ></div>
 
         <div class="legend">
 
           <span>
-            <span class="dot" style="background:#D9942B"></span>
+            <span
+              class="dot"
+              style="background:#D9942B"
+            ></span>
             En attente
           </span>
 
           <span>
-            <span class="dot" style="background:#447A54"></span>
+            <span
+              class="dot"
+              style="background:#447A54"
+            ></span>
             Confirmé
           </span>
 
           <span>
-            <span class="dot" style="background:#4B4B4B"></span>
+            <span
+              class="dot"
+              style="background:#4B4B4B"
+            ></span>
             Bloqué
           </span>
 
         </div>
 
       </div>
+
     </section>
+
+
+    <!-- COLONNE DROITE -->
 
     <div>
 
       <section class="panel">
 
         <div class="panel-head">
-          <h2>À traiter</h2>
+
+          <h2>
+            À traiter
+          </h2>
+
         </div>
 
         <div class="panel-body">
-          <div id="pendingList" class="list"></div>
+
+          <div
+            id="pendingList"
+            class="list"
+          ></div>
+
         </div>
 
       </section>
 
-      <section class="panel" style="margin-top:18px">
+
+      <section
+        class="panel"
+        style="margin-top:18px"
+      >
 
         <div class="panel-head">
-          <h2>À venir</h2>
+
+          <h2>
+            À venir
+          </h2>
+
         </div>
 
         <div class="panel-body">
-          <div id="upcomingList" class="list"></div>
+
+          <div
+            id="upcomingList"
+            class="list"
+          ></div>
+
         </div>
 
       </section>
@@ -716,13 +1107,20 @@ body{
 
   </div>
 
-  <!-- TOUS LES ÉVÉNEMENTS -->
 
-  <section class="panel all-events">
+  <!-- =========================
+       TOUS LES ÉVÉNEMENTS
+  ========================= -->
+
+  <section
+    class="panel all-events"
+  >
 
     <div class="panel-head">
 
-      <h2>Tous les événements</h2>
+      <h2>
+        Tous les événements
+      </h2>
 
       <div class="events-tools">
 
@@ -733,12 +1131,31 @@ body{
         >
 
         <select id="eventFilter">
-          <option value="future">À venir</option>
-          <option value="all">Tous</option>
-          <option value="confirmed">Confirmés</option>
-          <option value="pending">En attente</option>
-          <option value="unavailable">Bloqués</option>
-          <option value="cancelled">Refusés / annulés</option>
+
+          <option value="future">
+            À venir
+          </option>
+
+          <option value="all">
+            Tous
+          </option>
+
+          <option value="confirmed">
+            Confirmés
+          </option>
+
+          <option value="pending">
+            En attente
+          </option>
+
+          <option value="unavailable">
+            Bloqués
+          </option>
+
+          <option value="cancelled">
+            Annulés
+          </option>
+
         </select>
 
       </div>
@@ -752,7 +1169,9 @@ body{
         <table class="events-table">
 
           <thead>
+
             <tr>
+
               <th>Date</th>
               <th>Client</th>
               <th>Invités</th>
@@ -761,16 +1180,23 @@ body{
               <th>Dépôt</th>
               <th>Menu</th>
               <th>Statut</th>
+
             </tr>
+
           </thead>
 
-          <tbody id="eventsTableBody"></tbody>
+          <tbody
+            id="eventsTableBody"
+          ></tbody>
 
         </table>
 
       </div>
 
-      <div id="eventsEmpty" class="empty hidden">
+      <div
+        id="eventsEmpty"
+        class="empty hidden"
+      >
         Aucun événement.
       </div>
 
@@ -780,135 +1206,345 @@ body{
 
 </div>
 
-<!-- MODAL -->
 
-<div id="modalBack" class="modal-back hidden">
+<!-- =========================
+     MODAL
+========================= -->
+
+<div
+  id="modalBack"
+  class="modal-back hidden"
+>
 
   <div class="modal">
 
     <div class="modal-head">
-      <h2 id="modalTitle">Réservation</h2>
-      <button id="closeModal" class="x">×</button>
+
+      <h2 id="modalTitle">
+        Réservation
+      </h2>
+
+      <button
+        id="closeModal"
+        class="x"
+      >
+        ×
+      </button>
+
     </div>
 
-    <form id="reservationForm" class="form">
+    <form
+      id="reservationForm"
+      class="form"
+    >
 
       <div class="form-grid">
 
-        <div class="field">
-          <label>Date</label>
-          <input id="eventDate" type="date" required>
-        </div>
 
         <div class="field">
-          <label>Statut</label>
+
+          <label>
+            Date
+          </label>
+
+          <input
+            id="eventDate"
+            type="date"
+            required
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Statut
+          </label>
+
           <select id="status">
-            <option value="pending">En attente</option>
-            <option value="confirmed">Confirmé</option>
-            <option value="unavailable">Bloqué</option>
-            <option value="cancelled">Refusé / annulé</option>
+
+            <option value="pending">
+              En attente
+            </option>
+
+            <option value="confirmed">
+              Confirmé
+            </option>
+
+            <option value="unavailable">
+              Bloqué
+            </option>
+
+            <option value="cancelled">
+              Annulé
+            </option>
+
           </select>
+
         </div>
 
+
         <div class="field">
-          <label>Nom du client</label>
+
+          <label>
+            Nom du client
+          </label>
+
           <input id="fullName">
+
         </div>
 
+
         <div class="field">
-          <label>Source</label>
+
+          <label>
+            Source
+          </label>
 
           <select id="source">
-            <option value="site">Site web</option>
-            <option value="instagram">Instagram</option>
-            <option value="facebook">Facebook</option>
-            <option value="phone">Téléphone</option>
-            <option value="manual">Manuel</option>
-            <option value="other">Autre</option>
+
+            <option value="site">
+              Site web
+            </option>
+
+            <option value="instagram">
+              Instagram
+            </option>
+
+            <option value="facebook">
+              Facebook
+            </option>
+
+            <option value="phone">
+              Téléphone
+            </option>
+
+            <option value="manual">
+              Manuel
+            </option>
+
+            <option value="other">
+              Autre
+            </option>
+
           </select>
 
         </div>
 
-        <div class="field">
-          <label>Courriel</label>
-          <input id="email" type="email">
-        </div>
 
         <div class="field">
-          <label>Téléphone</label>
+
+          <label>
+            Courriel
+          </label>
+
+          <input
+            id="email"
+            type="email"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Téléphone
+          </label>
+
           <input id="phone">
+
         </div>
 
-        <div class="field">
-          <label>Nombre d’invités</label>
-          <input id="guestCount" type="number" min="0">
-        </div>
 
         <div class="field">
-          <label>Heure souhaitée</label>
+
+          <label>
+            Nombre d’invités
+          </label>
+
+          <input
+            id="guestCount"
+            type="number"
+            min="0"
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Heure souhaitée
+          </label>
+
           <input id="preferredTime">
+
         </div>
 
+
         <div class="field">
-          <label>Ville</label>
+
+          <label>
+            Ville
+          </label>
+
           <input id="city">
+
         </div>
 
+
         <div class="field">
-          <label>Adresse de l’événement</label>
+
+          <label>
+            Adresse de l’événement
+          </label>
+
           <input id="eventAddress">
+
         </div>
+
 
         <div class="field">
-          <label>Prix prévu ($)</label>
-          <input id="quotedPrice" type="number" step="0.01" min="0">
+
+          <label>
+            Prix prévu ($)
+          </label>
+
+          <input
+            id="quotedPrice"
+            type="number"
+            step="0.01"
+            min="0"
+          >
+
         </div>
+
 
         <div class="field">
-          <label>Dépôt ($)</label>
-          <input id="depositAmount" type="number" step="0.01" min="0">
+
+          <label>
+            Dépôt ($)
+          </label>
+
+          <input
+            id="depositAmount"
+            type="number"
+            step="0.01"
+            min="0"
+          >
+
         </div>
 
-        <div class="field full">
-          <label>Message / préférences du client</label>
-          <textarea id="message"></textarea>
-        </div>
 
         <div class="field full">
-          <label>Notes internes</label>
-          <textarea id="internalNotes"></textarea>
+
+          <label>
+            Message / préférences du client
+          </label>
+
+          <textarea
+            id="message"
+          ></textarea>
+
+        </div>
+
+
+        <div class="field full">
+
+          <label>
+            Notes internes
+          </label>
+
+          <textarea
+            id="internalNotes"
+          ></textarea>
+
         </div>
 
       </div>
+
 
       <div class="checks">
 
         <label>
-          <input id="depositReceived" type="checkbox">
+
+          <input
+            id="depositReceived"
+            type="checkbox"
+          >
+
           Dépôt reçu
+
         </label>
 
+
         <label>
-          <input id="menuSent" type="checkbox">
+
+          <input
+            id="menuSent"
+            type="checkbox"
+          >
+
           Menu envoyé
+
         </label>
 
       </div>
 
+
       <div id="formMsg"></div>
+
+
+      <!-- ACTIONS PRINCIPALES -->
 
       <div class="actions">
 
-        <button class="btn primary" type="submit">
+        <button
+          id="saveBtn"
+          class="btn primary"
+          type="submit"
+        >
           Enregistrer
         </button>
 
-        <button id="approveBtn" class="btn ok" type="button">
-          Accepter + courriel
+        <button
+          id="approveBtn"
+          class="btn ok hidden"
+          type="button"
+        >
+          Accepter la réservation
         </button>
 
-        <button id="refuseBtn" class="btn danger" type="button">
-          Refuser
+        <button
+          id="cancelBtn"
+          class="btn warning hidden"
+          type="button"
+        >
+          Annuler / libérer la date
+        </button>
+
+      </div>
+
+
+      <!-- SUPPRESSION -->
+
+      <div
+        id="dangerZone"
+        class="danger-zone hidden"
+      >
+
+        <div class="danger-zone-title">
+          Suppression
+        </div>
+
+        <button
+          id="deleteBtn"
+          class="btn danger"
+          type="button"
+        >
+          Supprimer définitivement
         </button>
 
       </div>
@@ -919,38 +1555,59 @@ body{
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- =========================
+     SUPABASE
+========================= -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
 
 <script>
 
+/* =========================
+   CONFIG
+========================= */
+
 const SUPABASE_URL =
-'https://jetogsbyptglaihktdel.supabase.co';
+  'https://jetogsbyptglaihktdel.supabase.co';
 
 const SUPABASE_KEY =
-'sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja';
+  'sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja';
 
 const ADMIN_EMAIL =
-'raphael.frenette@gmail.com';
+  'raphael.frenette@gmail.com';
 
 const ADMIN_URL =
-'https://lapizzaderafa.github.io/Calendrier-Rafa/admin.html';
+  'https://lapizzaderafa.github.io/Calendrier-Rafa/admin.html';
+
 
 const db =
-supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
-const $ = id =>
-document.getElementById(id);
+
+const $ =
+  id =>
+    document.getElementById(id);
+
 
 let reservations = [];
+
 let editing = null;
 
-let viewDate = new Date();
+let viewDate =
+  new Date();
+
 viewDate.setDate(1);
 
+
 const monthNames = [
+
   'Janvier',
   'Février',
   'Mars',
@@ -963,140 +1620,74 @@ const monthNames = [
   'Octobre',
   'Novembre',
   'Décembre'
+
 ];
 
-/* CONNEXION */
 
-async function sessionGate(){
+/* =========================
+   UTILS
+========================= */
 
-  const {
-    data:{session}
-  } =
-  await db.auth.getSession();
+function escapeHtml(value){
 
-  if(
-    session &&
-    (session.user.email || '').toLowerCase() ===
-    ADMIN_EMAIL.toLowerCase()
-  ){
-
-    $('loginWrap').classList.add('hidden');
-    $('app').classList.remove('hidden');
-
-    await loadData();
-
-  }else{
-
-    $('loginWrap').classList.remove('hidden');
-    $('app').classList.add('hidden');
-
-  }
+  return String(value || '')
+    .replaceAll(
+      '&',
+      '&amp;'
+    )
+    .replaceAll(
+      '<',
+      '&lt;'
+    )
+    .replaceAll(
+      '>',
+      '&gt;'
+    )
+    .replaceAll(
+      '"',
+      '&quot;'
+    )
+    .replaceAll(
+      "'",
+      '&#039;'
+    );
 
 }
 
-$('loginBtn').onclick =
-async () => {
-
-  const password =
-  $('password').value;
-
-  if(!password){
-
-    $('loginMsg').textContent =
-    'Entre ton mot de passe.';
-
-    return;
-  }
-
-  $('loginMsg').textContent =
-  'Connexion…';
-
-  const {error} =
-  await db.auth.signInWithPassword({
-    email:ADMIN_EMAIL,
-    password:password
-  });
-
-  if(error){
-
-    $('loginMsg').textContent =
-    'Mot de passe incorrect.';
-
-    return;
-  }
-
-  $('loginMsg').textContent =
-  'Connexion réussie.';
-
-  await sessionGate();
-
-};
-
-$('password').addEventListener(
-  'keydown',
-  e => {
-
-    if(e.key === 'Enter'){
-      $('loginBtn').click();
-    }
-
-  }
-);
-
-$('forgotBtn').onclick =
-async () => {
-
-  $('loginMsg').textContent =
-  'Envoi du courriel…';
-
-  const {error} =
-  await db.auth.resetPasswordForEmail(
-    ADMIN_EMAIL,
-    {
-      redirectTo:ADMIN_URL
-    }
-  );
-
-  $('loginMsg').textContent =
-  error
-    ? error.message
-    : 'Courriel envoyé.';
-
-};
-
-$('logoutBtn').onclick =
-async () => {
-
-  await db.auth.signOut();
-
-  location.href =
-  ADMIN_URL;
-
-};
-
-/* DONNÉES */
-
-const active = r =>
-[
-  'pending',
-  'confirmed',
-  'unavailable'
-].includes(r.status);
 
 function localToday(){
 
   const d =
-  new Date();
+    new Date();
 
   return [
+
     d.getFullYear(),
-    String(d.getMonth()+1).padStart(2,'0'),
-    String(d.getDate()).padStart(2,'0')
+
+    String(
+      d.getMonth() + 1
+    ).padStart(
+      2,
+      '0'
+    ),
+
+    String(
+      d.getDate()
+    ).padStart(
+      2,
+      '0'
+    )
+
   ].join('-');
 
 }
 
+
 function fmtDate(d){
+
+  if(!d){
+    return '—';
+  }
 
   return new Intl.DateTimeFormat(
     'fr-CA',
@@ -1107,10 +1698,13 @@ function fmtDate(d){
       year:'numeric'
     }
   ).format(
-    new Date(d + 'T12:00:00')
+    new Date(
+      d + 'T12:00:00'
+    )
   );
 
 }
+
 
 function money(value){
 
@@ -1119,7 +1713,9 @@ function money(value){
     value === undefined ||
     value === ''
   ){
+
     return '—';
+
   }
 
   return new Intl.NumberFormat(
@@ -1129,31 +1725,309 @@ function money(value){
       currency:'CAD',
       maximumFractionDigits:0
     }
-  ).format(Number(value));
+  ).format(
+    Number(value)
+  );
 
 }
 
+
 function statusText(status){
 
-  if(status === 'pending') return 'Attente';
-  if(status === 'confirmed') return 'Confirmé';
-  if(status === 'unavailable') return 'Bloqué';
-  if(status === 'cancelled') return 'Annulé';
+  if(
+    status === 'pending'
+  ){
+    return 'Attente';
+  }
+
+  if(
+    status === 'confirmed'
+  ){
+    return 'Confirmé';
+  }
+
+  if(
+    status === 'unavailable'
+  ){
+    return 'Bloqué';
+  }
+
+  if(
+    status === 'cancelled'
+  ){
+    return 'Annulé';
+  }
 
   return status || '—';
 
 }
 
+
+function activeReservation(r){
+
+  return [
+    'pending',
+    'confirmed',
+    'unavailable'
+  ].includes(
+    r.status
+  );
+
+}
+
+
+/* =========================
+   AUTH
+========================= */
+
+async function sessionGate(){
+
+  const {
+    data:{
+      session
+    }
+  } =
+    await db.auth.getSession();
+
+
+  if(
+    session &&
+    (
+      session.user.email ||
+      ''
+    ).toLowerCase() ===
+    ADMIN_EMAIL.toLowerCase()
+  ){
+
+    $('loginWrap')
+      .classList
+      .add('hidden');
+
+    $('app')
+      .classList
+      .remove('hidden');
+
+    await loadData();
+
+  }else{
+
+    $('loginWrap')
+      .classList
+      .remove('hidden');
+
+    $('app')
+      .classList
+      .add('hidden');
+
+  }
+
+}
+
+
+$('loginBtn').onclick =
+async () => {
+
+  const password =
+    $('password').value;
+
+  if(!password){
+
+    $('loginMsg')
+      .textContent =
+      'Entre ton mot de passe.';
+
+    return;
+
+  }
+
+  $('loginMsg')
+    .textContent =
+    'Connexion…';
+
+
+  const {
+    error
+  } =
+    await db.auth
+      .signInWithPassword({
+        email:
+          ADMIN_EMAIL,
+        password:
+          password
+      });
+
+
+  if(error){
+
+    $('loginMsg')
+      .textContent =
+      'Connexion impossible. Vérifie ton mot de passe.';
+
+    return;
+
+  }
+
+
+  $('loginMsg')
+    .textContent =
+    'Connexion réussie.';
+
+
+  await sessionGate();
+
+};
+
+
+$('password')
+  .addEventListener(
+    'keydown',
+    e => {
+
+      if(
+        e.key ===
+        'Enter'
+      ){
+
+        $('loginBtn')
+          .click();
+
+      }
+
+    }
+  );
+
+
+$('forgotBtn').onclick =
+async () => {
+
+  $('loginMsg')
+    .textContent =
+    'Envoi du courriel…';
+
+
+  const {
+    error
+  } =
+    await db.auth
+      .resetPasswordForEmail(
+        ADMIN_EMAIL,
+        {
+          redirectTo:
+            ADMIN_URL
+        }
+      );
+
+
+  $('loginMsg')
+    .textContent =
+    error
+      ? error.message
+      : 'Courriel de récupération envoyé.';
+
+};
+
+
+$('logoutBtn').onclick =
+async () => {
+
+  await db.auth.signOut();
+
+  window.location.href =
+    ADMIN_URL;
+
+};
+
+
+/* =========================
+   PASSWORD RECOVERY
+========================= */
+
+let recoveryHandled =
+  false;
+
+
+db.auth.onAuthStateChange(
+  async (
+    event,
+    session
+  ) => {
+
+    if(
+      event ===
+      'PASSWORD_RECOVERY' &&
+      !recoveryHandled
+    ){
+
+      recoveryHandled =
+        true;
+
+      const newPassword =
+        prompt(
+          'Entre ton nouveau mot de passe.'
+        );
+
+      if(
+        !newPassword
+      ){
+
+        return;
+
+      }
+
+      const {
+        error
+      } =
+        await db.auth.updateUser({
+          password:
+            newPassword
+        });
+
+
+      if(error){
+
+        alert(
+          'Impossible de modifier le mot de passe : ' +
+          error.message
+        );
+
+        return;
+
+      }
+
+
+      alert(
+        'Ton mot de passe a été modifié.'
+      );
+
+      window.location.href =
+        ADMIN_URL;
+
+    }
+
+  }
+);
+
+
+/* =========================
+   LOAD DATA
+========================= */
+
 async function loadData(){
 
-  const {data,error} =
-  await db
-    .from('reservations')
-    .select('*')
-    .order(
-      'event_date',
-      {ascending:true}
-    );
+  const {
+    data,
+    error
+  } =
+    await db
+      .from('reservations')
+      .select('*')
+      .order(
+        'event_date',
+        {
+          ascending:true
+        }
+      );
+
 
   if(error){
 
@@ -1163,586 +2037,979 @@ async function loadData(){
     );
 
     return;
+
   }
 
+
   reservations =
-  data || [];
+    data || [];
+
 
   renderAll();
 
 }
 
+
 function renderAll(){
 
   renderStats();
+
   renderCalendar();
+
   renderLists();
+
   renderEventsTable();
 
 }
 
-/* STATS */
+
+/* =========================
+   STATS
+========================= */
 
 function renderStats(){
 
   const today =
-  localToday();
+    localToday();
 
-  $('pendingStat').textContent =
-  reservations.filter(
-    r => r.status === 'pending'
-  ).length;
 
-  $('confirmedStat').textContent =
-  reservations.filter(
-    r =>
-    r.status === 'confirmed' &&
-    r.event_date >= today
-  ).length;
+  $('pendingStat')
+    .textContent =
+    reservations.filter(
+      r =>
+        r.status ===
+        'pending'
+    ).length;
 
-  const y =
-  viewDate.getFullYear();
 
-  const m =
-  viewDate.getMonth()+1;
+  $('confirmedStat')
+    .textContent =
+    reservations.filter(
+      r =>
+        r.status ===
+          'confirmed' &&
+        r.event_date >=
+          today
+    ).length;
 
-  $('monthStat').textContent =
-  reservations.filter(
-    r =>
-    active(r) &&
-    Number(r.event_date.slice(0,4)) === y &&
-    Number(r.event_date.slice(5,7)) === m
-  ).length;
+
+  const year =
+    viewDate.getFullYear();
+
+  const month =
+    viewDate.getMonth() + 1;
+
+
+  $('monthStat')
+    .textContent =
+    reservations.filter(
+      r =>
+
+        activeReservation(r) &&
+
+        Number(
+          r.event_date.slice(
+            0,
+            4
+          )
+        ) === year &&
+
+        Number(
+          r.event_date.slice(
+            5,
+            7
+          )
+        ) === month
+
+    ).length;
 
 }
 
-/* CALENDRIER */
+
+/* =========================
+   CALENDRIER
+========================= */
 
 function renderCalendar(){
 
   const year =
-  viewDate.getFullYear();
+    viewDate.getFullYear();
 
   const month =
-  viewDate.getMonth();
+    viewDate.getMonth();
 
-  $('monthTitle').textContent =
-  `${monthNames[month]} ${year}`;
+
+  $('monthTitle')
+    .textContent =
+    `${monthNames[month]} ${year}`;
+
 
   const first =
-  new Date(year,month,1);
+    new Date(
+      year,
+      month,
+      1
+    );
 
-  let start =
-  new Date(first);
+
+  const start =
+    new Date(first);
+
 
   const mondayIndex =
-  (first.getDay()+6)%7;
+    (
+      first.getDay() +
+      6
+    ) % 7;
+
 
   start.setDate(
     first.getDate() -
     mondayIndex
   );
 
-  $('days').innerHTML = '';
+
+  $('days')
+    .innerHTML =
+    '';
+
 
   const today =
-  localToday();
+    localToday();
 
-  for(let i=0;i<42;i++){
+
+  for(
+    let i = 0;
+    i < 42;
+    i++
+  ){
 
     const d =
-    new Date(start);
+      new Date(start);
+
 
     d.setDate(
-      start.getDate()+i
+      start.getDate() +
+      i
     );
+
 
     const iso =
-    [
-      d.getFullYear(),
-      String(d.getMonth()+1).padStart(2,'0'),
-      String(d.getDate()).padStart(2,'0')
-    ].join('-');
+      [
+
+        d.getFullYear(),
+
+        String(
+          d.getMonth() + 1
+        ).padStart(
+          2,
+          '0'
+        ),
+
+        String(
+          d.getDate()
+        ).padStart(
+          2,
+          '0'
+        )
+
+      ].join('-');
+
 
     const cell =
-    document.createElement('div');
+      document.createElement(
+        'div'
+      );
+
 
     cell.className =
-    'day';
+      'day';
 
-    if(d.getMonth() !== month){
-      cell.classList.add('out');
+
+    if(
+      d.getMonth() !==
+      month
+    ){
+
+      cell.classList
+        .add('out');
+
     }
 
-    if(iso === today){
-      cell.classList.add('today');
+
+    if(
+      iso ===
+      today
+    ){
+
+      cell.classList
+        .add('today');
+
     }
+
 
     cell.innerHTML =
-    `<div class="daynum">${d.getDate()}</div>`;
+      `
+        <div class="daynum">
+          ${d.getDate()}
+        </div>
+      `;
+
 
     const dayEvents =
-    reservations.filter(
-      r =>
-      r.event_date === iso &&
-      active(r)
-    );
+      reservations.filter(
+        r =>
+
+          r.event_date ===
+            iso &&
+
+          activeReservation(r)
+
+      );
+
 
     dayEvents.forEach(
       r => {
 
         const pill =
-        document.createElement('div');
+          document
+            .createElement(
+              'div'
+            );
+
 
         pill.className =
-        `event-pill ${r.status}`;
+          `event-pill ${r.status}`;
+
 
         pill.textContent =
-        r.full_name ||
-        (
-          r.status === 'unavailable'
-          ? 'Bloqué'
-          : 'Événement'
-        );
+          r.full_name ||
+          (
+            r.status ===
+            'unavailable'
+              ? 'Bloqué'
+              : 'Événement'
+          );
+
 
         pill.onclick =
-        e => {
+          event => {
 
-          e.stopPropagation();
-          openReservation(r);
+            event
+              .stopPropagation();
 
-        };
+            openReservation(r);
 
-        cell.appendChild(pill);
+          };
+
+
+        cell.appendChild(
+          pill
+        );
 
       }
     );
 
-    cell.onclick =
-    () => openNew(iso);
 
-    $('days').appendChild(cell);
+    cell.onclick =
+      () =>
+        openNew(iso);
+
+
+    $('days')
+      .appendChild(
+        cell
+      );
 
   }
 
 }
 
-/* PETITES LISTES */
+
+/* =========================
+   PETITES LISTES
+========================= */
 
 function renderLists(){
 
   const today =
-  localToday();
+    localToday();
+
 
   const pending =
-  reservations.filter(
-    r =>
-    r.status === 'pending'
-  );
+    reservations.filter(
+      r =>
+        r.status ===
+        'pending'
+    );
+
 
   const upcoming =
-  reservations.filter(
-    r =>
-    r.event_date >= today &&
-    [
-      'confirmed',
-      'unavailable'
-    ].includes(r.status)
-  );
+    reservations.filter(
+      r =>
 
-  $('pendingList').innerHTML =
-  pending.length
-    ? ''
-    : '<div class="empty">Aucune demande en attente.</div>';
+        r.event_date >=
+          today &&
+
+        [
+          'confirmed',
+          'unavailable'
+        ].includes(
+          r.status
+        )
+
+    );
+
+
+  $('pendingList')
+    .innerHTML =
+    pending.length
+      ? ''
+      : `
+        <div class="empty">
+          Aucune demande en attente.
+        </div>
+      `;
+
 
   pending.forEach(
     r =>
-    $('pendingList')
-      .appendChild(
-        reservationCard(r)
-      )
+
+      $('pendingList')
+        .appendChild(
+          reservationCard(r)
+        )
+
   );
 
-  $('upcomingList').innerHTML =
-  upcoming.length
-    ? ''
-    : '<div class="empty">Aucun événement à venir.</div>';
+
+  $('upcomingList')
+    .innerHTML =
+    upcoming.length
+      ? ''
+      : `
+        <div class="empty">
+          Aucun événement à venir.
+        </div>
+      `;
+
 
   upcoming.forEach(
     r =>
-    $('upcomingList')
-      .appendChild(
-        reservationCard(r)
-      )
+
+      $('upcomingList')
+        .appendChild(
+          reservationCard(r)
+        )
+
   );
 
 }
 
+
 function reservationCard(r){
 
   const div =
-  document.createElement('div');
+    document.createElement(
+      'div'
+    );
+
 
   div.className =
-  'card';
+    'card';
+
 
   const title =
-  r.full_name ||
-  (
-    r.status === 'unavailable'
-      ? 'Date bloquée'
-      : 'Événement'
-  );
+    r.full_name ||
+    (
+      r.status ===
+      'unavailable'
+        ? 'Date bloquée'
+        : 'Événement'
+    );
+
 
   const guestText =
-  r.guest_count
-    ? ` · ${r.guest_count} pers.`
-    : '';
+    r.guest_count
+      ? ` · ${r.guest_count} pers.`
+      : '';
+
 
   const cityText =
-  r.city
-    ? ` · ${r.city}`
-    : '';
+    r.city
+      ? ` · ${escapeHtml(r.city)}`
+      : '';
+
 
   div.innerHTML =
-  `
-    <div class="card-top">
+    `
+      <div class="card-top">
 
-      <div>
+        <div>
 
-        <h4>${escapeHtml(title)}</h4>
+          <h4>
+            ${escapeHtml(title)}
+          </h4>
 
-        <div class="meta">
-          ${fmtDate(r.event_date)}
-          ${guestText}
-          ${cityText}
+          <div class="meta">
+
+            ${fmtDate(r.event_date)}
+
+            ${guestText}
+
+            ${cityText}
+
+          </div>
+
         </div>
 
+        <span
+          class="badge ${r.status}"
+        >
+          ${statusText(r.status)}
+        </span>
+
       </div>
+    `;
 
-      <span class="badge ${r.status}">
-        ${statusText(r.status)}
-      </span>
-
-    </div>
-  `;
 
   div.onclick =
-  () => openReservation(r);
+    () =>
+      openReservation(r);
+
 
   return div;
 
 }
 
-/* TABLEAU COMPLET */
+
+/* =========================
+   TABLEAU
+========================= */
 
 function renderEventsTable(){
 
   const today =
-  localToday();
+    localToday();
+
 
   const filter =
-  $('eventFilter').value;
+    $('eventFilter')
+      .value;
+
 
   const search =
-  $('eventSearch')
-    .value
-    .trim()
-    .toLowerCase();
+    $('eventSearch')
+      .value
+      .trim()
+      .toLowerCase();
+
 
   let rows =
-  [...reservations];
+    [...reservations];
 
-  if(filter === 'future'){
 
-    rows =
-    rows.filter(
-      r =>
-      r.event_date >= today &&
-      r.status !== 'cancelled'
-    );
-
-  }else if(filter !== 'all'){
+  if(
+    filter ===
+    'future'
+  ){
 
     rows =
-    rows.filter(
-      r =>
-      r.status === filter
-    );
+      rows.filter(
+        r =>
+
+          r.event_date >=
+            today &&
+
+          r.status !==
+            'cancelled'
+
+      );
+
+  }else if(
+    filter !==
+    'all'
+  ){
+
+    rows =
+      rows.filter(
+        r =>
+          r.status ===
+          filter
+      );
 
   }
+
 
   if(search){
 
     rows =
-    rows.filter(
-      r => {
+      rows.filter(
+        r => {
 
-        const haystack =
-        [
-          r.full_name,
-          r.email,
-          r.phone,
-          r.city,
-          r.event_address,
-          r.source
-        ]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
+          const haystack =
+            [
 
-        return haystack.includes(search);
+              r.full_name,
+              r.email,
+              r.phone,
+              r.city,
+              r.event_address,
+              r.source
 
-      }
-    );
+            ]
+            .filter(Boolean)
+            .join(' ')
+            .toLowerCase();
+
+
+          return haystack
+            .includes(search);
+
+        }
+      );
 
   }
 
+
   rows.sort(
-    (a,b) =>
-    a.event_date.localeCompare(b.event_date)
+    (
+      a,
+      b
+    ) =>
+      a.event_date
+        .localeCompare(
+          b.event_date
+        )
   );
 
-  const tbody =
-  $('eventsTableBody');
 
-  tbody.innerHTML = '';
+  const tbody =
+    $('eventsTableBody');
+
+
+  tbody.innerHTML =
+    '';
+
 
   $('eventsEmpty')
-    .classList.toggle(
+    .classList
+    .toggle(
       'hidden',
       rows.length > 0
     );
+
 
   rows.forEach(
     r => {
 
       const tr =
-      document.createElement('tr');
+        document
+          .createElement(
+            'tr'
+          );
+
 
       tr.innerHTML =
-      `
-        <td>
-          <strong>${fmtDate(r.event_date)}</strong>
-        </td>
+        `
 
-        <td>
-          <span class="client-name">
-            ${escapeHtml(
-              r.full_name ||
-              (
-                r.status === 'unavailable'
-                  ? 'Date bloquée'
-                  : '—'
+          <td>
+            <strong>
+              ${fmtDate(r.event_date)}
+            </strong>
+          </td>
+
+
+          <td>
+
+            <span class="client-name">
+
+              ${
+                escapeHtml(
+                  r.full_name ||
+                  (
+                    r.status ===
+                    'unavailable'
+                      ? 'Date bloquée'
+                      : '—'
+                  )
+                )
+              }
+
+            </span>
+
+          </td>
+
+
+          <td>
+
+            ${
+              r.guest_count ||
+              '—'
+            }
+
+          </td>
+
+
+          <td>
+
+            ${
+              escapeHtml(
+                r.city ||
+                '—'
               )
-            )}
-          </span>
-        </td>
+            }
 
-        <td>
-          ${r.guest_count || '—'}
-        </td>
+          </td>
 
-        <td>
-          ${escapeHtml(r.city || '—')}
-        </td>
 
-        <td class="money">
-          ${money(r.quoted_price)}
-        </td>
+          <td class="money">
 
-        <td>
-          ${
-            r.deposit_received
-              ? '<span class="check-yes">✓ Reçu</span>'
-              : '<span class="check-no">—</span>'
-          }
-        </td>
+            ${
+              money(
+                r.quoted_price
+              )
+            }
 
-        <td>
-          ${
-            r.menu_sent
-              ? '<span class="check-yes">✓ Envoyé</span>'
-              : '<span class="check-no">—</span>'
-          }
-        </td>
+          </td>
 
-        <td>
-          <span class="badge ${r.status}">
-            ${statusText(r.status)}
-          </span>
-        </td>
-      `;
+
+          <td>
+
+            ${
+              r.deposit_received
+                ? `
+                  <span class="check-yes">
+                    ✓ Reçu
+                  </span>
+                `
+                : `
+                  <span class="check-no">
+                    —
+                  </span>
+                `
+            }
+
+          </td>
+
+
+          <td>
+
+            ${
+              r.menu_sent
+                ? `
+                  <span class="check-yes">
+                    ✓ Envoyé
+                  </span>
+                `
+                : `
+                  <span class="check-no">
+                    —
+                  </span>
+                `
+            }
+
+          </td>
+
+
+          <td>
+
+            <span
+              class="badge ${r.status}"
+            >
+              ${statusText(r.status)}
+            </span>
+
+          </td>
+
+        `;
+
 
       tr.onclick =
-      () => openReservation(r);
+        () =>
+          openReservation(r);
 
-      tbody.appendChild(tr);
+
+      tbody.appendChild(
+        tr
+      );
 
     }
   );
 
 }
 
-$('eventSearch').addEventListener(
-  'input',
-  renderEventsTable
-);
 
-$('eventFilter').addEventListener(
-  'change',
-  renderEventsTable
-);
+$('eventSearch')
+  .addEventListener(
+    'input',
+    renderEventsTable
+  );
 
-/* FORMULAIRE */
+
+$('eventFilter')
+  .addEventListener(
+    'change',
+    renderEventsTable
+  );
+
+
+/* =========================
+   MODAL
+========================= */
 
 function clearForm(){
 
-  $('reservationForm').reset();
+  $('reservationForm')
+    .reset();
 
-  $('formMsg').innerHTML = '';
 
-  editing = null;
+  $('formMsg')
+    .innerHTML =
+    '';
+
+
+  editing =
+    null;
+
 
   $('approveBtn')
-    .classList.add('hidden');
+    .classList
+    .add('hidden');
 
-  $('refuseBtn')
-    .classList.add('hidden');
+
+  $('cancelBtn')
+    .classList
+    .add('hidden');
+
+
+  $('dangerZone')
+    .classList
+    .add('hidden');
 
 }
 
-function openNew(date=''){
+
+function openNew(
+  date = ''
+){
 
   clearForm();
 
-  $('modalTitle').textContent =
-  'Ajouter un événement';
 
-  $('eventDate').value =
-  date;
+  $('modalTitle')
+    .textContent =
+    'Ajouter un événement';
 
-  $('status').value =
-  'confirmed';
 
-  $('source').value =
-  'manual';
+  $('eventDate')
+    .value =
+    date;
+
+
+  $('status')
+    .value =
+    'confirmed';
+
+
+  $('source')
+    .value =
+    'manual';
+
 
   $('modalBack')
-    .classList.remove('hidden');
+    .classList
+    .remove('hidden');
 
 }
+
 
 function openReservation(r){
 
   clearForm();
 
-  editing = r;
 
-  $('modalTitle').textContent =
-  r.full_name ||
-  'Réservation';
+  editing =
+    r;
 
-  $('eventDate').value =
-  r.event_date || '';
 
-  $('status').value =
-  r.status || 'pending';
+  $('modalTitle')
+    .textContent =
+    r.full_name ||
+    'Réservation';
 
-  $('source').value =
-  r.source || 'site';
 
-  $('fullName').value =
-  r.full_name || '';
+  $('eventDate')
+    .value =
+    r.event_date ||
+    '';
 
-  $('email').value =
-  r.email || '';
 
-  $('phone').value =
-  r.phone || '';
+  $('status')
+    .value =
+    r.status ||
+    'pending';
 
-  $('guestCount').value =
-  r.guest_count || '';
 
-  $('preferredTime').value =
-  r.preferred_time || '';
+  $('source')
+    .value =
+    r.source ||
+    'site';
 
-  $('city').value =
-  r.city || '';
 
-  $('eventAddress').value =
-  r.event_address || '';
+  $('fullName')
+    .value =
+    r.full_name ||
+    '';
 
-  $('quotedPrice').value =
-  r.quoted_price || '';
 
-  $('depositAmount').value =
-  r.deposit_amount || '';
+  $('email')
+    .value =
+    r.email ||
+    '';
 
-  $('message').value =
-  r.message || '';
 
-  $('internalNotes').value =
-  r.internal_notes || '';
+  $('phone')
+    .value =
+    r.phone ||
+    '';
 
-  $('depositReceived').checked =
-  !!r.deposit_received;
 
-  $('menuSent').checked =
-  !!r.menu_sent;
+  $('guestCount')
+    .value =
+    r.guest_count ||
+    '';
 
-  if(r.status === 'pending'){
+
+  $('preferredTime')
+    .value =
+    r.preferred_time ||
+    '';
+
+
+  $('city')
+    .value =
+    r.city ||
+    '';
+
+
+  $('eventAddress')
+    .value =
+    r.event_address ||
+    '';
+
+
+  $('quotedPrice')
+    .value =
+    r.quoted_price ||
+    '';
+
+
+  $('depositAmount')
+    .value =
+    r.deposit_amount ||
+    '';
+
+
+  $('message')
+    .value =
+    r.message ||
+    '';
+
+
+  $('internalNotes')
+    .value =
+    r.internal_notes ||
+    '';
+
+
+  $('depositReceived')
+    .checked =
+    !!r.deposit_received;
+
+
+  $('menuSent')
+    .checked =
+    !!r.menu_sent;
+
+
+  if(
+    r.status ===
+    'pending'
+  ){
 
     $('approveBtn')
-      .classList.remove('hidden');
-
-    $('refuseBtn')
-      .classList.remove('hidden');
+      .classList
+      .remove('hidden');
 
   }
 
-  $('modalBack')
-    .classList.remove('hidden');
-
-}
-
-function escapeHtml(value){
-
-  return String(value || '')
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'","&#039;");
-
-}
-
-$('closeModal').onclick =
-() =>
-$('modalBack')
-  .classList.add('hidden');
-
-$('modalBack').onclick =
-e => {
 
   if(
-    e.target ===
+    r.status !==
+    'cancelled'
+  ){
+
+    $('cancelBtn')
+      .classList
+      .remove('hidden');
+
+  }
+
+
+  $('dangerZone')
+    .classList
+    .remove('hidden');
+
+
+  $('modalBack')
+    .classList
+    .remove('hidden');
+
+}
+
+
+$('closeModal').onclick =
+() => {
+
+  $('modalBack')
+    .classList
+    .add('hidden');
+
+};
+
+
+$('modalBack').onclick =
+event => {
+
+  if(
+    event.target ===
     $('modalBack')
   ){
+
     $('modalBack')
-      .classList.add('hidden');
+      .classList
+      .add('hidden');
+
   }
 
 };
 
+
 $('addBtn').onclick =
-() => openNew();
+() =>
+  openNew();
+
+
+/* =========================
+   CALENDAR NAV
+========================= */
 
 $('todayBtn').onclick =
 () => {
 
   viewDate =
-  new Date();
+    new Date();
 
   viewDate.setDate(1);
 
@@ -1750,255 +3017,654 @@ $('todayBtn').onclick =
 
 };
 
+
 $('prevMonth').onclick =
 () => {
 
   viewDate.setMonth(
-    viewDate.getMonth()-1
+    viewDate.getMonth() -
+    1
   );
 
   renderAll();
 
 };
+
 
 $('nextMonth').onclick =
 () => {
 
   viewDate.setMonth(
-    viewDate.getMonth()+1
+    viewDate.getMonth() +
+    1
   );
 
   renderAll();
 
 };
 
-/* ENREGISTRER */
 
-$('reservationForm').onsubmit =
-async e => {
+/* =========================
+   FORM PAYLOAD
+========================= */
 
-  e.preventDefault();
+function getFormPayload(){
 
-  const payload = {
+  const status =
+    $('status').value;
+
+
+  const source =
+    $('source').value;
+
+
+  let blockType =
+    'reservation';
+
+
+  if(
+    status ===
+    'unavailable'
+  ){
+
+    blockType =
+      'unavailable';
+
+  }else if(
+    source ===
+    'manual'
+  ){
+
+    blockType =
+      'manual_booked';
+
+  }
+
+
+  return {
 
     event_date:
-    $('eventDate').value,
+      $('eventDate').value,
 
     status:
-    $('status').value,
+      status,
 
     block_type:
-    $('status').value === 'unavailable'
-      ? 'unavailable'
-      : $('source').value === 'manual'
-        ? 'manual_booked'
-        : 'reservation',
+      blockType,
 
     source:
-    $('source').value,
+      source,
 
     full_name:
-    $('fullName').value.trim() || null,
+      $('fullName')
+        .value
+        .trim() ||
+      null,
 
     email:
-    $('email').value.trim() || null,
+      $('email')
+        .value
+        .trim() ||
+      null,
 
     phone:
-    $('phone').value.trim() || null,
+      $('phone')
+        .value
+        .trim() ||
+      null,
 
     guest_count:
-    $('guestCount').value
-      ? Number($('guestCount').value)
-      : null,
+      $('guestCount').value
+        ? Number(
+            $('guestCount').value
+          )
+        : null,
 
     preferred_time:
-    $('preferredTime').value.trim() || null,
+      $('preferredTime')
+        .value
+        .trim() ||
+      null,
 
     city:
-    $('city').value.trim() || null,
+      $('city')
+        .value
+        .trim() ||
+      null,
 
     event_address:
-    $('eventAddress').value.trim() || null,
+      $('eventAddress')
+        .value
+        .trim() ||
+      null,
 
     quoted_price:
-    $('quotedPrice').value
-      ? Number($('quotedPrice').value)
-      : null,
+      $('quotedPrice').value
+        ? Number(
+            $('quotedPrice').value
+          )
+        : null,
 
     deposit_amount:
-    $('depositAmount').value
-      ? Number($('depositAmount').value)
-      : null,
+      $('depositAmount').value
+        ? Number(
+            $('depositAmount').value
+          )
+        : null,
 
     message:
-    $('message').value.trim() || null,
+      $('message')
+        .value
+        .trim() ||
+      null,
 
     internal_notes:
-    $('internalNotes').value.trim() || null,
+      $('internalNotes')
+        .value
+        .trim() ||
+      null,
 
     deposit_received:
-    $('depositReceived').checked,
+      $('depositReceived')
+        .checked,
 
     menu_sent:
-    $('menuSent').checked
+      $('menuSent')
+        .checked
 
   };
 
-  let response;
+}
+
+
+/* =========================
+   FRIENDLY ERROR
+========================= */
+
+function showDatabaseError(
+  error
+){
+
+  console.error(
+    error
+  );
+
+
+  if(
+    error?.code ===
+    '23505'
+  ){
+
+    $('formMsg')
+      .innerHTML =
+      `
+        <div class="error">
+
+          Cette date est déjà bloquée
+          par une autre réservation.
+
+          <br><br>
+
+          Choisis une autre date
+          ou supprime/libère
+          l’événement existant.
+
+        </div>
+      `;
+
+    return;
+
+  }
+
+
+  $('formMsg')
+    .innerHTML =
+    `
+      <div class="error">
+
+        ${
+          escapeHtml(
+            error?.message ||
+            'Une erreur est survenue.'
+          )
+        }
+
+      </div>
+    `;
+
+}
+
+
+/* =========================
+   SAVE
+========================= */
+
+async function saveReservation(
+  options = {}
+){
+
+  const {
+    closeAfter = true,
+    forcedStatus = null
+  } =
+    options;
+
+
+  const payload =
+    getFormPayload();
+
+
+  if(
+    !payload.event_date
+  ){
+
+    $('formMsg')
+      .innerHTML =
+      `
+        <div class="error">
+          Choisis une date.
+        </div>
+      `;
+
+    return false;
+
+  }
+
+
+  if(
+    forcedStatus
+  ){
+
+    payload.status =
+      forcedStatus;
+
+
+    if(
+      forcedStatus ===
+      'confirmed'
+    ){
+
+      payload.block_type =
+        payload.source ===
+        'manual'
+          ? 'manual_booked'
+          : 'reservation';
+
+    }
+
+  }
+
+
+  $('saveBtn')
+    .disabled =
+    true;
+
+
+  let result;
+
 
   if(editing){
 
-    response =
+    result =
+      await db
+        .from('reservations')
+        .update(payload)
+        .eq(
+          'id',
+          editing.id
+        )
+        .select()
+        .single();
+
+  }else{
+
+    result =
+      await db
+        .from('reservations')
+        .insert(payload)
+        .select()
+        .single();
+
+  }
+
+
+  $('saveBtn')
+    .disabled =
+    false;
+
+
+  if(
+    result.error
+  ){
+
+    showDatabaseError(
+      result.error
+    );
+
+    return false;
+
+  }
+
+
+  editing =
+    result.data;
+
+
+  $('formMsg')
+    .innerHTML =
+    `
+      <div class="success">
+        Enregistré ✅
+      </div>
+    `;
+
+
+  await loadData();
+
+
+  if(
+    closeAfter
+  ){
+
+    setTimeout(
+      () => {
+
+        $('modalBack')
+          .classList
+          .add('hidden');
+
+      },
+      400
+    );
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================
+   SUBMIT
+========================= */
+
+$('reservationForm')
+  .onsubmit =
+async event => {
+
+  event.preventDefault();
+
+  await saveReservation({
+    closeAfter:true
+  });
+
+};
+
+
+/* =========================
+   APPROVE
+========================= */
+
+$('approveBtn').onclick =
+async () => {
+
+  if(
+    !editing
+  ){
+    return;
+  }
+
+
+  const ok =
+    confirm(
+      'Accepter cette réservation et garder la date bloquée?'
+    );
+
+
+  if(
+    !ok
+  ){
+    return;
+  }
+
+
+  $('status')
+    .value =
+    'confirmed';
+
+
+  const success =
+    await saveReservation({
+      closeAfter:false,
+      forcedStatus:'confirmed'
+    });
+
+
+  if(
+    !success
+  ){
+    return;
+  }
+
+
+  $('formMsg')
+    .innerHTML =
+    `
+      <div class="success">
+
+        Réservation confirmée ✅
+
+        <br>
+
+        Aucun courriel automatique
+        n’a été envoyé.
+
+      </div>
+    `;
+
+
+  $('approveBtn')
+    .classList
+    .add('hidden');
+
+
+  $('cancelBtn')
+    .classList
+    .remove('hidden');
+
+};
+
+
+/* =========================
+   CANCEL / FREE DATE
+========================= */
+
+$('cancelBtn').onclick =
+async () => {
+
+  if(
+    !editing
+  ){
+    return;
+  }
+
+
+  const ok =
+    confirm(
+      'Annuler cet événement et libérer cette date sur le site public?'
+    );
+
+
+  if(
+    !ok
+  ){
+    return;
+  }
+
+
+  const {
+    error
+  } =
     await db
       .from('reservations')
-      .update(payload)
+      .update({
+        status:
+          'cancelled'
+      })
       .eq(
         'id',
         editing.id
       );
 
-  }else{
-
-    response =
-    await db
-      .from('reservations')
-      .insert(payload);
-
-  }
-
-  if(response.error){
-
-    $('formMsg').innerHTML =
-    `<div class="error">${escapeHtml(response.error.message)}</div>`;
-
-    return;
-
-  }
-
-  $('formMsg').innerHTML =
-  '<div class="success">Enregistré ✅</div>';
-
-  await loadData();
-
-  setTimeout(
-    () =>
-    $('modalBack')
-      .classList.add('hidden'),
-    500
-  );
-
-};
-
-/* ACCEPTER */
-
-$('approveBtn').onclick =
-async () => {
-
-  if(!editing) return;
-
-  $('formMsg').innerHTML =
-  '<div class="success">Confirmation en cours…</div>';
-
-  const {error:updateError} =
-  await db
-    .from('reservations')
-    .update({
-      status:'confirmed'
-    })
-    .eq(
-      'id',
-      editing.id
-    );
-
-  if(updateError){
-
-    $('formMsg').innerHTML =
-    `<div class="error">${escapeHtml(updateError.message)}</div>`;
-
-    return;
-
-  }
-
-  const {error:mailError} =
-  await db.functions.invoke(
-    'send-confirmation',
-    {
-      body:{
-        reservation_id:
-        editing.id
-      }
-    }
-  );
-
-  await loadData();
-
-  if(mailError){
-
-    $('formMsg').innerHTML =
-    `
-      <div class="error">
-        Événement confirmé ✅<br>
-        Le courriel automatique n’a pas encore pu être envoyé.
-      </div>
-    `;
-
-    return;
-
-  }
-
-  $('formMsg').innerHTML =
-  `
-    <div class="success">
-      Événement confirmé et courriel envoyé ✅
-    </div>
-  `;
-
-};
-
-/* REFUSER */
-
-$('refuseBtn').onclick =
-async () => {
-
-  if(!editing) return;
-
-  const ok =
-  confirm(
-    'Refuser cette demande et libérer la date?'
-  );
-
-  if(!ok) return;
-
-  const {error} =
-  await db
-    .from('reservations')
-    .update({
-      status:'cancelled'
-    })
-    .eq(
-      'id',
-      editing.id
-    );
 
   if(error){
 
-    $('formMsg').innerHTML =
-    `<div class="error">${escapeHtml(error.message)}</div>`;
+    showDatabaseError(
+      error
+    );
 
     return;
 
   }
 
+
   await loadData();
 
-  $('modalBack')
-    .classList.add('hidden');
+
+  $('formMsg')
+    .innerHTML =
+    `
+      <div class="success">
+
+        Événement annulé ✅
+
+        <br>
+
+        La date est maintenant
+        libérée sur le calendrier public.
+
+      </div>
+    `;
+
+
+  $('status')
+    .value =
+    'cancelled';
+
+
+  $('approveBtn')
+    .classList
+    .add('hidden');
+
+
+  $('cancelBtn')
+    .classList
+    .add('hidden');
 
 };
+
+
+/* =========================
+   DELETE PERMANENTLY
+========================= */
+
+$('deleteBtn').onclick =
+async () => {
+
+  if(
+    !editing
+  ){
+    return;
+  }
+
+
+  const firstConfirm =
+    confirm(
+      'Supprimer définitivement cet événement? La date sera libérée immédiatement.'
+    );
+
+
+  if(
+    !firstConfirm
+  ){
+    return;
+  }
+
+
+  const secondConfirm =
+    confirm(
+      'Cette action est irréversible. Confirmer la suppression?'
+    );
+
+
+  if(
+    !secondConfirm
+  ){
+    return;
+  }
+
+
+  $('deleteBtn')
+    .disabled =
+    true;
+
+
+  const {
+    error
+  } =
+    await db
+      .from('reservations')
+      .delete()
+      .eq(
+        'id',
+        editing.id
+      );
+
+
+  $('deleteBtn')
+    .disabled =
+    false;
+
+
+  if(error){
+
+    showDatabaseError(
+      error
+    );
+
+    return;
+
+  }
+
+
+  editing =
+    null;
+
+
+  await loadData();
+
+
+  $('modalBack')
+    .classList
+    .add('hidden');
+
+
+  alert(
+    'Événement supprimé. La date est maintenant disponible.'
+  );
+
+};
+
+
+/* =========================
+   START
+========================= */
 
 sessionGate();
 
 </script>
 
 </body>
+
 </html>
