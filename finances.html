@@ -1,0 +1,3236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Rafa Pizza — Finances</title>
+
+<style>
+:root{
+  --cream:#F6F0E7;
+  --cream2:#FBF8F3;
+  --wine:#5B1F2A;
+  --wine2:#7A2D3C;
+  --ink:#2B2524;
+  --muted:#8A7D77;
+  --line:rgba(91,31,42,.16);
+  --ok:#447A54;
+  --danger:#9B3E4E;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#eee8df;
+  color:var(--ink);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+.hidden{display:none!important}
+
+.app{
+  max-width:1180px;
+  margin:auto;
+  padding:18px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:18px;
+  flex-wrap:wrap;
+}
+
+.brand h1{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--wine);
+  font-size:34px;
+}
+
+.brand p{
+  margin:3px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.nav{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border:0;
+  border-radius:999px;
+  padding:11px 16px;
+  font-weight:800;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.btn.primary{
+  background:var(--wine);
+  color:#fff;
+}
+
+.btn.secondary{
+  background:#fff;
+  color:var(--wine);
+  border:1px solid var(--line);
+}
+
+.btn.danger{
+  background:var(--danger);
+  color:#fff;
+}
+
+.btn.small{
+  padding:8px 12px;
+  font-size:12px;
+}
+
+.btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.controls{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+
+.controls select{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  padding:10px 12px;
+  font-size:14px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.stat{
+  background:var(--cream2);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:15px;
+}
+
+.stat.dark{
+  background:var(--wine);
+  color:#fff;
+}
+
+.stat .n{
+  font-size:25px;
+  font-weight:900;
+  color:var(--wine);
+}
+
+.stat.dark .n{
+  color:#fff;
+}
+
+.stat .t{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+.stat.dark .t{
+  color:rgba(255,255,255,.72);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.panel{
+  background:var(--cream);
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:0 14px 34px rgba(65,35,39,.08);
+  overflow:hidden;
+}
+
+.panel.full{
+  grid-column:1/-1;
+}
+
+.panel-head{
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.panel-head h2{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--wine);
+  font-size:23px;
+}
+
+.panel-body{
+  padding:18px 20px;
+}
+
+.note{
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.5;
+  margin-top:9px;
+}
+
+.table-wrap{
+  width:100%;
+  overflow:auto;
+}
+
+.table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:760px;
+}
+
+.table th{
+  text-align:left;
+  font-size:10px;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding:10px 9px;
+  border-bottom:1px solid var(--line);
+}
+
+.table td{
+  padding:11px 9px;
+  border-bottom:1px solid var(--line);
+  font-size:12px;
+  vertical-align:middle;
+}
+
+.table input,
+.table select{
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  padding:8px;
+  font-size:13px;
+}
+
+.km-input{
+  width:95px;
+}
+
+.money{
+  font-weight:800;
+}
+
+.category-chip{
+  display:inline-block;
+  border-radius:999px;
+  background:#eee8df;
+  color:var(--wine);
+  padding:5px 8px;
+  font-weight:800;
+  font-size:10px;
+}
+
+.empty{
+  color:var(--muted);
+  font-size:12px;
+  padding:12px 0;
+}
+
+.summary-list{
+  display:grid;
+  gap:9px;
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  padding:10px 0;
+  border-bottom:1px solid var(--line);
+  font-size:13px;
+}
+
+.summary-row strong{
+  color:var(--wine);
+}
+
+.login-wrap{
+  min-height:90vh;
+  display:grid;
+  place-items:center;
+  padding:20px;
+}
+
+.login{
+  width:min(430px,100%);
+  background:var(--cream);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:30px;
+  box-shadow:0 18px 45px rgba(65,35,39,.12);
+  text-align:center;
+}
+
+.login h1{
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--wine);
+  font-size:36px;
+  margin:0 0 8px;
+}
+
+.login p{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.login input{
+  width:100%;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:14px;
+  padding:14px;
+  font-size:16px;
+  margin:12px 0 8px;
+}
+
+.login .btn{
+  width:100%;
+  margin-top:4px;
+}
+
+.notice{
+  font-size:12px;
+  margin-top:12px;
+  color:var(--muted);
+}
+
+.modal-back{
+  position:fixed;
+  inset:0;
+  background:rgba(30,20,20,.48);
+  display:grid;
+  place-items:center;
+  padding:16px;
+  z-index:30;
+}
+
+.modal{
+  width:min(680px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:var(--cream);
+  border-radius:24px;
+  border:1px solid var(--line);
+}
+
+.modal-head{
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.modal-head h2{
+  margin:0;
+  color:var(--wine);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+.x{
+  background:transparent;
+  border:0;
+  font-size:25px;
+  color:var(--wine);
+  cursor:pointer;
+}
+
+.form{
+  padding:18px 20px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.field label{
+  font-size:10px;
+  color:var(--wine);
+  font-weight:900;
+}
+
+.field input,
+.field select,
+.field textarea{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:12px;
+  padding:11px;
+  font-size:14px;
+}
+
+.field textarea{
+  min-height:78px;
+  resize:vertical;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.success{
+  background:#e4efe6;
+  color:#315e3d;
+  border:1px solid #bdd5c3;
+  border-radius:12px;
+  padding:10px;
+  font-size:12px;
+  margin-top:12px;
+}
+
+.error{
+  background:#f5e3e6;
+  color:#8a2f40;
+  border:1px solid #e7bbc4;
+  border-radius:12px;
+  padding:10px;
+  font-size:12px;
+  margin-top:12px;
+}
+
+@media(max-width:850px){
+  .grid{grid-template-columns:1fr}
+  .panel.full{grid-column:auto}
+  .stats{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:620px){
+  .app{padding:9px}
+  .brand h1{font-size:28px}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat .n{font-size:20px}
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .actions .btn{width:100%}
+  .nav{width:100%}
+  .nav .btn{flex:1}
+}
+</style>
+</head>
+
+<body>
+
+<div id="loginWrap" class="login-wrap">
+  <div class="login">
+
+    <h1>Rafa Pizza</h1>
+
+    <p>
+      Finances privées
+    </p>
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Mot de passe"
+      autocomplete="current-password"
+    >
+
+    <button
+      id="loginBtn"
+      class="btn primary"
+    >
+      Se connecter
+    </button>
+
+    <a
+      class="btn secondary"
+      href="admin.html"
+    >
+      Retour aux réservations
+    </a>
+
+    <div
+      id="loginMsg"
+      class="notice"
+    ></div>
+
+  </div>
+</div>
+
+
+<div
+  id="app"
+  class="app hidden"
+>
+
+  <div class="topbar">
+
+    <div class="brand">
+
+      <h1>
+        Rafa · Finances
+      </h1>
+
+      <p>
+        Chiffre d’affaires, dépenses, kilométrage et bilan annuel.
+      </p>
+
+    </div>
+
+    <div class="nav">
+
+      <a
+        class="btn secondary"
+        href="admin.html"
+      >
+        Réservations
+      </a>
+
+      <button
+        id="addExpenseBtn"
+        class="btn primary"
+      >
+        + Dépense
+      </button>
+
+      <button
+        id="logoutBtn"
+        class="btn secondary"
+      >
+        Déconnexion
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="controls">
+
+    <div>
+      <strong>Année :</strong>
+
+      <select id="yearSelect"></select>
+    </div>
+
+    <button
+      id="pdfBtn"
+      class="btn primary"
+    >
+      Télécharger le PDF annuel
+    </button>
+
+  </div>
+
+
+  <div class="stats">
+
+    <div class="stat dark">
+
+      <div
+        id="revenueStat"
+        class="n"
+      >
+        0 $
+      </div>
+
+      <div class="t">
+        Chiffre d’affaires confirmé
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div
+        id="expensesStat"
+        class="n"
+      >
+        0 $
+      </div>
+
+      <div class="t">
+        Dépenses saisies
+      </div>
+
+    </div>
+
+
+    <div class="stat dark">
+
+      <div
+        id="netStat"
+        class="n"
+      >
+        0 $
+      </div>
+
+      <div class="t">
+        Net estimé avant ajustements fiscaux
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div
+        id="kmStat"
+        class="n"
+      >
+        0 km
+      </div>
+
+      <div class="t">
+        Kilométrage d’affaires
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="grid">
+
+    <section class="panel full">
+
+      <div class="panel-head">
+
+        <h2>
+          Kilométrage par événement
+        </h2>
+
+        <span class="note">
+          Inscrivez le total aller-retour réellement parcouru pour Rafa.
+        </span>
+
+      </div>
+
+
+      <div class="panel-body">
+
+        <div class="table-wrap">
+
+          <table class="table">
+
+            <thead>
+
+              <tr>
+
+                <th>Date</th>
+                <th>Client</th>
+                <th>Ville</th>
+                <th>CA</th>
+                <th>Km affaires</th>
+                <th></th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="mileageBody"></tbody>
+
+          </table>
+
+        </div>
+
+
+        <div
+          id="mileageEmpty"
+          class="empty hidden"
+        >
+          Aucun événement confirmé pour cette année.
+        </div>
+
+
+        <div class="note">
+
+          Le kilométrage est conservé comme registre.
+
+          Pour une entreprise individuelle,
+          il n’est pas automatiquement multiplié par un taux au km
+          dans le calcul du revenu net.
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="panel">
+
+      <div class="panel-head">
+
+        <h2>
+          Dépenses
+        </h2>
+
+        <button
+          id="addExpenseBtn2"
+          class="btn primary small"
+        >
+          + Ajouter
+        </button>
+
+      </div>
+
+
+      <div class="panel-body">
+
+        <div class="table-wrap">
+
+          <table
+            class="table"
+            style="min-width:650px"
+          >
+
+            <thead>
+
+              <tr>
+
+                <th>Date</th>
+                <th>Catégorie</th>
+                <th>Description</th>
+                <th>Montant</th>
+                <th></th>
+
+              </tr>
+
+            </thead>
+
+            <tbody id="expensesBody"></tbody>
+
+          </table>
+
+        </div>
+
+
+        <div
+          id="expensesEmpty"
+          class="empty hidden"
+        >
+          Aucune dépense pour cette année.
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="panel">
+
+      <div class="panel-head">
+
+        <h2>
+          Résumé par catégorie
+        </h2>
+
+      </div>
+
+
+      <div class="panel-body">
+
+        <div
+          id="categorySummary"
+          class="summary-list"
+        ></div>
+
+        <div class="note">
+
+          Saisissez le montant réellement payé.
+
+          Le traitement fiscal final peut différer
+          pour certains biens durables,
+          comme les fours ou d’autres immobilisations.
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>
+
+
+<div
+  id="expenseModal"
+  class="modal-back hidden"
+>
+
+  <div class="modal">
+
+    <div class="modal-head">
+
+      <h2 id="expenseTitle">
+        Ajouter une dépense
+      </h2>
+
+      <button
+        id="closeExpense"
+        class="x"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form
+      id="expenseForm"
+      class="form"
+    >
+
+      <div class="form-grid">
+
+        <div class="field">
+
+          <label>
+            Date
+          </label>
+
+          <input
+            id="expenseDate"
+            type="date"
+            required
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Montant payé ($)
+          </label>
+
+          <input
+            id="expenseAmount"
+            type="number"
+            min="0"
+            step="0.01"
+            required
+          >
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Catégorie
+          </label>
+
+          <select id="expenseCategory">
+
+            <option>
+              Ingrédients / épicerie
+            </option>
+
+            <option>
+              Pâtons
+            </option>
+
+            <option>
+              Propane
+            </option>
+
+            <option>
+              Matériel de cuisine
+            </option>
+
+            <option>
+              Four / équipement durable
+            </option>
+
+            <option>
+              Déplacement / stationnement / péage
+            </option>
+
+            <option>
+              Marketing / site web
+            </option>
+
+            <option>
+              Assurance / permis
+            </option>
+
+            <option>
+              Frais bancaires / paiement
+            </option>
+
+            <option>
+              Autre
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Commerce / fournisseur
+          </label>
+
+          <input
+            id="expenseVendor"
+            placeholder="Ex. Costco, Gozney..."
+          >
+
+        </div>
+
+
+        <div class="field full">
+
+          <label>
+            Description
+          </label>
+
+          <input
+            id="expenseDescription"
+            required
+            placeholder="Ex. Four Gozney, propane, ingrédients événement..."
+          >
+
+        </div>
+
+
+        <div class="field full">
+
+          <label>
+            Lier à un événement (facultatif)
+          </label>
+
+          <select id="expenseEvent">
+
+            <option value="">
+              Aucun événement
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="field full">
+
+          <label>
+            Notes
+          </label>
+
+          <textarea id="expenseNotes"></textarea>
+
+        </div>
+
+      </div>
+
+
+      <div id="expenseMsg"></div>
+
+
+      <div class="actions">
+
+        <button
+          id="saveExpense"
+          class="btn primary"
+          type="submit"
+        >
+          Enregistrer
+        </button>
+
+        <button
+          id="deleteExpense"
+          class="btn danger hidden"
+          type="button"
+        >
+          Supprimer
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0"
+></script>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"
+></script>
+
+
+<script>
+
+const SUPABASE_URL =
+  'https://jetogsbyptglaihktdel.supabase.co';
+
+const SUPABASE_KEY =
+  'sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja';
+
+const ADMIN_EMAIL =
+  'raphael.frenette@gmail.com';
+
+
+const db =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+const $ =
+  id =>
+    document.getElementById(id);
+
+
+let reservations = [];
+let expenses = [];
+let editingExpense = null;
+
+
+function money(value){
+
+  return new Intl.NumberFormat(
+    'fr-CA',
+    {
+      style:'currency',
+      currency:'CAD',
+      minimumFractionDigits:0,
+      maximumFractionDigits:2
+    }
+  ).format(
+    Number(value || 0)
+  );
+
+}
+
+
+function fmtDate(date){
+
+  if(!date){
+    return '—';
+  }
+
+  return new Intl.DateTimeFormat(
+    'fr-CA',
+    {
+      day:'numeric',
+      month:'short',
+      year:'numeric'
+    }
+  ).format(
+    new Date(
+      date + 'T12:00:00'
+    )
+  );
+
+}
+
+
+function esc(value){
+
+  return String(value || '')
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'","&#039;");
+
+}
+
+
+function currentYear(){
+
+  return new Date()
+    .getFullYear();
+
+}
+
+
+function selectedYear(){
+
+  return Number(
+    $('yearSelect').value ||
+    currentYear()
+  );
+
+}
+
+
+function hasGuests(r){
+
+  return Number(
+    r?.guest_count
+  ) > 0;
+
+}
+
+
+/* =========================
+   TARIFICATION
+========================= */
+
+function calculateEventPrice(
+  guests
+){
+
+  guests =
+    Number(guests);
+
+  if(
+    !guests ||
+    guests <= 0
+  ){
+    return null;
+  }
+
+
+  let price;
+  let fixedFee;
+
+
+  if(guests <= 10){
+
+    price = 29;
+    fixedFee = 175;
+
+  }
+
+  else if(guests <= 15){
+
+    price = 27;
+    fixedFee = 200;
+
+  }
+
+  else if(guests <= 20){
+
+    price = 25;
+    fixedFee = 250;
+
+  }
+
+  else if(guests <= 25){
+
+    price = 23;
+    fixedFee = 300;
+
+  }
+
+  else if(guests <= 30){
+
+    price = 22;
+    fixedFee = 350;
+
+  }
+
+  else if(guests <= 40){
+
+    price = 21;
+    fixedFee = 400;
+
+  }
+
+  else if(guests <= 50){
+
+    price = 20;
+    fixedFee = 500;
+
+  }
+
+  else if(guests <= 75){
+
+    price = 19;
+    fixedFee = 600;
+
+  }
+
+  else{
+
+    price = 18;
+    fixedFee = 750;
+
+  }
+
+
+  return {
+
+    total:
+      guests *
+      price +
+      fixedFee
+
+  };
+
+}
+
+
+function revenueForReservation(r){
+
+  if(
+    r.status !==
+      'confirmed' ||
+    !hasGuests(r)
+  ){
+    return 0;
+  }
+
+
+  if(
+    r.quoted_price !== null &&
+    r.quoted_price !== undefined &&
+    r.quoted_price !== ''
+  ){
+
+    return Number(
+      r.quoted_price
+    ) || 0;
+
+  }
+
+
+  const pricing =
+    calculateEventPrice(
+      r.guest_count
+    );
+
+
+  return pricing
+    ? pricing.total
+    : 0;
+
+}
+
+
+/* =========================
+   CONNEXION
+========================= */
+
+async function sessionGate(){
+
+  const {
+    data:{
+      session
+    }
+  } =
+    await db.auth
+      .getSession();
+
+
+  if(
+    session &&
+    (
+      session.user.email ||
+      ''
+    ).toLowerCase() ===
+    ADMIN_EMAIL.toLowerCase()
+  ){
+
+    $('loginWrap')
+      .classList
+      .add('hidden');
+
+    $('app')
+      .classList
+      .remove('hidden');
+
+    await loadData();
+
+  }
+
+  else{
+
+    $('loginWrap')
+      .classList
+      .remove('hidden');
+
+    $('app')
+      .classList
+      .add('hidden');
+
+  }
+
+}
+
+
+$('loginBtn').onclick =
+async () => {
+
+  const password =
+    $('password')
+      .value;
+
+
+  if(!password){
+
+    $('loginMsg')
+      .textContent =
+      'Entrez votre mot de passe.';
+
+    return;
+
+  }
+
+
+  $('loginMsg')
+    .textContent =
+    'Connexion…';
+
+
+  const {
+    error
+  } =
+    await db.auth
+      .signInWithPassword({
+
+        email:
+          ADMIN_EMAIL,
+
+        password:
+          password
+
+      });
+
+
+  if(error){
+
+    $('loginMsg')
+      .textContent =
+      'Connexion impossible. Vérifiez le mot de passe.';
+
+    return;
+
+  }
+
+
+  await sessionGate();
+
+};
+
+
+$('password')
+  .addEventListener(
+    'keydown',
+    event => {
+
+      if(
+        event.key ===
+        'Enter'
+      ){
+
+        $('loginBtn')
+          .click();
+
+      }
+
+    }
+  );
+
+
+$('logoutBtn').onclick =
+async () => {
+
+  await db.auth
+    .signOut();
+
+  window.location.href =
+    'admin.html';
+
+};
+
+
+/* =========================
+   DONNÉES
+========================= */
+
+async function loadData(){
+
+  const [
+    reservationResult,
+    expenseResult
+  ] =
+    await Promise.all([
+
+      db
+        .from('reservations')
+        .select('*')
+        .order(
+          'event_date',
+          {
+            ascending:true
+          }
+        ),
+
+      db
+        .from('expenses')
+        .select('*')
+        .order(
+          'expense_date',
+          {
+            ascending:false
+          }
+        )
+
+    ]);
+
+
+  if(
+    reservationResult.error
+  ){
+
+    alert(
+      'Impossible de charger les événements : ' +
+      reservationResult.error.message
+    );
+
+    return;
+
+  }
+
+
+  if(
+    expenseResult.error
+  ){
+
+    alert(
+      'Impossible de charger les dépenses : ' +
+      expenseResult.error.message
+    );
+
+    return;
+
+  }
+
+
+  reservations =
+    reservationResult.data ||
+    [];
+
+
+  expenses =
+    expenseResult.data ||
+    [];
+
+
+  buildYears();
+
+  renderAll();
+
+}
+
+
+function buildYears(){
+
+  const years =
+    new Set([
+      currentYear()
+    ]);
+
+
+  reservations.forEach(
+    r => {
+
+      if(r.event_date){
+
+        years.add(
+          Number(
+            r.event_date
+              .slice(
+                0,
+                4
+              )
+          )
+        );
+
+      }
+
+    }
+  );
+
+
+  expenses.forEach(
+    e => {
+
+      if(e.expense_date){
+
+        years.add(
+          Number(
+            e.expense_date
+              .slice(
+                0,
+                4
+              )
+          )
+        );
+
+      }
+
+    }
+  );
+
+
+  const previous =
+    $('yearSelect')
+      .value;
+
+
+  const sorted =
+    [...years]
+      .sort(
+        (
+          a,
+          b
+        ) =>
+          b - a
+      );
+
+
+  $('yearSelect')
+    .innerHTML =
+    sorted
+      .map(
+        year =>
+          `
+            <option value="${year}">
+              ${year}
+            </option>
+          `
+      )
+      .join('');
+
+
+  $('yearSelect')
+    .value =
+    previous &&
+    sorted.includes(
+      Number(previous)
+    )
+      ? previous
+      : String(
+          currentYear()
+        );
+
+}
+
+
+function yearReservations(){
+
+  const year =
+    String(
+      selectedYear()
+    );
+
+
+  return reservations
+    .filter(
+      r =>
+        r.event_date &&
+        r.event_date
+          .startsWith(
+            year + '-'
+          )
+    );
+
+}
+
+
+function yearExpenses(){
+
+  const year =
+    String(
+      selectedYear()
+    );
+
+
+  return expenses
+    .filter(
+      e =>
+        e.expense_date &&
+        e.expense_date
+          .startsWith(
+            year + '-'
+          )
+    );
+
+}
+
+
+function confirmedEvents(){
+
+  return yearReservations()
+    .filter(
+      r =>
+        r.status ===
+          'confirmed' &&
+        hasGuests(r)
+    );
+
+}
+
+
+function totals(){
+
+  const events =
+    confirmedEvents();
+
+  const yearExpenseList =
+    yearExpenses();
+
+
+  const revenue =
+    events.reduce(
+      (
+        total,
+        event
+      ) =>
+        total +
+        revenueForReservation(
+          event
+        ),
+      0
+    );
+
+
+  const expenseTotal =
+    yearExpenseList.reduce(
+      (
+        total,
+        expense
+      ) =>
+        total +
+        Number(
+          expense.amount ||
+          0
+        ),
+      0
+    );
+
+
+  const km =
+    events.reduce(
+      (
+        total,
+        event
+      ) =>
+        total +
+        Number(
+          event.business_km ||
+          0
+        ),
+      0
+    );
+
+
+  return {
+
+    revenue:
+      revenue,
+
+    expense:
+      expenseTotal,
+
+    net:
+      revenue -
+      expenseTotal,
+
+    km:
+      km
+
+  };
+
+}
+
+
+/* =========================
+   AFFICHAGE
+========================= */
+
+function renderAll(){
+
+  renderStats();
+
+  renderMileage();
+
+  renderExpenses();
+
+  renderCategorySummary();
+
+  fillExpenseEvents();
+
+}
+
+
+function renderStats(){
+
+  const total =
+    totals();
+
+
+  $('revenueStat')
+    .textContent =
+    money(
+      total.revenue
+    );
+
+
+  $('expensesStat')
+    .textContent =
+    money(
+      total.expense
+    );
+
+
+  $('netStat')
+    .textContent =
+    money(
+      total.net
+    );
+
+
+  $('kmStat')
+    .textContent =
+    new Intl.NumberFormat(
+      'fr-CA',
+      {
+        maximumFractionDigits:1
+      }
+    ).format(
+      total.km
+    ) +
+    ' km';
+
+}
+
+
+/* =========================
+   KILOMÉTRAGE
+========================= */
+
+function renderMileage(){
+
+  const rows =
+    confirmedEvents();
+
+
+  const body =
+    $('mileageBody');
+
+
+  body.innerHTML =
+    '';
+
+
+  $('mileageEmpty')
+    .classList
+    .toggle(
+      'hidden',
+      rows.length > 0
+    );
+
+
+  rows.forEach(
+    r => {
+
+      const tr =
+        document
+          .createElement(
+            'tr'
+          );
+
+
+      tr.innerHTML =
+        `
+
+          <td>
+
+            <strong>
+              ${fmtDate(r.event_date)}
+            </strong>
+
+          </td>
+
+
+          <td>
+            ${esc(
+              r.full_name ||
+              'Événement'
+            )}
+          </td>
+
+
+          <td>
+            ${esc(
+              r.city ||
+              '—'
+            )}
+          </td>
+
+
+          <td class="money">
+            ${money(
+              revenueForReservation(
+                r
+              )
+            )}
+          </td>
+
+
+          <td>
+
+            <input
+              class="km-input"
+              type="number"
+              min="0"
+              step="0.1"
+              value="${r.business_km ?? ''}"
+              data-km="${r.id}"
+              placeholder="0"
+            >
+
+          </td>
+
+
+          <td>
+
+            <span
+              id="kmStatus-${r.id}"
+              class="note"
+            ></span>
+
+          </td>
+
+        `;
+
+
+      body.appendChild(
+        tr
+      );
+
+    }
+  );
+
+
+  body
+    .querySelectorAll(
+      '[data-km]'
+    )
+    .forEach(
+      input => {
+
+        input
+          .addEventListener(
+            'change',
+            () =>
+              saveKm(
+                input
+              )
+          );
+
+      }
+    );
+
+}
+
+
+async function saveKm(
+  input
+){
+
+  const id =
+    input.dataset.km;
+
+
+  const value =
+    input.value === ''
+      ? null
+      : Number(
+          input.value
+        );
+
+
+  const status =
+    $(
+      'kmStatus-' +
+      id
+    );
+
+
+  status.textContent =
+    'Sauvegarde…';
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        'reservations'
+      )
+      .update({
+        business_km:
+          value
+      })
+      .eq(
+        'id',
+        id
+      );
+
+
+  if(error){
+
+    status.textContent =
+      'Erreur';
+
+    alert(
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  const reservation =
+    reservations.find(
+      r =>
+        r.id ===
+        id
+    );
+
+
+  if(reservation){
+
+    reservation.business_km =
+      value;
+
+  }
+
+
+  status.textContent =
+    '✓';
+
+
+  renderStats();
+
+
+  setTimeout(
+    () =>
+      status.textContent =
+        '',
+    1200
+  );
+
+}
+
+
+/* =========================
+   DÉPENSES
+========================= */
+
+function renderExpenses(){
+
+  const rows =
+    yearExpenses();
+
+
+  const body =
+    $('expensesBody');
+
+
+  body.innerHTML =
+    '';
+
+
+  $('expensesEmpty')
+    .classList
+    .toggle(
+      'hidden',
+      rows.length > 0
+    );
+
+
+  rows.forEach(
+    expense => {
+
+      const tr =
+        document
+          .createElement(
+            'tr'
+          );
+
+
+      tr.innerHTML =
+        `
+
+          <td>
+            ${fmtDate(
+              expense.expense_date
+            )}
+          </td>
+
+
+          <td>
+
+            <span class="category-chip">
+
+              ${esc(
+                expense.category
+              )}
+
+            </span>
+
+          </td>
+
+
+          <td>
+
+            <strong>
+
+              ${esc(
+                expense.description
+              )}
+
+            </strong>
+
+            ${
+              expense.vendor
+                ?
+                `
+                  <div class="note">
+
+                    ${esc(
+                      expense.vendor
+                    )}
+
+                  </div>
+                `
+                :
+                ''
+            }
+
+          </td>
+
+
+          <td class="money">
+
+            ${money(
+              expense.amount
+            )}
+
+          </td>
+
+
+          <td>
+
+            <button
+              class="btn secondary small"
+              data-edit-expense="${expense.id}"
+            >
+              Modifier
+            </button>
+
+          </td>
+
+        `;
+
+
+      body.appendChild(
+        tr
+      );
+
+    }
+  );
+
+
+  body
+    .querySelectorAll(
+      '[data-edit-expense]'
+    )
+    .forEach(
+      button => {
+
+        button.onclick =
+        () => {
+
+          const expense =
+            expenses.find(
+              e =>
+                e.id ===
+                button.dataset
+                  .editExpense
+            );
+
+
+          openExpense(
+            expense
+          );
+
+        };
+
+      }
+    );
+
+}
+
+
+function renderCategorySummary(){
+
+  const rows =
+    yearExpenses();
+
+
+  const sums =
+    {};
+
+
+  rows.forEach(
+    expense => {
+
+      sums[
+        expense.category
+      ] =
+        (
+          sums[
+            expense.category
+          ] ||
+          0
+        ) +
+        Number(
+          expense.amount ||
+          0
+        );
+
+    }
+  );
+
+
+  const entries =
+    Object.entries(
+      sums
+    )
+    .sort(
+      (
+        a,
+        b
+      ) =>
+        b[1] -
+        a[1]
+    );
+
+
+  $('categorySummary')
+    .innerHTML =
+    entries.length
+
+      ?
+
+      entries
+        .map(
+          (
+            [
+              category,
+              amount
+            ]
+          ) =>
+            `
+
+              <div class="summary-row">
+
+                <span>
+                  ${esc(category)}
+                </span>
+
+                <strong>
+                  ${money(amount)}
+                </strong>
+
+              </div>
+
+            `
+        )
+        .join('')
+
+      :
+
+      `
+        <div class="empty">
+          Aucune dépense à résumer.
+        </div>
+      `;
+
+}
+
+
+function fillExpenseEvents(){
+
+  const options =
+    reservations
+      .filter(
+        r =>
+          r.status ===
+            'confirmed' &&
+          hasGuests(r)
+      )
+      .sort(
+        (
+          a,
+          b
+        ) =>
+          b.event_date
+            .localeCompare(
+              a.event_date
+            )
+      );
+
+
+  $('expenseEvent')
+    .innerHTML =
+    `
+
+      <option value="">
+        Aucun événement
+      </option>
+
+    `
+
+    +
+
+    options
+      .map(
+        r =>
+          `
+
+            <option value="${r.id}">
+
+              ${fmtDate(r.event_date)}
+              —
+              ${esc(
+                r.full_name ||
+                'Événement'
+              )}
+
+            </option>
+
+          `
+      )
+      .join('');
+
+}
+
+
+function openExpense(
+  expense=null
+){
+
+  editingExpense =
+    expense ||
+    null;
+
+
+  $('expenseForm')
+    .reset();
+
+
+  $('expenseMsg')
+    .innerHTML =
+    '';
+
+
+  $('expenseTitle')
+    .textContent =
+    expense
+      ? 'Modifier la dépense'
+      : 'Ajouter une dépense';
+
+
+  $('deleteExpense')
+    .classList
+    .toggle(
+      'hidden',
+      !expense
+    );
+
+
+  $('expenseDate')
+    .value =
+    expense?.expense_date ||
+    new Date()
+      .toISOString()
+      .slice(
+        0,
+        10
+      );
+
+
+  $('expenseAmount')
+    .value =
+    expense?.amount ??
+    '';
+
+
+  $('expenseCategory')
+    .value =
+    expense?.category ||
+    'Ingrédients / épicerie';
+
+
+  $('expenseVendor')
+    .value =
+    expense?.vendor ||
+    '';
+
+
+  $('expenseDescription')
+    .value =
+    expense?.description ||
+    '';
+
+
+  $('expenseEvent')
+    .value =
+    expense?.event_id ||
+    '';
+
+
+  $('expenseNotes')
+    .value =
+    expense?.notes ||
+    '';
+
+
+  $('expenseModal')
+    .classList
+    .remove('hidden');
+
+}
+
+
+$('addExpenseBtn').onclick =
+() =>
+  openExpense();
+
+
+$('addExpenseBtn2').onclick =
+() =>
+  openExpense();
+
+
+$('closeExpense').onclick =
+() => {
+
+  $('expenseModal')
+    .classList
+    .add('hidden');
+
+};
+
+
+$('expenseModal').onclick =
+event => {
+
+  if(
+    event.target ===
+    $('expenseModal')
+  ){
+
+    $('expenseModal')
+      .classList
+      .add('hidden');
+
+  }
+
+};
+
+
+$('expenseForm')
+  .onsubmit =
+async event => {
+
+  event.preventDefault();
+
+
+  const payload = {
+
+    expense_date:
+      $('expenseDate')
+        .value,
+
+    amount:
+      Number(
+        $('expenseAmount')
+          .value
+      ),
+
+    category:
+      $('expenseCategory')
+        .value,
+
+    description:
+      $('expenseDescription')
+        .value
+        .trim(),
+
+    vendor:
+      $('expenseVendor')
+        .value
+        .trim() ||
+      null,
+
+    event_id:
+      $('expenseEvent')
+        .value ||
+      null,
+
+    notes:
+      $('expenseNotes')
+        .value
+        .trim() ||
+      null,
+
+    updated_at:
+      new Date()
+        .toISOString()
+
+  };
+
+
+  if(
+    !payload.expense_date ||
+    !payload.description ||
+    Number.isNaN(
+      payload.amount
+    )
+  ){
+
+    return;
+
+  }
+
+
+  $('saveExpense')
+    .disabled =
+    true;
+
+
+  let result;
+
+
+  if(
+    editingExpense
+  ){
+
+    result =
+      await db
+        .from(
+          'expenses'
+        )
+        .update(
+          payload
+        )
+        .eq(
+          'id',
+          editingExpense.id
+        )
+        .select()
+        .single();
+
+  }
+
+  else{
+
+    result =
+      await db
+        .from(
+          'expenses'
+        )
+        .insert(
+          payload
+        )
+        .select()
+        .single();
+
+  }
+
+
+  $('saveExpense')
+    .disabled =
+    false;
+
+
+  if(
+    result.error
+  ){
+
+    $('expenseMsg')
+      .innerHTML =
+      `
+
+        <div class="error">
+
+          ${esc(
+            result.error.message
+          )}
+
+        </div>
+
+      `;
+
+    return;
+
+  }
+
+
+  $('expenseMsg')
+    .innerHTML =
+    `
+
+      <div class="success">
+        Enregistré ✅
+      </div>
+
+    `;
+
+
+  await loadData();
+
+
+  setTimeout(
+    () => {
+
+      $('expenseModal')
+        .classList
+        .add('hidden');
+
+    },
+    300
+  );
+
+};
+
+
+$('deleteExpense').onclick =
+async () => {
+
+  if(
+    !editingExpense ||
+    !confirm(
+      'Supprimer cette dépense?'
+    )
+  ){
+
+    return;
+
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        'expenses'
+      )
+      .delete()
+      .eq(
+        'id',
+        editingExpense.id
+      );
+
+
+  if(error){
+
+    alert(
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  await loadData();
+
+
+  $('expenseModal')
+    .classList
+    .add('hidden');
+
+};
+
+
+$('yearSelect')
+  .onchange =
+  renderAll;
+
+
+/* =========================
+   PDF ANNUEL
+========================= */
+
+function generateAnnualPDF(){
+
+  const year =
+    selectedYear();
+
+
+  const total =
+    totals();
+
+
+  const events =
+    confirmedEvents();
+
+
+  const expenseList =
+    yearExpenses();
+
+
+  const {
+    jsPDF
+  } =
+    window.jspdf;
+
+
+  const doc =
+    new jsPDF({
+      unit:'mm',
+      format:'letter'
+    });
+
+
+  let y =
+    0;
+
+
+  function header(){
+
+    doc.setFillColor(
+      91,
+      31,
+      42
+    );
+
+
+    doc.rect(
+      0,
+      0,
+      216,
+      34,
+      'F'
+    );
+
+
+    doc.setTextColor(
+      255,
+      255,
+      255
+    );
+
+
+    doc.setFont(
+      'helvetica',
+      'bold'
+    );
+
+
+    doc.setFontSize(
+      23
+    );
+
+
+    doc.text(
+      'RAFA',
+      18,
+      18
+    );
+
+
+    doc.setFontSize(
+      15
+    );
+
+
+    doc.text(
+      'BILAN ' +
+      year,
+      198,
+      18,
+      {
+        align:'right'
+      }
+    );
+
+
+    doc.setFontSize(
+      8
+    );
+
+
+    doc.setFont(
+      'helvetica',
+      'normal'
+    );
+
+
+    doc.text(
+      'Rafa Pizza - document de suivi interne',
+      198,
+      25,
+      {
+        align:'right'
+      }
+    );
+
+
+    doc.setTextColor(
+      43,
+      37,
+      36
+    );
+
+
+    y =
+      49;
+
+  }
+
+
+  function ensure(
+    space=12
+  ){
+
+    if(
+      y +
+      space >
+      265
+    ){
+
+      doc.addPage();
+
+      header();
+
+    }
+
+  }
+
+
+  header();
+
+
+  doc.setFont(
+    'helvetica',
+    'bold'
+  );
+
+
+  doc.setFontSize(
+    15
+  );
+
+
+  doc.text(
+    'Sommaire annuel',
+    18,
+    y
+  );
+
+
+  y +=
+    12;
+
+
+  doc.setFontSize(
+    10
+  );
+
+
+  doc.setFont(
+    'helvetica',
+    'normal'
+  );
+
+
+  doc.text(
+    'Chiffre d affaires confirme',
+    18,
+    y
+  );
+
+
+  doc.text(
+    money(
+      total.revenue
+    ),
+    198,
+    y,
+    {
+      align:'right'
+    }
+  );
+
+
+  y +=
+    8;
+
+
+  doc.text(
+    'Depenses saisies',
+    18,
+    y
+  );
+
+
+  doc.text(
+    money(
+      total.expense
+    ),
+    198,
+    y,
+    {
+      align:'right'
+    }
+  );
+
+
+  y +=
+    9;
+
+
+  doc.setFont(
+    'helvetica',
+    'bold'
+  );
+
+
+  doc.text(
+    'Net estime avant ajustements fiscaux',
+    18,
+    y
+  );
+
+
+  doc.text(
+    money(
+      total.net
+    ),
+    198,
+    y,
+    {
+      align:'right'
+    }
+  );
+
+
+  y +=
+    8;
+
+
+  doc.setFont(
+    'helvetica',
+    'normal'
+  );
+
+
+  doc.text(
+    'Kilometrage d affaires',
+    18,
+    y
+  );
+
+
+  doc.text(
+    total.km
+      .toFixed(1) +
+    ' km',
+    198,
+    y,
+    {
+      align:'right'
+    }
+  );
+
+
+  y +=
+    17;
+
+
+  doc.setFont(
+    'helvetica',
+    'bold'
+  );
+
+
+  doc.setFontSize(
+    13
+  );
+
+
+  doc.text(
+    'Revenus par evenement',
+    18,
+    y
+  );
+
+
+  y +=
+    9;
+
+
+  doc.setFontSize(
+    8
+  );
+
+
+  events.forEach(
+    r => {
+
+      ensure(
+        8
+      );
+
+
+      doc.setFont(
+        'helvetica',
+        'normal'
+      );
+
+
+      doc.text(
+
+        `${r.event_date}  ${String(
+          r.full_name ||
+          'Evenement'
+        ).slice(
+          0,
+          52
+        )}`,
+
+        18,
+        y
+
+      );
+
+
+      doc.text(
+        money(
+          revenueForReservation(
+            r
+          )
+        ),
+        198,
+        y,
+        {
+          align:'right'
+        }
+      );
+
+
+      y +=
+        6;
+
+    }
+  );
+
+
+  y +=
+    5;
+
+
+  ensure(
+    20
+  );
+
+
+  doc.setFont(
+    'helvetica',
+    'bold'
+  );
+
+
+  doc.setFontSize(
+    13
+  );
+
+
+  doc.text(
+    'Depenses',
+    18,
+    y
+  );
+
+
+  y +=
+    9;
+
+
+  doc.setFontSize(
+    8
+  );
+
+
+  expenseList.forEach(
+    expense => {
+
+      ensure(
+        8
+      );
+
+
+      doc.setFont(
+        'helvetica',
+        'normal'
+      );
+
+
+      doc.text(
+
+        `${expense.expense_date}  ${String(
+          expense.category
+        ).slice(
+          0,
+          24
+        )} - ${String(
+          expense.description
+        ).slice(
+          0,
+          48
+        )}`,
+
+        18,
+        y
+
+      );
+
+
+      doc.text(
+        money(
+          expense.amount
+        ),
+        198,
+        y,
+        {
+          align:'right'
+        }
+      );
+
+
+      y +=
+        6;
+
+    }
+  );
+
+
+  y +=
+    5;
+
+
+  ensure(
+    20
+  );
+
+
+  doc.setFont(
+    'helvetica',
+    'bold'
+  );
+
+
+  doc.setFontSize(
+    13
+  );
+
+
+  doc.text(
+    'Registre de kilometrage',
+    18,
+    y
+  );
+
+
+  y +=
+    9;
+
+
+  doc.setFontSize(
+    8
+  );
+
+
+  events
+    .filter(
+      r =>
+        Number(
+          r.business_km
+        ) >
+        0
+    )
+    .forEach(
+      r => {
+
+        ensure(
+          8
+        );
+
+
+        doc.setFont(
+          'helvetica',
+          'normal'
+        );
+
+
+        doc.text(
+
+          `${r.event_date}  ${String(
+            r.full_name ||
+            'Evenement'
+          ).slice(
+            0,
+            52
+          )}`,
+
+          18,
+          y
+
+        );
+
+
+        doc.text(
+
+          Number(
+            r.business_km
+          ).toFixed(
+            1
+          ) +
+          ' km',
+
+          198,
+          y,
+          {
+            align:'right'
+          }
+
+        );
+
+
+        y +=
+          6;
+
+      }
+    );
+
+
+  ensure(
+    34
+  );
+
+
+  y +=
+    9;
+
+
+  doc.setFontSize(
+    7.5
+  );
+
+
+  doc.setTextColor(
+    125,
+    112,
+    105
+  );
+
+
+  const note =
+    'Note : ce document est un outil de suivi interne. ' +
+    'Certains achats durables et les frais de vehicule peuvent necessiter ' +
+    'un traitement fiscal different. Le kilometrage est conserve comme registre.';
+
+
+  doc.text(
+
+    doc.splitTextToSize(
+      note,
+      180
+    ),
+
+    18,
+    y
+
+  );
+
+
+  doc.save(
+    `Rafa-Bilan-${year}.pdf`
+  );
+
+}
+
+
+$('pdfBtn').onclick =
+  generateAnnualPDF;
+
+
+/* =========================
+   DÉMARRAGE
+========================= */
+
+sessionGate();
+
+</script>
+
+</body>
+</html>
