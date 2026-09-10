@@ -4994,6 +4994,197 @@ $('invoiceBtn').onclick =
 sessionGate();
 
 </script>
+<!-- ================================
+     CORRECTION NAVIGATION ADMIN MOBILE
+================================ -->
 
+<style>
+  /* Empêche la page entière de déborder horizontalement */
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 1180px;
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .topbar > div {
+    min-width: 0;
+  }
+
+  .brand {
+    flex: 1 1 280px;
+    min-width: 0;
+  }
+
+  /* Navigation admin */
+  .admin-nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .admin-nav .btn {
+    white-space: nowrap;
+  }
+
+  .stats,
+  .stat,
+  .grid,
+  .panel {
+    min-width: 0;
+  }
+
+  @media (max-width: 620px) {
+
+    .app {
+      padding: 12px;
+    }
+
+    .topbar {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    .brand {
+      width: 100%;
+      flex: none;
+    }
+
+    .admin-nav {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .admin-nav .btn {
+      width: 100%;
+      min-width: 0;
+      padding: 11px 8px;
+      font-size: 13px;
+    }
+
+    .stats {
+      width: 100%;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid {
+      width: 100%;
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* ==================================
+     1. AUCUN LIEN VERS index.html
+  ================================== */
+
+  document.querySelectorAll("a").forEach(function(link) {
+
+    const href = link.getAttribute("href") || "";
+
+    if (
+      href === "index.html" ||
+      href === "./index.html" ||
+      href.endsWith("/index.html")
+    ) {
+      link.setAttribute("href", "admin.html");
+    }
+
+  });
+
+
+  /* ==================================
+     2. ENLÈVE LE GROS BOUTON ACCUEIL
+        FLOTTANT EN BAS À GAUCHE
+  ================================== */
+
+  document.querySelectorAll("body > a").forEach(function(link) {
+
+    const text = (link.textContent || "").trim().toLowerCase();
+    const style = link.getAttribute("style") || "";
+
+    if (
+      text.includes("accueil") &&
+      style.includes("position:fixed")
+    ) {
+      link.remove();
+    }
+
+  });
+
+
+  /* ==================================
+     3. IDENTIFIE LA NAVIGATION DU HAUT
+  ================================== */
+
+  const financesLink =
+    document.querySelector('.topbar a[href="finances.html"]');
+
+  const addButton =
+    document.getElementById("addBtn");
+
+  const logoutButton =
+    document.getElementById("logoutBtn");
+
+  let navigation = null;
+
+  if (financesLink) {
+    navigation = financesLink.parentElement;
+  } else if (addButton) {
+    navigation = addButton.parentElement;
+  } else if (logoutButton) {
+    navigation = logoutButton.parentElement;
+  }
+
+  if (navigation) {
+    navigation.classList.add("admin-nav");
+  }
+
+
+  /* ==================================
+     4. LE BOUTON ACCUEIL DU HAUT
+        RESTE DANS ADMIN
+  ================================== */
+
+  if (navigation) {
+
+    navigation.querySelectorAll("a").forEach(function(link) {
+
+      const text =
+        (link.textContent || "")
+          .trim()
+          .toLowerCase();
+
+      if (text.includes("accueil")) {
+        link.setAttribute("href", "admin.html");
+      }
+
+    });
+
+  }
+
+});
+</script>
 </body>
 </html>
