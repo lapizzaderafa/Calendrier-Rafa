@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <title>Rafa Pizza — Administration</title>
 
 <style>
@@ -23,8 +22,14 @@
 
 *{box-sizing:border-box}
 
-body{
+html,body{
   margin:0;
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+body{
   background:#eee8df;
   color:var(--ink);
   font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
@@ -33,6 +38,7 @@ body{
 .hidden{display:none!important}
 
 .app{
+  width:100%;
   max-width:1180px;
   margin:auto;
   padding:18px;
@@ -42,8 +48,14 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:15px;
+  gap:16px;
+  flex-wrap:wrap;
   margin-bottom:18px;
+}
+
+.brand{
+  flex:1 1 320px;
+  min-width:0;
 }
 
 .brand h1{
@@ -59,19 +71,30 @@ body{
   font-size:12px;
 }
 
+.admin-nav{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
 .btn{
   border:0;
   border-radius:999px;
   padding:11px 16px;
   font-weight:800;
   cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-family:inherit;
+  font-size:13px;
+  white-space:nowrap;
 }
 
-.btn:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-}
-
+.btn:disabled{opacity:.55;cursor:not-allowed}
 .btn.primary{background:var(--wine);color:#fff}
 .btn.secondary{background:#fff;color:var(--wine);border:1px solid var(--line)}
 .btn.danger{background:var(--danger);color:#fff}
@@ -81,27 +104,26 @@ body{
 
 .stats{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(4,minmax(0,1fr));
   gap:10px;
   margin-bottom:16px;
 }
 
 .stat{
+  min-width:0;
   background:var(--cream2);
   border:1px solid var(--line);
   border-radius:16px;
   padding:14px;
 }
 
-.stat.money-stat{
-  background:var(--wine);
-  color:#fff;
-}
+.stat.money-stat{background:var(--wine);color:#fff}
 
 .stat .n{
   font-size:25px;
   font-weight:900;
   color:var(--wine);
+  overflow-wrap:anywhere;
 }
 
 .stat.money-stat .n{color:#fff}
@@ -112,9 +134,7 @@ body{
   margin-top:2px;
 }
 
-.stat.money-stat .t{
-  color:rgba(255,255,255,.72);
-}
+.stat.money-stat .t{color:rgba(255,255,255,.72)}
 
 .finance-note{
   font-size:10px;
@@ -124,11 +144,12 @@ body{
 
 .grid{
   display:grid;
-  grid-template-columns:1.6fr .9fr;
+  grid-template-columns:minmax(0,1.6fr) minmax(0,.9fr);
   gap:18px;
 }
 
 .panel{
+  min-width:0;
   background:var(--cream);
   border:1px solid var(--line);
   border-radius:24px;
@@ -143,6 +164,7 @@ body{
   justify-content:space-between;
   align-items:center;
   gap:12px;
+  flex-wrap:wrap;
 }
 
 .panel-head h2{
@@ -152,14 +174,13 @@ body{
   font-size:23px;
 }
 
-.panel-body{
-  padding:18px 20px;
-}
+.panel-body{padding:18px 20px}
 
 .calendar-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:8px;
   margin-bottom:12px;
 }
 
@@ -168,9 +189,11 @@ body{
   color:var(--wine);
   font-family:Georgia,"Times New Roman",serif;
   font-size:24px;
+  text-align:center;
 }
 
 .navbtn{
+  flex:0 0 auto;
   border:1px solid var(--line);
   background:#fff;
   color:var(--wine);
@@ -183,7 +206,7 @@ body{
 
 .week,.days{
   display:grid;
-  grid-template-columns:repeat(7,1fr);
+  grid-template-columns:repeat(7,minmax(0,1fr));
   gap:6px;
 }
 
@@ -196,6 +219,7 @@ body{
 }
 
 .day{
+  min-width:0;
   min-height:92px;
   border:1px solid var(--line);
   border-radius:13px;
@@ -207,10 +231,7 @@ body{
 .day.out{opacity:.34}
 .day.today{outline:2px solid var(--wine)}
 
-.daynum{
-  font-size:11px;
-  font-weight:900;
-}
+.daynum{font-size:11px;font-weight:900}
 
 .event-pill{
   font-size:9px;
@@ -245,11 +266,7 @@ body{
   margin-right:5px;
 }
 
-.list{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
+.list{display:flex;flex-direction:column;gap:10px}
 
 .card{
   background:#fff;
@@ -259,9 +276,7 @@ body{
   cursor:pointer;
 }
 
-.card:hover{
-  border-color:var(--wine2);
-}
+.card:hover{border-color:var(--wine2)}
 
 .card-top{
   display:flex;
@@ -270,11 +285,7 @@ body{
   align-items:flex-start;
 }
 
-.card h4{
-  margin:0 0 4px;
-  font-size:14px;
-  color:var(--wine);
-}
+.card h4{margin:0 0 4px;font-size:14px;color:var(--wine)}
 
 .meta{
   font-size:11px;
@@ -297,15 +308,9 @@ body{
 .badge.unavailable{background:var(--blocked)}
 .badge.cancelled{background:#aaa}
 
-.empty{
-  font-size:12px;
-  color:var(--muted);
-  padding:12px 0;
-}
+.empty{font-size:12px;color:var(--muted);padding:12px 0}
 
-.all-events{
-  margin-top:18px;
-}
+.all-events{margin-top:18px}
 
 .events-tools{
   display:flex;
@@ -313,8 +318,7 @@ body{
   flex-wrap:wrap;
 }
 
-.events-tools input,
-.events-tools select{
+.events-tools input,.events-tools select{
   border:1px solid var(--line);
   border-radius:12px;
   background:#fff;
@@ -322,13 +326,13 @@ body{
   font-size:13px;
 }
 
-.events-tools input{
-  min-width:220px;
-}
+.events-tools input{min-width:220px}
 
 .table-wrap{
   width:100%;
-  overflow:auto;
+  max-width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
 }
 
 .events-table{
@@ -353,18 +357,10 @@ body{
   vertical-align:middle;
 }
 
-.events-table tbody tr{
-  cursor:pointer;
-}
+.events-table tbody tr{cursor:pointer}
+.events-table tbody tr:hover{background:rgba(91,31,42,.04)}
 
-.events-table tbody tr:hover{
-  background:rgba(91,31,42,.04);
-}
-
-.client-name{
-  font-weight:900;
-  color:var(--wine);
-}
+.client-name{font-weight:900;color:var(--wine)}
 
 .invoice-link{
   border:0;
@@ -389,11 +385,7 @@ body{
   padding:3px 5px;
 }
 
-.check-yes{
-  font-weight:900;
-  color:var(--ok);
-}
-
+.check-yes{font-weight:900;color:var(--ok)}
 .check-no{color:#aaa}
 .money{font-weight:800}
 
@@ -421,10 +413,7 @@ body{
   font-size:36px;
 }
 
-.login p{
-  color:var(--muted);
-  font-size:13px;
-}
+.login p{color:var(--muted);font-size:13px}
 
 .login-email{
   font-size:12px;
@@ -443,16 +432,9 @@ body{
   margin-bottom:10px;
 }
 
-.login .btn{
-  width:100%;
-  margin-top:4px;
-}
+.login .btn{width:100%;margin-top:4px}
 
-.notice{
-  font-size:12px;
-  margin-top:12px;
-  color:var(--muted);
-}
+.notice{font-size:12px;margin-top:12px;color:var(--muted)}
 
 .modal-back{
   position:fixed;
@@ -499,9 +481,7 @@ body{
   cursor:pointer;
 }
 
-.form{
-  padding:18px 20px;
-}
+.form{padding:18px 20px}
 
 .form-grid{
   display:grid;
@@ -509,15 +489,8 @@ body{
   gap:14px;
 }
 
-.field{
-  display:flex;
-  flex-direction:column;
-  gap:5px;
-}
-
-.field.full{
-  grid-column:1/-1;
-}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
 
 .field label{
   font-size:10px;
@@ -525,20 +498,16 @@ body{
   font-weight:900;
 }
 
-.field input,
-.field select,
-.field textarea{
+.field input,.field select,.field textarea{
   border:1px solid var(--line);
   background:#fff;
   border-radius:12px;
   padding:11px;
   font-size:14px;
+  width:100%;
 }
 
-.field textarea{
-  min-height:90px;
-  resize:vertical;
-}
+.field textarea{min-height:90px;resize:vertical}
 
 .price-preview{
   font-size:10px;
@@ -565,10 +534,7 @@ body{
   margin:14px 0;
 }
 
-.checks label{
-  font-size:12px;
-  font-weight:700;
-}
+.checks label{font-size:12px;font-weight:700}
 
 .actions{
   display:flex;
@@ -618,38 +584,52 @@ body{
 }
 
 @media(max-width:620px){
-  .app{padding:9px}
+  .app{padding:10px}
+  .topbar{flex-direction:column;align-items:stretch}
+  .brand{width:100%;flex:none}
   .brand h1{font-size:28px}
+
+  .admin-nav{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .admin-nav .btn{
+    width:100%;
+    min-width:0;
+    padding:11px 8px;
+    font-size:12px;
+  }
+
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat{padding:12px}
+  .stat .n{font-size:21px}
+
   .form-grid{grid-template-columns:1fr}
   .field.full{grid-column:auto}
+
   .day{min-height:63px;padding:4px}
   .event-pill{font-size:0;height:8px;padding:0;margin-top:3px}
+
   .events-tools{width:100%}
-  .events-tools input,.events-tools select{width:100%}
+  .events-tools input,.events-tools select{width:100%;min-width:0}
+
   .actions .btn{width:100%}
+  .panel-head,.panel-body{padding-left:14px;padding-right:14px}
 }
 </style>
 </head>
 
 <body>
-<a href="admin.html"
-   class="btn primary"
-   style="position:fixed;left:14px;bottom:14px;z-index:9999;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.20);">
-  🏠 Accueil
-</a>
+
 <div id="loginWrap" class="login-wrap">
-
   <div class="login">
-
     <h1>Rafa Pizza</h1>
+    <p>Tableau de bord privé des réservations.</p>
 
-    <p>
-      Tableau de bord privé des réservations.
-    </p>
-
-    <div class="login-email">
-      raphael.frenette@gmail.com
-    </div>
+    <div class="login-email">raphael.frenette@gmail.com</div>
 
     <input
       id="password"
@@ -667,302 +647,120 @@ body{
     </button>
 
     <div id="loginMsg" class="notice"></div>
-
   </div>
-
 </div>
-
 
 <div id="app" class="app hidden">
 
   <div class="topbar">
-
     <div class="brand">
-
-      <h1>
-        Rafa · Réservations
-      </h1>
-
-      <p>
-        Réservations, chiffre d’affaires et factures.
-      </p>
-
+      <h1>Rafa · Réservations</h1>
+      <p>Réservations, chiffre d’affaires et factures.</p>
     </div>
 
-    <div>
-
-  <div>
-
-  <a
-    href="index.html"
-    class="btn secondary"
-    style="text-decoration:none;"
-  >
-    🏠 Accueil
-  </a>
-
-  <a
-    href="finances.html"
-    class="btn secondary"
-    style="text-decoration:none;"
-  >
-    💰 Finances
-  </a>
-
-  <button id="addBtn" class="btn primary">
-    + Ajouter
-  </button>
-
-  <button id="logoutBtn" class="btn secondary">
-    Déconnexion
-  </button>
-
-</div>
-
+    <nav class="admin-nav" aria-label="Navigation administration">
+      <a href="admin.html" class="btn secondary">🏠 Accueil</a>
+      <a href="finances.html" class="btn secondary">💰 Finances</a>
+      <button id="addBtn" class="btn primary">+ Ajouter</button>
+      <button id="logoutBtn" class="btn secondary">Déconnexion</button>
+    </nav>
   </div>
-
 
   <div class="stats">
+    <div class="stat">
+      <div id="pendingStat" class="n">0</div>
+      <div class="t">Demandes en attente</div>
+    </div>
 
     <div class="stat">
-
-      <div id="pendingStat" class="n">
-        0
-      </div>
-
-      <div class="t">
-        Demandes en attente
-      </div>
-
+      <div id="confirmedStat" class="n">0</div>
+      <div class="t">Événements clients à venir</div>
     </div>
-
-
-    <div class="stat">
-
-      <div id="confirmedStat" class="n">
-        0
-      </div>
-
-      <div class="t">
-        Événements clients à venir
-      </div>
-
-    </div>
-
 
     <div class="stat money-stat">
-
-      <div id="monthRevenueStat" class="n">
-        0 $
-      </div>
-
-      <div class="t">
-        CA du mois
-      </div>
-
+      <div id="monthRevenueStat" class="n">0 $</div>
+      <div class="t">CA du mois</div>
     </div>
-
 
     <div class="stat money-stat">
-
-      <div id="totalRevenueStat" class="n">
-        0 $
-      </div>
-
-      <div class="t">
-        CA total
-      </div>
-
+      <div id="totalRevenueStat" class="n">0 $</div>
+      <div class="t">CA total</div>
     </div>
-
   </div>
 
-
   <div id="financeNote" class="finance-note"></div>
-
 
   <div class="grid">
 
     <section class="panel">
-
       <div class="panel-head">
-
-        <h2>
-          Calendrier
-        </h2>
-
-        <button id="todayBtn" class="btn secondary small">
-          Aujourd’hui
-        </button>
-
+        <h2>Calendrier</h2>
+        <button id="todayBtn" class="btn secondary small">Aujourd’hui</button>
       </div>
 
-
       <div class="panel-body">
-
         <div class="calendar-head">
-
-          <button id="prevMonth" class="navbtn">
-            ‹
-          </button>
-
+          <button id="prevMonth" class="navbtn" aria-label="Mois précédent">‹</button>
           <h3 id="monthTitle"></h3>
-
-          <button id="nextMonth" class="navbtn">
-            ›
-          </button>
-
+          <button id="nextMonth" class="navbtn" aria-label="Mois suivant">›</button>
         </div>
-
 
         <div class="week">
-
-          <div>Lun</div>
-          <div>Mar</div>
-          <div>Mer</div>
-          <div>Jeu</div>
-          <div>Ven</div>
-          <div>Sam</div>
-          <div>Dim</div>
-
+          <div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div>
+          <div>Ven</div><div>Sam</div><div>Dim</div>
         </div>
-
 
         <div id="days" class="days"></div>
 
-
         <div class="legend">
-
-          <span>
-            <span class="dot" style="background:#D9942B"></span>
-            En attente
-          </span>
-
-          <span>
-            <span class="dot" style="background:#447A54"></span>
-            Confirmé
-          </span>
-
-          <span>
-            <span class="dot" style="background:#4B4B4B"></span>
-            Bloqué
-          </span>
-
+          <span><span class="dot" style="background:#D9942B"></span>En attente</span>
+          <span><span class="dot" style="background:#447A54"></span>Confirmé</span>
+          <span><span class="dot" style="background:#4B4B4B"></span>Bloqué</span>
         </div>
-
       </div>
-
     </section>
 
-
     <div>
-
       <section class="panel">
-
-        <div class="panel-head">
-
-          <h2>
-            À traiter
-          </h2>
-
-        </div>
-
+        <div class="panel-head"><h2>À traiter</h2></div>
         <div class="panel-body">
-
           <div id="pendingList" class="list"></div>
-
         </div>
-
       </section>
 
-
-      <section
-        class="panel"
-        style="margin-top:18px"
-      >
-
-        <div class="panel-head">
-
-          <h2>
-            À venir
-          </h2>
-
-        </div>
-
+      <section class="panel" style="margin-top:18px">
+        <div class="panel-head"><h2>À venir</h2></div>
         <div class="panel-body">
-
           <div id="upcomingList" class="list"></div>
-
         </div>
-
       </section>
-
     </div>
 
   </div>
 
-
   <section class="panel all-events">
-
     <div class="panel-head">
-
-      <h2>
-        Tous les événements
-      </h2>
-
+      <h2>Tous les événements</h2>
 
       <div class="events-tools">
-
-        <input
-          id="eventSearch"
-          type="search"
-          placeholder="Rechercher client, ville..."
-        >
-
+        <input id="eventSearch" type="search" placeholder="Rechercher client, ville...">
 
         <select id="eventFilter">
-
-          <option value="future">
-            À venir
-          </option>
-
-          <option value="all">
-            Tous
-          </option>
-
-          <option value="confirmed">
-            Confirmés
-          </option>
-
-          <option value="pending">
-            En attente
-          </option>
-
-          <option value="unavailable">
-            Bloqués
-          </option>
-
-          <option value="cancelled">
-            Annulés
-          </option>
-
+          <option value="future">À venir</option>
+          <option value="all">Tous</option>
+          <option value="confirmed">Confirmés</option>
+          <option value="pending">En attente</option>
+          <option value="unavailable">Bloqués</option>
+          <option value="cancelled">Annulés</option>
         </select>
-
       </div>
-
     </div>
 
-
     <div class="panel-body">
-
       <div class="table-wrap">
-
         <table class="events-table">
-
           <thead>
-
             <tr>
-
               <th>Date</th>
               <th>Client / facture</th>
               <th>Invités</th>
@@ -971,252 +769,101 @@ body{
               <th>Dépôt</th>
               <th>Menu</th>
               <th>Statut</th>
-
             </tr>
-
           </thead>
-
           <tbody id="eventsTableBody"></tbody>
-
         </table>
-
       </div>
 
-
-      <div
-        id="eventsEmpty"
-        class="empty hidden"
-      >
-        Aucun événement.
-      </div>
-
+      <div id="eventsEmpty" class="empty hidden">Aucun événement.</div>
     </div>
-
   </section>
 
 </div>
 
-
-<div
-  id="modalBack"
-  class="modal-back hidden"
->
-
+<div id="modalBack" class="modal-back hidden">
   <div class="modal">
 
     <div class="modal-head">
-
-      <h2 id="modalTitle">
-        Réservation
-      </h2>
-
-      <button id="closeModal" class="x">
-        ×
-      </button>
-
+      <h2 id="modalTitle">Réservation</h2>
+      <button id="closeModal" class="x" type="button">×</button>
     </div>
 
-
-    <form
-      id="reservationForm"
-      class="form"
-    >
-
+    <form id="reservationForm" class="form">
       <div class="form-grid">
 
-
         <div class="field">
-
-          <label>
-            Date
-          </label>
-
-          <input
-            id="eventDate"
-            type="date"
-            required
-          >
-
+          <label for="eventDate">Date</label>
+          <input id="eventDate" type="date" required>
         </div>
 
-
         <div class="field">
-
-          <label>
-            Statut
-          </label>
-
+          <label for="status">Statut</label>
           <select id="status">
-
-            <option value="pending">
-              En attente
-            </option>
-
-            <option value="confirmed">
-              Confirmé
-            </option>
-
-            <option value="unavailable">
-              Bloqué / indisponible
-            </option>
-
-            <option value="cancelled">
-              Annulé
-            </option>
-
+            <option value="pending">En attente</option>
+            <option value="confirmed">Confirmé</option>
+            <option value="unavailable">Bloqué / indisponible</option>
+            <option value="cancelled">Annulé</option>
           </select>
-
         </div>
 
-
         <div class="field">
-
-          <label>
-            Nom du client
-          </label>
-
+          <label for="fullName">Nom du client</label>
           <input id="fullName">
-
         </div>
 
-
         <div class="field">
-
-          <label>
-            Source
-          </label>
-
+          <label for="source">Source</label>
           <select id="source">
-
-            <option value="site">
-              Site web
-            </option>
-
-            <option value="instagram">
-              Instagram
-            </option>
-
-            <option value="facebook">
-              Facebook
-            </option>
-
-            <option value="phone">
-              Téléphone
-            </option>
-
-            <option value="manual">
-              Manuel
-            </option>
-
-            <option value="other">
-              Autre
-            </option>
-
+            <option value="site">Site web</option>
+            <option value="instagram">Instagram</option>
+            <option value="facebook">Facebook</option>
+            <option value="phone">Téléphone</option>
+            <option value="manual">Manuel</option>
+            <option value="other">Autre</option>
           </select>
-
         </div>
 
-
         <div class="field">
-
-          <label>
-            Courriel
-          </label>
-
-          <input
-            id="email"
-            type="email"
-          >
-
+          <label for="email">Courriel</label>
+          <input id="email" type="email">
         </div>
 
-
         <div class="field">
-
-          <label>
-            Téléphone
-          </label>
-
+          <label for="phone">Téléphone</label>
           <input id="phone">
-
         </div>
 
-
         <div class="field">
-
-          <label>
-            Nombre d’invités
-          </label>
-
-          <input
-            id="guestCount"
-            type="number"
-            min="0"
-          >
+          <label for="guestCount">Nombre d’invités</label>
+          <input id="guestCount" type="number" min="0">
 
           <div class="block-note">
-
-            Si ce champ est vide ou à 0,
-            l’événement est considéré comme
-            un simple blocage personnel :
-            aucun revenu et aucune facture.
-
+            Si ce champ est vide ou à 0, l’événement est considéré comme
+            un simple blocage personnel : aucun revenu et aucune facture.
           </div>
-
         </div>
 
-
         <div class="field">
-
-          <label>
-            Heure souhaitée
-          </label>
-
+          <label for="preferredTime">Heure souhaitée</label>
           <input id="preferredTime">
-
         </div>
 
-
         <div class="field">
-
-          <label>
-            Ville
-          </label>
-
+          <label for="city">Ville</label>
           <input id="city">
-
         </div>
 
-
         <div class="field">
-
-          <label>
-            Adresse de l’événement
-          </label>
-
+          <label for="eventAddress">Adresse de l’événement</label>
           <input id="eventAddress">
-
         </div>
 
-
         <div class="field">
+          <label for="quotedPrice">Prix de l’événement ($)</label>
+          <input id="quotedPrice" type="number" step="0.01" min="0">
 
-          <label>
-            Prix de l’événement ($)
-          </label>
-
-          <input
-            id="quotedPrice"
-            type="number"
-            step="0.01"
-            min="0"
-          >
-
-          <div
-            id="pricePreview"
-            class="price-preview"
-          ></div>
-
+          <div id="pricePreview" class="price-preview"></div>
 
           <button
             id="recalculatePrice"
@@ -1225,155 +872,60 @@ body{
           >
             Recalculer selon le site
           </button>
-
         </div>
-
 
         <div class="field">
-
-          <label>
-            Dépôt ($)
-          </label>
-
-          <input
-            id="depositAmount"
-            type="number"
-            step="0.01"
-            min="0"
-          >
-
+          <label for="depositAmount">Dépôt ($)</label>
+          <input id="depositAmount" type="number" step="0.01" min="0">
         </div>
 
-
         <div class="field full">
-
-          <label>
-            Message / préférences du client
-          </label>
-
+          <label for="message">Message / préférences du client</label>
           <textarea id="message"></textarea>
-
         </div>
-
 
         <div class="field full">
-
-          <label>
-            Notes internes
-          </label>
-
+          <label for="internalNotes">Notes internes</label>
           <textarea id="internalNotes"></textarea>
-
         </div>
-
       </div>
-
 
       <div class="checks">
-
-        <label>
-
-          <input
-            id="depositReceived"
-            type="checkbox"
-          >
-
-          Dépôt reçu
-
-        </label>
-
-
-        <label>
-
-          <input
-            id="menuSent"
-            type="checkbox"
-          >
-
-          Menu envoyé
-
-        </label>
-
+        <label><input id="depositReceived" type="checkbox"> Dépôt reçu</label>
+        <label><input id="menuSent" type="checkbox"> Menu envoyé</label>
       </div>
-
 
       <div id="formMsg"></div>
 
-
       <div class="actions">
+        <button id="saveBtn" class="btn primary" type="submit">Enregistrer</button>
 
-        <button
-          id="saveBtn"
-          class="btn primary"
-          type="submit"
-        >
-          Enregistrer
-        </button>
-
-
-        <button
-          id="approveBtn"
-          class="btn ok hidden"
-          type="button"
-        >
+        <button id="approveBtn" class="btn ok hidden" type="button">
           Accepter la réservation
         </button>
 
-
-        <button
-          id="invoiceBtn"
-          class="btn secondary hidden"
-          type="button"
-        >
+        <button id="invoiceBtn" class="btn secondary hidden" type="button">
           Ouvrir la facture PDF
         </button>
 
-
-        <button
-          id="cancelBtn"
-          class="btn warning hidden"
-          type="button"
-        >
+        <button id="cancelBtn" class="btn warning hidden" type="button">
           Annuler / libérer la date
         </button>
-
       </div>
 
-
-      <div
-        id="dangerZone"
-        class="danger-zone hidden"
-      >
-
-        <div class="danger-zone-title">
-          Suppression
-        </div>
-
-        <button
-          id="deleteBtn"
-          class="btn danger"
-          type="button"
-        >
+      <div id="dangerZone" class="danger-zone hidden">
+        <div class="danger-zone-title">Suppression</div>
+        <button id="deleteBtn" class="btn danger" type="button">
           Supprimer définitivement
         </button>
-
       </div>
-
     </form>
 
   </div>
-
 </div>
 
-
-<script
-  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-></script>
-
-<script
-  src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"
-></script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 
 <script>
 
@@ -1393,28 +945,23 @@ const ADMIN_EMAIL =
 const ADMIN_URL =
   'https://lapizzaderafa.github.io/Calendrier-Rafa/admin.html';
 
-
 const db =
   supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
 
-
 const $ =
   id =>
     document.getElementById(id);
 
-
 let reservations = [];
-
 let editing = null;
 
 let viewDate =
   new Date();
 
 viewDate.setDate(1);
-
 
 const monthNames = [
   'Janvier',
@@ -1447,34 +994,22 @@ function escapeHtml(value){
 
 }
 
-
 function localToday(){
 
   const d =
     new Date();
 
   return [
-
     d.getFullYear(),
-
     String(
       d.getMonth()+1
-    ).padStart(
-      2,
-      '0'
-    ),
-
+    ).padStart(2,'0'),
     String(
       d.getDate()
-    ).padStart(
-      2,
-      '0'
-    )
-
+    ).padStart(2,'0')
   ].join('-');
 
 }
-
 
 function fmtDate(d){
 
@@ -1498,7 +1033,6 @@ function fmtDate(d){
 
 }
 
-
 function fmtDateLong(d){
 
   if(!d){
@@ -1519,7 +1053,6 @@ function fmtDateLong(d){
   );
 
 }
-
 
 function money(value){
 
@@ -1545,7 +1078,6 @@ function money(value){
 
 }
 
-
 function statusText(status){
 
   if(status === 'pending'){
@@ -1568,7 +1100,6 @@ function statusText(status){
 
 }
 
-
 function activeReservation(r){
 
   return [
@@ -1580,7 +1111,6 @@ function activeReservation(r){
   );
 
 }
-
 
 function hasGuests(r){
 
@@ -1609,16 +1139,12 @@ function calculateEventPrice(guests){
     return null;
   }
 
-
   let pricePerPerson;
-
   let fixedFee;
-
 
   if(guests <= 10){
 
     pricePerPerson = 29;
-
     fixedFee = 175;
 
   }
@@ -1626,7 +1152,6 @@ function calculateEventPrice(guests){
   else if(guests <= 15){
 
     pricePerPerson = 27;
-
     fixedFee = 200;
 
   }
@@ -1634,7 +1159,6 @@ function calculateEventPrice(guests){
   else if(guests <= 20){
 
     pricePerPerson = 25;
-
     fixedFee = 250;
 
   }
@@ -1642,7 +1166,6 @@ function calculateEventPrice(guests){
   else if(guests <= 25){
 
     pricePerPerson = 23;
-
     fixedFee = 300;
 
   }
@@ -1650,7 +1173,6 @@ function calculateEventPrice(guests){
   else if(guests <= 30){
 
     pricePerPerson = 22;
-
     fixedFee = 350;
 
   }
@@ -1658,7 +1180,6 @@ function calculateEventPrice(guests){
   else if(guests <= 40){
 
     pricePerPerson = 21;
-
     fixedFee = 400;
 
   }
@@ -1666,7 +1187,6 @@ function calculateEventPrice(guests){
   else if(guests <= 50){
 
     pricePerPerson = 20;
-
     fixedFee = 500;
 
   }
@@ -1674,7 +1194,6 @@ function calculateEventPrice(guests){
   else if(guests <= 75){
 
     pricePerPerson = 19;
-
     fixedFee = 600;
 
   }
@@ -1682,27 +1201,20 @@ function calculateEventPrice(guests){
   else{
 
     pricePerPerson = 18;
-
     fixedFee = 750;
 
   }
 
-
   return {
-
     pricePerPerson,
-
     fixedFee,
-
     guestSubtotal:
       guests *
       pricePerPerson,
-
     total:
       guests *
       pricePerPerson +
       fixedFee
-
   };
 
 }
@@ -1714,11 +1226,6 @@ function calculateEventPrice(guests){
 
 function revenueForReservation(r){
 
-  /*
-    IMPORTANT :
-    sans invités = blocage personnel.
-  */
-
   if(
     r.status !==
     'confirmed'
@@ -1726,13 +1233,11 @@ function revenueForReservation(r){
     return 0;
   }
 
-
   if(
     !hasGuests(r)
   ){
     return 0;
   }
-
 
   if(
     r.quoted_price !== null &&
@@ -1748,12 +1253,10 @@ function revenueForReservation(r){
 
   }
 
-
   const pricing =
     calculateEventPrice(
       r.guest_count
     );
-
 
   return pricing
     ? pricing.total
@@ -1761,21 +1264,15 @@ function revenueForReservation(r){
 
 }
 
-
 function canGenerateInvoice(r){
 
   return (
-
     !!r &&
-
     r.status ===
       'confirmed' &&
-
     hasGuests(r) &&
-
     revenueForReservation(r) >
       0
-
   );
 
 }
@@ -1794,7 +1291,6 @@ async function sessionGate(){
   } =
     await db.auth
       .getSession();
-
 
   if(
     session &&
@@ -1831,13 +1327,11 @@ async function sessionGate(){
 
 }
 
-
 $('loginBtn').onclick =
 async () => {
 
   const password =
     $('password').value;
-
 
   if(!password){
 
@@ -1849,26 +1343,20 @@ async () => {
 
   }
 
-
   $('loginMsg')
     .textContent =
     'Connexion…';
-
 
   const {
     error
   } =
     await db.auth
       .signInWithPassword({
-
         email:
           ADMIN_EMAIL,
-
         password:
           password
-
       });
-
 
   if(error){
 
@@ -1880,11 +1368,9 @@ async () => {
 
   }
 
-
   await sessionGate();
 
 };
-
 
 $('password')
   .addEventListener(
@@ -1904,14 +1390,12 @@ $('password')
     }
   );
 
-
 $('forgotBtn').onclick =
 async () => {
 
   $('loginMsg')
     .textContent =
     'Envoi du courriel…';
-
 
   const {
     error
@@ -1925,7 +1409,6 @@ async () => {
         }
       );
 
-
   $('loginMsg')
     .textContent =
     error
@@ -1933,7 +1416,6 @@ async () => {
       : 'Courriel de récupération envoyé.';
 
 };
-
 
 $('logoutBtn').onclick =
 async () => {
@@ -1945,10 +1427,8 @@ async () => {
 
 };
 
-
 let recoveryHandled =
   false;
-
 
 db.auth.onAuthStateChange(
   async (
@@ -1964,19 +1444,16 @@ db.auth.onAuthStateChange(
       recoveryHandled =
         true;
 
-
       const newPassword =
         prompt(
           'Entre ton nouveau mot de passe.'
         );
-
 
       if(
         !newPassword
       ){
         return;
       }
-
 
       const {
         error
@@ -1986,7 +1463,6 @@ db.auth.onAuthStateChange(
             password:
               newPassword
           });
-
 
       if(error){
 
@@ -1999,11 +1475,9 @@ db.auth.onAuthStateChange(
 
       }
 
-
       alert(
         'Ton mot de passe a été modifié.'
       );
-
 
       window.location.href =
         ADMIN_URL;
@@ -2034,7 +1508,6 @@ async function loadData(){
         }
       );
 
-
   if(error){
 
     alert(
@@ -2046,24 +1519,18 @@ async function loadData(){
 
   }
 
-
   reservations =
     data || [];
-
 
   renderAll();
 
 }
 
-
 function renderAll(){
 
   renderStats();
-
   renderCalendar();
-
   renderLists();
-
   renderEventsTable();
 
 }
@@ -2078,7 +1545,6 @@ function renderStats(){
   const today =
     localToday();
 
-
   $('pendingStat')
     .textContent =
     reservations.filter(
@@ -2087,26 +1553,19 @@ function renderStats(){
         'pending'
     ).length;
 
-
   $('confirmedStat')
     .textContent =
     reservations.filter(
       r =>
-
         r.status ===
           'confirmed' &&
-
         r.event_date >=
           today &&
-
         hasGuests(r)
-
     ).length;
-
 
   const now =
     new Date();
-
 
   const monthPrefix =
     now.getFullYear() +
@@ -2118,44 +1577,32 @@ function renderStats(){
       '0'
     );
 
-
   const billable =
     reservations.filter(
       r =>
-
         r.status ===
           'confirmed' &&
-
         hasGuests(r)
-
     );
-
 
   const monthRevenue =
     billable
-
       .filter(
         r =>
-
           r.event_date &&
           r.event_date.startsWith(
             monthPrefix
           )
-
       )
-
       .reduce(
         (
           total,
           r
         ) =>
-
           total +
           revenueForReservation(r),
-
         0
       );
-
 
   const totalRevenue =
     billable.reduce(
@@ -2163,13 +1610,10 @@ function renderStats(){
         total,
         r
       ) =>
-
         total +
         revenueForReservation(r),
-
       0
     );
-
 
   $('monthRevenueStat')
     .textContent =
@@ -2177,25 +1621,19 @@ function renderStats(){
       monthRevenue
     );
 
-
   $('totalRevenueStat')
     .textContent =
     money(
       totalRevenue
     );
 
-
   const blocks =
     reservations.filter(
       r =>
-
         r.status ===
           'confirmed' &&
-
         !hasGuests(r)
-
     ).length;
-
 
   $('financeNote')
     .textContent =
@@ -2215,15 +1653,12 @@ function renderCalendar(){
   const year =
     viewDate.getFullYear();
 
-
   const month =
     viewDate.getMonth();
-
 
   $('monthTitle')
     .textContent =
     `${monthNames[month]} ${year}`;
-
 
   const first =
     new Date(
@@ -2232,10 +1667,8 @@ function renderCalendar(){
       1
     );
 
-
   const start =
     new Date(first);
-
 
   const mondayIndex =
     (
@@ -2243,21 +1676,17 @@ function renderCalendar(){
       6
     ) % 7;
 
-
   start.setDate(
     first.getDate() -
     mondayIndex
   );
 
-
   $('days')
     .innerHTML =
     '';
 
-
   const today =
     localToday();
-
 
   for(
     let i=0;
@@ -2268,34 +1697,27 @@ function renderCalendar(){
     const d =
       new Date(start);
 
-
     d.setDate(
       start.getDate() +
       i
     );
 
-
     const iso =
       [
-
         d.getFullYear(),
-
         String(
           d.getMonth()+1
         ).padStart(
           2,
           '0'
         ),
-
         String(
           d.getDate()
         ).padStart(
           2,
           '0'
         )
-
       ].join('-');
-
 
     const cell =
       document
@@ -2303,10 +1725,8 @@ function renderCalendar(){
           'div'
         );
 
-
     cell.className =
       'day';
-
 
     if(
       d.getMonth() !==
@@ -2318,7 +1738,6 @@ function renderCalendar(){
 
     }
 
-
     if(
       iso ===
       today
@@ -2329,7 +1748,6 @@ function renderCalendar(){
 
     }
 
-
     cell.innerHTML =
       `
         <div class="daynum">
@@ -2337,18 +1755,13 @@ function renderCalendar(){
         </div>
       `;
 
-
     const dayEvents =
       reservations.filter(
         r =>
-
           r.event_date ===
             iso &&
-
           activeReservation(r)
-
       );
-
 
     dayEvents.forEach(
       r => {
@@ -2359,10 +1772,8 @@ function renderCalendar(){
               'div'
             );
 
-
         pill.className =
           `event-pill ${r.status}`;
-
 
         pill.textContent =
           r.full_name ||
@@ -2372,16 +1783,13 @@ function renderCalendar(){
               : 'Bloqué'
           );
 
-
         pill.onclick =
           event => {
 
             event.stopPropagation();
-
             openReservation(r);
 
           };
-
 
         cell.appendChild(
           pill
@@ -2390,11 +1798,9 @@ function renderCalendar(){
       }
     );
 
-
     cell.onclick =
       () =>
         openNew(iso);
-
 
     $('days')
       .appendChild(
@@ -2415,7 +1821,6 @@ function renderLists(){
   const today =
     localToday();
 
-
   const pending =
     reservations.filter(
       r =>
@@ -2423,23 +1828,18 @@ function renderLists(){
         'pending'
     );
 
-
   const upcoming =
     reservations.filter(
       r =>
-
         r.event_date >=
           today &&
-
         [
           'confirmed',
           'unavailable'
         ].includes(
           r.status
         )
-
     );
-
 
   $('pendingList')
     .innerHTML =
@@ -2451,17 +1851,13 @@ function renderLists(){
         </div>
       `;
 
-
   pending.forEach(
     r =>
-
       $('pendingList')
         .appendChild(
           reservationCard(r)
         )
-
   );
-
 
   $('upcomingList')
     .innerHTML =
@@ -2473,19 +1869,15 @@ function renderLists(){
         </div>
       `;
 
-
   upcoming.forEach(
     r =>
-
       $('upcomingList')
         .appendChild(
           reservationCard(r)
         )
-
   );
 
 }
-
 
 function reservationCard(r){
 
@@ -2495,10 +1887,8 @@ function reservationCard(r){
         'div'
       );
 
-
   div.className =
     'card';
-
 
   const title =
     r.full_name ||
@@ -2508,61 +1898,46 @@ function reservationCard(r){
         : 'Date bloquée'
     );
 
-
   const revenue =
     revenueForReservation(r);
-
 
   div.innerHTML =
     `
       <div class="card-top">
-
         <div>
-
           <h4>
             ${escapeHtml(title)}
           </h4>
 
           <div class="meta">
-
             ${fmtDate(r.event_date)}
-
             ${
               hasGuests(r)
                 ? ` · ${r.guest_count} pers.`
                 : ' · Blocage personnel'
             }
-
             ${
               r.city
                 ? ` · ${escapeHtml(r.city)}`
                 : ''
             }
-
             ${
               revenue > 0
                 ? ` · ${money(revenue)}`
                 : ''
             }
-
           </div>
-
         </div>
 
         <span class="badge ${r.status}">
-
           ${statusText(r.status)}
-
         </span>
-
       </div>
     `;
-
 
   div.onclick =
     () =>
       openReservation(r);
-
 
   return div;
 
@@ -2578,11 +1953,9 @@ function renderEventsTable(){
   const today =
     localToday();
 
-
   const filter =
     $('eventFilter')
       .value;
-
 
   const search =
     $('eventSearch')
@@ -2590,10 +1963,8 @@ function renderEventsTable(){
       .trim()
       .toLowerCase();
 
-
   let rows =
     [...reservations];
-
 
   if(
     filter ===
@@ -2603,13 +1974,10 @@ function renderEventsTable(){
     rows =
       rows.filter(
         r =>
-
           r.event_date >=
             today &&
-
           r.status !==
             'cancelled'
-
       );
 
   }
@@ -2628,7 +1996,6 @@ function renderEventsTable(){
 
   }
 
-
   if(search){
 
     rows =
@@ -2637,19 +2004,16 @@ function renderEventsTable(){
 
           const haystack =
             [
-
               r.full_name,
               r.email,
               r.phone,
               r.city,
               r.event_address,
               r.source
-
             ]
             .filter(Boolean)
             .join(' ')
             .toLowerCase();
-
 
           return haystack
             .includes(search);
@@ -2659,26 +2023,22 @@ function renderEventsTable(){
 
   }
 
-
   rows.sort(
     (
       a,
       b
     ) =>
-      a.event_date
+      (a.event_date || '')
         .localeCompare(
-          b.event_date
+          b.event_date || ''
         )
   );
-
 
   const tbody =
     $('eventsTableBody');
 
-
   tbody.innerHTML =
     '';
-
 
   $('eventsEmpty')
     .classList
@@ -2687,7 +2047,6 @@ function renderEventsTable(){
       rows.length >
         0
     );
-
 
   rows.forEach(
     r => {
@@ -2698,10 +2057,8 @@ function renderEventsTable(){
             'tr'
           );
 
-
       const invoiceAvailable =
         canGenerateInvoice(r);
-
 
       const displayName =
         r.full_name ||
@@ -2711,155 +2068,86 @@ function renderEventsTable(){
             : 'Date bloquée'
         );
 
-
       const clientHtml =
         invoiceAvailable
-
-          ?
-
-          `
+          ? `
             <button
               class="invoice-link"
               data-invoice="${r.id}"
               type="button"
             >
-
               ${escapeHtml(displayName)}
-
-              <span class="pdf-tag">
-                PDF
-              </span>
-
+              <span class="pdf-tag">PDF</span>
             </button>
           `
-
-          :
-
-          `
+          : `
             <span class="client-name">
-
               ${escapeHtml(displayName)}
-
             </span>
           `;
-
 
       const revenue =
         revenueForReservation(r);
 
-
       tr.innerHTML =
         `
-
           <td>
-
-            <strong>
-              ${fmtDate(r.event_date)}
-            </strong>
-
+            <strong>${fmtDate(r.event_date)}</strong>
           </td>
 
+          <td>${clientHtml}</td>
 
           <td>
-            ${clientHtml}
-          </td>
-
-
-          <td>
-
             ${
               hasGuests(r)
                 ? r.guest_count
                 : '—'
             }
-
           </td>
-
 
           <td>
-
-            ${
-              escapeHtml(
-                r.city ||
-                '—'
-              )
-            }
-
+            ${escapeHtml(r.city || '—')}
           </td>
 
-
           <td class="money">
-
             ${
               revenue > 0
                 ? money(revenue)
                 : '—'
             }
-
           </td>
 
-
           <td>
-
             ${
               r.deposit_received
-                ? `
-                  <span class="check-yes">
-                    ✓ Reçu
-                  </span>
-                `
-                : `
-                  <span class="check-no">
-                    —
-                  </span>
-                `
+                ? '<span class="check-yes">✓ Reçu</span>'
+                : '<span class="check-no">—</span>'
             }
-
           </td>
 
-
           <td>
-
             ${
               r.menu_sent
-                ? `
-                  <span class="check-yes">
-                    ✓ Envoyé
-                  </span>
-                `
-                : `
-                  <span class="check-no">
-                    —
-                  </span>
-                `
+                ? '<span class="check-yes">✓ Envoyé</span>'
+                : '<span class="check-no">—</span>'
             }
-
           </td>
-
 
           <td>
-
             <span class="badge ${r.status}">
-
               ${statusText(r.status)}
-
             </span>
-
           </td>
-
         `;
-
 
       tr.onclick =
         () =>
           openReservation(r);
 
-
       const invoiceButton =
         tr.querySelector(
           '[data-invoice]'
         );
-
 
       if(
         invoiceButton
@@ -2869,13 +2157,11 @@ function renderEventsTable(){
           event => {
 
             event.stopPropagation();
-
             generateInvoicePDF(r);
 
           };
 
       }
-
 
       tbody.appendChild(
         tr
@@ -2886,13 +2172,11 @@ function renderEventsTable(){
 
 }
 
-
 $('eventSearch')
   .addEventListener(
     'input',
     renderEventsTable
   );
-
 
 $('eventFilter')
   .addEventListener(
@@ -2910,35 +2194,28 @@ function clearForm(){
   $('reservationForm')
     .reset();
 
-
   $('formMsg')
     .innerHTML =
     '';
-
 
   $('pricePreview')
     .textContent =
     '';
 
-
   editing =
     null;
-
 
   $('approveBtn')
     .classList
     .add('hidden');
 
-
   $('cancelBtn')
     .classList
     .add('hidden');
 
-
   $('invoiceBtn')
     .classList
     .add('hidden');
-
 
   $('dangerZone')
     .classList
@@ -2946,36 +2223,29 @@ function clearForm(){
 
 }
 
-
 function openNew(
   date=''
 ){
 
   clearForm();
 
-
   $('modalTitle')
     .textContent =
     'Ajouter un événement';
-
 
   $('eventDate')
     .value =
     date;
 
-
   $('status')
     .value =
     'confirmed';
-
 
   $('source')
     .value =
     'manual';
 
-
   updatePricePreview();
-
 
   $('modalBack')
     .classList
@@ -2983,15 +2253,12 @@ function openNew(
 
 }
 
-
 function openReservation(r){
 
   clearForm();
 
-
   editing =
     r;
-
 
   $('modalTitle')
     .textContent =
@@ -3002,103 +2269,55 @@ function openReservation(r){
         : 'Date bloquée'
     );
 
+  $('eventDate').value =
+    r.event_date || '';
 
-  $('eventDate')
-    .value =
-    r.event_date ||
-    '';
+  $('status').value =
+    r.status || 'pending';
 
+  $('source').value =
+    r.source || 'site';
 
-  $('status')
-    .value =
-    r.status ||
-    'pending';
+  $('fullName').value =
+    r.full_name || '';
 
+  $('email').value =
+    r.email || '';
 
-  $('source')
-    .value =
-    r.source ||
-    'site';
+  $('phone').value =
+    r.phone || '';
 
+  $('guestCount').value =
+    r.guest_count || '';
 
-  $('fullName')
-    .value =
-    r.full_name ||
-    '';
+  $('preferredTime').value =
+    r.preferred_time || '';
 
+  $('city').value =
+    r.city || '';
 
-  $('email')
-    .value =
-    r.email ||
-    '';
+  $('eventAddress').value =
+    r.event_address || '';
 
+  $('quotedPrice').value =
+    r.quoted_price || '';
 
-  $('phone')
-    .value =
-    r.phone ||
-    '';
+  $('depositAmount').value =
+    r.deposit_amount || '';
 
+  $('message').value =
+    r.message || '';
 
-  $('guestCount')
-    .value =
-    r.guest_count ||
-    '';
+  $('internalNotes').value =
+    r.internal_notes || '';
 
-
-  $('preferredTime')
-    .value =
-    r.preferred_time ||
-    '';
-
-
-  $('city')
-    .value =
-    r.city ||
-    '';
-
-
-  $('eventAddress')
-    .value =
-    r.event_address ||
-    '';
-
-
-  $('quotedPrice')
-    .value =
-    r.quoted_price ||
-    '';
-
-
-  $('depositAmount')
-    .value =
-    r.deposit_amount ||
-    '';
-
-
-  $('message')
-    .value =
-    r.message ||
-    '';
-
-
-  $('internalNotes')
-    .value =
-    r.internal_notes ||
-    '';
-
-
-  $('depositReceived')
-    .checked =
+  $('depositReceived').checked =
     !!r.deposit_received;
 
-
-  $('menuSent')
-    .checked =
+  $('menuSent').checked =
     !!r.menu_sent;
 
-
   updatePricePreview();
-
 
   if(
     r.status ===
@@ -3111,7 +2330,6 @@ function openReservation(r){
 
   }
 
-
   if(
     canGenerateInvoice(r)
   ){
@@ -3121,7 +2339,6 @@ function openReservation(r){
       .remove('hidden');
 
   }
-
 
   if(
     r.status !==
@@ -3134,18 +2351,15 @@ function openReservation(r){
 
   }
 
-
   $('dangerZone')
     .classList
     .remove('hidden');
-
 
   $('modalBack')
     .classList
     .remove('hidden');
 
 }
-
 
 $('closeModal').onclick =
 () => {
@@ -3155,7 +2369,6 @@ $('closeModal').onclick =
     .add('hidden');
 
 };
-
 
 $('modalBack').onclick =
 event => {
@@ -3172,7 +2385,6 @@ event => {
   }
 
 };
-
 
 $('addBtn').onclick =
 () =>
@@ -3197,7 +2409,6 @@ $('todayBtn').onclick =
 
 };
 
-
 $('prevMonth').onclick =
 () => {
 
@@ -3209,7 +2420,6 @@ $('prevMonth').onclick =
   renderAll();
 
 };
-
 
 $('nextMonth').onclick =
 () => {
@@ -3236,12 +2446,10 @@ function updatePricePreview(){
         .value
     );
 
-
   const pricing =
     calculateEventPrice(
       guests
     );
-
 
   if(
     !pricing
@@ -3255,20 +2463,17 @@ function updatePricePreview(){
 
   }
 
-
   $('pricePreview')
     .textContent =
     `${guests} × ${pricing.pricePerPerson} $ + ${pricing.fixedFee} $ de service/installation = ${money(pricing.total)}`;
 
 }
 
-
 $('guestCount')
   .addEventListener(
     'input',
     updatePricePreview
   );
-
 
 $('recalculatePrice').onclick =
 () => {
@@ -3279,7 +2484,6 @@ $('recalculatePrice').onclick =
         .value
     );
 
-
   if(
     !pricing
   ){
@@ -3288,11 +2492,9 @@ $('recalculatePrice').onclick =
       .value =
       '';
 
-
     alert(
       'Aucun prix à calculer : aucun nombre d’invités.'
     );
-
 
     updatePricePreview();
 
@@ -3300,11 +2502,9 @@ $('recalculatePrice').onclick =
 
   }
 
-
   $('quotedPrice')
     .value =
     pricing.total;
-
 
   updatePricePreview();
 
@@ -3321,49 +2521,31 @@ function getFormPayload(){
     $('status')
       .value;
 
-
   const source =
     $('source')
       .value;
 
-
   const guestCount =
     $('guestCount')
       .value
-
       ? Number(
           $('guestCount')
             .value
         )
-
       : null;
-
 
   let quotedPrice =
     $('quotedPrice')
       .value
-
       ? Number(
           $('quotedPrice')
             .value
         )
-
       : null;
-
-
-  /*
-    AUCUN INVITÉ =
-    BLOCAGE PERSONNEL.
-
-    Même s'il y avait un prix
-    accidentellement inscrit,
-    on le remet à null.
-  */
 
   if(
     !guestCount ||
-    guestCount <=
-      0
+    guestCount <= 0
   ){
 
     quotedPrice =
@@ -3371,21 +2553,11 @@ function getFormPayload(){
 
   }
 
-
-  /*
-    Si réservation confirmée
-    avec invités et aucun prix,
-    on fige automatiquement
-    le prix actuel.
-  */
-
   if(
     status ===
       'confirmed' &&
-
     guestCount >
       0 &&
-
     quotedPrice ===
       null
   ){
@@ -3394,7 +2566,6 @@ function getFormPayload(){
       calculateEventPrice(
         guestCount
       );
-
 
     if(
       pricing
@@ -3407,10 +2578,8 @@ function getFormPayload(){
 
   }
 
-
   let blockType =
     'reservation';
-
 
   if(
     status ===
@@ -3432,9 +2601,7 @@ function getFormPayload(){
 
   }
 
-
   return {
-
     event_date:
       $('eventDate')
         .value,
@@ -3493,12 +2660,10 @@ function getFormPayload(){
     deposit_amount:
       $('depositAmount')
         .value
-
         ? Number(
             $('depositAmount')
               .value
           )
-
         : null,
 
     message:
@@ -3520,7 +2685,6 @@ function getFormPayload(){
     menu_sent:
       $('menuSent')
         .checked
-
   };
 
 }
@@ -3538,7 +2702,6 @@ function showDatabaseError(
     error
   );
 
-
   if(
     error?.code ===
     '23505'
@@ -3548,13 +2711,8 @@ function showDatabaseError(
       .innerHTML =
       `
         <div class="error">
-
-          Cette date est déjà bloquée
-          par une autre réservation.
-
-          Choisis une autre date
-          ou libère l’événement existant.
-
+          Cette date est déjà bloquée par une autre réservation.
+          Choisis une autre date ou libère l’événement existant.
         </div>
       `;
 
@@ -3562,19 +2720,16 @@ function showDatabaseError(
 
   }
 
-
   $('formMsg')
     .innerHTML =
     `
       <div class="error">
-
         ${
           escapeHtml(
             error?.message ||
             'Une erreur est survenue.'
           )
         }
-
       </div>
     `;
 
@@ -3595,10 +2750,8 @@ async function saveReservation(
   } =
     options;
 
-
   const payload =
     getFormPayload();
-
 
   if(
     !payload.event_date
@@ -3616,14 +2769,12 @@ async function saveReservation(
 
   }
 
-
   if(
     forcedStatus
   ){
 
     payload.status =
       forcedStatus;
-
 
     if(
       forcedStatus ===
@@ -3633,20 +2784,15 @@ async function saveReservation(
       payload.block_type =
         payload.source ===
         'manual'
-
           ? 'manual_booked'
-
           : 'reservation';
-
 
       if(
         payload.guest_count >
           0 &&
-
         (
           payload.quoted_price ===
             null ||
-
           payload.quoted_price ===
             undefined
         )
@@ -3656,7 +2802,6 @@ async function saveReservation(
           calculateEventPrice(
             payload.guest_count
           );
-
 
         if(
           pricing
@@ -3673,14 +2818,11 @@ async function saveReservation(
 
   }
 
-
   $('saveBtn')
     .disabled =
     true;
 
-
   let result;
-
 
   if(
     editing
@@ -3718,11 +2860,9 @@ async function saveReservation(
 
   }
 
-
   $('saveBtn')
     .disabled =
     false;
-
 
   if(
     result.error
@@ -3736,29 +2876,13 @@ async function saveReservation(
 
   }
 
-
   editing =
     result.data;
 
-
-  if(
-    editing?.quoted_price
-  ){
-
-    $('quotedPrice')
-      .value =
-      editing.quoted_price;
-
-  }
-
-  else{
-
-    $('quotedPrice')
-      .value =
-      '';
-
-  }
-
+  $('quotedPrice')
+    .value =
+    editing?.quoted_price ||
+    '';
 
   $('formMsg')
     .innerHTML =
@@ -3768,15 +2892,7 @@ async function saveReservation(
       </div>
     `;
 
-
   await loadData();
-
-
-  /*
-    Après sauvegarde,
-    facture seulement si
-    confirmé + invités + montant.
-  */
 
   $('invoiceBtn')
     .classList
@@ -3786,7 +2902,6 @@ async function saveReservation(
         editing
       )
     );
-
 
   if(
     closeAfter
@@ -3805,18 +2920,15 @@ async function saveReservation(
 
   }
 
-
   return true;
 
 }
-
 
 $('reservationForm')
   .onsubmit =
 async event => {
 
   event.preventDefault();
-
 
   await saveReservation({
     closeAfter:true
@@ -3838,12 +2950,10 @@ async () => {
     return;
   }
 
-
   const ok =
     confirm(
       'Accepter cette réservation et garder la date bloquée?'
     );
-
 
   if(
     !ok
@@ -3851,22 +2961,16 @@ async () => {
     return;
   }
 
-
   $('status')
     .value =
     'confirmed';
 
-
   const success =
     await saveReservation({
-
       closeAfter:false,
-
       forcedStatus:
         'confirmed'
-
     });
-
 
   if(
     !success
@@ -3874,58 +2978,34 @@ async () => {
     return;
   }
 
-
   const hasClientGuests =
     hasGuests(
       editing
     );
 
-
   $('formMsg')
     .innerHTML =
     hasClientGuests
-
-      ?
-
-      `
+      ? `
         <div class="success">
-
           Réservation confirmée ✅
-
           <br>
-
-          Le montant est maintenant
-          enregistré dans ton chiffre
-          d’affaires.
-
+          Le montant est maintenant enregistré dans ton chiffre d’affaires.
           <br>
-
           La facture PDF est disponible.
-
         </div>
       `
-
-      :
-
-      `
+      : `
         <div class="success">
-
           Date confirmée / bloquée ✅
-
           <br>
-
-          Comme aucun invité n’est
-          enregistré, aucun revenu et
-          aucune facture n’ont été créés.
-
+          Comme aucun invité n’est enregistré, aucun revenu et aucune facture n’ont été créés.
         </div>
       `;
-
 
   $('approveBtn')
     .classList
     .add('hidden');
-
 
   $('invoiceBtn')
     .classList
@@ -3952,19 +3032,16 @@ async () => {
     return;
   }
 
-
   const ok =
     confirm(
       'Annuler cet événement et libérer cette date sur le site public?'
     );
-
 
   if(
     !ok
   ){
     return;
   }
-
 
   const {
     error
@@ -3982,7 +3059,6 @@ async () => {
         editing.id
       );
 
-
   if(
     error
   ){
@@ -3995,45 +3071,32 @@ async () => {
 
   }
 
-
   editing.status =
     'cancelled';
 
-
   await loadData();
-
 
   $('formMsg')
     .innerHTML =
     `
       <div class="success">
-
         Événement annulé ✅
-
         <br>
-
-        La date est libérée et
-        l’événement ne compte plus
-        dans ton chiffre d’affaires.
-
+        La date est libérée et l’événement ne compte plus dans ton chiffre d’affaires.
       </div>
     `;
-
 
   $('status')
     .value =
     'cancelled';
 
-
   $('approveBtn')
     .classList
     .add('hidden');
 
-
   $('invoiceBtn')
     .classList
     .add('hidden');
-
 
   $('cancelBtn')
     .classList
@@ -4055,33 +3118,25 @@ async () => {
     return;
   }
 
-
   if(
     !confirm(
       'Supprimer définitivement cet événement? La date sera libérée immédiatement.'
     )
   ){
-
     return;
-
   }
-
 
   if(
     !confirm(
       'Cette action est irréversible. Confirmer la suppression?'
     )
   ){
-
     return;
-
   }
-
 
   $('deleteBtn')
     .disabled =
     true;
-
 
   const {
     error
@@ -4096,11 +3151,9 @@ async () => {
         editing.id
       );
 
-
   $('deleteBtn')
     .disabled =
     false;
-
 
   if(
     error
@@ -4114,18 +3167,14 @@ async () => {
 
   }
 
-
   editing =
     null;
 
-
   await loadData();
-
 
   $('modalBack')
     .classList
     .add('hidden');
-
 
   alert(
     'Événement supprimé. La date est disponible.'
@@ -4149,7 +3198,6 @@ function invoiceNumber(r){
       ''
     );
 
-
   const idPart =
     String(
       r.id ||
@@ -4165,13 +3213,11 @@ function invoiceNumber(r){
     )
     .toUpperCase();
 
-
   return (
     `RAFA-${datePart}-${idPart}`
   );
 
 }
-
 
 function pdfText(value){
 
@@ -4181,7 +3227,6 @@ function pdfText(value){
   );
 
 }
-
 
 function generateInvoicePDF(r){
 
@@ -4199,7 +3244,6 @@ function generateInvoicePDF(r){
 
   }
 
-
   if(
     !hasGuests(r)
   ){
@@ -4212,10 +3256,8 @@ function generateInvoicePDF(r){
 
   }
 
-
   const total =
     revenueForReservation(r);
-
 
   if(
     total <=
@@ -4230,12 +3272,23 @@ function generateInvoicePDF(r){
 
   }
 
+  if(
+    !window.jspdf ||
+    !window.jspdf.jsPDF
+  ){
+
+    alert(
+      'Le module PDF n’est pas encore chargé. Réessaie dans quelques secondes.'
+    );
+
+    return;
+
+  }
 
   const {
     jsPDF
   } =
     window.jspdf;
-
 
   const doc =
     new jsPDF({
@@ -4243,12 +3296,10 @@ function generateInvoicePDF(r){
       format:'letter'
     });
 
-
   const pricing =
     calculateEventPrice(
       r.guest_count
     );
-
 
   const customPrice =
     pricing &&
@@ -4260,17 +3311,13 @@ function generateInvoicePDF(r){
       pricing.total
     );
 
-
   const deposit =
     r.deposit_received
-
       ? Number(
           r.deposit_amount ||
           0
         )
-
       : 0;
-
 
   const balance =
     Math.max(
@@ -4279,17 +3326,11 @@ function generateInvoicePDF(r){
       0
     );
 
-
-  /*
-    HEADER
-  */
-
   doc.setFillColor(
     91,
     31,
     42
   );
-
 
   doc.rect(
     0,
@@ -4299,24 +3340,20 @@ function generateInvoicePDF(r){
     'F'
   );
 
-
   doc.setTextColor(
     255,
     255,
     255
   );
 
-
   doc.setFont(
     'helvetica',
     'bold'
   );
 
-
   doc.setFontSize(
     25
   );
-
 
   doc.text(
     'RAFA',
@@ -4324,17 +3361,14 @@ function generateInvoicePDF(r){
     20
   );
 
-
   doc.setFontSize(
     10
   );
-
 
   doc.setFont(
     'helvetica',
     'normal'
   );
-
 
   doc.text(
     'Pizza a domicile',
@@ -4342,17 +3376,14 @@ function generateInvoicePDF(r){
     27
   );
 
-
   doc.setFontSize(
     20
   );
-
 
   doc.setFont(
     'helvetica',
     'bold'
   );
-
 
   doc.text(
     'FACTURE',
@@ -4363,17 +3394,14 @@ function generateInvoicePDF(r){
     }
   );
 
-
   doc.setFontSize(
     8.5
   );
-
 
   doc.setFont(
     'helvetica',
     'normal'
   );
-
 
   doc.text(
     invoiceNumber(r),
@@ -4384,28 +3412,20 @@ function generateInvoicePDF(r){
     }
   );
 
-
-  /*
-    RAFA / DATE
-  */
-
   doc.setTextColor(
     43,
     37,
     36
   );
 
-
   doc.setFontSize(
     10
   );
-
 
   doc.setFont(
     'helvetica',
     'bold'
   );
-
 
   doc.text(
     'Rafa Pizza',
@@ -4413,12 +3433,10 @@ function generateInvoicePDF(r){
     58
   );
 
-
   doc.setFont(
     'helvetica',
     'normal'
   );
-
 
   doc.setTextColor(
     125,
@@ -4426,13 +3444,11 @@ function generateInvoicePDF(r){
     105
   );
 
-
   doc.text(
     'lapizzaderafa@gmail.com',
     18,
     64
   );
-
 
   doc.setTextColor(
     43,
@@ -4440,12 +3456,10 @@ function generateInvoicePDF(r){
     36
   );
 
-
   doc.setFont(
     'helvetica',
     'bold'
   );
-
 
   doc.text(
     'Date de l evenement',
@@ -4453,12 +3467,10 @@ function generateInvoicePDF(r){
     58
   );
 
-
   doc.setFont(
     'helvetica',
     'normal'
   );
-
 
   doc.text(
     pdfText(
@@ -4470,17 +3482,11 @@ function generateInvoicePDF(r){
     64
   );
 
-
-  /*
-    CLIENT
-  */
-
   doc.setDrawColor(
     220,
     210,
     205
   );
-
 
   doc.line(
     18,
@@ -4489,17 +3495,14 @@ function generateInvoicePDF(r){
     74
   );
 
-
   doc.setFont(
     'helvetica',
     'bold'
   );
 
-
   doc.setFontSize(
     10
   );
-
 
   doc.text(
     'FACTURE A',
@@ -4507,11 +3510,9 @@ function generateInvoicePDF(r){
     85
   );
 
-
   doc.setFontSize(
     13
   );
-
 
   doc.text(
     pdfText(
@@ -4522,17 +3523,14 @@ function generateInvoicePDF(r){
     94
   );
 
-
   doc.setFont(
     'helvetica',
     'normal'
   );
 
-
   doc.setFontSize(
     9
   );
-
 
   doc.setTextColor(
     125,
@@ -4540,10 +3538,8 @@ function generateInvoicePDF(r){
     105
   );
 
-
   let clientY =
     101;
-
 
   if(
     r.email
@@ -4562,7 +3558,6 @@ function generateInvoicePDF(r){
 
   }
 
-
   if(
     r.phone
   ){
@@ -4579,7 +3574,6 @@ function generateInvoicePDF(r){
       5;
 
   }
-
 
   if(
     r.event_address
@@ -4598,7 +3592,6 @@ function generateInvoicePDF(r){
 
   }
 
-
   if(
     r.city
   ){
@@ -4613,21 +3606,14 @@ function generateInvoicePDF(r){
 
   }
 
-
-  /*
-    TABLE
-  */
-
   let y =
     130;
-
 
   doc.setFillColor(
     246,
     240,
     231
   );
-
 
   doc.rect(
     18,
@@ -4637,31 +3623,26 @@ function generateInvoicePDF(r){
     'F'
   );
 
-
   doc.setTextColor(
     91,
     31,
     42
   );
 
-
   doc.setFont(
     'helvetica',
     'bold'
   );
 
-
   doc.setFontSize(
     9
   );
-
 
   doc.text(
     'DESCRIPTION',
     22,
     y+6.5
   );
-
 
   doc.text(
     'MONTANT',
@@ -4672,10 +3653,8 @@ function generateInvoicePDF(r){
     }
   );
 
-
   y +=
     20;
-
 
   doc.setTextColor(
     43,
@@ -4683,17 +3662,14 @@ function generateInvoicePDF(r){
     36
   );
 
-
   doc.setFont(
     'helvetica',
     'bold'
   );
 
-
   doc.setFontSize(
     10
   );
-
 
   doc.text(
     'Service Rafa Pizza a domicile',
@@ -4701,24 +3677,20 @@ function generateInvoicePDF(r){
     y
   );
 
-
   doc.setFont(
     'helvetica',
     'normal'
   );
 
-
   doc.setFontSize(
     9
   );
-
 
   doc.text(
     `${r.guest_count} invites`,
     22,
     y+6
   );
-
 
   if(
     pricing &&
@@ -4730,7 +3702,6 @@ function generateInvoicePDF(r){
       22,
       y+12
     );
-
 
     doc.text(
       `Service et installation : ${pricing.fixedFee} $`,
@@ -4750,12 +3721,10 @@ function generateInvoicePDF(r){
 
   }
 
-
   doc.setFont(
     'helvetica',
     'bold'
   );
-
 
   doc.text(
     money(total),
@@ -4766,21 +3735,14 @@ function generateInvoicePDF(r){
     }
   );
 
-
-  /*
-    TOTAL
-  */
-
   y +=
     43;
-
 
   doc.setDrawColor(
     220,
     210,
     205
   );
-
 
   doc.line(
     118,
@@ -4789,21 +3751,17 @@ function generateInvoicePDF(r){
     y
   );
 
-
   y +=
     9;
-
 
   doc.setFont(
     'helvetica',
     'normal'
   );
 
-
   doc.setFontSize(
     10
   );
-
 
   doc.text(
     'Total',
@@ -4811,12 +3769,10 @@ function generateInvoicePDF(r){
     y
   );
 
-
   doc.setFont(
     'helvetica',
     'bold'
   );
-
 
   doc.text(
     money(total),
@@ -4826,7 +3782,6 @@ function generateInvoicePDF(r){
       align:'right'
     }
   );
-
 
   if(
     deposit >
@@ -4836,19 +3791,16 @@ function generateInvoicePDF(r){
     y +=
       8;
 
-
     doc.setFont(
       'helvetica',
       'normal'
     );
-
 
     doc.text(
       'Depot recu',
       130,
       y
     );
-
 
     doc.text(
       '- ' +
@@ -4862,28 +3814,23 @@ function generateInvoicePDF(r){
       }
     );
 
-
     y +=
       9;
-
 
     doc.setFont(
       'helvetica',
       'bold'
     );
 
-
     doc.setFontSize(
       12
     );
-
 
     doc.text(
       'Solde',
       130,
       y
     );
-
 
     doc.text(
       money(
@@ -4898,21 +3845,14 @@ function generateInvoicePDF(r){
 
   }
 
-
-  /*
-    FOOTER
-  */
-
   doc.setFontSize(
     9
   );
-
 
   doc.setFont(
     'helvetica',
     'normal'
   );
-
 
   doc.setTextColor(
     125,
@@ -4920,13 +3860,11 @@ function generateInvoicePDF(r){
     105
   );
 
-
   doc.text(
     'Merci d avoir choisi Rafa Pizza.',
     18,
     245
   );
-
 
   doc.text(
     'Vous invitez votre monde. On s occupe du reste.',
@@ -4934,11 +3872,9 @@ function generateInvoicePDF(r){
     251
   );
 
-
   doc.setFontSize(
     7
   );
-
 
   doc.text(
     'Document genere depuis Rafa Admin. Le montant correspond au prix enregistre pour cet evenement.',
@@ -4946,22 +3882,15 @@ function generateInvoicePDF(r){
     266
   );
 
-
-  /*
-    OUVERTURE PDF
-  */
-
   const blob =
     doc.output(
       'blob'
     );
 
-
   const url =
     URL.createObjectURL(
       blob
     );
-
 
   window.open(
     url,
@@ -4969,7 +3898,6 @@ function generateInvoicePDF(r){
   );
 
 }
-
 
 $('invoiceBtn').onclick =
 () => {
@@ -4994,197 +3922,6 @@ $('invoiceBtn').onclick =
 sessionGate();
 
 </script>
-<!-- ================================
-     CORRECTION NAVIGATION ADMIN MOBILE
-================================ -->
 
-<style>
-  /* Empêche la page entière de déborder horizontalement */
-  html,
-  body {
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-
-  .app {
-    width: 100%;
-    max-width: 1180px;
-  }
-
-  .topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .topbar > div {
-    min-width: 0;
-  }
-
-  .brand {
-    flex: 1 1 280px;
-    min-width: 0;
-  }
-
-  /* Navigation admin */
-  .admin-nav {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-    flex-wrap: wrap;
-    min-width: 0;
-  }
-
-  .admin-nav .btn {
-    white-space: nowrap;
-  }
-
-  .stats,
-  .stat,
-  .grid,
-  .panel {
-    min-width: 0;
-  }
-
-  @media (max-width: 620px) {
-
-    .app {
-      padding: 12px;
-    }
-
-    .topbar {
-      flex-direction: column;
-      align-items: stretch;
-      width: 100%;
-    }
-
-    .brand {
-      width: 100%;
-      flex: none;
-    }
-
-    .admin-nav {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-    }
-
-    .admin-nav .btn {
-      width: 100%;
-      min-width: 0;
-      padding: 11px 8px;
-      font-size: 13px;
-    }
-
-    .stats {
-      width: 100%;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .grid {
-      width: 100%;
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  /* ==================================
-     1. AUCUN LIEN VERS index.html
-  ================================== */
-
-  document.querySelectorAll("a").forEach(function(link) {
-
-    const href = link.getAttribute("href") || "";
-
-    if (
-      href === "index.html" ||
-      href === "./index.html" ||
-      href.endsWith("/index.html")
-    ) {
-      link.setAttribute("href", "admin.html");
-    }
-
-  });
-
-
-  /* ==================================
-     2. ENLÈVE LE GROS BOUTON ACCUEIL
-        FLOTTANT EN BAS À GAUCHE
-  ================================== */
-
-  document.querySelectorAll("body > a").forEach(function(link) {
-
-    const text = (link.textContent || "").trim().toLowerCase();
-    const style = link.getAttribute("style") || "";
-
-    if (
-      text.includes("accueil") &&
-      style.includes("position:fixed")
-    ) {
-      link.remove();
-    }
-
-  });
-
-
-  /* ==================================
-     3. IDENTIFIE LA NAVIGATION DU HAUT
-  ================================== */
-
-  const financesLink =
-    document.querySelector('.topbar a[href="finances.html"]');
-
-  const addButton =
-    document.getElementById("addBtn");
-
-  const logoutButton =
-    document.getElementById("logoutBtn");
-
-  let navigation = null;
-
-  if (financesLink) {
-    navigation = financesLink.parentElement;
-  } else if (addButton) {
-    navigation = addButton.parentElement;
-  } else if (logoutButton) {
-    navigation = logoutButton.parentElement;
-  }
-
-  if (navigation) {
-    navigation.classList.add("admin-nav");
-  }
-
-
-  /* ==================================
-     4. LE BOUTON ACCUEIL DU HAUT
-        RESTE DANS ADMIN
-  ================================== */
-
-  if (navigation) {
-
-    navigation.querySelectorAll("a").forEach(function(link) {
-
-      const text =
-        (link.textContent || "")
-          .trim()
-          .toLowerCase();
-
-      if (text.includes("accueil")) {
-        link.setAttribute("href", "admin.html");
-      }
-
-    });
-
-  }
-
-});
-</script>
 </body>
 </html>
