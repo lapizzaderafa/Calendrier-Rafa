@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rafa Pizza — Administration</title>
+
+<style>
+:root{
+  --cream:#F6F0E7;
+  --cream2:#FBF8F3;
+  --wine:#5B1F2A;
+  --wine2:#7A2D3C;
+  --ink:#2B2524;
+  --muted:#8A7D77;
+  --line:rgba(91,31,42,.16);
+  --pending:#D9942B;
+  --ok:#447A54;
+  --blocked:#4B4B4B;
+  --danger:#9B3E4E;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#eee8df;
+  color:var(--ink);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+.hidden{display:none!important}
+
+.app{
+  max-width:1180px;
+  margin:auto;
+  padding:18px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:18px;
+}
+
+.brand h1{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--wine);
+  font-size:34px;
+}
+
+.brand p{
+  margin:3px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.btn{
+  border:0;
+  border-radius:999px;
+  padding:11px 16px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.btn.primary{background:var(--wine);color:#fff}
+.btn.secondary{background:#fff;color:var(--wine);border:1px solid var(--line)}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.ok{background:var(--ok);color:#fff}
+.btn.small{padding:8px 12px;font-size:12px}
+
+.grid{
+  display:grid;
+  grid-template-columns:1.6fr .9fr;
+  gap:18px;
+}
+
+.panel{
+  background:var(--cream);
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:0 14px 34px rgba(65,35,39,.08);
+  overflow:hidden;
+}
+
+.panel-head{
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.panel-head h2{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--wine);
+  font-size:23px;
+}
+
+.panel-body{padding:18px 20px}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:16px;
+}
+
+.stat{
+  background:var(--cream2);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+}
+
+.stat .n{
+  font-size:25px;
+  font-weight:900;
+  color:var(--wine);
+}
+
+.stat .t{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+.calendar-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.calendar-head h3{
+  margin:0;
+  color:var(--wine);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:24px;
+}
+
+.navbtn{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--wine);
+  border-radius:10px;
+  width:38px;
+  height:34px;
+  cursor:pointer;
+  font-size:18px;
+}
+
+.week,.days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:6px;
+}
+
+.week div{
+  text-align:center;
+  font-size:10px;
+  font-weight:900;
+  color:var(--muted);
+  padding:5px;
+}
+
+.day{
+  min-height:92px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#fff;
+  padding:7px;
+  cursor:pointer;
+  position:relative;
+}
+
+.day.out{opacity:.34}
+.day.today{outline:2px solid var(--wine)}
+
+.daynum{
+  font-size:11px;
+  font-weight:900;
+}
+
+.event-pill{
+  font-size:9px;
+  font-weight:800;
+  color:#fff;
+  border-radius:999px;
+  padding:5px 6px;
+  margin-top:5px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.event-pill.pending{background:var(--pending)}
+.event-pill.confirmed{background:var(--ok)}
+.event-pill.unavailable{background:var(--blocked)}
+
+.legend{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:14px;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  display:inline-block;
+  margin-right:5px;
+}
+
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:13px;
+  cursor:pointer;
+}
+
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+}
+
+.card h4{
+  margin:0 0 4px;
+  font-size:14px;
+  color:var(--wine);
+}
+
+.meta{
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.badge{
+  border-radius:999px;
+  padding:5px 8px;
+  font-size:9px;
+  color:white;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.badge.pending{background:var(--pending)}
+.badge.confirmed{background:var(--ok)}
+.badge.unavailable{background:var(--blocked)}
+
+.empty{
+  font-size:12px;
+  color:var(--muted);
+  padding:12px 0;
+}
+
+.login-wrap{
+  min-height:80vh;
+  display:grid;
+  place-items:center;
+  padding:20px;
+}
+
+.login{
+  max-width:460px;
+  background:var(--cream);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:30px;
+  box-shadow:0 18px 45px rgba(65,35,39,.12);
+  text-align:center;
+}
+
+.login h1{
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--wine);
+  margin:0 0 8px;
+}
+
+.login p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+}
+
+.notice{
+  font-size:12px;
+  margin-top:12px;
+  color:var(--muted);
+}
+
+.modal-back{
+  position:fixed;
+  inset:0;
+  background:rgba(30,20,20,.48);
+  display:grid;
+  place-items:center;
+  padding:16px;
+  z-index:30;
+}
+
+.modal{
+  width:min(760px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:var(--cream);
+  border-radius:24px;
+  border:1px solid var(--line);
+}
+
+.modal-head{
+  position:sticky;
+  top:0;
+  background:var(--cream);
+  z-index:2;
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.modal-head h2{
+  margin:0;
+  color:var(--wine);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+.x{
+  background:transparent;
+  border:0;
+  font-size:25px;
+  color:var(--wine);
+  cursor:pointer;
+}
+
+.form{padding:18px 20px}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.field.full{grid-column:1/-1}
+
+.field label{
+  font-size:10px;
+  color:var(--wine);
+  font-weight:900;
+}
+
+.field input,
+.field select,
+.field textarea{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:12px;
+  padding:11px;
+  font-size:14px;
+}
+
+.field textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.checks{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  margin:14px 0;
+}
+
+.checks label{
+  font-size:12px;
+  font-weight:700;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.error{
+  background:#f5e3e6;
+  color:#8a2f40;
+  border:1px solid #e7bbc4;
+  border-radius:12px;
+  padding:10px;
+  font-size:12px;
+  margin-top:12px;
+}
+
+.success{
+  background:#e4efe6;
+  color:#315e3d;
+  border:1px solid #bdd5c3;
+  border-radius:12px;
+  padding:10px;
+  font-size:12px;
+  margin-top:12px;
+}
+
+@media(max-width:850px){
+  .grid{grid-template-columns:1fr}
+  .day{min-height:74px}
+}
+
+@media(max-width:620px){
+  .app{padding:9px}
+  .brand h1{font-size:28px}
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .day{min-height:63px;padding:4px}
+  .event-pill{font-size:0;height:8px;padding:0;margin-top:3px}
+}
+</style>
+</head>
+
+<body>
+
+<div id="loginWrap" class="login-wrap">
+  <div class="login">
+    <h1>Rafa Pizza</h1>
+    <p>Tableau de bord privé des réservations.</p>
+    <button id="loginBtn" class="btn primary">
+      Recevoir mon lien de connexion
+    </button>
+    <div id="loginMsg" class="notice"></div>
+  </div>
+</div>
+
+<div id="app" class="app hidden">
+
+  <div class="topbar">
+    <div class="brand">
+      <h1>Rafa · Réservations</h1>
+      <p>Un seul endroit pour toutes tes dates et tes clients.</p>
+    </div>
+
+    <div>
+      <button id="addBtn" class="btn primary">+ Ajouter</button>
+      <button id="logoutBtn" class="btn secondary">Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div id="pendingStat" class="n">0</div>
+      <div class="t">Demandes en attente</div>
+    </div>
+
+    <div class="stat">
+      <div id="confirmedStat" class="n">0</div>
+      <div class="t">Événements confirmés à venir</div>
+    </div>
+
+    <div class="stat">
+      <div id="monthStat" class="n">0</div>
+      <div class="t">Événements ce mois-ci</div>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Calendrier</h2>
+        <button id="todayBtn" class="btn secondary small">
+          Aujourd’hui
+        </button>
+      </div>
+
+      <div class="panel-body">
+
+        <div class="calendar-head">
+          <button id="prevMonth" class="navbtn">‹</button>
+          <h3 id="monthTitle"></h3>
+          <button id="nextMonth" class="navbtn">›</button>
+        </div>
+
+        <div class="week">
+          <div>Lun</div>
+          <div>Mar</div>
+          <div>Mer</div>
+          <div>Jeu</div>
+          <div>Ven</div>
+          <div>Sam</div>
+          <div>Dim</div>
+        </div>
+
+        <div id="days" class="days"></div>
+
+        <div class="legend">
+          <span><span class="dot" style="background:#D9942B"></span>En attente</span>
+          <span><span class="dot" style="background:#447A54"></span>Confirmé</span>
+          <span><span class="dot" style="background:#4B4B4B"></span>Bloqué</span>
+        </div>
+
+      </div>
+    </section>
+
+    <div>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>À traiter</h2>
+        </div>
+
+        <div class="panel-body">
+          <div id="pendingList" class="list"></div>
+        </div>
+      </section>
+
+      <br>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Prochains événements</h2>
+        </div>
+
+        <div class="panel-body">
+          <div id="upcomingList" class="list"></div>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+</div>
+
+<div id="modalBack" class="modal-back hidden">
+
+  <div class="modal">
+
+    <div class="modal-head">
+      <h2 id="modalTitle">Événement</h2>
+      <button id="closeModal" class="x">×</button>
+    </div>
+
+    <form id="eventForm" class="form">
+
+      <input type="hidden" id="rid">
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label>Date *</label>
+          <input id="eventDate" type="date" required>
+        </div>
+
+        <div class="field">
+          <label>Statut</label>
+          <select id="status">
+            <option value="pending">En attente</option>
+            <option value="confirmed">Confirmé</option>
+            <option value="unavailable">Bloqué / indisponible</option>
+            <option value="cancelled">Refusé / annulé</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Nom</label>
+          <input id="fullName" type="text">
+        </div>
+
+        <div class="field">
+          <label>Source</label>
+          <select id="source">
+            <option value="site">Site web</option>
+            <option value="instagram">Instagram</option>
+            <option value="messenger">Messenger</option>
+            <option value="telephone">Téléphone</option>
+            <option value="reference">Référence</option>
+            <option value="manual">Ajout manuel</option>
+            <option value="other">Autre</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Courriel</label>
+          <input id="email" type="email">
+        </div>
+
+        <div class="field">
+          <label>Téléphone</label>
+          <input id="phone" type="tel">
+        </div>
+
+        <div class="field">
+          <label>Nombre de personnes</label>
+          <input id="guestCount" type="number" min="1" max="500">
+        </div>
+
+        <div class="field">
+          <label>Heure</label>
+          <input id="preferredTime" type="time">
+        </div>
+
+        <div class="field">
+          <label>Ville / secteur</label>
+          <input id="city" type="text">
+        </div>
+
+        <div class="field">
+          <label>Adresse</label>
+          <input id="eventAddress" type="text">
+        </div>
+
+        <div class="field">
+          <label>Prix prévu ($)</label>
+          <input id="quotedPrice" type="number" step="0.01" min="0">
+        </div>
+
+        <div class="field">
+          <label>Dépôt ($)</label>
+          <input id="depositAmount" type="number" step="0.01" min="0">
+        </div>
+
+        <div class="field full">
+          <label>Message / préférences du client</label>
+          <textarea id="message"></textarea>
+        </div>
+
+        <div class="field full">
+          <label>Notes internes</label>
+          <textarea id="internalNotes"></textarea>
+        </div>
+
+      </div>
+
+      <div class="checks">
+        <label>
+          <input id="depositReceived" type="checkbox">
+          Dépôt reçu
+        </label>
+
+        <label>
+          <input id="menuSent" type="checkbox">
+          Menu envoyé
+        </label>
+      </div>
+
+      <div id="formMsg"></div>
+
+      <div class="actions">
+        <button class="btn primary" type="submit">Enregistrer</button>
+        <button id="approveBtn" class="btn ok" type="button">Accepter + courriel</button>
+        <button id="refuseBtn" class="btn danger" type="button">Refuser</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+'https://jetogsbyptglaihktdel.supabase.co';
+
+const SUPABASE_KEY =
+'sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja';
+
+const ADMIN_EMAIL =
+'lapizzaderafa@gmail.com';
+
+const db =
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const $ = id =>
+document.getElementById(id);
+
+let reservations = [];
+let editing = null;
+
+let viewDate = new Date();
+viewDate.setDate(1);
+
+const monthNames = [
+  'Janvier','Février','Mars','Avril',
+  'Mai','Juin','Juillet','Août',
+  'Septembre','Octobre','Novembre','Décembre'
+];
+
+const active = r =>
+['pending','confirmed','unavailable']
+.includes(r.status);
+
+function fmtDate(d){
+  return new Intl.DateTimeFormat(
+    'fr-CA',
+    {
+      weekday:'short',
+      day:'numeric',
+      month:'short',
+      year:'numeric'
+    }
+  ).format(
+    new Date(d+'T12:00:00')
+  );
+}
+
+async function sessionGate(){
+
+  const {
+    data:{session}
+  } =
+  await db.auth.getSession();
+
+  if(
+    session &&
+    (session.user.email || '')
+    .toLowerCase() === ADMIN_EMAIL
+  ){
+
+    $('loginWrap').classList.add('hidden');
+    $('app').classList.remove('hidden');
+
+    await loadData();
+
+  }else{
+
+    $('loginWrap').classList.remove('hidden');
+    $('app').classList.add('hidden');
+
+  }
+}
+
+$('loginBtn').onclick =
+async () => {
+
+  $('loginMsg').textContent =
+  'Envoi du lien…';
+
+  const {error} =
+  await db.auth.signInWithOtp({
+
+    email:ADMIN_EMAIL,
+
+    options:{
+      emailRedirectTo:
+      location.origin + location.pathname,
+      shouldCreateUser:true
+    }
+
+  });
+
+  $('loginMsg').textContent =
+  error
+    ? error.message
+    : 'Lien envoyé à ' +
+      ADMIN_EMAIL +
+      '. Ouvre-le pour te connecter.';
+};
+
+$('logoutBtn').onclick =
+async () => {
+
+  await db.auth.signOut();
+  location.reload();
+
+};
+
+async function loadData(){
+
+  const {data,error} =
+  await db
+  .from('reservations')
+  .select('*')
+  .order('event_date',{
+    ascending:true
+  });
+
+  if(error){
+
+    alert(
+      'Impossible de charger les réservations: ' +
+      error.message
+    );
+
+    return;
+  }
+
+  reservations = data || [];
+
+  renderAll();
+}
+
+function renderAll(){
+
+  renderStats();
+  renderCalendar();
+  renderLists();
+
+}
+
+function renderStats(){
+
+  const today =
+  new Date()
+  .toISOString()
+  .slice(0,10);
+
+  $('pendingStat').textContent =
+  reservations.filter(
+    r => r.status === 'pending'
+  ).length;
+
+  $('confirmedStat').textContent =
+  reservations.filter(
+    r =>
+      r.status === 'confirmed' &&
+      r.event_date >= today
+  ).length;
+
+  const y = viewDate.getFullYear();
+  const m = viewDate.getMonth()+1;
+
+  $('monthStat').textContent =
+  reservations.filter(
+    r =>
+      active(r) &&
+      Number(r.event_date.slice(0,4)) === y &&
+      Number(r.event_date.slice(5,7)) === m
+  ).length;
+}
+
+function renderCalendar(){
+
+  const y = viewDate.getFullYear();
+  const m = viewDate.getMonth();
+
+  $('monthTitle').textContent =
+  monthNames[m] + ' ' + y;
+
+  const days = $('days');
+
+  days.innerHTML = '';
+
+  const first =
+  new Date(y,m,1);
+
+  const offset =
+  (first.getDay()+6)%7;
+
+  const start =
+  new Date(y,m,1-offset);
+
+  const today =
+  new Date()
+  .toISOString()
+  .slice(0,10);
+
+  for(let i=0;i<42;i++){
+
+    const d =
+    new Date(start);
+
+    d.setDate(
+      start.getDate()+i
+    );
+
+    const iso = [
+      d.getFullYear(),
+      String(
+        d.getMonth()+1
+      ).padStart(2,'0'),
+      String(
+        d.getDate()
+      ).padStart(2,'0')
+    ].join('-');
+
+    const cell =
+    document.createElement('div');
+
+    cell.className =
+    'day' +
+    (d.getMonth() !== m
+      ? ' out'
+      : '') +
+    (iso === today
+      ? ' today'
+      : '');
+
+    cell.innerHTML =
+    '<div class="daynum">' +
+    d.getDate() +
+    '</div>';
+
+    const ev =
+    reservations.filter(
+      r =>
+        r.event_date === iso &&
+        active(r)
+    );
+
+    ev.forEach(r => {
+
+      const pill =
+      document.createElement('div');
+
+      pill.className =
+      'event-pill ' +
+      r.status;
+
+      pill.textContent =
+      r.status === 'unavailable'
+        ? 'Bloqué'
+        : (r.full_name || 'Réservation');
+
+      pill.onclick =
+      e => {
+
+        e.stopPropagation();
+        openEdit(r);
+
+      };
+
+      cell.appendChild(pill);
+
+    });
+
+    cell.onclick =
+    () => openNew(iso);
+
+    days.appendChild(cell);
+  }
+}
+
+function renderLists(){
+
+  const pending =
+  reservations
+  .filter(
+    r => r.status === 'pending'
+  )
+  .sort(
+    (a,b) =>
+    a.event_date.localeCompare(
+      b.event_date
+    )
+  );
+
+  $('pendingList').innerHTML =
+  pending.length
+    ? ''
+    : '<div class="empty">Aucune demande en attente.</div>';
+
+  pending.forEach(
+    r =>
+    $('pendingList')
+    .appendChild(
+      cardFor(r)
+    )
+  );
+
+  const today =
+  new Date()
+  .toISOString()
+  .slice(0,10);
+
+  const upcoming =
+  reservations
+  .filter(
+    r =>
+      r.status === 'confirmed' &&
+      r.event_date >= today
+  )
+  .slice(0,8);
+
+  $('upcomingList').innerHTML =
+  upcoming.length
+    ? ''
+    : '<div class="empty">Aucun événement confirmé à venir.</div>';
+
+  upcoming.forEach(
+    r =>
+    $('upcomingList')
+    .appendChild(
+      cardFor(r)
+    )
+  );
+}
+
+function cardFor(r){
+
+  const c =
+  document.createElement('div');
+
+  c.className = 'card';
+
+  const title =
+  r.full_name ||
+  (
+    r.status === 'unavailable'
+      ? 'Blocage manuel'
+      : 'Réservation'
+  );
+
+  c.innerHTML =
+  '<div class="card-top">' +
+  '<div>' +
+  '<h4>' +
+  title +
+  '</h4>' +
+  '<div class="meta">' +
+  fmtDate(r.event_date) +
+  (r.guest_count
+    ? ' · ' + r.guest_count + ' pers.'
+    : '') +
+  (r.city
+    ? ' · ' + r.city
+    : '') +
+  '<br>' +
+  sourceLabel(r.source) +
+  '</div>' +
+  '</div>' +
+  '<span class="badge ' +
+  r.status +
+  '">' +
+  statusLabel(r.status) +
+  '</span>' +
+  '</div>';
+
+  c.onclick =
+  () => openEdit(r);
+
+  return c;
+}
+
+function statusLabel(s){
+
+  return {
+    pending:'En attente',
+    confirmed:'Confirmé',
+    unavailable:'Bloqué',
+    cancelled:'Refusé'
+  }[s] || s;
+
+}
+
+function sourceLabel(s){
+
+  return {
+    site:'Site web',
+    instagram:'Instagram',
+    messenger:'Messenger',
+    telephone:'Téléphone',
+    reference:'Référence',
+    manual:'Ajout manuel',
+    other:'Autre'
+  }[s] || s || '';
+
+}
+
+function openNew(date=''){
+
+  editing = null;
+
+  $('modalTitle').textContent =
+  'Ajouter une date';
+
+  $('eventForm').reset();
+
+  $('eventDate').value = date;
+  $('status').value = 'confirmed';
+  $('source').value = 'manual';
+
+  $('approveBtn')
+  .classList.add('hidden');
+
+  $('refuseBtn')
+  .classList.add('hidden');
+
+  $('formMsg').innerHTML = '';
+
+  $('modalBack')
+  .classList.remove('hidden');
+}
+
+function openEdit(r){
+
+  editing = r;
+
+  $('modalTitle').textContent =
+  (r.full_name || 'Événement') +
+  ' — ' +
+  fmtDate(r.event_date);
+
+  $('eventDate').value =
+  r.event_date;
+
+  $('status').value =
+  r.status;
+
+  $('fullName').value =
+  r.full_name || '';
+
+  $('source').value =
+  r.source || 'site';
+
+  $('email').value =
+  r.email || '';
+
+  $('phone').value =
+  r.phone || '';
+
+  $('guestCount').value =
+  r.guest_count || '';
+
+  $('preferredTime').value =
+  r.preferred_time || '';
+
+  $('city').value =
+  r.city || '';
+
+  $('eventAddress').value =
+  r.event_address || '';
+
+  $('quotedPrice').value =
+  r.quoted_price || '';
+
+  $('depositAmount').value =
+  r.deposit_amount || '';
+
+  $('message').value =
+  r.message || '';
+
+  $('internalNotes').value =
+  r.internal_notes || '';
+
+  $('depositReceived').checked =
+  !!r.deposit_received;
+
+  $('menuSent').checked =
+  !!r.menu_sent;
+
+  $('approveBtn')
+  .classList.toggle(
+    'hidden',
+    r.status !== 'pending'
+  );
+
+  $('refuseBtn')
+  .classList.toggle(
+    'hidden',
+    r.status !== 'pending'
+  );
+
+  $('formMsg').innerHTML = '';
+
+  $('modalBack')
+  .classList.remove('hidden');
+}
+
+function closeModal(){
+
+  $('modalBack')
+  .classList.add('hidden');
+
+  editing = null;
+
+}
+
+$('closeModal').onclick =
+closeModal;
+
+$('modalBack').onclick =
+e => {
+
+  if(
+    e.target === $('modalBack')
+  ){
+    closeModal();
+  }
+
+};
+
+$('addBtn').onclick =
+() => openNew();
+
+function payload(){
+
+  return {
+
+    event_date:
+    $('eventDate').value,
+
+    status:
+    $('status').value,
+
+    block_type:
+    $('status').value === 'unavailable'
+      ? 'unavailable'
+      : (
+          editing?.block_type ||
+          'manual_booked'
+        ),
+
+    full_name:
+    $('fullName').value.trim() ||
+    null,
+
+    email:
+    $('email').value
+    .trim()
+    .toLowerCase() ||
+    null,
+
+    phone:
+    $('phone').value.trim() ||
+    null,
+
+    guest_count:
+    $('guestCount').value
+      ? Number(
+          $('guestCount').value
+        )
+      : null,
+
+    city:
+    $('city').value.trim() ||
+    null,
+
+    preferred_time:
+    $('preferredTime').value ||
+    null,
+
+    message:
+    $('message').value.trim() ||
+    null,
+
+    source:
+    $('source').value,
+
+    event_address:
+    $('eventAddress').value.trim() ||
+    null,
+
+    internal_notes:
+    $('internalNotes').value.trim() ||
+    null,
+
+    quoted_price:
+    $('quotedPrice').value
+      ? Number(
+          $('quotedPrice').value
+        )
+      : null,
+
+    deposit_amount:
+    $('depositAmount').value
+      ? Number(
+          $('depositAmount').value
+        )
+      : null,
+
+    deposit_received:
+    $('depositReceived').checked,
+
+    menu_sent:
+    $('menuSent').checked
+
+  };
+
+}
+
+$('eventForm').onsubmit =
+async e => {
+
+  e.preventDefault();
+
+  const p = payload();
+
+  let res;
+
+  if(editing){
+
+    res =
+    await db
+    .from('reservations')
+    .update(p)
+    .eq('id',editing.id);
+
+  }else{
+
+    res =
+    await db
+    .from('reservations')
+    .insert(p);
+
+  }
+
+  if(res.error){
+
+    msg(
+      res.error.message,
+      false
+    );
+
+    return;
+  }
+
+  msg(
+    'Enregistré.',
+    true
+  );
+
+  await loadData();
+
+  setTimeout(
+    closeModal,
+    400
+  );
+};
+
+$('refuseBtn').onclick =
+async () => {
+
+  if(!editing) return;
+
+  const {error} =
+  await db
+  .from('reservations')
+  .update({
+    status:'cancelled'
+  })
+  .eq(
+    'id',
+    editing.id
+  );
+
+  if(error){
+
+    msg(
+      error.message,
+      false
+    );
+
+    return;
+  }
+
+  msg(
+    'Demande refusée. La date est maintenant disponible.',
+    true
+  );
+
+  await loadData();
+
+  setTimeout(
+    closeModal,
+    600
+  );
+};
+
+$('approveBtn').onclick =
+async () => {
+
+  if(!editing) return;
+
+  const save =
+  payload();
+
+  save.status =
+  'confirmed';
+
+  const {error} =
+  await db
+  .from('reservations')
+  .update(save)
+  .eq(
+    'id',
+    editing.id
+  );
+
+  if(error){
+
+    msg(
+      error.message,
+      false
+    );
+
+    return;
+  }
+
+  let emailText =
+  'Événement confirmé.';
+
+  if(save.email){
+
+    const {
+      error:mailError
+    } =
+    await db.functions.invoke(
+      'send-confirmation',
+      {
+        body:{
+          reservation_id:
+          editing.id
+        }
+      }
+    );
+
+    emailText =
+    mailError
+      ? 'Événement confirmé. Le courriel automatique reste à connecter.'
+      : 'Événement confirmé et courriel envoyé.';
+
+  }
+
+  msg(
+    emailText,
+    true
+  );
+
+  await loadData();
+
+  setTimeout(
+    closeModal,
+    900
+  );
+};
+
+function msg(t,ok){
+
+  $('formMsg').innerHTML =
+  '<div class="' +
+  (ok ? 'success' : 'error') +
+  '">' +
+  t +
+  '</div>';
+
+}
+
+$('prevMonth').onclick =
+() => {
+
+  viewDate.setMonth(
+    viewDate.getMonth()-1
+  );
+
+  renderAll();
+
+};
+
+$('nextMonth').onclick =
+() => {
+
+  viewDate.setMonth(
+    viewDate.getMonth()+1
+  );
+
+  renderAll();
+
+};
+
+$('todayBtn').onclick =
+() => {
+
+  viewDate = new Date();
+  viewDate.setDate(1);
+
+  renderAll();
+
+};
+
+db.auth.onAuthStateChange(
+  () => sessionGate()
+);
+
+sessionGate();
+
+</script>
+
+</body>
+</html>
