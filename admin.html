@@ -10,6 +10,7 @@
   --cream:#F6F0E7;
   --cream2:#FBF8F3;
   --wine:#5B1F2A;
+  --wine2:#7A2D3C;
   --ink:#2B2524;
   --muted:#8A7D77;
   --line:rgba(91,31,42,.16);
@@ -271,8 +272,6 @@ body{
   padding:12px 0;
 }
 
-/* CONNEXION */
-
 .login-wrap{
   min-height:90vh;
   display:grid;
@@ -335,8 +334,6 @@ body{
   color:var(--muted);
   line-height:1.5;
 }
-
-/* MODAL */
 
 .modal-back{
   position:fixed;
@@ -477,12 +474,8 @@ body{
 
 <body>
 
-<!-- CONNEXION -->
-
 <div id="loginWrap" class="login-wrap">
-
   <div class="login">
-
     <h1>Rafa Pizza</h1>
 
     <p>
@@ -490,7 +483,7 @@ body{
     </p>
 
     <div class="login-email">
-      lapizzaderafa@gmail.com
+      raphael.frenette@gmail.com
     </div>
 
     <input
@@ -511,20 +504,12 @@ body{
       id="forgotBtn"
       class="btn secondary"
     >
-      Créer / réinitialiser mon mot de passe
+      Réinitialiser mon mot de passe
     </button>
 
-    <div
-      id="loginMsg"
-      class="notice"
-    ></div>
-
+    <div id="loginMsg" class="notice"></div>
   </div>
-
 </div>
-
-
-<!-- APPLICATION -->
 
 <div id="app" class="app hidden">
 
@@ -532,29 +517,20 @@ body{
 
     <div class="brand">
       <h1>Rafa · Réservations</h1>
-      <p>
-        Un seul endroit pour toutes tes dates et tes clients.
-      </p>
+      <p>Un seul endroit pour toutes tes dates et tes clients.</p>
     </div>
 
     <div>
-      <button
-        id="addBtn"
-        class="btn primary"
-      >
+      <button id="addBtn" class="btn primary">
         + Ajouter
       </button>
 
-      <button
-        id="logoutBtn"
-        class="btn secondary"
-      >
+      <button id="logoutBtn" class="btn secondary">
         Déconnexion
       </button>
     </div>
 
   </div>
-
 
   <div class="stats">
 
@@ -575,46 +551,25 @@ body{
 
   </div>
 
-
   <div class="grid">
 
     <section class="panel">
 
       <div class="panel-head">
-
         <h2>Calendrier</h2>
 
-        <button
-          id="todayBtn"
-          class="btn secondary small"
-        >
+        <button id="todayBtn" class="btn secondary small">
           Aujourd’hui
         </button>
-
       </div>
 
       <div class="panel-body">
 
         <div class="calendar-head">
-
-          <button
-            id="prevMonth"
-            class="navbtn"
-          >
-            ‹
-          </button>
-
+          <button id="prevMonth" class="navbtn">‹</button>
           <h3 id="monthTitle"></h3>
-
-          <button
-            id="nextMonth"
-            class="navbtn"
-          >
-            ›
-          </button>
-
+          <button id="nextMonth" class="navbtn">›</button>
         </div>
-
 
         <div class="week">
           <div>Lun</div>
@@ -626,230 +581,129 @@ body{
           <div>Dim</div>
         </div>
 
-        <div
-          id="days"
-          class="days"
-        ></div>
-
+        <div id="days" class="days"></div>
 
         <div class="legend">
-
           <span>
-            <span
-              class="dot"
-              style="background:#D9942B"
-            ></span>
+            <span class="dot" style="background:#D9942B"></span>
             En attente
           </span>
 
           <span>
-            <span
-              class="dot"
-              style="background:#447A54"
-            ></span>
+            <span class="dot" style="background:#447A54"></span>
             Confirmé
           </span>
 
           <span>
-            <span
-              class="dot"
-              style="background:#4B4B4B"
-            ></span>
+            <span class="dot" style="background:#4B4B4B"></span>
             Bloqué
           </span>
-
         </div>
 
       </div>
-
     </section>
-
 
     <div>
 
       <section class="panel">
-
         <div class="panel-head">
           <h2>À traiter</h2>
         </div>
 
         <div class="panel-body">
-          <div
-            id="pendingList"
-            class="list"
-          ></div>
+          <div id="pendingList" class="list"></div>
         </div>
-
       </section>
 
-      <br>
-
-      <section class="panel">
-
+      <section class="panel" style="margin-top:18px">
         <div class="panel-head">
-          <h2>Prochains événements</h2>
+          <h2>À venir</h2>
         </div>
 
         <div class="panel-body">
-          <div
-            id="upcomingList"
-            class="list"
-          ></div>
+          <div id="upcomingList" class="list"></div>
         </div>
-
       </section>
 
     </div>
 
   </div>
-
 </div>
 
-
-<!-- FICHE ÉVÉNEMENT -->
-
-<div
-  id="modalBack"
-  class="modal-back hidden"
->
+<div id="modalBack" class="modal-back hidden">
 
   <div class="modal">
 
     <div class="modal-head">
-
-      <h2 id="modalTitle">
-        Événement
-      </h2>
-
-      <button
-        id="closeModal"
-        class="x"
-      >
-        ×
-      </button>
-
+      <h2 id="modalTitle">Réservation</h2>
+      <button id="closeModal" class="x">×</button>
     </div>
 
-
-    <form
-      id="eventForm"
-      class="form"
-    >
+    <form id="reservationForm" class="form">
 
       <div class="form-grid">
 
         <div class="field">
-          <label>Date *</label>
-          <input
-            id="eventDate"
-            type="date"
-            required
-          >
+          <label>Date</label>
+          <input id="eventDate" type="date" required>
         </div>
 
         <div class="field">
-
           <label>Statut</label>
-
           <select id="status">
-            <option value="pending">
-              En attente
-            </option>
-            <option value="confirmed">
-              Confirmé
-            </option>
-            <option value="unavailable">
-              Bloqué / indisponible
-            </option>
-            <option value="cancelled">
-              Refusé / annulé
-            </option>
+            <option value="pending">En attente</option>
+            <option value="confirmed">Confirmé</option>
+            <option value="unavailable">Bloqué</option>
+            <option value="cancelled">Refusé / annulé</option>
           </select>
-
         </div>
 
-
         <div class="field">
-          <label>Nom</label>
-          <input
-            id="fullName"
-            type="text"
-          >
+          <label>Nom du client</label>
+          <input id="fullName">
         </div>
 
-
         <div class="field">
-
           <label>Source</label>
-
           <select id="source">
             <option value="site">Site web</option>
             <option value="instagram">Instagram</option>
-            <option value="messenger">Messenger</option>
-            <option value="telephone">Téléphone</option>
-            <option value="reference">Référence</option>
-            <option value="manual">Ajout manuel</option>
+            <option value="facebook">Facebook</option>
+            <option value="phone">Téléphone</option>
+            <option value="manual">Manuel</option>
             <option value="other">Autre</option>
           </select>
-
         </div>
-
 
         <div class="field">
           <label>Courriel</label>
-          <input
-            id="email"
-            type="email"
-          >
+          <input id="email" type="email">
         </div>
-
 
         <div class="field">
           <label>Téléphone</label>
-          <input
-            id="phone"
-            type="tel"
-          >
+          <input id="phone">
         </div>
-
 
         <div class="field">
-          <label>Nombre de personnes</label>
-          <input
-            id="guestCount"
-            type="number"
-            min="1"
-            max="500"
-          >
+          <label>Nombre d’invités</label>
+          <input id="guestCount" type="number" min="0">
         </div>
-
 
         <div class="field">
-          <label>Heure</label>
-          <input
-            id="preferredTime"
-            type="time"
-          >
+          <label>Heure souhaitée</label>
+          <input id="preferredTime">
         </div>
-
 
         <div class="field">
-          <label>Ville / secteur</label>
-          <input
-            id="city"
-            type="text"
-          >
+          <label>Ville</label>
+          <input id="city">
         </div>
-
 
         <div class="field">
-          <label>Adresse</label>
-          <input
-            id="eventAddress"
-            type="text"
-          >
+          <label>Adresse de l’événement</label>
+          <input id="eventAddress">
         </div>
-
 
         <div class="field">
           <label>Prix prévu ($)</label>
@@ -861,7 +715,6 @@ body{
           >
         </div>
 
-
         <div class="field">
           <label>Dépôt ($)</label>
           <input
@@ -872,77 +725,45 @@ body{
           >
         </div>
 
-
         <div class="field full">
-
-          <label>
-            Message / préférences du client
-          </label>
-
+          <label>Message / préférences du client</label>
           <textarea id="message"></textarea>
-
         </div>
 
-
         <div class="field full">
-
-          <label>
-            Notes internes
-          </label>
-
+          <label>Notes internes</label>
           <textarea id="internalNotes"></textarea>
-
         </div>
 
       </div>
 
-
       <div class="checks">
 
         <label>
-          <input
-            id="depositReceived"
-            type="checkbox"
-          >
+          <input id="depositReceived" type="checkbox">
           Dépôt reçu
         </label>
 
         <label>
-          <input
-            id="menuSent"
-            type="checkbox"
-          >
+          <input id="menuSent" type="checkbox">
           Menu envoyé
         </label>
 
       </div>
 
-
       <div id="formMsg"></div>
-
 
       <div class="actions">
 
-        <button
-          class="btn primary"
-          type="submit"
-        >
+        <button class="btn primary" type="submit">
           Enregistrer
         </button>
 
-        <button
-          id="approveBtn"
-          class="btn ok"
-          type="button"
-        >
+        <button id="approveBtn" class="btn ok" type="button">
           Accepter + courriel
         </button>
 
-        <button
-          id="refuseBtn"
-          class="btn danger"
-          type="button"
-        >
+        <button id="refuseBtn" class="btn danger" type="button">
           Refuser
         </button>
 
@@ -951,9 +772,7 @@ body{
     </form>
 
   </div>
-
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -966,11 +785,10 @@ const SUPABASE_KEY =
 'sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja';
 
 const ADMIN_EMAIL =
-'lapizzaderafa@gmail.com';
+'raphael.frenette@gmail.com';
 
 const ADMIN_URL =
 'https://lapizzaderafa.github.io/Calendrier-Rafa/admin.html';
-
 
 const db =
 supabase.createClient(
@@ -978,17 +796,14 @@ supabase.createClient(
   SUPABASE_KEY
 );
 
-
 const $ = id =>
 document.getElementById(id);
-
 
 let reservations = [];
 let editing = null;
 
 let viewDate = new Date();
 viewDate.setDate(1);
-
 
 const monthNames = [
   'Janvier',
@@ -1004,11 +819,6 @@ const monthNames = [
   'Novembre',
   'Décembre'
 ];
-
-
-/* =========================
-   CONNEXION
-========================= */
 
 async function sessionGate(){
 
@@ -1044,7 +854,6 @@ async function sessionGate(){
 
 }
 
-
 $('loginBtn').onclick =
 async () => {
 
@@ -1073,7 +882,7 @@ async () => {
   if(error){
 
     $('loginMsg').textContent =
-    'Mot de passe incorrect ou non configuré.';
+    'Mot de passe incorrect.';
 
     return;
   }
@@ -1084,7 +893,6 @@ async () => {
   await sessionGate();
 
 };
-
 
 $('password')
 .addEventListener(
@@ -1097,7 +905,6 @@ $('password')
 
   }
 );
-
 
 $('forgotBtn').onclick =
 async () => {
@@ -1116,10 +923,9 @@ async () => {
   $('loginMsg').textContent =
   error
     ? error.message
-    : 'Courriel envoyé. Ouvre le lien pour choisir ton nouveau mot de passe.';
+    : 'Courriel envoyé.';
 
 };
-
 
 $('logoutBtn').onclick =
 async () => {
@@ -1131,94 +937,12 @@ async () => {
 
 };
 
-
-/* =========================
-   RÉCUPÉRATION MOT DE PASSE
-========================= */
-
-let recoveryHandled = false;
-
-db.auth.onAuthStateChange(
-  async (event,session) => {
-
-    if(
-      event === 'PASSWORD_RECOVERY' &&
-      !recoveryHandled
-    ){
-
-      recoveryHandled = true;
-
-      const newPassword =
-      prompt(
-        'Choisis ton nouveau mot de passe Rafa (minimum 8 caractères) :'
-      );
-
-      if(!newPassword){
-
-        alert(
-          'Aucun mot de passe enregistré.'
-        );
-
-        return;
-      }
-
-      if(newPassword.length < 8){
-
-        alert(
-          'Ton mot de passe doit contenir au moins 8 caractères.'
-        );
-
-        recoveryHandled = false;
-
-        return;
-      }
-
-      const {error} =
-      await db.auth.updateUser({
-        password:newPassword
-      });
-
-      if(error){
-
-        alert(
-          'Erreur : ' +
-          error.message
-        );
-
-        recoveryHandled = false;
-
-        return;
-      }
-
-      alert(
-        'Mot de passe enregistré ✅'
-      );
-
-      history.replaceState(
-        {},
-        document.title,
-        ADMIN_URL
-      );
-
-      await sessionGate();
-
-    }
-
-  }
-);
-
-
-/* =========================
-   DONNÉES
-========================= */
-
 const active = r =>
 [
   'pending',
   'confirmed',
   'unavailable'
 ].includes(r.status);
-
 
 function fmtDate(d){
 
@@ -1237,7 +961,6 @@ function fmtDate(d){
   );
 
 }
-
 
 async function loadData(){
 
@@ -1267,7 +990,6 @@ async function loadData(){
 
 }
 
-
 function renderAll(){
 
   renderStats();
@@ -1276,11 +998,6 @@ function renderAll(){
 
 }
 
-
-/* =========================
-   STATISTIQUES
-========================= */
-
 function renderStats(){
 
   const today =
@@ -1288,13 +1005,11 @@ function renderStats(){
     .toISOString()
     .slice(0,10);
 
-
   $('pendingStat').textContent =
   reservations.filter(
     r =>
     r.status === 'pending'
   ).length;
-
 
   $('confirmedStat').textContent =
   reservations.filter(
@@ -1303,13 +1018,11 @@ function renderStats(){
     r.event_date >= today
   ).length;
 
-
   const y =
   viewDate.getFullYear();
 
   const m =
   viewDate.getMonth()+1;
-
 
   $('monthStat').textContent =
   reservations.filter(
@@ -1325,63 +1038,42 @@ function renderStats(){
 
 }
 
-
-/* =========================
-   CALENDRIER
-========================= */
-
 function renderCalendar(){
 
-  const y =
+  const year =
   viewDate.getFullYear();
 
-  const m =
+  const month =
   viewDate.getMonth();
 
-
   $('monthTitle').textContent =
-  monthNames[m] +
-  ' ' +
-  y;
-
-
-  const days =
-  $('days');
-
-  days.innerHTML = '';
-
+  `${monthNames[month]} ${year}`;
 
   const first =
-  new Date(
-    y,
-    m,
-    1
-  );
+  new Date(year,month,1);
 
+  const last =
+  new Date(year,month+1,0);
 
-  const offset =
+  let start =
+  new Date(first);
+
+  const mondayIndex =
   (first.getDay()+6)%7;
 
-
-  const start =
-  new Date(
-    y,
-    m,
-    1-offset
+  start.setDate(
+    first.getDate() -
+    mondayIndex
   );
 
+  $('days').innerHTML = '';
 
   const today =
   new Date()
     .toISOString()
     .slice(0,10);
 
-
-  for(
-    let i=0;
-    i<42;
-    i++
-  ){
+  for(let i=0;i<42;i++){
 
     const d =
     new Date(start);
@@ -1390,8 +1082,8 @@ function renderCalendar(){
       start.getDate()+i
     );
 
-
-    const iso = [
+    const iso =
+    [
       d.getFullYear(),
       String(
         d.getMonth()+1
@@ -1401,287 +1093,202 @@ function renderCalendar(){
       ).padStart(2,'0')
     ].join('-');
 
-
     const cell =
-    document.createElement(
-      'div'
-    );
-
+    document.createElement('div');
 
     cell.className =
-    'day' +
-    (
-      d.getMonth() !== m
-        ? ' out'
-        : ''
-    ) +
-    (
-      iso === today
-        ? ' today'
-        : ''
-    );
+    'day';
 
+    if(
+      d.getMonth() !== month
+    ){
+      cell.classList.add('out');
+    }
+
+    if(iso === today){
+      cell.classList.add('today');
+    }
 
     cell.innerHTML =
-    '<div class="daynum">' +
-    d.getDate() +
-    '</div>';
+    `<div class="daynum">${d.getDate()}</div>`;
 
-
-    const events =
+    const dayEvents =
     reservations.filter(
       r =>
       r.event_date === iso &&
       active(r)
     );
 
-
-    events.forEach(
+    dayEvents.forEach(
       r => {
 
         const pill =
-        document.createElement(
-          'div'
-        );
+        document.createElement('div');
 
         pill.className =
-        'event-pill ' +
-        r.status;
-
+        `event-pill ${r.status}`;
 
         pill.textContent =
-        r.status ===
-        'unavailable'
+        r.full_name ||
+        (
+          r.status === 'unavailable'
           ? 'Bloqué'
-          : (
-              r.full_name ||
-              'Réservation'
-            );
-
+          : 'Événement'
+        );
 
         pill.onclick =
         e => {
-
           e.stopPropagation();
-
-          openEdit(r);
-
+          openReservation(r);
         };
 
-
-        cell.appendChild(
-          pill
-        );
+        cell.appendChild(pill);
 
       }
     );
 
-
     cell.onclick =
-    () =>
-    openNew(iso);
+    () => openNew(iso);
 
-
-    days.appendChild(
-      cell
-    );
+    $('days').appendChild(cell);
 
   }
 
 }
 
-
-/* =========================
-   LISTES
-========================= */
-
 function renderLists(){
-
-  const pending =
-  reservations
-    .filter(
-      r =>
-      r.status === 'pending'
-    )
-    .sort(
-      (a,b) =>
-      a.event_date.localeCompare(
-        b.event_date
-      )
-    );
-
-
-  $('pendingList').innerHTML =
-  pending.length
-    ? ''
-    : '<div class="empty">Aucune demande en attente.</div>';
-
-
-  pending.forEach(
-    r =>
-    $('pendingList')
-      .appendChild(
-        cardFor(r)
-      )
-  );
-
 
   const today =
   new Date()
     .toISOString()
     .slice(0,10);
 
+  const pending =
+  reservations.filter(
+    r =>
+    r.status === 'pending'
+  );
 
   const upcoming =
-  reservations
-    .filter(
-      r =>
-      r.status === 'confirmed' &&
-      r.event_date >= today
-    )
-    .slice(0,8);
+  reservations.filter(
+    r =>
+    r.event_date >= today &&
+    [
+      'confirmed',
+      'unavailable'
+    ].includes(r.status)
+  );
 
+  $('pendingList').innerHTML =
+  pending.length
+  ? ''
+  : '<div class="empty">Aucune demande en attente.</div>';
+
+  pending.forEach(
+    r =>
+    $('pendingList')
+      .appendChild(
+        reservationCard(r)
+      )
+  );
 
   $('upcomingList').innerHTML =
   upcoming.length
-    ? ''
-    : '<div class="empty">Aucun événement confirmé à venir.</div>';
-
+  ? ''
+  : '<div class="empty">Aucun événement à venir.</div>';
 
   upcoming.forEach(
     r =>
     $('upcomingList')
       .appendChild(
-        cardFor(r)
+        reservationCard(r)
       )
   );
 
 }
 
+function reservationCard(r){
 
-function cardFor(r){
+  const div =
+  document.createElement('div');
 
-  const c =
-  document.createElement(
-    'div'
-  );
-
-  c.className =
+  div.className =
   'card';
-
 
   const title =
   r.full_name ||
   (
-    r.status ===
-    'unavailable'
-      ? 'Blocage manuel'
-      : 'Réservation'
+    r.status === 'unavailable'
+    ? 'Date bloquée'
+    : 'Événement'
   );
 
+  const guestText =
+  r.guest_count
+  ? ` · ${r.guest_count} pers.`
+  : '';
 
-  c.innerHTML =
-  '<div class="card-top">' +
+  const cityText =
+  r.city
+  ? ` · ${r.city}`
+  : '';
 
-    '<div>' +
+  div.innerHTML =
+  `
+    <div class="card-top">
 
-      '<h4>' +
-      title +
-      '</h4>' +
+      <div>
+        <h4>${title}</h4>
 
-      '<div class="meta">' +
+        <div class="meta">
+          ${fmtDate(r.event_date)}
+          ${guestText}
+          ${cityText}
+        </div>
+      </div>
 
-        fmtDate(
-          r.event_date
-        ) +
+      <span class="badge ${r.status}">
+        ${
+          r.status === 'pending'
+          ? 'Attente'
+          : r.status === 'confirmed'
+          ? 'Confirmé'
+          : 'Bloqué'
+        }
+      </span>
 
-        (
-          r.guest_count
-            ? ' · ' +
-              r.guest_count +
-              ' pers.'
-            : ''
-        ) +
+    </div>
+  `;
 
-        (
-          r.city
-            ? ' · ' +
-              r.city
-            : ''
-        ) +
+  div.onclick =
+  () => openReservation(r);
 
-        '<br>' +
-
-        sourceLabel(
-          r.source
-        ) +
-
-      '</div>' +
-
-    '</div>' +
-
-    '<span class="badge ' +
-    r.status +
-    '">' +
-
-      statusLabel(
-        r.status
-      ) +
-
-    '</span>' +
-
-  '</div>';
-
-
-  c.onclick =
-  () =>
-  openEdit(r);
-
-
-  return c;
+  return div;
 
 }
 
+function clearForm(){
 
-function statusLabel(s){
+  $('reservationForm').reset();
 
-  return {
-    pending:'En attente',
-    confirmed:'Confirmé',
-    unavailable:'Bloqué',
-    cancelled:'Refusé'
-  }[s] || s;
-
-}
-
-
-function sourceLabel(s){
-
-  return {
-    site:'Site web',
-    instagram:'Instagram',
-    messenger:'Messenger',
-    telephone:'Téléphone',
-    reference:'Référence',
-    manual:'Ajout manuel',
-    other:'Autre'
-  }[s] || s || '';
-
-}
-
-
-/* =========================
-   AJOUT / MODIFICATION
-========================= */
-
-function openNew(date=''){
+  $('formMsg').innerHTML = '';
 
   editing = null;
 
-  $('modalTitle').textContent =
-  'Ajouter une date';
+  $('approveBtn')
+    .classList.add('hidden');
 
-  $('eventForm').reset();
+  $('refuseBtn')
+    .classList.add('hidden');
+
+}
+
+function openNew(date=''){
+
+  clearForm();
+
+  $('modalTitle').textContent =
+  'Ajouter un événement';
 
   $('eventDate').value =
   date;
@@ -1692,57 +1299,32 @@ function openNew(date=''){
   $('source').value =
   'manual';
 
-
-  $('approveBtn')
-    .classList.add(
-      'hidden'
-    );
-
-  $('refuseBtn')
-    .classList.add(
-      'hidden'
-    );
-
-
-  $('formMsg').innerHTML =
-  '';
-
-
   $('modalBack')
-    .classList.remove(
-      'hidden'
-    );
+    .classList.remove('hidden');
 
 }
 
+function openReservation(r){
 
-function openEdit(r){
+  clearForm();
 
   editing = r;
 
-
   $('modalTitle').textContent =
-  (
-    r.full_name ||
-    'Événement'
-  ) +
-  ' — ' +
-  fmtDate(
-    r.event_date
-  );
-
+  r.full_name ||
+  'Réservation';
 
   $('eventDate').value =
-  r.event_date;
+  r.event_date || '';
 
   $('status').value =
-  r.status;
-
-  $('fullName').value =
-  r.full_name || '';
+  r.status || 'pending';
 
   $('source').value =
   r.source || 'site';
+
+  $('fullName').value =
+  r.full_name || '';
 
   $('email').value =
   r.email || '';
@@ -1780,47 +1362,25 @@ function openEdit(r){
   $('menuSent').checked =
   !!r.menu_sent;
 
+  if(r.status === 'pending'){
 
-  $('approveBtn')
-    .classList.toggle(
-      'hidden',
-      r.status !== 'pending'
-    );
+    $('approveBtn')
+      .classList.remove('hidden');
 
-  $('refuseBtn')
-    .classList.toggle(
-      'hidden',
-      r.status !== 'pending'
-    );
+    $('refuseBtn')
+      .classList.remove('hidden');
 
-
-  $('formMsg').innerHTML =
-  '';
-
+  }
 
   $('modalBack')
-    .classList.remove(
-      'hidden'
-    );
+    .classList.remove('hidden');
 
 }
-
-
-function closeModal(){
-
-  $('modalBack')
-    .classList.add(
-      'hidden'
-    );
-
-  editing = null;
-
-}
-
 
 $('closeModal').onclick =
-closeModal;
-
+() =>
+$('modalBack')
+  .classList.add('hidden');
 
 $('modalBack').onclick =
 e => {
@@ -1829,368 +1389,14 @@ e => {
     e.target ===
     $('modalBack')
   ){
-
-    closeModal();
-
+    $('modalBack')
+      .classList.add('hidden');
   }
 
 };
-
 
 $('addBtn').onclick =
-() =>
-openNew();
-
-
-function payload(){
-
-  return {
-
-    event_date:
-    $('eventDate').value,
-
-    status:
-    $('status').value,
-
-    block_type:
-    $('status').value ===
-    'unavailable'
-      ? 'unavailable'
-      : (
-          editing?.block_type ||
-          'manual_booked'
-        ),
-
-    full_name:
-    $('fullName')
-      .value
-      .trim() ||
-    null,
-
-    email:
-    $('email')
-      .value
-      .trim()
-      .toLowerCase() ||
-    null,
-
-    phone:
-    $('phone')
-      .value
-      .trim() ||
-    null,
-
-    guest_count:
-    $('guestCount').value
-      ? Number(
-          $('guestCount').value
-        )
-      : null,
-
-    city:
-    $('city')
-      .value
-      .trim() ||
-    null,
-
-    preferred_time:
-    $('preferredTime').value ||
-    null,
-
-    message:
-    $('message')
-      .value
-      .trim() ||
-    null,
-
-    source:
-    $('source').value,
-
-    event_address:
-    $('eventAddress')
-      .value
-      .trim() ||
-    null,
-
-    internal_notes:
-    $('internalNotes')
-      .value
-      .trim() ||
-    null,
-
-    quoted_price:
-    $('quotedPrice').value
-      ? Number(
-          $('quotedPrice').value
-        )
-      : null,
-
-    deposit_amount:
-    $('depositAmount').value
-      ? Number(
-          $('depositAmount').value
-        )
-      : null,
-
-    deposit_received:
-    $('depositReceived').checked,
-
-    menu_sent:
-    $('menuSent').checked
-
-  };
-
-}
-
-
-/* =========================
-   ENREGISTRER
-========================= */
-
-$('eventForm').onsubmit =
-async e => {
-
-  e.preventDefault();
-
-  const p =
-  payload();
-
-  let res;
-
-
-  if(editing){
-
-    res =
-    await db
-      .from('reservations')
-      .update(p)
-      .eq(
-        'id',
-        editing.id
-      );
-
-  }else{
-
-    res =
-    await db
-      .from('reservations')
-      .insert(p);
-
-  }
-
-
-  if(res.error){
-
-    msg(
-      res.error.message,
-      false
-    );
-
-    return;
-  }
-
-
-  msg(
-    'Enregistré.',
-    true
-  );
-
-
-  await loadData();
-
-
-  setTimeout(
-    closeModal,
-    500
-  );
-
-};
-
-
-/* =========================
-   REFUSER
-========================= */
-
-$('refuseBtn').onclick =
-async () => {
-
-  if(!editing){
-    return;
-  }
-
-
-  const {error} =
-  await db
-    .from('reservations')
-    .update({
-      status:'cancelled'
-    })
-    .eq(
-      'id',
-      editing.id
-    );
-
-
-  if(error){
-
-    msg(
-      error.message,
-      false
-    );
-
-    return;
-  }
-
-
-  msg(
-    'Demande refusée. La date est maintenant disponible.',
-    true
-  );
-
-
-  await loadData();
-
-
-  setTimeout(
-    closeModal,
-    700
-  );
-
-};
-
-
-/* =========================
-   ACCEPTER
-========================= */
-
-$('approveBtn').onclick =
-async () => {
-
-  if(!editing){
-    return;
-  }
-
-
-  const save =
-  payload();
-
-  save.status =
-  'confirmed';
-
-
-  const {error} =
-  await db
-    .from('reservations')
-    .update(save)
-    .eq(
-      'id',
-      editing.id
-    );
-
-
-  if(error){
-
-    msg(
-      error.message,
-      false
-    );
-
-    return;
-  }
-
-
-  let emailText =
-  'Événement confirmé.';
-
-
-  if(save.email){
-
-    const {
-      error:mailError
-    } =
-    await db.functions.invoke(
-      'send-confirmation',
-      {
-        body:{
-          reservation_id:
-          editing.id
-        }
-      }
-    );
-
-
-    emailText =
-    mailError
-      ? 'Événement confirmé. Le courriel automatique reste à connecter.'
-      : 'Événement confirmé et courriel envoyé.';
-
-  }
-
-
-  msg(
-    emailText,
-    true
-  );
-
-
-  await loadData();
-
-
-  setTimeout(
-    closeModal,
-    1000
-  );
-
-};
-
-
-/* =========================
-   MESSAGE
-========================= */
-
-function msg(text,ok){
-
-  $('formMsg').innerHTML =
-  '<div class="' +
-  (
-    ok
-      ? 'success'
-      : 'error'
-  ) +
-  '">' +
-  text +
-  '</div>';
-
-}
-
-
-/* =========================
-   NAVIGATION CALENDRIER
-========================= */
-
-$('prevMonth').onclick =
-() => {
-
-  viewDate.setMonth(
-    viewDate.getMonth()-1
-  );
-
-  renderAll();
-
-};
-
-
-$('nextMonth').onclick =
-() => {
-
-  viewDate.setMonth(
-    viewDate.getMonth()+1
-  );
-
-  renderAll();
-
-};
-
+() => openNew();
 
 $('todayBtn').onclick =
 () => {
@@ -2204,10 +1410,238 @@ $('todayBtn').onclick =
 
 };
 
+$('prevMonth').onclick =
+() => {
 
-/* =========================
-   DÉMARRAGE
-========================= */
+  viewDate.setMonth(
+    viewDate.getMonth()-1
+  );
+
+  renderAll();
+
+};
+
+$('nextMonth').onclick =
+() => {
+
+  viewDate.setMonth(
+    viewDate.getMonth()+1
+  );
+
+  renderAll();
+
+};
+
+$('reservationForm').onsubmit =
+async e => {
+
+  e.preventDefault();
+
+  const payload = {
+
+    event_date:
+    $('eventDate').value,
+
+    status:
+    $('status').value,
+
+    block_type:
+    $('status').value === 'unavailable'
+    ? 'unavailable'
+    : $('source').value === 'manual'
+      ? 'manual_booked'
+      : 'reservation',
+
+    source:
+    $('source').value,
+
+    full_name:
+    $('fullName').value.trim() || null,
+
+    email:
+    $('email').value.trim() || null,
+
+    phone:
+    $('phone').value.trim() || null,
+
+    guest_count:
+    $('guestCount').value
+    ? Number($('guestCount').value)
+    : null,
+
+    preferred_time:
+    $('preferredTime').value.trim() || null,
+
+    city:
+    $('city').value.trim() || null,
+
+    event_address:
+    $('eventAddress').value.trim() || null,
+
+    quoted_price:
+    $('quotedPrice').value
+    ? Number($('quotedPrice').value)
+    : null,
+
+    deposit_amount:
+    $('depositAmount').value
+    ? Number($('depositAmount').value)
+    : null,
+
+    message:
+    $('message').value.trim() || null,
+
+    internal_notes:
+    $('internalNotes').value.trim() || null,
+
+    deposit_received:
+    $('depositReceived').checked,
+
+    menu_sent:
+    $('menuSent').checked
+
+  };
+
+  let response;
+
+  if(editing){
+
+    response =
+    await db
+      .from('reservations')
+      .update(payload)
+      .eq(
+        'id',
+        editing.id
+      );
+
+  }else{
+
+    response =
+    await db
+      .from('reservations')
+      .insert(payload);
+
+  }
+
+  if(response.error){
+
+    $('formMsg').innerHTML =
+    `<div class="error">${response.error.message}</div>`;
+
+    return;
+
+  }
+
+  $('formMsg').innerHTML =
+  `<div class="success">Enregistré ✅</div>`;
+
+  await loadData();
+
+  setTimeout(
+    () =>
+    $('modalBack')
+      .classList.add('hidden'),
+    500
+  );
+
+};
+
+$('approveBtn').onclick =
+async () => {
+
+  if(!editing) return;
+
+  $('formMsg').innerHTML =
+  '<div class="success">Confirmation en cours…</div>';
+
+  const {error:updateError} =
+  await db
+    .from('reservations')
+    .update({
+      status:'confirmed'
+    })
+    .eq(
+      'id',
+      editing.id
+    );
+
+  if(updateError){
+
+    $('formMsg').innerHTML =
+    `<div class="error">${updateError.message}</div>`;
+
+    return;
+  }
+
+  const {error:mailError} =
+  await db.functions.invoke(
+    'send-confirmation',
+    {
+      body:{
+        reservation_id:
+        editing.id
+      }
+    }
+  );
+
+  await loadData();
+
+  if(mailError){
+
+    $('formMsg').innerHTML =
+    `<div class="error">
+      Événement confirmé ✅<br>
+      Le courriel automatique n’a pas pu être envoyé pour le moment.
+    </div>`;
+
+    return;
+  }
+
+  $('formMsg').innerHTML =
+  `<div class="success">
+    Événement confirmé et courriel envoyé ✅
+  </div>`;
+
+};
+
+$('refuseBtn').onclick =
+async () => {
+
+  if(!editing) return;
+
+  const ok =
+  confirm(
+    'Refuser cette demande et libérer la date?'
+  );
+
+  if(!ok) return;
+
+  const {error} =
+  await db
+    .from('reservations')
+    .update({
+      status:'cancelled'
+    })
+    .eq(
+      'id',
+      editing.id
+    );
+
+  if(error){
+
+    $('formMsg').innerHTML =
+    `<div class="error">${error.message}</div>`;
+
+    return;
+  }
+
+  await loadData();
+
+  $('modalBack')
+    .classList.add('hidden');
+
+};
 
 sessionGate();
 
