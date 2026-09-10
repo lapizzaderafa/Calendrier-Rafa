@@ -176,7 +176,6 @@ body{
   background:#fff;
   padding:7px;
   cursor:pointer;
-  position:relative;
 }
 
 .day.out{opacity:.34}
@@ -260,17 +259,99 @@ body{
   color:white;
   font-weight:900;
   text-transform:uppercase;
+  white-space:nowrap;
 }
 
 .badge.pending{background:var(--pending)}
 .badge.confirmed{background:var(--ok)}
 .badge.unavailable{background:var(--blocked)}
+.badge.cancelled{background:#aaa}
 
 .empty{
   font-size:12px;
   color:var(--muted);
   padding:12px 0;
 }
+
+/* TABLEAU TOUS LES ÉVÉNEMENTS */
+
+.all-events{
+  margin-top:18px;
+}
+
+.events-tools{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.events-tools input,
+.events-tools select{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  padding:10px 12px;
+  font-size:13px;
+}
+
+.events-tools input{
+  min-width:220px;
+}
+
+.table-wrap{
+  width:100%;
+  overflow:auto;
+}
+
+.events-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:850px;
+}
+
+.events-table th{
+  text-align:left;
+  font-size:10px;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding:10px 9px;
+  border-bottom:1px solid var(--line);
+}
+
+.events-table td{
+  padding:12px 9px;
+  border-bottom:1px solid var(--line);
+  font-size:12px;
+  vertical-align:middle;
+}
+
+.events-table tr{
+  cursor:pointer;
+}
+
+.events-table tbody tr:hover{
+  background:rgba(91,31,42,.04);
+}
+
+.client-name{
+  font-weight:900;
+  color:var(--wine);
+}
+
+.check-yes{
+  font-weight:900;
+  color:var(--ok);
+}
+
+.check-no{
+  color:#aaa;
+}
+
+.money{
+  font-weight:800;
+}
+
+/* LOGIN */
 
 .login-wrap{
   min-height:90vh;
@@ -334,6 +415,8 @@ body{
   color:var(--muted);
   line-height:1.5;
 }
+
+/* MODAL */
 
 .modal-back{
   position:fixed;
@@ -468,6 +551,10 @@ body{
   .field.full{grid-column:auto}
   .day{min-height:63px;padding:4px}
   .event-pill{font-size:0;height:8px;padding:0;margin-top:3px}
+  .stats{grid-template-columns:1fr 1fr 1fr}
+  .events-tools{width:100%}
+  .events-tools input,
+  .events-tools select{width:100%}
 }
 </style>
 </head>
@@ -476,11 +563,10 @@ body{
 
 <div id="loginWrap" class="login-wrap">
   <div class="login">
+
     <h1>Rafa Pizza</h1>
 
-    <p>
-      Tableau de bord privé des réservations.
-    </p>
+    <p>Tableau de bord privé des réservations.</p>
 
     <div class="login-email">
       raphael.frenette@gmail.com
@@ -493,21 +579,16 @@ body{
       autocomplete="current-password"
     >
 
-    <button
-      id="loginBtn"
-      class="btn primary"
-    >
+    <button id="loginBtn" class="btn primary">
       Se connecter
     </button>
 
-    <button
-      id="forgotBtn"
-      class="btn secondary"
-    >
+    <button id="forgotBtn" class="btn secondary">
       Réinitialiser mon mot de passe
     </button>
 
     <div id="loginMsg" class="notice"></div>
+
   </div>
 </div>
 
@@ -584,6 +665,7 @@ body{
         <div id="days" class="days"></div>
 
         <div class="legend">
+
           <span>
             <span class="dot" style="background:#D9942B"></span>
             En attente
@@ -598,6 +680,7 @@ body{
             <span class="dot" style="background:#4B4B4B"></span>
             Bloqué
           </span>
+
         </div>
 
       </div>
@@ -606,6 +689,7 @@ body{
     <div>
 
       <section class="panel">
+
         <div class="panel-head">
           <h2>À traiter</h2>
         </div>
@@ -613,9 +697,11 @@ body{
         <div class="panel-body">
           <div id="pendingList" class="list"></div>
         </div>
+
       </section>
 
       <section class="panel" style="margin-top:18px">
+
         <div class="panel-head">
           <h2>À venir</h2>
         </div>
@@ -623,12 +709,78 @@ body{
         <div class="panel-body">
           <div id="upcomingList" class="list"></div>
         </div>
+
       </section>
 
     </div>
 
   </div>
+
+  <!-- TOUS LES ÉVÉNEMENTS -->
+
+  <section class="panel all-events">
+
+    <div class="panel-head">
+
+      <h2>Tous les événements</h2>
+
+      <div class="events-tools">
+
+        <input
+          id="eventSearch"
+          type="search"
+          placeholder="Rechercher client, ville..."
+        >
+
+        <select id="eventFilter">
+          <option value="future">À venir</option>
+          <option value="all">Tous</option>
+          <option value="confirmed">Confirmés</option>
+          <option value="pending">En attente</option>
+          <option value="unavailable">Bloqués</option>
+          <option value="cancelled">Refusés / annulés</option>
+        </select>
+
+      </div>
+
+    </div>
+
+    <div class="panel-body">
+
+      <div class="table-wrap">
+
+        <table class="events-table">
+
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Client</th>
+              <th>Invités</th>
+              <th>Ville</th>
+              <th>Prix</th>
+              <th>Dépôt</th>
+              <th>Menu</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+
+          <tbody id="eventsTableBody"></tbody>
+
+        </table>
+
+      </div>
+
+      <div id="eventsEmpty" class="empty hidden">
+        Aucun événement.
+      </div>
+
+    </div>
+
+  </section>
+
 </div>
+
+<!-- MODAL -->
 
 <div id="modalBack" class="modal-back hidden">
 
@@ -665,6 +817,7 @@ body{
 
         <div class="field">
           <label>Source</label>
+
           <select id="source">
             <option value="site">Site web</option>
             <option value="instagram">Instagram</option>
@@ -673,6 +826,7 @@ body{
             <option value="manual">Manuel</option>
             <option value="other">Autre</option>
           </select>
+
         </div>
 
         <div class="field">
@@ -707,22 +861,12 @@ body{
 
         <div class="field">
           <label>Prix prévu ($)</label>
-          <input
-            id="quotedPrice"
-            type="number"
-            step="0.01"
-            min="0"
-          >
+          <input id="quotedPrice" type="number" step="0.01" min="0">
         </div>
 
         <div class="field">
           <label>Dépôt ($)</label>
-          <input
-            id="depositAmount"
-            type="number"
-            step="0.01"
-            min="0"
-          >
+          <input id="depositAmount" type="number" step="0.01" min="0">
         </div>
 
         <div class="field full">
@@ -772,6 +916,7 @@ body{
     </form>
 
   </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -820,6 +965,8 @@ const monthNames = [
   'Décembre'
 ];
 
+/* CONNEXION */
+
 async function sessionGate(){
 
   const {
@@ -829,26 +976,19 @@ async function sessionGate(){
 
   if(
     session &&
-    (session.user.email || '')
-      .toLowerCase() ===
-      ADMIN_EMAIL.toLowerCase()
+    (session.user.email || '').toLowerCase() ===
+    ADMIN_EMAIL.toLowerCase()
   ){
 
-    $('loginWrap')
-      .classList.add('hidden');
-
-    $('app')
-      .classList.remove('hidden');
+    $('loginWrap').classList.add('hidden');
+    $('app').classList.remove('hidden');
 
     await loadData();
 
   }else{
 
-    $('loginWrap')
-      .classList.remove('hidden');
-
-    $('app')
-      .classList.add('hidden');
+    $('loginWrap').classList.remove('hidden');
+    $('app').classList.add('hidden');
 
   }
 
@@ -873,10 +1013,8 @@ async () => {
 
   const {error} =
   await db.auth.signInWithPassword({
-
     email:ADMIN_EMAIL,
     password:password
-
   });
 
   if(error){
@@ -894,8 +1032,7 @@ async () => {
 
 };
 
-$('password')
-.addEventListener(
+$('password').addEventListener(
   'keydown',
   e => {
 
@@ -937,12 +1074,27 @@ async () => {
 
 };
 
+/* DONNÉES */
+
 const active = r =>
 [
   'pending',
   'confirmed',
   'unavailable'
 ].includes(r.status);
+
+function localToday(){
+
+  const d =
+  new Date();
+
+  return [
+    d.getFullYear(),
+    String(d.getMonth()+1).padStart(2,'0'),
+    String(d.getDate()).padStart(2,'0')
+  ].join('-');
+
+}
 
 function fmtDate(d){
 
@@ -955,10 +1107,40 @@ function fmtDate(d){
       year:'numeric'
     }
   ).format(
-    new Date(
-      d + 'T12:00:00'
-    )
+    new Date(d + 'T12:00:00')
   );
+
+}
+
+function money(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    value === ''
+  ){
+    return '—';
+  }
+
+  return new Intl.NumberFormat(
+    'fr-CA',
+    {
+      style:'currency',
+      currency:'CAD',
+      maximumFractionDigits:0
+    }
+  ).format(Number(value));
+
+}
+
+function statusText(status){
+
+  if(status === 'pending') return 'Attente';
+  if(status === 'confirmed') return 'Confirmé';
+  if(status === 'unavailable') return 'Bloqué';
+  if(status === 'cancelled') return 'Annulé';
+
+  return status || '—';
 
 }
 
@@ -995,20 +1177,20 @@ function renderAll(){
   renderStats();
   renderCalendar();
   renderLists();
+  renderEventsTable();
 
 }
+
+/* STATS */
 
 function renderStats(){
 
   const today =
-  new Date()
-    .toISOString()
-    .slice(0,10);
+  localToday();
 
   $('pendingStat').textContent =
   reservations.filter(
-    r =>
-    r.status === 'pending'
+    r => r.status === 'pending'
   ).length;
 
   $('confirmedStat').textContent =
@@ -1028,15 +1210,13 @@ function renderStats(){
   reservations.filter(
     r =>
     active(r) &&
-    Number(
-      r.event_date.slice(0,4)
-    ) === y &&
-    Number(
-      r.event_date.slice(5,7)
-    ) === m
+    Number(r.event_date.slice(0,4)) === y &&
+    Number(r.event_date.slice(5,7)) === m
   ).length;
 
 }
+
+/* CALENDRIER */
 
 function renderCalendar(){
 
@@ -1052,9 +1232,6 @@ function renderCalendar(){
   const first =
   new Date(year,month,1);
 
-  const last =
-  new Date(year,month+1,0);
-
   let start =
   new Date(first);
 
@@ -1069,9 +1246,7 @@ function renderCalendar(){
   $('days').innerHTML = '';
 
   const today =
-  new Date()
-    .toISOString()
-    .slice(0,10);
+  localToday();
 
   for(let i=0;i<42;i++){
 
@@ -1085,12 +1260,8 @@ function renderCalendar(){
     const iso =
     [
       d.getFullYear(),
-      String(
-        d.getMonth()+1
-      ).padStart(2,'0'),
-      String(
-        d.getDate()
-      ).padStart(2,'0')
+      String(d.getMonth()+1).padStart(2,'0'),
+      String(d.getDate()).padStart(2,'0')
     ].join('-');
 
     const cell =
@@ -1099,9 +1270,7 @@ function renderCalendar(){
     cell.className =
     'day';
 
-    if(
-      d.getMonth() !== month
-    ){
+    if(d.getMonth() !== month){
       cell.classList.add('out');
     }
 
@@ -1138,8 +1307,10 @@ function renderCalendar(){
 
         pill.onclick =
         e => {
+
           e.stopPropagation();
           openReservation(r);
+
         };
 
         cell.appendChild(pill);
@@ -1156,12 +1327,12 @@ function renderCalendar(){
 
 }
 
+/* PETITES LISTES */
+
 function renderLists(){
 
   const today =
-  new Date()
-    .toISOString()
-    .slice(0,10);
+  localToday();
 
   const pending =
   reservations.filter(
@@ -1181,8 +1352,8 @@ function renderLists(){
 
   $('pendingList').innerHTML =
   pending.length
-  ? ''
-  : '<div class="empty">Aucune demande en attente.</div>';
+    ? ''
+    : '<div class="empty">Aucune demande en attente.</div>';
 
   pending.forEach(
     r =>
@@ -1194,8 +1365,8 @@ function renderLists(){
 
   $('upcomingList').innerHTML =
   upcoming.length
-  ? ''
-  : '<div class="empty">Aucun événement à venir.</div>';
+    ? ''
+    : '<div class="empty">Aucun événement à venir.</div>';
 
   upcoming.forEach(
     r =>
@@ -1219,42 +1390,38 @@ function reservationCard(r){
   r.full_name ||
   (
     r.status === 'unavailable'
-    ? 'Date bloquée'
-    : 'Événement'
+      ? 'Date bloquée'
+      : 'Événement'
   );
 
   const guestText =
   r.guest_count
-  ? ` · ${r.guest_count} pers.`
-  : '';
+    ? ` · ${r.guest_count} pers.`
+    : '';
 
   const cityText =
   r.city
-  ? ` · ${r.city}`
-  : '';
+    ? ` · ${r.city}`
+    : '';
 
   div.innerHTML =
   `
     <div class="card-top">
 
       <div>
-        <h4>${title}</h4>
+
+        <h4>${escapeHtml(title)}</h4>
 
         <div class="meta">
           ${fmtDate(r.event_date)}
           ${guestText}
           ${cityText}
         </div>
+
       </div>
 
       <span class="badge ${r.status}">
-        ${
-          r.status === 'pending'
-          ? 'Attente'
-          : r.status === 'confirmed'
-          ? 'Confirmé'
-          : 'Bloqué'
-        }
+        ${statusText(r.status)}
       </span>
 
     </div>
@@ -1266,6 +1433,168 @@ function reservationCard(r){
   return div;
 
 }
+
+/* TABLEAU COMPLET */
+
+function renderEventsTable(){
+
+  const today =
+  localToday();
+
+  const filter =
+  $('eventFilter').value;
+
+  const search =
+  $('eventSearch')
+    .value
+    .trim()
+    .toLowerCase();
+
+  let rows =
+  [...reservations];
+
+  if(filter === 'future'){
+
+    rows =
+    rows.filter(
+      r =>
+      r.event_date >= today &&
+      r.status !== 'cancelled'
+    );
+
+  }else if(filter !== 'all'){
+
+    rows =
+    rows.filter(
+      r =>
+      r.status === filter
+    );
+
+  }
+
+  if(search){
+
+    rows =
+    rows.filter(
+      r => {
+
+        const haystack =
+        [
+          r.full_name,
+          r.email,
+          r.phone,
+          r.city,
+          r.event_address,
+          r.source
+        ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+        return haystack.includes(search);
+
+      }
+    );
+
+  }
+
+  rows.sort(
+    (a,b) =>
+    a.event_date.localeCompare(b.event_date)
+  );
+
+  const tbody =
+  $('eventsTableBody');
+
+  tbody.innerHTML = '';
+
+  $('eventsEmpty')
+    .classList.toggle(
+      'hidden',
+      rows.length > 0
+    );
+
+  rows.forEach(
+    r => {
+
+      const tr =
+      document.createElement('tr');
+
+      tr.innerHTML =
+      `
+        <td>
+          <strong>${fmtDate(r.event_date)}</strong>
+        </td>
+
+        <td>
+          <span class="client-name">
+            ${escapeHtml(
+              r.full_name ||
+              (
+                r.status === 'unavailable'
+                  ? 'Date bloquée'
+                  : '—'
+              )
+            )}
+          </span>
+        </td>
+
+        <td>
+          ${r.guest_count || '—'}
+        </td>
+
+        <td>
+          ${escapeHtml(r.city || '—')}
+        </td>
+
+        <td class="money">
+          ${money(r.quoted_price)}
+        </td>
+
+        <td>
+          ${
+            r.deposit_received
+              ? '<span class="check-yes">✓ Reçu</span>'
+              : '<span class="check-no">—</span>'
+          }
+        </td>
+
+        <td>
+          ${
+            r.menu_sent
+              ? '<span class="check-yes">✓ Envoyé</span>'
+              : '<span class="check-no">—</span>'
+          }
+        </td>
+
+        <td>
+          <span class="badge ${r.status}">
+            ${statusText(r.status)}
+          </span>
+        </td>
+      `;
+
+      tr.onclick =
+      () => openReservation(r);
+
+      tbody.appendChild(tr);
+
+    }
+  );
+
+}
+
+$('eventSearch').addEventListener(
+  'input',
+  renderEventsTable
+);
+
+$('eventFilter').addEventListener(
+  'change',
+  renderEventsTable
+);
+
+/* FORMULAIRE */
 
 function clearForm(){
 
@@ -1377,6 +1706,17 @@ function openReservation(r){
 
 }
 
+function escapeHtml(value){
+
+  return String(value || '')
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'","&#039;");
+
+}
+
 $('closeModal').onclick =
 () =>
 $('modalBack')
@@ -1432,6 +1772,8 @@ $('nextMonth').onclick =
 
 };
 
+/* ENREGISTRER */
+
 $('reservationForm').onsubmit =
 async e => {
 
@@ -1447,10 +1789,10 @@ async e => {
 
     block_type:
     $('status').value === 'unavailable'
-    ? 'unavailable'
-    : $('source').value === 'manual'
-      ? 'manual_booked'
-      : 'reservation',
+      ? 'unavailable'
+      : $('source').value === 'manual'
+        ? 'manual_booked'
+        : 'reservation',
 
     source:
     $('source').value,
@@ -1466,8 +1808,8 @@ async e => {
 
     guest_count:
     $('guestCount').value
-    ? Number($('guestCount').value)
-    : null,
+      ? Number($('guestCount').value)
+      : null,
 
     preferred_time:
     $('preferredTime').value.trim() || null,
@@ -1480,13 +1822,13 @@ async e => {
 
     quoted_price:
     $('quotedPrice').value
-    ? Number($('quotedPrice').value)
-    : null,
+      ? Number($('quotedPrice').value)
+      : null,
 
     deposit_amount:
     $('depositAmount').value
-    ? Number($('depositAmount').value)
-    : null,
+      ? Number($('depositAmount').value)
+      : null,
 
     message:
     $('message').value.trim() || null,
@@ -1527,14 +1869,14 @@ async e => {
   if(response.error){
 
     $('formMsg').innerHTML =
-    `<div class="error">${response.error.message}</div>`;
+    `<div class="error">${escapeHtml(response.error.message)}</div>`;
 
     return;
 
   }
 
   $('formMsg').innerHTML =
-  `<div class="success">Enregistré ✅</div>`;
+  '<div class="success">Enregistré ✅</div>';
 
   await loadData();
 
@@ -1546,6 +1888,8 @@ async e => {
   );
 
 };
+
+/* ACCEPTER */
 
 $('approveBtn').onclick =
 async () => {
@@ -1569,9 +1913,10 @@ async () => {
   if(updateError){
 
     $('formMsg').innerHTML =
-    `<div class="error">${updateError.message}</div>`;
+    `<div class="error">${escapeHtml(updateError.message)}</div>`;
 
     return;
+
   }
 
   const {error:mailError} =
@@ -1590,20 +1935,27 @@ async () => {
   if(mailError){
 
     $('formMsg').innerHTML =
-    `<div class="error">
-      Événement confirmé ✅<br>
-      Le courriel automatique n’a pas pu être envoyé pour le moment.
-    </div>`;
+    `
+      <div class="error">
+        Événement confirmé ✅<br>
+        Le courriel automatique n’a pas encore pu être envoyé.
+      </div>
+    `;
 
     return;
+
   }
 
   $('formMsg').innerHTML =
-  `<div class="success">
-    Événement confirmé et courriel envoyé ✅
-  </div>`;
+  `
+    <div class="success">
+      Événement confirmé et courriel envoyé ✅
+    </div>
+  `;
 
 };
+
+/* REFUSER */
 
 $('refuseBtn').onclick =
 async () => {
@@ -1631,9 +1983,10 @@ async () => {
   if(error){
 
     $('formMsg').innerHTML =
-    `<div class="error">${error.message}</div>`;
+    `<div class="error">${escapeHtml(error.message)}</div>`;
 
     return;
+
   }
 
   await loadData();
