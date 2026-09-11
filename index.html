@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 
 <meta charset="UTF-8">
@@ -9,26 +10,42 @@
 
 <style>
 
+/* =========================================================
+   COULEURS
+========================================================= */
+
 :root{
   --cream:#F6F0E7;
-  --cream2:#FBF8F3;
+  --cream-soft:#FBF8F3;
   --wine:#5B1F2A;
-  --wine2:#7A2D3C;
+  --wine-light:#7A2D3C;
   --ink:#2B2524;
   --muted:#8A7D77;
-  --line:rgba(91,31,42,.16);
+  --line:rgba(91,31,42,.14);
+  --shadow:0 18px 45px rgba(65,35,39,.09);
 }
+
+
+/* =========================================================
+   BASE
+========================================================= */
 
 *{
   box-sizing:border-box;
 }
 
-html,body{
+html,
+body{
   margin:0;
   padding:0;
-  background:transparent;
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   color:var(--ink);
+  background:transparent;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 body{
@@ -36,106 +53,31 @@ body{
 }
 
 .shell{
+  width:100%;
   max-width:1080px;
-  margin:auto;
+  margin:0 auto;
+
   background:var(--cream);
+
   border:1px solid var(--line);
   border-radius:28px;
-  box-shadow:0 18px 45px rgba(65,35,39,.10);
+
+  box-shadow:var(--shadow);
+
   overflow:hidden;
 }
 
 
-/* =========================
+/* =========================================================
    EN-TÊTE
-========================= */
+========================================================= */
 
 .top{
-  padding:26px 30px 18px;
+  padding:27px 30px 19px;
 }
 
 .main-title{
   margin:0;
-
-  font-family:Georgia,"Times New Roman",serif;
-
-  color:var(--wine);
-
-  font-size:clamp(
-    22px,
-    4vw,
-    44px
-  );
-
-  line-height:1;
-
-  font-weight:700;
-
-  white-space:nowrap;
-}
-
-
-/* =========================
-   PHOTO
-========================= */
-
-.hero-photo{
-  padding:0 30px 28px;
-
-  background:var(--cream);
-
-  border-bottom:1px solid var(--line);
-}
-
-.hero-photo-card{
-  overflow:hidden;
-
-  border-radius:22px;
-
-  background:#DED4C8;
-
-  box-shadow:
-    0 14px 34px
-    rgba(65,35,39,.10);
-}
-
-.hero-photo-card img{
-  display:block;
-
-  width:100%;
-
-  aspect-ratio:16 / 7;
-
-  object-fit:cover;
-
-  object-position:center 42%;
-}
-
-
-/* =========================
-   EXPÉRIENCE RAFA
-========================= */
-
-.concept{
-  padding:38px 30px 34px;
-
-  background:var(--cream2);
-
-  border-bottom:1px solid var(--line);
-}
-
-.concept-inner{
-  max-width:900px;
-
-  margin:0 auto;
-}
-
-.concept-text{
-  max-width:660px;
-}
-
-.concept-main-title{
-  margin:0 0 14px;
 
   color:var(--wine);
 
@@ -144,32 +86,116 @@ body{
     "Times New Roman",
     serif;
 
-  font-size:32px;
+  font-size:clamp(23px,4vw,43px);
+  font-weight:700;
+  line-height:1;
 
-  line-height:1.05;
-
-  font-weight:500;
+  letter-spacing:-.025em;
 }
 
-.concept-text p{
+
+/* =========================================================
+   PHOTO PRINCIPALE
+========================================================= */
+
+.hero{
+  padding:0 30px 30px;
+
+  border-bottom:1px solid var(--line);
+}
+
+.hero-frame{
+  position:relative;
+
+  overflow:hidden;
+
+  border-radius:22px;
+
+  background:#DED4C8;
+
+  box-shadow:
+    0 14px 35px
+    rgba(65,35,39,.09);
+}
+
+.hero-frame img{
+  display:block;
+
+  width:100%;
+
+  aspect-ratio:16 / 7;
+
+  object-fit:cover;
+  object-position:center 42%;
+}
+
+
+/* =========================================================
+   EXPÉRIENCE RAFA
+========================================================= */
+
+.experience{
+  padding:38px 30px 36px;
+
+  background:var(--cream-soft);
+
+  border-bottom:1px solid var(--line);
+}
+
+.experience-inner{
+  width:100%;
+  max-width:920px;
+  margin:0 auto;
+}
+
+.experience-copy{
+  max-width:650px;
+}
+
+.section-title{
+  margin:0 0 13px;
+
+  color:var(--wine);
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:31px;
+  font-weight:500;
+  line-height:1.05;
+
+  letter-spacing:-.02em;
+}
+
+.experience-intro{
   margin:0;
+
+  max-width:600px;
 
   color:var(--ink);
 
   font-size:14px;
-
   line-height:1.65;
 }
 
-.concept-text strong{
+.experience-intro strong{
   color:var(--wine);
-
   font-weight:700;
 }
 
-.experience-toggle{
-  margin-top:16px;
 
+/* =========================================================
+   EN SAVOIR PLUS
+========================================================= */
+
+.experience-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+
+  margin-top:15px;
   padding:0;
 
   border:0;
@@ -178,21 +204,15 @@ body{
 
   color:var(--wine);
 
+  font:inherit;
   font-size:11px;
-
   font-weight:700;
 
   cursor:pointer;
-
-  display:inline-flex;
-
-  align-items:center;
-
-  gap:6px;
 }
 
 .experience-toggle:hover{
-  color:var(--wine2);
+  color:var(--wine-light);
 }
 
 .experience-arrow{
@@ -200,24 +220,21 @@ body{
 
   font-size:13px;
 
-  transition:
-    transform .2s ease;
+  transition:transform .2s ease;
 }
 
-.experience-toggle.open
-.experience-arrow{
-  transform:
-    rotate(180deg);
+.experience-toggle.open .experience-arrow{
+  transform:rotate(180deg);
 }
 
 .experience-more{
   max-height:0;
 
+  margin-top:0;
+
   overflow:hidden;
 
   opacity:0;
-
-  margin-top:0;
 
   transition:
     max-height .3s ease,
@@ -226,11 +243,11 @@ body{
 }
 
 .experience-more.open{
-  max-height:250px;
-
-  opacity:1;
+  max-height:240px;
 
   margin-top:16px;
+
+  opacity:1;
 }
 
 .experience-more p{
@@ -238,54 +255,49 @@ body{
 
   padding-top:15px;
 
-  border-top:
-    1px solid
-    var(--line);
+  border-top:1px solid var(--line);
 
   color:var(--muted);
 
   font-size:12px;
-
-  line-height:1.65;
+  line-height:1.7;
 }
 
 
-/* =========================
-   INFOS EXPÉRIENCE
-========================= */
+/* =========================================================
+   INFORMATIONS EXPÉRIENCE
+========================================================= */
 
-.concept-details{
-  margin-top:30px;
-
-  padding:0;
-
+.experience-details{
   display:grid;
 
   grid-template-columns:
-    repeat(3,1fr);
+    repeat(3,minmax(0,1fr));
 
-  border-top:
-    1px solid
-    var(--line);
+  margin-top:31px;
 
-  border-bottom:
-    1px solid
-    var(--line);
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
 }
 
-.concept-detail{
-  padding:18px 20px;
+.experience-detail{
+  min-width:0;
 
-  border-right:
-    1px solid
-    var(--line);
+  padding:18px 21px;
+
+  border-right:1px solid var(--line);
 }
 
-.concept-detail:last-child{
+.experience-detail:first-child{
+  padding-left:0;
+}
+
+.experience-detail:last-child{
+  padding-right:0;
   border-right:0;
 }
 
-.concept-detail span{
+.experience-label{
   display:block;
 
   margin-bottom:7px;
@@ -293,15 +305,14 @@ body{
   color:var(--muted);
 
   font-size:9px;
-
-  font-weight:700;
-
-  text-transform:uppercase;
+  font-weight:800;
 
   letter-spacing:.13em;
+
+  text-transform:uppercase;
 }
 
-.concept-detail strong{
+.experience-value{
   display:block;
 
   color:var(--wine);
@@ -312,25 +323,38 @@ body{
     serif;
 
   font-size:18px;
-
-  line-height:1.25;
-
   font-weight:500;
+  line-height:1.25;
+}
+
+.experience-note{
+  display:block;
+
+  margin-top:5px;
+
+  color:var(--muted);
+
+  font-size:10px;
+  line-height:1.4;
 }
 
 
-/* =========================
+/* =========================================================
    ESTIMATEUR
-========================= */
+========================================================= */
 
 .estimator{
-  padding:26px 30px;
-
-  border-bottom:
-    1px solid
-    var(--line);
+  padding:31px 30px 32px;
 
   background:var(--cream);
+
+  border-bottom:1px solid var(--line);
+}
+
+.estimator-inner{
+  width:100%;
+  max-width:920px;
+  margin:0 auto;
 }
 
 .estimator-title{
@@ -343,58 +367,57 @@ body{
     "Times New Roman",
     serif;
 
-  font-size:25px;
-
-  line-height:1.15;
-
+  font-size:26px;
   font-weight:500;
+  line-height:1.1;
+
+  letter-spacing:-.02em;
 }
 
 .estimator-subtitle{
-  margin:
-    6px 0 22px;
+  margin:7px 0 20px;
 
   color:var(--muted);
 
   font-size:11px;
-
-  line-height:1.5;
+  line-height:1.55;
 }
 
 .estimator-card{
-  background:var(--cream2);
-
-  border:
-    1px solid
-    var(--line);
-
-  border-radius:18px;
-
   padding:20px;
+
+  background:var(--cream-soft);
+
+  border:1px solid var(--line);
+  border-radius:18px;
 }
+
+
+/* =========================================================
+   INVITÉS
+========================================================= */
 
 .guest-display{
   margin-bottom:15px;
 }
 
-.guest-display span{
+.guest-label{
   display:block;
+
+  margin-bottom:4px;
 
   color:var(--muted);
 
-  font-size:10px;
-
+  font-size:9px;
   font-weight:800;
 
-  text-transform:uppercase;
+  letter-spacing:.11em;
 
-  letter-spacing:.10em;
+  text-transform:uppercase;
 }
 
-.guest-display strong{
+.guest-value{
   display:block;
-
-  margin-top:3px;
 
   color:var(--wine);
 
@@ -403,25 +426,24 @@ body{
     "Times New Roman",
     serif;
 
-  font-size:32px;
-
+  font-size:31px;
+  font-weight:500;
   line-height:1;
 }
 
-.guest-display strong span{
-  display:inline;
-
-  color:inherit;
-
+.guest-value span{
   font:inherit;
-
-  text-transform:none;
-
-  letter-spacing:normal;
 }
+
+
+/* =========================================================
+   SLIDER
+========================================================= */
 
 .price-slider{
   width:100%;
+
+  margin:3px 0 0;
 
   accent-color:var(--wine);
 
@@ -431,10 +453,9 @@ body{
 .slider-labels{
   display:grid;
 
-  grid-template-columns:
-    1fr 1fr 1fr;
+  grid-template-columns:1fr 1fr 1fr;
 
-  margin-top:6px;
+  margin-top:5px;
 
   color:var(--muted);
 
@@ -450,51 +471,50 @@ body{
 
   color:var(--wine);
 
-  font-weight:800;
+  font-weight:700;
 }
 
 .slider-labels span:nth-child(3){
   text-align:right;
 }
 
+
+/* =========================================================
+   PRIX
+========================================================= */
+
 .estimate-results{
   display:grid;
 
-  grid-template-columns:
-    repeat(2,1fr);
+  grid-template-columns:1fr 1fr;
 
-  gap:12px;
+  gap:10px;
 
-  margin-top:22px;
+  margin-top:20px;
 }
 
 .estimate-box{
-  padding:16px;
+  padding:15px;
 
-  border:
-    1px solid
-    var(--line);
+  background:rgba(255,255,255,.36);
 
+  border:1px solid var(--line);
   border-radius:14px;
-
-  background:
-    rgba(255,255,255,.38);
 }
 
-.estimate-box span{
+.estimate-box-label{
   display:block;
+
+  margin-bottom:5px;
 
   color:var(--muted);
 
-  font-size:9px;
-
+  font-size:8.5px;
   font-weight:800;
 
+  letter-spacing:.09em;
+
   text-transform:uppercase;
-
-  letter-spacing:.08em;
-
-  margin-bottom:5px;
 }
 
 .estimate-box strong{
@@ -508,45 +528,34 @@ body{
     serif;
 
   font-size:22px;
-
-  font-weight:600;
+  font-weight:500;
 }
 
 .estimator-note{
-  margin:
-    13px 2px 0;
+  margin:13px 2px 0;
 
   color:var(--muted);
 
   font-size:9px;
-
-  line-height:1.5;
+  line-height:1.55;
 }
 
 .large-event-note{
   display:none;
 
   margin-top:12px;
+  padding:10px 12px;
 
-  padding:
-    10px 12px;
+  color:var(--wine-light);
 
-  background:
-    rgba(91,31,42,.06);
+  background:rgba(91,31,42,.05);
 
-  border:
-    1px solid
-    var(--line);
-
-  border-radius:12px;
-
-  color:var(--wine2);
+  border:1px solid var(--line);
+  border-radius:11px;
 
   font-size:10px;
-
-  font-weight:700;
-
-  line-height:1.4;
+  font-weight:600;
+  line-height:1.45;
 }
 
 .large-event-note.show{
@@ -554,16 +563,23 @@ body{
 }
 
 
-/* =========================
-   INTRO CALENDRIER
-========================= */
+/* =========================================================
+   CALENDRIER — INTRO
+========================================================= */
 
 .calendar-intro{
-  padding:
-    22px 30px 5px;
+  max-width:920px;
+
+  margin:0 auto;
+
+  padding:29px 0 5px;
 }
 
-.calendar-intro h2{
+.calendar-section{
+  padding:0 30px;
+}
+
+.calendar-title{
   margin:0;
 
   color:var(--wine);
@@ -573,87 +589,88 @@ body{
     "Times New Roman",
     serif;
 
-  font-size:25px;
-
+  font-size:26px;
+  font-weight:500;
   line-height:1.15;
 
-  font-weight:500;
+  letter-spacing:-.02em;
 }
 
-.calendar-intro p{
-  margin:
-    6px 0 0;
+.calendar-description{
+  margin:7px 0 0;
 
   color:var(--muted);
 
   font-size:11px;
+  line-height:1.5;
 }
 
 
-/* =========================
-   MOIS
-========================= */
+/* =========================================================
+   SÉLECTION DES MOIS
+========================================================= */
 
 .month-selector{
-  padding:
-    13px 30px 3px;
+  max-width:920px;
+
+  margin:0 auto;
+
+  padding:14px 0 4px;
 }
 
-.controls{
+.month-controls{
   display:flex;
 
-  gap:8px;
+  gap:7px;
 
   flex-wrap:wrap;
 }
 
-button{
-  border:
-    1px solid
-    var(--line);
+.month-button{
+  padding:9px 15px;
 
-  background:
-    var(--cream2);
+  color:var(--wine);
 
-  color:
-    var(--wine);
+  background:var(--cream-soft);
 
+  border:1px solid var(--line);
   border-radius:999px;
 
-  padding:
-    10px 15px;
-
-  font-size:13px;
-
+  font:inherit;
+  font-size:12px;
   font-weight:700;
 
   cursor:pointer;
 
-  transition:.18s ease;
+  transition:
+    background .18s ease,
+    color .18s ease,
+    border-color .18s ease;
 }
 
-button:hover{
-  border-color:
-    rgba(91,31,42,.35);
+.month-button:hover{
+  border-color:rgba(91,31,42,.32);
 }
 
-button.active{
+.month-button.active{
+  color:var(--cream-soft);
+
   background:var(--wine);
 
-  color:var(--cream2);
-
-  border-color:
-    var(--wine);
+  border-color:var(--wine);
 }
 
 
-/* =========================
-   CALENDRIER
-========================= */
+/* =========================================================
+   GRILLE CALENDRIER
+========================================================= */
 
-.wrap{
-  padding:
-    16px 24px 26px;
+.calendar-wrap{
+  max-width:940px;
+
+  margin:0 auto;
+
+  padding:16px 0 27px;
 }
 
 .weekdays,
@@ -661,10 +678,7 @@ button.active{
   display:grid;
 
   grid-template-columns:
-    repeat(
-      7,
-      minmax(0,1fr)
-    );
+    repeat(7,minmax(0,1fr));
 
   gap:8px;
 }
@@ -674,46 +688,43 @@ button.active{
 }
 
 .weekday{
-  text-align:center;
+  padding:6px 2px;
 
   color:var(--muted);
 
-  font-size:11px;
-
+  font-size:10px;
   font-weight:800;
 
   letter-spacing:.08em;
 
+  text-align:center;
   text-transform:uppercase;
-
-  padding:7px 2px;
 }
 
 .day{
-  min-height:118px;
-
-  border:
-    1px solid
-    var(--line);
-
-  border-radius:16px;
-
-  background:
-    rgba(255,255,255,.35);
-
-  padding:12px;
-
   position:relative;
-
-  transition:.18s ease;
-
-  overflow:hidden;
 
   display:block;
 
-  text-decoration:none;
+  min-height:112px;
+
+  padding:11px;
+
+  overflow:hidden;
 
   color:inherit;
+
+  background:rgba(255,255,255,.33);
+
+  border:1px solid var(--line);
+  border-radius:15px;
+
+  text-decoration:none;
+
+  transition:
+    transform .17s ease,
+    border-color .17s ease,
+    box-shadow .17s ease;
 
   -webkit-tap-highlight-color:
     rgba(91,31,42,.08);
@@ -721,25 +732,20 @@ button.active{
 
 .day.available-day{
   cursor:pointer;
-
-  touch-action:manipulation;
 }
 
 .day.available-day:hover{
-  border-color:
-    rgba(91,31,42,.35);
+  transform:translateY(-2px);
 
-  transform:
-    translateY(-2px);
+  border-color:rgba(91,31,42,.32);
 
   box-shadow:
     0 8px 20px
-    rgba(65,35,39,.08);
+    rgba(65,35,39,.07);
 }
 
 .day.available-day:active{
-  transform:
-    scale(.98);
+  transform:scale(.98);
 }
 
 .day.empty{
@@ -747,87 +753,79 @@ button.active{
 
   border:
     1px dashed
-    rgba(91,31,42,.08);
+    rgba(91,31,42,.07);
 
   box-shadow:none;
-
-  transform:none;
 }
 
 .num{
-  font-size:16px;
-
-  font-weight:800;
-
   color:var(--wine);
+
+  font-size:15px;
+  font-weight:800;
 }
 
 .status{
   position:absolute;
 
-  left:7px;
-
   right:7px;
-
-  bottom:8px;
+  bottom:7px;
+  left:7px;
 
   display:flex;
 
   align-items:center;
-
   justify-content:center;
 
-  padding:4px 5px;
+  padding:4px;
+
+  overflow:hidden;
 
   border-radius:999px;
 
-  font-size:9px;
-
+  font-size:8.5px;
   font-weight:700;
-
   line-height:1;
 
   white-space:nowrap;
-
-  overflow:hidden;
 }
 
-.day.available{
-  background:
-    rgba(255,255,255,.35);
-}
+
+/* DISPONIBLE */
 
 .day.available .status{
-  color:var(--wine2);
+  color:var(--wine-light);
 
   background:
-    rgba(122,45,60,.07);
+    rgba(122,45,60,.065);
 }
 
-.day.booked{
-  background:
-    var(--wine);
 
-  border-color:
-    var(--wine);
+/* RÉSERVÉ */
+
+.day.booked{
+  background:var(--wine);
+
+  border-color:var(--wine);
 }
 
 .day.booked .num{
-  color:
-    var(--cream2);
+  color:var(--cream-soft);
 }
 
 .day.booked .status{
-  color:
-    var(--cream2);
+  color:var(--cream-soft);
 
   background:
     rgba(255,255,255,.12);
 }
 
+
+/* INDISPONIBLE */
+
 .day.unavailable{
   background:
-    rgba(185,173,166,.18);
+    rgba(185,173,166,.17);
 }
 
 .day.unavailable .num{
@@ -842,25 +840,24 @@ button.active{
 }
 
 
-/* =========================
-   PIED
-========================= */
+/* =========================================================
+   PIED DE PAGE
+========================================================= */
 
 .footer{
-  padding:
-    0 24px 22px;
+  padding:0 20px 21px;
 
   color:var(--muted);
 
-  font-size:11px;
+  font-size:10px;
 
   text-align:center;
 }
 
 
-/* =========================
-   MOBILE
-========================= */
+/* =========================================================
+   TABLETTE / MOBILE
+========================================================= */
 
 @media(max-width:760px){
 
@@ -892,90 +889,100 @@ button.active{
 
   /* PHOTO */
 
-  .hero-photo{
+  .hero{
     padding:
       0 18px 20px;
   }
 
-  .hero-photo-card{
+  .hero-frame{
     border-radius:18px;
   }
 
-  .hero-photo-card img{
+  .hero-frame img{
     aspect-ratio:4 / 3;
 
     object-position:
-      center 44%;
+      center 43%;
   }
 
 
   /* EXPÉRIENCE */
 
-  .concept{
+  .experience{
     padding:
-      29px 20px 26px;
+      29px 20px 27px;
   }
 
-  .concept-main-title{
+  .section-title{
+    margin-bottom:10px;
+
     font-size:27px;
-
-    margin-bottom:11px;
   }
 
-  .concept-text p{
+  .experience-intro{
     font-size:13px;
-
     line-height:1.6;
   }
 
   .experience-toggle{
-    margin-top:14px;
+    margin-top:13px;
 
     font-size:10.5px;
   }
 
-  .concept-details{
-    margin-top:25px;
 
+  /* INFOS */
+
+  .experience-details{
     display:block;
+
+    margin-top:24px;
   }
 
-  .concept-detail{
-    padding:
-      14px 0;
+  .experience-detail{
+    display:grid;
 
-    border-right:0;
+    grid-template-columns:
+      90px 1fr;
 
-    border-bottom:
-      1px solid
-      var(--line);
-
-    display:flex;
+    gap:15px;
 
     align-items:center;
 
-    justify-content:
-      space-between;
+    padding:14px 0;
 
-    gap:20px;
+    border-right:0;
+    border-bottom:1px solid var(--line);
   }
 
-  .concept-detail:last-child{
+  .experience-detail:first-child{
+    padding-left:0;
+  }
+
+  .experience-detail:last-child{
+    padding-right:0;
+
     border-bottom:0;
   }
 
-  .concept-detail span{
+  .experience-label{
     margin:0;
-
-    flex-shrink:0;
   }
 
-  .concept-detail strong{
-    text-align:right;
-
+  .experience-value{
     font-size:16px;
 
-    max-width:65%;
+    text-align:right;
+  }
+
+  .experience-note{
+    grid-column:2;
+
+    margin-top:-7px;
+
+    font-size:9px;
+
+    text-align:right;
   }
 
 
@@ -983,81 +990,71 @@ button.active{
 
   .estimator{
     padding:
-      20px 18px;
+      24px 18px 25px;
   }
 
   .estimator-title{
-    font-size:21px;
+    font-size:22px;
   }
 
   .estimator-card{
-    padding:
-      16px 13px;
+    padding:16px 13px;
   }
 
-  .guest-display strong{
+  .guest-value{
     font-size:27px;
   }
 
   .estimate-results{
-    grid-template-columns:
-      1fr 1fr;
-
     gap:8px;
   }
 
   .estimate-box{
-    padding:
-      13px 10px;
+    padding:13px 10px;
   }
 
   .estimate-box strong{
     font-size:18px;
   }
 
-  .estimate-box span{
+  .estimate-box-label{
     font-size:7.5px;
   }
 
 
   /* CALENDRIER */
 
-  .calendar-intro{
+  .calendar-section{
     padding:
-      19px 18px 3px;
+      0 18px;
   }
 
-  .calendar-intro h2{
-    font-size:21px;
+  .calendar-intro{
+    padding-top:23px;
   }
 
-  .calendar-intro p{
+  .calendar-title{
+    font-size:22px;
+  }
+
+  .calendar-description{
     font-size:10px;
   }
 
-  .month-selector{
-    padding:
-      12px 18px 2px;
-  }
-
-  .controls{
-    width:100%;
-
+  .month-controls{
     gap:6px;
   }
 
-  .controls button{
+  .month-button{
     flex:1;
 
-    padding:
-      9px 7px;
+    padding:9px 5px;
 
-    font-size:11px;
+    font-size:10.5px;
   }
 
-  .wrap{
-    padding:
-      12px 10px 18px;
+  .calendar-wrap{
+    padding-top:13px;
   }
 
   .weekdays,
@@ -1066,57 +1063,48 @@ button.active{
   }
 
   .weekday{
-    font-size:9px;
+    font-size:8.5px;
   }
 
   .day{
-    min-height:86px;
+    min-height:84px;
 
-    padding:8px;
+    padding:7px;
 
-    border-radius:12px;
+    border-radius:11px;
   }
 
   .num{
-    font-size:13px;
+    font-size:12.5px;
   }
 
   .status{
+    right:4px;
+    bottom:5px;
     left:4px;
 
-    right:4px;
-
-    bottom:5px;
-
-    padding:
-      3px 2px;
+    padding:3px 2px;
 
     font-size:
       clamp(
-        6.5px,
-        1.75vw,
-        8px
+        6.3px,
+        1.7vw,
+        7.8px
       );
-  }
-
-  .footer{
-    padding:
-      0 12px 16px;
   }
 
 }
 
 
-/* =========================
+/* =========================================================
    PETITS TÉLÉPHONES
-========================= */
+========================================================= */
 
 @media(max-width:480px){
 
   .top{
-    padding-left:14px;
-
     padding-right:14px;
+    padding-left:14px;
   }
 
   .main-title{
@@ -1128,35 +1116,28 @@ button.active{
       );
   }
 
-  .hero-photo{
-    padding-left:14px;
-
+  .hero{
     padding-right:14px;
+    padding-left:14px;
   }
 
-  .hero-photo-card img{
-    aspect-ratio:1 / 1;
-
-    object-position:
-      center 43%;
-  }
-
-  .concept{
-    padding-left:18px;
-
+  .experience{
     padding-right:18px;
+    padding-left:18px;
   }
 
-  .concept-main-title{
-    font-size:26px;
+  .experience-detail{
+    grid-template-columns:
+      78px 1fr;
   }
 
-  .concept-detail{
-    gap:15px;
-  }
-
-  .concept-detail strong{
+  .experience-value{
     font-size:15px;
+  }
+
+  .calendar-section{
+    padding-right:12px;
+    padding-left:12px;
   }
 
   .weekdays,
@@ -1165,26 +1146,21 @@ button.active{
   }
 
   .day{
-    min-height:76px;
+    min-height:75px;
 
     padding:6px;
   }
 
   .status{
-    left:2px;
-
     right:2px;
-
     bottom:4px;
-
-    padding:
-      3px 1px;
+    left:2px;
 
     font-size:
       clamp(
         6px,
-        1.8vw,
-        7.5px
+        1.75vw,
+        7.3px
       );
   }
 
@@ -1197,37 +1173,36 @@ button.active{
 
 <body>
 
-
 <div class="shell">
 
 
-  <!-- =====================
+  <!-- =====================================================
        EN-TÊTE
-  ====================== -->
+  ====================================================== -->
 
-  <div class="top">
+  <header class="top">
 
     <h1 class="main-title">
       Rafa Pizza · Réservations
     </h1>
 
-  </div>
+  </header>
 
 
-  <!-- =====================
+  <!-- =====================================================
        PHOTO
-  ====================== -->
+  ====================================================== -->
 
   <section
-    class="hero-photo"
+    class="hero"
     aria-label="Rafa Pizza en action"
   >
 
-    <div class="hero-photo-card">
+    <div class="hero-frame">
 
       <img
         src="FE0F2EED-EA4C-4039-A532-16A5FF633ED0.jpeg"
-        alt="Préparation artisanale d’une pizza Rafa sur place"
+        alt="Préparation d’une pizza Rafa sur place"
         loading="eager"
         fetchpriority="high"
       >
@@ -1237,31 +1212,28 @@ button.active{
   </section>
 
 
-  <!-- =====================
+  <!-- =====================================================
        EXPÉRIENCE RAFA
-  ====================== -->
+  ====================================================== -->
 
-  <section class="concept">
+  <section class="experience">
 
-    <div class="concept-inner">
-
-
-      <div class="concept-text">
+    <div class="experience-inner">
 
 
-        <h2 class="concept-main-title">
+      <div class="experience-copy">
+
+        <h2 class="section-title">
           L’expérience Rafa
         </h2>
 
-
-        <p>
+        <p class="experience-intro">
 
           <strong>
             4 créations uniques
-          </strong>,
+          </strong>
 
           pensées pour votre événement.
-
           Un menu préparé sur mesure
           et ajusté selon vos goûts.
 
@@ -1276,7 +1248,9 @@ button.active{
           aria-controls="experienceMore"
         >
 
-          En savoir plus
+          <span id="experienceToggleText">
+            En savoir plus
+          </span>
 
           <span class="experience-arrow">
             ⌄
@@ -1296,362 +1270,358 @@ button.active{
             Rafa imagine quatre créations
             adaptées à votre soirée.
 
+            Les pizzas sont préparées
+            et servies sur place en continu
+            dans une formule buffet conviviale.
+
             Le menu vous est présenté
-            à l’avance et peut être
-            modifié selon vos préférences.
+            à l’avance et peut être ajusté
+            selon vos préférences.
 
           </p>
 
         </div>
 
-
       </div>
 
 
-      <div class="concept-details">
+      <!-- INFORMATIONS -->
+
+      <div class="experience-details">
 
 
-        <div class="concept-detail">
+        <div class="experience-detail">
 
-          <span>
+          <span class="experience-label">
             Le menu
           </span>
 
-          <strong>
+          <strong class="experience-value">
             4 créations
           </strong>
 
         </div>
 
 
-        <div class="concept-detail">
+        <div class="experience-detail">
 
-          <span>
-            Le forfait
+          <span class="experience-label">
+            Le format
           </span>
 
-          <strong>
-            4 pointes / personne
+          <strong class="experience-value">
+            Pizzas 11 po
           </strong>
 
         </div>
 
 
-        <div class="concept-detail">
+        <div class="experience-detail">
 
-          <span>
+          <span class="experience-label">
             Le service
           </span>
 
-          <strong>
-            Buffet convivial
+          <strong class="experience-value">
+            Formule buffet
           </strong>
+
+          <small class="experience-note">
+            L’équivalent d’une pizza par personne
+          </small>
 
         </div>
 
 
       </div>
-
 
     </div>
 
   </section>
 
 
-  <!-- =====================
+  <!-- =====================================================
        ESTIMATEUR
-  ====================== -->
+  ====================================================== -->
 
   <section class="estimator">
 
-
-    <h2 class="estimator-title">
-      Estimateur de prix
-    </h2>
+    <div class="estimator-inner">
 
 
-    <p class="estimator-subtitle">
-
-      Ajustez le nombre d’invités
-      pour obtenir une estimation
-      de votre événement.
-
-    </p>
+      <h2 class="estimator-title">
+        Estimateur de prix
+      </h2>
 
 
-    <div class="estimator-card">
+      <p class="estimator-subtitle">
 
-
-      <div class="guest-display">
-
-        <span>
-          Votre événement
-        </span>
-
-        <strong>
-
-          <span id="guestNumber">
-            20
-          </span>
-
-          invités
-
-        </strong>
-
-      </div>
-
-
-      <input
-        id="guestSlider"
-        class="price-slider"
-        type="range"
-        min="1"
-        max="100"
-        value="20"
-        step="1"
-      >
-
-
-      <div class="slider-labels">
-
-        <span>
-          1 invité
-        </span>
-
-        <span>
-          50+
-        </span>
-
-        <span>
-          100 invités
-        </span>
-
-      </div>
-
-
-      <div class="estimate-results">
-
-
-        <div class="estimate-box">
-
-          <span>
-            Prix / personne
-          </span>
-
-          <strong id="personPrice">
-            25 $
-          </strong>
-
-        </div>
-
-
-        <div class="estimate-box">
-
-          <span>
-            Frais de service & installation
-          </span>
-
-          <strong id="eventFee">
-            250 $
-          </strong>
-
-        </div>
-
-
-      </div>
-
-
-      <div
-        id="largeEventNote"
-        class="large-event-note"
-      >
-
-        Événement 50+ —
-        tarification adaptée automatiquement
-        aux événements de grande taille.
-
-      </div>
-
-
-      <p
-        class="estimator-note"
-        id="estimatorNote"
-      >
-
-        Estimation à titre indicatif.
-
-        Le prix final peut varier
-        selon le menu,
-        la localisation
-        et les besoins particuliers
+        Ajustez le nombre d’invités
+        pour obtenir une estimation
         de votre événement.
 
       </p>
 
 
+      <div class="estimator-card">
+
+
+        <div class="guest-display">
+
+          <span class="guest-label">
+            Votre événement
+          </span>
+
+          <strong class="guest-value">
+
+            <span id="guestNumber">
+              20
+            </span>
+
+            invités
+
+          </strong>
+
+        </div>
+
+
+        <input
+          id="guestSlider"
+          class="price-slider"
+          type="range"
+          min="1"
+          max="100"
+          value="20"
+          step="1"
+          aria-label="Nombre d’invités"
+        >
+
+
+        <div class="slider-labels">
+
+          <span>
+            1 invité
+          </span>
+
+          <span>
+            50+
+          </span>
+
+          <span>
+            100 invités
+          </span>
+
+        </div>
+
+
+        <div class="estimate-results">
+
+
+          <div class="estimate-box">
+
+            <span class="estimate-box-label">
+              Prix / personne
+            </span>
+
+            <strong id="personPrice">
+              25 $
+            </strong>
+
+          </div>
+
+
+          <div class="estimate-box">
+
+            <span class="estimate-box-label">
+              Service & installation
+            </span>
+
+            <strong id="eventFee">
+              250 $
+            </strong>
+
+          </div>
+
+
+        </div>
+
+
+        <div
+          id="largeEventNote"
+          class="large-event-note"
+        >
+
+          Événement de plus de 50 invités —
+          la tarification est adaptée
+          automatiquement aux groupes
+          de grande taille.
+
+        </div>
+
+
+        <p
+          id="estimatorNote"
+          class="estimator-note"
+        >
+
+          Estimation à titre indicatif.
+          Le prix final peut varier selon
+          le menu, la localisation
+          et les besoins particuliers
+          de votre événement.
+
+        </p>
+
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       CALENDRIER
+  ====================================================== -->
+
+  <section class="calendar-section">
+
+
+    <div class="calendar-intro">
+
+      <h2 class="calendar-title">
+        Sélectionnez votre date
+      </h2>
+
+      <p class="calendar-description">
+
+        Les disponibilités sont mises à jour
+        automatiquement au fil des réservations.
+
+      </p>
+
+    </div>
+
+
+    <!-- MOIS -->
+
+    <div class="month-selector">
+
+      <div class="month-controls">
+
+        <button
+          type="button"
+          class="month-button active"
+          data-month="8"
+        >
+          Septembre
+        </button>
+
+        <button
+          type="button"
+          class="month-button"
+          data-month="9"
+        >
+          Octobre
+        </button>
+
+        <button
+          type="button"
+          class="month-button"
+          data-month="10"
+        >
+          Novembre
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- GRILLE -->
+
+    <div class="calendar-wrap">
+
+
+      <div class="weekdays">
+
+        <div class="weekday">
+          Lun
+        </div>
+
+        <div class="weekday">
+          Mar
+        </div>
+
+        <div class="weekday">
+          Mer
+        </div>
+
+        <div class="weekday">
+          Jeu
+        </div>
+
+        <div class="weekday">
+          Ven
+        </div>
+
+        <div class="weekday">
+          Sam
+        </div>
+
+        <div class="weekday">
+          Dim
+        </div>
+
+      </div>
+
+
+      <div
+        id="calendarGrid"
+        class="grid"
+      ></div>
+
+
     </div>
 
 
   </section>
 
 
-  <!-- =====================
-       CALENDRIER
-  ====================== -->
+  <!-- =====================================================
+       PIED
+  ====================================================== -->
 
-  <div class="calendar-intro">
+  <footer class="footer">
 
+    Les disponibilités peuvent changer rapidement.
 
-    <h2>
-      Sélectionnez votre date pour l’évènement.
-    </h2>
-
-
-    <p>
-
-      Les disponibilités sont mises
-      à jour automatiquement
-      au fil des réservations.
-
-    </p>
-
-
-  </div>
-
-
-  <!-- =====================
-       MOIS
-  ====================== -->
-
-  <div class="month-selector">
-
-
-    <div class="controls">
-
-
-      <button
-        type="button"
-        class="active"
-        data-month="8"
-      >
-
-        Septembre
-
-      </button>
-
-
-      <button
-        type="button"
-        data-month="9"
-      >
-
-        Octobre
-
-      </button>
-
-
-      <button
-        type="button"
-        data-month="10"
-      >
-
-        Novembre
-
-      </button>
-
-
-    </div>
-
-
-  </div>
-
-
-  <!-- =====================
-       GRILLE
-  ====================== -->
-
-  <div class="wrap">
-
-
-    <div class="weekdays">
-
-
-      <div class="weekday">
-        Lun
-      </div>
-
-      <div class="weekday">
-        Mar
-      </div>
-
-      <div class="weekday">
-        Mer
-      </div>
-
-      <div class="weekday">
-        Jeu
-      </div>
-
-      <div class="weekday">
-        Ven
-      </div>
-
-      <div class="weekday">
-        Sam
-      </div>
-
-      <div class="weekday">
-        Dim
-      </div>
-
-
-    </div>
-
-
-    <div
-      id="calendarGrid"
-      class="grid"
-    ></div>
-
-
-  </div>
-
-
-  <div class="footer">
-
-    Les disponibilités
-    peuvent changer rapidement.
-
-  </div>
+  </footer>
 
 
 </div>
 
 
-<script
-  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-></script>
+<!-- =======================================================
+     SUPABASE
+======================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 
-
-/* =========================
+/* =========================================================
    CONFIGURATION
-========================= */
+========================================================= */
 
-
-const YEAR =
-  2026;
-
+const YEAR = 2026;
 
 const SUPABASE_URL =
   "https://jetogsbyptglaihktdel.supabase.co";
 
-
 const SUPABASE_KEY =
   "sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
-
 
 const supabaseClient =
   supabase.createClient(
@@ -1661,52 +1631,40 @@ const supabaseClient =
 
 
 const monthNames = [
-
   "Janvier",
-
   "Février",
-
   "Mars",
-
   "Avril",
-
   "Mai",
-
   "Juin",
-
   "Juillet",
-
   "Août",
-
   "Septembre",
-
   "Octobre",
-
   "Novembre",
-
   "Décembre"
-
 ];
 
 
-let currentMonth =
-  8;
-
+let currentMonth = 8;
 
 const blockedDates =
   new Map();
 
 
-/* =========================
-   EXPÉRIENCE
-========================= */
-
+/* =========================================================
+   EXPÉRIENCE — EN SAVOIR PLUS
+========================================================= */
 
 const experienceToggle =
   document.getElementById(
     "experienceToggle"
   );
 
+const experienceToggleText =
+  document.getElementById(
+    "experienceToggleText"
+  );
 
 const experienceMore =
   document.getElementById(
@@ -1715,11 +1673,8 @@ const experienceMore =
 
 
 experienceToggle.addEventListener(
-
   "click",
-
   () => {
-
 
     const open =
       experienceMore
@@ -1728,7 +1683,6 @@ experienceToggle.addEventListener(
           "open"
         );
 
-
     experienceToggle
       .classList
       .toggle(
@@ -1736,38 +1690,26 @@ experienceToggle.addEventListener(
         open
       );
 
-
     experienceToggle
       .setAttribute(
         "aria-expanded",
         String(open)
       );
 
-
-    experienceToggle
-      .childNodes[0]
-      .nodeValue =
-
-        open
-
-          ? "Réduire "
-
-          : "En savoir plus ";
-
+    experienceToggleText.textContent =
+      open
+        ? "Réduire"
+        : "En savoir plus";
 
   }
-
 );
 
 
-/* =========================
-   CALENDRIER
-========================= */
+/* =========================================================
+   OUTILS CALENDRIER
+========================================================= */
 
-
-function mondayIndex(
-  jsDay
-){
+function mondayIndex(jsDay){
 
   return (
     jsDay +
@@ -1783,11 +1725,8 @@ function isoDate(
 ){
 
   return (
-
     YEAR +
-
     "-" +
-
     String(
       month +
       1
@@ -1795,16 +1734,13 @@ function isoDate(
       2,
       "0"
     ) +
-
     "-" +
-
     String(
       day
     ).padStart(
       2,
       "0"
     )
-
   );
 
 }
@@ -1821,45 +1757,32 @@ function getStatus(
       day
     );
 
-
   return (
-
     blockedDates.get(
       date
     )
-
     ||
-
     "available"
-
   );
 
 }
 
 
-function getLabel(
-  status
-){
+function getLabel(status){
 
   if(
     status ===
     "booked"
   ){
-
     return "Réservé";
-
   }
-
 
   if(
     status ===
     "unavailable"
   ){
-
     return "Indisponible";
-
   }
-
 
   return "Disponible";
 
@@ -1872,40 +1795,29 @@ function reservationUrl(
 ){
 
   return (
-
     "./reserve.html?day=" +
-
     encodeURIComponent(
       day
     ) +
-
     "&month=" +
-
     encodeURIComponent(
       month
     )
-
   );
 
 }
 
 
-/* =========================
-   SUPABASE
-========================= */
-
+/* =========================================================
+   CHARGER LES RÉSERVATIONS
+========================================================= */
 
 async function loadReservations(){
 
-
   const {
-
     data,
-
     error
-
   } =
-
     await supabaseClient.rpc(
       "get_calendar_blocks"
     );
@@ -1930,36 +1842,24 @@ async function loadReservations(){
     data ||
     []
   ).forEach(
-
     row => {
 
-
       blockedDates.set(
-
         row.event_date,
-
         row.display_status
-
       );
 
-
     }
-
   );
-
 
 }
 
 
-/* =========================
-   AFFICHER CALENDRIER
-========================= */
+/* =========================================================
+   AFFICHER LE CALENDRIER
+========================================================= */
 
-
-function render(
-  month
-){
-
+function render(month){
 
   currentMonth =
     month;
@@ -1986,7 +1886,8 @@ function render(
   const count =
     new Date(
       YEAR,
-      month + 1,
+      month +
+      1,
       0
     ).getDate();
 
@@ -1997,37 +1898,36 @@ function render(
     );
 
 
+  /* CASES VIDES AU DÉBUT */
+
   for(
     let i = 0;
     i < offset;
     i++
   ){
 
-
     const empty =
       document.createElement(
         "div"
       );
 
-
     empty.className =
       "day empty";
-
 
     grid.appendChild(
       empty
     );
 
-
   }
 
+
+  /* JOURS */
 
   for(
     let day = 1;
     day <= count;
     day++
   ){
-
 
     const status =
       getStatus(
@@ -2041,46 +1941,31 @@ function render(
 
         status ===
         "available"
-
           ? "a"
-
           : "div"
 
       );
 
 
     cell.className =
-
       "day " +
-
       status +
-
       (
-
         status ===
         "available"
-
           ? " available-day"
-
           : ""
-
       );
 
 
     cell.innerHTML =
-
       '<div class="num">' +
-
       day +
-
       '</div>' +
-
       '<div class="status">' +
-
       getLabel(
         status
       ) +
-
       '</div>';
 
 
@@ -2088,7 +1973,6 @@ function render(
       status ===
       "available"
     ){
-
 
       cell.href =
         reservationUrl(
@@ -2098,25 +1982,16 @@ function render(
 
 
       cell.setAttribute(
-
         "aria-label",
-
         "Réserver le " +
-
         day +
-
         " " +
-
         monthNames[
           month
         ] +
-
         " " +
-
         YEAR
-
       );
-
 
     }
 
@@ -2125,36 +2000,22 @@ function render(
       cell
     );
 
-
   }
 
 
+  /* CASES VIDES À LA FIN */
+
   const trailing =
-
     (
-
       7 -
-
       (
-
         (
-
           offset +
-
           count
-
-        )
-
-        %
-
+        ) %
         7
-
       )
-
-    )
-
-    %
-
+    ) %
     7;
 
 
@@ -2164,183 +2025,140 @@ function render(
     i++
   ){
 
-
     const empty =
       document.createElement(
         "div"
       );
 
-
     empty.className =
       "day empty";
-
 
     grid.appendChild(
       empty
     );
 
-
   }
 
 
+  /* BOUTON DU MOIS ACTIF */
+
   document
     .querySelectorAll(
-      "button[data-month]"
+      ".month-button"
     )
     .forEach(
-
       button => {
 
-
-        button
-          .classList
-          .toggle(
-
-            "active",
-
-            Number(
-              button.dataset.month
-            ) ===
-            month
-
-          );
-
+        button.classList.toggle(
+          "active",
+          Number(
+            button.dataset.month
+          ) ===
+          month
+        );
 
       }
-
     );
-
 
 }
 
 
-/* =========================
-   CHANGER MOIS
-========================= */
-
+/* =========================================================
+   CHANGEMENT DE MOIS
+========================================================= */
 
 document
   .querySelectorAll(
-    "button[data-month]"
+    ".month-button"
   )
   .forEach(
-
     button => {
 
-
       button.addEventListener(
-
         "click",
-
         () => {
 
-
           render(
-
             Number(
               button.dataset.month
             )
-
           );
 
-
         }
-
       );
 
-
     }
-
   );
 
 
-/* =========================
+/* =========================================================
    DÉMARRAGE
-========================= */
-
+========================================================= */
 
 async function start(){
 
-
   await loadReservations();
-
 
   render(
     8
   );
 
-
 }
-
 
 start();
 
 
+/* ACTUALISATION AU RETOUR SUR LA PAGE */
+
 document.addEventListener(
-
   "visibilitychange",
-
   async () => {
 
-
     if(
-
       document.visibilityState ===
       "visible"
-
     ){
 
-
       await loadReservations();
-
 
       render(
         currentMonth
       );
 
-
     }
 
-
   }
-
 );
 
 
-/* =========================
+/* =========================================================
    ESTIMATEUR
-========================= */
-
+========================================================= */
 
 const guestSlider =
   document.getElementById(
     "guestSlider"
   );
 
-
 const guestNumber =
   document.getElementById(
     "guestNumber"
   );
-
 
 const personPrice =
   document.getElementById(
     "personPrice"
   );
 
-
 const eventFee =
   document.getElementById(
     "eventFee"
   );
 
-
 const estimatorNote =
   document.getElementById(
     "estimatorNote"
   );
-
 
 const largeEventNote =
   document.getElementById(
@@ -2352,9 +2170,7 @@ function calculateEventPrice(
   guests
 ){
 
-
   let pricePerPerson;
-
   let fixedFee;
 
 
@@ -2363,170 +2179,129 @@ function calculateEventPrice(
     10
   ){
 
-
     pricePerPerson =
       29;
-
 
     fixedFee =
       175;
 
-
   }
-
 
   else if(
     guests <=
     15
   ){
 
-
     pricePerPerson =
       27;
-
 
     fixedFee =
       200;
 
-
   }
-
 
   else if(
     guests <=
     20
   ){
 
-
     pricePerPerson =
       25;
-
 
     fixedFee =
       250;
 
-
   }
-
 
   else if(
     guests <=
     25
   ){
 
-
     pricePerPerson =
       23;
-
 
     fixedFee =
       300;
 
-
   }
-
 
   else if(
     guests <=
     30
   ){
 
-
     pricePerPerson =
       22;
-
 
     fixedFee =
       350;
 
-
   }
-
 
   else if(
     guests <=
     40
   ){
 
-
     pricePerPerson =
       21;
-
 
     fixedFee =
       400;
 
-
   }
-
 
   else if(
     guests <=
     50
   ){
 
-
     pricePerPerson =
       20;
-
 
     fixedFee =
       500;
 
-
   }
-
 
   else if(
     guests <=
     75
   ){
 
-
     pricePerPerson =
       19;
-
 
     fixedFee =
       600;
 
-
   }
 
-
   else{
-
 
     pricePerPerson =
       18;
 
-
     fixedFee =
       750;
-
 
   }
 
 
   return {
-
     pricePerPerson,
-
     fixedFee
-
   };
-
 
 }
 
 
-/* =========================
-   UPDATE ESTIMATEUR
-========================= */
-
+/* =========================================================
+   METTRE À JOUR L'ESTIMATION
+========================================================= */
 
 function updateEstimator(){
-
 
   const guests =
     Number(
@@ -2545,16 +2320,12 @@ function updateEstimator(){
 
 
   personPrice.textContent =
-
     pricing.pricePerPerson +
-
     " $";
 
 
   eventFee.textContent =
-
     pricing.fixedFee +
-
     " $";
 
 
@@ -2563,26 +2334,21 @@ function updateEstimator(){
     50
   ){
 
-
     largeEventNote
       .classList
       .add(
         "show"
       );
 
-
   }
 
-
   else{
-
 
     largeEventNote
       .classList
       .remove(
         "show"
       );
-
 
   }
 
@@ -2592,43 +2358,30 @@ function updateEstimator(){
     10
   ){
 
-
     estimatorNote.textContent =
-
       "Un minimum de facturation s’applique aux petits événements. Estimation à titre indicatif. Le prix final peut varier selon le menu, la localisation et les besoins particuliers de votre événement.";
 
-
   }
-
 
   else{
 
-
     estimatorNote.textContent =
-
       "Estimation à titre indicatif. Le prix final peut varier selon le menu, les ingrédients sélectionnés, la localisation et les besoins particuliers de votre événement.";
 
-
   }
-
 
 }
 
 
 guestSlider.addEventListener(
-
   "input",
-
   updateEstimator
-
 );
 
 
 updateEstimator();
 
-
 </script>
-
 
 </body>
 
