@@ -50,8 +50,7 @@ body{
 ========================= */
 
 .top{
-  padding:26px 30px 24px;
-  border-bottom:1px solid var(--line);
+  padding:26px 30px 18px;
 }
 
 .main-title{
@@ -62,6 +61,32 @@ body{
   line-height:1;
   font-weight:700;
   white-space:nowrap;
+}
+
+
+/* =========================
+   PHOTO PRINCIPALE
+========================= */
+
+.hero-photo{
+  padding:0 30px 28px;
+  border-bottom:1px solid var(--line);
+  background:var(--cream);
+}
+
+.hero-photo-card{
+  overflow:hidden;
+  border-radius:22px;
+  background:#DED4C8;
+  box-shadow:0 14px 34px rgba(65,35,39,.10);
+}
+
+.hero-photo-card img{
+  display:block;
+  width:100%;
+  aspect-ratio:16 / 7;
+  object-fit:cover;
+  object-position:center 42%;
 }
 
 
@@ -561,12 +586,25 @@ button.active{
   }
 
   .top{
-    padding:21px 18px 19px;
+    padding:21px 18px 14px;
   }
 
   .main-title{
     font-size:clamp(21px,6.3vw,28px);
     white-space:nowrap;
+  }
+
+  .hero-photo{
+    padding:0 18px 20px;
+  }
+
+  .hero-photo-card{
+    border-radius:18px;
+  }
+
+  .hero-photo-card img{
+    aspect-ratio:4 / 3;
+    object-position:center 44%;
   }
 
   .concept{
@@ -721,6 +759,16 @@ button.active{
     white-space:nowrap;
   }
 
+  .hero-photo{
+    padding-left:14px;
+    padding-right:14px;
+  }
+
+  .hero-photo-card img{
+    aspect-ratio:1 / 1;
+    object-position:center 43%;
+  }
+
   .weekdays,
   .grid{
     gap:3px;
@@ -761,6 +809,26 @@ button.active{
       Rafa Pizza · Réservations
     </h1>
   </div>
+
+
+  <!-- =====================
+       PHOTO PRINCIPALE
+  ====================== -->
+
+  <section class="hero-photo" aria-label="Rafa Pizza en action">
+
+    <div class="hero-photo-card">
+
+      <img
+        src="FE0F2EED-EA4C-4039-A532-16A5FF633ED0.jpeg"
+        alt="Préparation artisanale d’une pizza Rafa sur place"
+        loading="eager"
+        fetchpriority="high"
+      >
+
+    </div>
+
+  </section>
 
 
   <!-- =====================
@@ -854,11 +922,15 @@ button.active{
     <div class="estimator-card">
 
       <div class="guest-display">
-        <span>Votre événement</span>
+
+        <span>
+          Votre événement
+        </span>
 
         <strong>
           <span id="guestNumber">20</span> invités
         </strong>
+
       </div>
 
       <input
@@ -872,21 +944,45 @@ button.active{
       >
 
       <div class="slider-labels">
-        <span>1 invité</span>
-        <span>50+</span>
-        <span>100 invités</span>
+
+        <span>
+          1 invité
+        </span>
+
+        <span>
+          50+
+        </span>
+
+        <span>
+          100 invités
+        </span>
+
       </div>
 
       <div class="estimate-results">
 
         <div class="estimate-box">
-          <span>Prix / personne</span>
-          <strong id="personPrice">25 $</strong>
+
+          <span>
+            Prix / personne
+          </span>
+
+          <strong id="personPrice">
+            25 $
+          </strong>
+
         </div>
 
         <div class="estimate-box">
-          <span>Frais de service & installation</span>
-          <strong id="eventFee">250 $</strong>
+
+          <span>
+            Frais de service & installation
+          </span>
+
+          <strong id="eventFee">
+            250 $
+          </strong>
+
         </div>
 
       </div>
@@ -932,15 +1028,25 @@ button.active{
 
     <div class="controls">
 
-      <button type="button" class="active" data-month="8">
+      <button
+        type="button"
+        class="active"
+        data-month="8"
+      >
         Septembre
       </button>
 
-      <button type="button" data-month="9">
+      <button
+        type="button"
+        data-month="9"
+      >
         Octobre
       </button>
 
-      <button type="button" data-month="10">
+      <button
+        type="button"
+        data-month="10"
+      >
         Novembre
       </button>
 
@@ -952,16 +1058,41 @@ button.active{
   <div class="wrap">
 
     <div class="weekdays">
-      <div class="weekday">Lun</div>
-      <div class="weekday">Mar</div>
-      <div class="weekday">Mer</div>
-      <div class="weekday">Jeu</div>
-      <div class="weekday">Ven</div>
-      <div class="weekday">Sam</div>
-      <div class="weekday">Dim</div>
+
+      <div class="weekday">
+        Lun
+      </div>
+
+      <div class="weekday">
+        Mar
+      </div>
+
+      <div class="weekday">
+        Mer
+      </div>
+
+      <div class="weekday">
+        Jeu
+      </div>
+
+      <div class="weekday">
+        Ven
+      </div>
+
+      <div class="weekday">
+        Sam
+      </div>
+
+      <div class="weekday">
+        Dim
+      </div>
+
     </div>
 
-    <div id="calendarGrid" class="grid"></div>
+    <div
+      id="calendarGrid"
+      class="grid"
+    ></div>
 
   </div>
 
@@ -1012,7 +1143,8 @@ const monthNames = [
 
 let currentMonth = 8;
 
-const blockedDates = new Map();
+const blockedDates =
+  new Map();
 
 
 /* =========================
@@ -1062,54 +1194,93 @@ experienceToggle.addEventListener(
 ========================= */
 
 function mondayIndex(jsDay){
-  return (jsDay + 6) % 7;
+
+  return (
+    jsDay +
+    6
+  ) % 7;
+
 }
+
 
 function isoDate(month,day){
 
   return (
     YEAR +
     "-" +
-    String(month + 1).padStart(2,"0") +
+    String(
+      month +
+      1
+    ).padStart(
+      2,
+      "0"
+    ) +
     "-" +
-    String(day).padStart(2,"0")
+    String(
+      day
+    ).padStart(
+      2,
+      "0"
+    )
   );
 
 }
 
+
 function getStatus(month,day){
 
   const date =
-    isoDate(month,day);
+    isoDate(
+      month,
+      day
+    );
 
   return (
-    blockedDates.get(date) ||
+    blockedDates.get(
+      date
+    ) ||
     "available"
   );
 
 }
 
+
 function getLabel(status){
 
-  if(status === "booked"){
+  if(
+    status ===
+    "booked"
+  ){
+
     return "Réservé";
+
   }
 
-  if(status === "unavailable"){
+  if(
+    status ===
+    "unavailable"
+  ){
+
     return "Indisponible";
+
   }
 
   return "Disponible";
 
 }
 
+
 function reservationUrl(day,month){
 
   return (
     "./reserve.html?day=" +
-    encodeURIComponent(day) +
+    encodeURIComponent(
+      day
+    ) +
     "&month=" +
-    encodeURIComponent(month)
+    encodeURIComponent(
+      month
+    )
   );
 
 }
@@ -1142,7 +1313,10 @@ async function loadReservations(){
 
   blockedDates.clear();
 
-  (data || []).forEach(
+  (
+    data ||
+    []
+  ).forEach(
     row => {
 
       blockedDates.set(
@@ -1162,14 +1336,16 @@ async function loadReservations(){
 
 function render(month){
 
-  currentMonth = month;
+  currentMonth =
+    month;
 
   const grid =
     document.getElementById(
       "calendarGrid"
     );
 
-  grid.innerHTML = "";
+  grid.innerHTML =
+    "";
 
   const first =
     new Date(
@@ -1181,7 +1357,8 @@ function render(month){
   const count =
     new Date(
       YEAR,
-      month + 1,
+      month +
+      1,
       0
     ).getDate();
 
@@ -1191,7 +1368,11 @@ function render(month){
     );
 
 
-  for(let i=0;i<offset;i++){
+  for(
+    let i = 0;
+    i < offset;
+    i++
+  ){
 
     const empty =
       document.createElement(
@@ -1208,7 +1389,11 @@ function render(month){
   }
 
 
-  for(let day=1;day<=count;day++){
+  for(
+    let day = 1;
+    day <= count;
+    day++
+  ){
 
     const status =
       getStatus(
@@ -1218,7 +1403,8 @@ function render(month){
 
     const cell =
       document.createElement(
-        status === "available"
+        status ===
+        "available"
           ? "a"
           : "div"
       );
@@ -1227,7 +1413,8 @@ function render(month){
       "day " +
       status +
       (
-        status === "available"
+        status ===
+        "available"
           ? " available-day"
           : ""
       );
@@ -1237,11 +1424,16 @@ function render(month){
       day +
       '</div>' +
       '<div class="status">' +
-      getLabel(status) +
+      getLabel(
+        status
+      ) +
       '</div>';
 
 
-    if(status === "available"){
+    if(
+      status ===
+      "available"
+    ){
 
       cell.href =
         reservationUrl(
@@ -1254,7 +1446,9 @@ function render(month){
         "Réserver le " +
         day +
         " " +
-        monthNames[month] +
+        monthNames[
+          month
+        ] +
         " " +
         YEAR
       );
@@ -1275,12 +1469,18 @@ function render(month){
         (
           offset +
           count
-        ) % 7
+        ) %
+        7
       )
-    ) % 7;
+    ) %
+    7;
 
 
-  for(let i=0;i<trailing;i++){
+  for(
+    let i = 0;
+    i < trailing;
+    i++
+  ){
 
     const empty =
       document.createElement(
@@ -1308,7 +1508,8 @@ function render(month){
           "active",
           Number(
             button.dataset.month
-          ) === month
+          ) ===
+          month
         );
 
       }
@@ -1353,7 +1554,9 @@ async function start(){
 
   await loadReservations();
 
-  render(8);
+  render(
+    8
+  );
 
 }
 
@@ -1419,68 +1622,120 @@ const largeEventNote =
 function calculateEventPrice(guests){
 
   let pricePerPerson;
+
   let fixedFee;
 
-  if(guests <= 10){
+  if(
+    guests <=
+    10
+  ){
 
-    pricePerPerson = 29;
-    fixedFee = 175;
+    pricePerPerson =
+      29;
 
-  }
-
-  else if(guests <= 15){
-
-    pricePerPerson = 27;
-    fixedFee = 200;
-
-  }
-
-  else if(guests <= 20){
-
-    pricePerPerson = 25;
-    fixedFee = 250;
+    fixedFee =
+      175;
 
   }
 
-  else if(guests <= 25){
+  else if(
+    guests <=
+    15
+  ){
 
-    pricePerPerson = 23;
-    fixedFee = 300;
+    pricePerPerson =
+      27;
 
-  }
-
-  else if(guests <= 30){
-
-    pricePerPerson = 22;
-    fixedFee = 350;
-
-  }
-
-  else if(guests <= 40){
-
-    pricePerPerson = 21;
-    fixedFee = 400;
+    fixedFee =
+      200;
 
   }
 
-  else if(guests <= 50){
+  else if(
+    guests <=
+    20
+  ){
 
-    pricePerPerson = 20;
-    fixedFee = 500;
+    pricePerPerson =
+      25;
+
+    fixedFee =
+      250;
 
   }
 
-  else if(guests <= 75){
+  else if(
+    guests <=
+    25
+  ){
 
-    pricePerPerson = 19;
-    fixedFee = 600;
+    pricePerPerson =
+      23;
+
+    fixedFee =
+      300;
+
+  }
+
+  else if(
+    guests <=
+    30
+  ){
+
+    pricePerPerson =
+      22;
+
+    fixedFee =
+      350;
+
+  }
+
+  else if(
+    guests <=
+    40
+  ){
+
+    pricePerPerson =
+      21;
+
+    fixedFee =
+      400;
+
+  }
+
+  else if(
+    guests <=
+    50
+  ){
+
+    pricePerPerson =
+      20;
+
+    fixedFee =
+      500;
+
+  }
+
+  else if(
+    guests <=
+    75
+  ){
+
+    pricePerPerson =
+      19;
+
+    fixedFee =
+      600;
 
   }
 
   else{
 
-    pricePerPerson = 18;
-    fixedFee = 750;
+    pricePerPerson =
+      18;
+
+    fixedFee =
+      750;
 
   }
 
@@ -1524,7 +1779,10 @@ function updateEstimator(){
     " $";
 
 
-  if(guests > 50){
+  if(
+    guests >
+    50
+  ){
 
     largeEventNote.classList.add(
       "show"
@@ -1541,7 +1799,10 @@ function updateEstimator(){
   }
 
 
-  if(guests < 10){
+  if(
+    guests <
+    10
+  ){
 
     estimatorNote.textContent =
       "Un minimum de facturation s’applique aux petits événements. Estimation à titre indicatif. Le prix final peut varier selon le menu, la localisation et les besoins particuliers de votre événement.";
