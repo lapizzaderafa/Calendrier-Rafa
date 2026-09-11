@@ -631,16 +631,9 @@ body{
 
     <div class="login-email">raphael.frenette@gmail.com</div>
 
-    <input
-      id="password"
-      type="password"
-      placeholder="Mot de passe"
-      autocomplete="current-password"
-    >
+    <input id="password" type="password" placeholder="Mot de passe" autocomplete="current-password">
 
-    <button id="loginBtn" class="btn primary">
-      Se connecter
-    </button>
+    <button id="loginBtn" class="btn primary">Se connecter</button>
 
     <button id="forgotBtn" class="btn secondary">
       Réinitialiser mon mot de passe
@@ -700,9 +693,9 @@ body{
 
       <div class="panel-body">
         <div class="calendar-head">
-          <button id="prevMonth" class="navbtn" aria-label="Mois précédent">‹</button>
+          <button id="prevMonth" class="navbtn">‹</button>
           <h3 id="monthTitle"></h3>
-          <button id="nextMonth" class="navbtn" aria-label="Mois suivant">›</button>
+          <button id="nextMonth" class="navbtn">›</button>
         </div>
 
         <div class="week">
@@ -750,7 +743,6 @@ body{
           <option value="all" selected>Tous</option>
           <option value="confirmed">Confirmés</option>
           <option value="pending">En attente</option>
-          <option value="unavailable">Bloqués</option>
           <option value="cancelled">Annulés</option>
         </select>
       </div>
@@ -839,8 +831,8 @@ body{
           <input id="guestCount" type="number" min="0">
 
           <div class="block-note">
-            Si ce champ est vide ou à 0, l’événement est considéré comme
-            un simple blocage personnel : aucun revenu et aucune facture.
+            Si ce champ est vide ou à 0, la date est considérée comme un blocage personnel.
+            Elle reste indisponible dans le calendrier, mais n'est pas considérée comme une réservation.
           </div>
         </div>
 
@@ -865,11 +857,7 @@ body{
 
           <div id="pricePreview" class="price-preview"></div>
 
-          <button
-            id="recalculatePrice"
-            type="button"
-            class="btn secondary small"
-          >
+          <button id="recalculatePrice" type="button" class="btn secondary small">
             Recalculer selon le site
           </button>
         </div>
@@ -920,7 +908,6 @@ body{
         </button>
       </div>
     </form>
-
   </div>
 </div>
 
@@ -928,10 +915,6 @@ body{
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 
 <script>
-
-/* =========================
-   CONFIG
-========================= */
 
 const SUPABASE_URL =
   'https://jetogsbyptglaihktdel.supabase.co';
@@ -958,55 +941,31 @@ const $ =
 let reservations = [];
 let editing = null;
 
-let viewDate =
-  new Date();
-
+let viewDate = new Date();
 viewDate.setDate(1);
 
 const monthNames = [
-  'Janvier',
-  'Février',
-  'Mars',
-  'Avril',
-  'Mai',
-  'Juin',
-  'Juillet',
-  'Août',
-  'Septembre',
-  'Octobre',
-  'Novembre',
-  'Décembre'
+  'Janvier','Février','Mars','Avril','Mai','Juin',
+  'Juillet','Août','Septembre','Octobre','Novembre','Décembre'
 ];
 
-
-/* =========================
-   UTILS
-========================= */
-
 function escapeHtml(value){
-
   return String(value || '')
     .replaceAll('&','&amp;')
     .replaceAll('<','&lt;')
     .replaceAll('>','&gt;')
     .replaceAll('"','&quot;')
     .replaceAll("'","&#039;");
-
 }
 
 function localToday(){
 
-  const d =
-    new Date();
+  const d = new Date();
 
   return [
     d.getFullYear(),
-    String(
-      d.getMonth()+1
-    ).padStart(2,'0'),
-    String(
-      d.getDate()
-    ).padStart(2,'0')
+    String(d.getMonth()+1).padStart(2,'0'),
+    String(d.getDate()).padStart(2,'0')
   ].join('-');
 
 }
@@ -1026,9 +985,7 @@ function fmtDate(d){
       year:'numeric'
     }
   ).format(
-    new Date(
-      d+'T12:00:00'
-    )
+    new Date(d+'T12:00:00')
   );
 
 }
@@ -1047,9 +1004,7 @@ function fmtDateLong(d){
       year:'numeric'
     }
   ).format(
-    new Date(
-      d+'T12:00:00'
-    )
+    new Date(d+'T12:00:00')
   );
 
 }
@@ -1072,9 +1027,7 @@ function money(value){
       minimumFractionDigits:0,
       maximumFractionDigits:2
     }
-  ).format(
-    Number(value)
-  );
+  ).format(Number(value));
 
 }
 
@@ -1106,36 +1059,27 @@ function activeReservation(r){
     'pending',
     'confirmed',
     'unavailable'
-  ].includes(
-    r.status
-  );
+  ].includes(r.status);
 
 }
 
 function hasGuests(r){
 
-  return (
-    Number(
-      r?.guest_count
-    ) > 0
-  );
+  return Number(r?.guest_count) > 0;
 
 }
 
+function isRealEvent(r){
 
-/* =========================
-   TARIFICATION
-========================= */
+  return hasGuests(r);
+
+}
 
 function calculateEventPrice(guests){
 
-  guests =
-    Number(guests);
+  guests = Number(guests);
 
-  if(
-    !guests ||
-    guests <= 0
-  ){
+  if(!guests || guests <= 0){
     return null;
   }
 
@@ -1143,98 +1087,64 @@ function calculateEventPrice(guests){
   let fixedFee;
 
   if(guests <= 10){
-
     pricePerPerson = 29;
     fixedFee = 175;
-
   }
 
   else if(guests <= 15){
-
     pricePerPerson = 27;
     fixedFee = 200;
-
   }
 
   else if(guests <= 20){
-
     pricePerPerson = 25;
     fixedFee = 250;
-
   }
 
   else if(guests <= 25){
-
     pricePerPerson = 23;
     fixedFee = 300;
-
   }
 
   else if(guests <= 30){
-
     pricePerPerson = 22;
     fixedFee = 350;
-
   }
 
   else if(guests <= 40){
-
     pricePerPerson = 21;
     fixedFee = 400;
-
   }
 
   else if(guests <= 50){
-
     pricePerPerson = 20;
     fixedFee = 500;
-
   }
 
   else if(guests <= 75){
-
     pricePerPerson = 19;
     fixedFee = 600;
-
   }
 
   else{
-
     pricePerPerson = 18;
     fixedFee = 750;
-
   }
 
   return {
     pricePerPerson,
     fixedFee,
-    guestSubtotal:
-      guests *
-      pricePerPerson,
-    total:
-      guests *
-      pricePerPerson +
-      fixedFee
+    guestSubtotal:guests * pricePerPerson,
+    total:guests * pricePerPerson + fixedFee
   };
 
 }
 
-
-/* =========================
-   REVENU
-========================= */
-
 function revenueForReservation(r){
 
   if(
-    r.status !==
-    'confirmed'
-  ){
-    return 0;
-  }
-
-  if(
-    !hasGuests(r)
+    r.status !== 'confirmed' ||
+    !isRealEvent(r)
   ){
     return 0;
   }
@@ -1244,19 +1154,11 @@ function revenueForReservation(r){
     r.quoted_price !== undefined &&
     r.quoted_price !== ''
   ){
-
-    return (
-      Number(
-        r.quoted_price
-      ) || 0
-    );
-
+    return Number(r.quoted_price) || 0;
   }
 
   const pricing =
-    calculateEventPrice(
-      r.guest_count
-    );
+    calculateEventPrice(r.guest_count);
 
   return pricing
     ? pricing.total
@@ -1268,46 +1170,27 @@ function canGenerateInvoice(r){
 
   return (
     !!r &&
-    r.status ===
-      'confirmed' &&
-    hasGuests(r) &&
-    revenueForReservation(r) >
-      0
+    r.status === 'confirmed' &&
+    isRealEvent(r) &&
+    revenueForReservation(r) > 0
   );
 
 }
 
-
-/* =========================
-   AUTH
-========================= */
-
 async function sessionGate(){
 
   const {
-    data:{
-      session
-    }
+    data:{session}
   } =
-    await db.auth
-      .getSession();
+    await db.auth.getSession();
 
   if(
     session &&
-    (
-      session.user.email ||
-      ''
-    ).toLowerCase() ===
-    ADMIN_EMAIL.toLowerCase()
+    (session.user.email || '').toLowerCase() === ADMIN_EMAIL.toLowerCase()
   ){
 
-    $('loginWrap')
-      .classList
-      .add('hidden');
-
-    $('app')
-      .classList
-      .remove('hidden');
+    $('loginWrap').classList.add('hidden');
+    $('app').classList.remove('hidden');
 
     await loadData();
 
@@ -1315,13 +1198,8 @@ async function sessionGate(){
 
   else{
 
-    $('loginWrap')
-      .classList
-      .remove('hidden');
-
-    $('app')
-      .classList
-      .add('hidden');
+    $('loginWrap').classList.remove('hidden');
+    $('app').classList.add('hidden');
 
   }
 
@@ -1335,33 +1213,25 @@ async () => {
 
   if(!password){
 
-    $('loginMsg')
-      .textContent =
+    $('loginMsg').textContent =
       'Entre ton mot de passe.';
 
     return;
 
   }
 
-  $('loginMsg')
-    .textContent =
+  $('loginMsg').textContent =
     'Connexion…';
 
-  const {
-    error
-  } =
-    await db.auth
-      .signInWithPassword({
-        email:
-          ADMIN_EMAIL,
-        password:
-          password
-      });
+  const {error} =
+    await db.auth.signInWithPassword({
+      email:ADMIN_EMAIL,
+      password
+    });
 
   if(error){
 
-    $('loginMsg')
-      .textContent =
+    $('loginMsg').textContent =
       'Connexion impossible. Vérifie ton mot de passe.';
 
     return;
@@ -1372,45 +1242,32 @@ async () => {
 
 };
 
-$('password')
-  .addEventListener(
-    'keydown',
-    e => {
+$('password').addEventListener(
+  'keydown',
+  e => {
 
-      if(
-        e.key ===
-        'Enter'
-      ){
-
-        $('loginBtn')
-          .click();
-
-      }
-
+    if(e.key === 'Enter'){
+      $('loginBtn').click();
     }
-  );
+
+  }
+);
 
 $('forgotBtn').onclick =
 async () => {
 
-  $('loginMsg')
-    .textContent =
+  $('loginMsg').textContent =
     'Envoi du courriel…';
 
-  const {
-    error
-  } =
-    await db.auth
-      .resetPasswordForEmail(
-        ADMIN_EMAIL,
-        {
-          redirectTo:
-            ADMIN_URL
-        }
-      );
+  const {error} =
+    await db.auth.resetPasswordForEmail(
+      ADMIN_EMAIL,
+      {
+        redirectTo:ADMIN_URL
+      }
+    );
 
-  $('loginMsg')
-    .textContent =
+  $('loginMsg').textContent =
     error
       ? error.message
       : 'Courriel de récupération envoyé.';
@@ -1427,42 +1284,31 @@ async () => {
 
 };
 
-let recoveryHandled =
-  false;
+let recoveryHandled = false;
 
 db.auth.onAuthStateChange(
-  async (
-    event
-  ) => {
+  async event => {
 
     if(
-      event ===
-      'PASSWORD_RECOVERY' &&
+      event === 'PASSWORD_RECOVERY' &&
       !recoveryHandled
     ){
 
-      recoveryHandled =
-        true;
+      recoveryHandled = true;
 
       const newPassword =
         prompt(
           'Entre ton nouveau mot de passe.'
         );
 
-      if(
-        !newPassword
-      ){
+      if(!newPassword){
         return;
       }
 
-      const {
-        error
-      } =
-        await db.auth
-          .updateUser({
-            password:
-              newPassword
-          });
+      const {error} =
+        await db.auth.updateUser({
+          password:newPassword
+        });
 
       if(error){
 
@@ -1486,11 +1332,6 @@ db.auth.onAuthStateChange(
 
   }
 );
-
-
-/* =========================
-   LOAD
-========================= */
 
 async function loadData(){
 
@@ -1535,33 +1376,24 @@ function renderAll(){
 
 }
 
-
-/* =========================
-   STATS + CA
-========================= */
-
 function renderStats(){
 
   const today =
     localToday();
 
-  $('pendingStat')
-    .textContent =
+  $('pendingStat').textContent =
     reservations.filter(
       r =>
-        r.status ===
-        'pending'
+        r.status === 'pending' &&
+        isRealEvent(r)
     ).length;
 
-  $('confirmedStat')
-    .textContent =
+  $('confirmedStat').textContent =
     reservations.filter(
       r =>
-        r.status ===
-          'confirmed' &&
-        r.event_date >=
-          today &&
-        hasGuests(r)
+        r.status === 'confirmed' &&
+        r.event_date >= today &&
+        isRealEvent(r)
     ).length;
 
   const now =
@@ -1570,19 +1402,14 @@ function renderStats(){
   const monthPrefix =
     now.getFullYear() +
     '-' +
-    String(
-      now.getMonth()+1
-    ).padStart(
-      2,
-      '0'
-    );
+    String(now.getMonth()+1)
+      .padStart(2,'0');
 
   const billable =
     reservations.filter(
       r =>
-        r.status ===
-          'confirmed' &&
-        hasGuests(r)
+        r.status === 'confirmed' &&
+        isRealEvent(r)
     );
 
   const monthRevenue =
@@ -1590,63 +1417,31 @@ function renderStats(){
       .filter(
         r =>
           r.event_date &&
-          r.event_date.startsWith(
-            monthPrefix
-          )
+          r.event_date.startsWith(monthPrefix)
       )
       .reduce(
-        (
-          total,
-          r
-        ) =>
-          total +
-          revenueForReservation(r),
+        (total,r) =>
+          total + revenueForReservation(r),
         0
       );
 
   const totalRevenue =
     billable.reduce(
-      (
-        total,
-        r
-      ) =>
-        total +
-        revenueForReservation(r),
+      (total,r) =>
+        total + revenueForReservation(r),
       0
     );
 
-  $('monthRevenueStat')
-    .textContent =
-    money(
-      monthRevenue
-    );
+  $('monthRevenueStat').textContent =
+    money(monthRevenue);
 
-  $('totalRevenueStat')
-    .textContent =
-    money(
-      totalRevenue
-    );
+  $('totalRevenueStat').textContent =
+    money(totalRevenue);
 
-  const blocks =
-    reservations.filter(
-      r =>
-        r.status ===
-          'confirmed' &&
-        !hasGuests(r)
-    ).length;
-
-  $('financeNote')
-    .textContent =
-    blocks
-      ? `${blocks} date(s) confirmée(s) sans invités sont considérées comme des blocages personnels et ne comptent pas dans le chiffre d’affaires.`
-      : 'Le chiffre d’affaires comprend uniquement les événements confirmés avec un nombre d’invités.';
+  $('financeNote').textContent =
+    'Le chiffre d’affaires comprend uniquement les vraies réservations confirmées.';
 
 }
-
-
-/* =========================
-   CALENDRIER
-========================= */
 
 function renderCalendar(){
 
@@ -1656,96 +1451,55 @@ function renderCalendar(){
   const month =
     viewDate.getMonth();
 
-  $('monthTitle')
-    .textContent =
+  $('monthTitle').textContent =
     `${monthNames[month]} ${year}`;
 
   const first =
-    new Date(
-      year,
-      month,
-      1
-    );
+    new Date(year,month,1);
 
   const start =
     new Date(first);
 
   const mondayIndex =
-    (
-      first.getDay() +
-      6
-    ) % 7;
+    (first.getDay()+6)%7;
 
   start.setDate(
-    first.getDate() -
-    mondayIndex
+    first.getDate()-mondayIndex
   );
 
-  $('days')
-    .innerHTML =
-    '';
+  $('days').innerHTML = '';
 
   const today =
     localToday();
 
-  for(
-    let i=0;
-    i<42;
-    i++
-  ){
+  for(let i=0;i<42;i++){
 
     const d =
       new Date(start);
 
     d.setDate(
-      start.getDate() +
-      i
+      start.getDate()+i
     );
 
     const iso =
       [
         d.getFullYear(),
-        String(
-          d.getMonth()+1
-        ).padStart(
-          2,
-          '0'
-        ),
-        String(
-          d.getDate()
-        ).padStart(
-          2,
-          '0'
-        )
+        String(d.getMonth()+1).padStart(2,'0'),
+        String(d.getDate()).padStart(2,'0')
       ].join('-');
 
     const cell =
-      document
-        .createElement(
-          'div'
-        );
+      document.createElement('div');
 
     cell.className =
       'day';
 
-    if(
-      d.getMonth() !==
-      month
-    ){
-
-      cell.classList
-        .add('out');
-
+    if(d.getMonth() !== month){
+      cell.classList.add('out');
     }
 
-    if(
-      iso ===
-      today
-    ){
-
-      cell.classList
-        .add('today');
-
+    if(iso === today){
+      cell.classList.add('today');
     }
 
     cell.innerHTML =
@@ -1758,8 +1512,7 @@ function renderCalendar(){
     const dayEvents =
       reservations.filter(
         r =>
-          r.event_date ===
-            iso &&
+          r.event_date === iso &&
           activeReservation(r)
       );
 
@@ -1767,33 +1520,33 @@ function renderCalendar(){
       r => {
 
         const pill =
-          document
-            .createElement(
-              'div'
-            );
+          document.createElement('div');
+
+        let pillStatus =
+          r.status;
+
+        if(!isRealEvent(r)){
+          pillStatus = 'unavailable';
+        }
 
         pill.className =
-          `event-pill ${r.status}`;
+          `event-pill ${pillStatus}`;
 
         pill.textContent =
-          r.full_name ||
-          (
-            hasGuests(r)
-              ? 'Événement'
-              : 'Bloqué'
-          );
+          isRealEvent(r)
+            ? (r.full_name || 'Événement')
+            : 'Bloqué';
 
         pill.onclick =
           event => {
 
             event.stopPropagation();
+
             openReservation(r);
 
           };
 
-        cell.appendChild(
-          pill
-        );
+        cell.appendChild(pill);
 
       }
     );
@@ -1802,19 +1555,11 @@ function renderCalendar(){
       () =>
         openNew(iso);
 
-    $('days')
-      .appendChild(
-        cell
-      );
+    $('days').appendChild(cell);
 
   }
 
 }
-
-
-/* =========================
-   LISTES
-========================= */
 
 function renderLists(){
 
@@ -1824,25 +1569,19 @@ function renderLists(){
   const pending =
     reservations.filter(
       r =>
-        r.status ===
-        'pending'
+        r.status === 'pending' &&
+        isRealEvent(r)
     );
 
   const upcoming =
     reservations.filter(
       r =>
-        r.event_date >=
-          today &&
-        [
-          'confirmed',
-          'unavailable'
-        ].includes(
-          r.status
-        )
+        r.event_date >= today &&
+        r.status === 'confirmed' &&
+        isRealEvent(r)
     );
 
-  $('pendingList')
-    .innerHTML =
+  $('pendingList').innerHTML =
     pending.length
       ? ''
       : `
@@ -1859,8 +1598,7 @@ function renderLists(){
         )
   );
 
-  $('upcomingList')
-    .innerHTML =
+  $('upcomingList').innerHTML =
     upcoming.length
       ? ''
       : `
@@ -1882,21 +1620,14 @@ function renderLists(){
 function reservationCard(r){
 
   const div =
-    document
-      .createElement(
-        'div'
-      );
+    document.createElement('div');
 
   div.className =
     'card';
 
   const title =
     r.full_name ||
-    (
-      hasGuests(r)
-        ? 'Événement'
-        : 'Date bloquée'
-    );
+    'Événement';
 
   const revenue =
     revenueForReservation(r);
@@ -1911,11 +1642,7 @@ function reservationCard(r){
 
           <div class="meta">
             ${fmtDate(r.event_date)}
-            ${
-              hasGuests(r)
-                ? ` · ${r.guest_count} pers.`
-                : ' · Blocage personnel'
-            }
+            · ${r.guest_count} pers.
             ${
               r.city
                 ? ` · ${escapeHtml(r.city)}`
@@ -1943,19 +1670,13 @@ function reservationCard(r){
 
 }
 
-
-/* =========================
-   TABLEAU
-========================= */
-
 function renderEventsTable(){
 
   const today =
     localToday();
 
   const filter =
-    $('eventFilter')
-      .value;
+    $('eventFilter').value;
 
   const search =
     $('eventSearch')
@@ -1964,34 +1685,27 @@ function renderEventsTable(){
       .toLowerCase();
 
   let rows =
-    [...reservations];
+    reservations.filter(
+      r => isRealEvent(r)
+    );
 
-  if(
-    filter ===
-    'future'
-  ){
+  if(filter === 'future'){
 
     rows =
       rows.filter(
         r =>
-          r.event_date >=
-            today &&
-          r.status !==
-            'cancelled'
+          r.event_date >= today &&
+          r.status !== 'cancelled'
       );
 
   }
 
-  else if(
-    filter !==
-    'all'
-  ){
+  else if(filter !== 'all'){
 
     rows =
       rows.filter(
         r =>
-          r.status ===
-          filter
+          r.status === filter
       );
 
   }
@@ -2015,8 +1729,7 @@ function renderEventsTable(){
             .join(' ')
             .toLowerCase();
 
-          return haystack
-            .includes(search);
+          return haystack.includes(search);
 
         }
       );
@@ -2024,10 +1737,7 @@ function renderEventsTable(){
   }
 
   rows.sort(
-    (
-      a,
-      b
-    ) =>
+    (a,b) =>
       (a.event_date || '')
         .localeCompare(
           b.event_date || ''
@@ -2044,29 +1754,21 @@ function renderEventsTable(){
     .classList
     .toggle(
       'hidden',
-      rows.length >
-        0
+      rows.length > 0
     );
 
   rows.forEach(
     r => {
 
       const tr =
-        document
-          .createElement(
-            'tr'
-          );
+        document.createElement('tr');
 
       const invoiceAvailable =
         canGenerateInvoice(r);
 
       const displayName =
         r.full_name ||
-        (
-          hasGuests(r)
-            ? 'Événement'
-            : 'Date bloquée'
-        );
+        'Événement';
 
       const clientHtml =
         invoiceAvailable
@@ -2098,11 +1800,7 @@ function renderEventsTable(){
           <td>${clientHtml}</td>
 
           <td>
-            ${
-              hasGuests(r)
-                ? r.guest_count
-                : '—'
-            }
+            ${r.guest_count}
           </td>
 
           <td>
@@ -2149,107 +1847,71 @@ function renderEventsTable(){
           '[data-invoice]'
         );
 
-      if(
-        invoiceButton
-      ){
+      if(invoiceButton){
 
         invoiceButton.onclick =
           event => {
 
             event.stopPropagation();
+
             generateInvoicePDF(r);
 
           };
 
       }
 
-      tbody.appendChild(
-        tr
-      );
+      tbody.appendChild(tr);
 
     }
   );
 
 }
 
-$('eventSearch')
-  .addEventListener(
-    'input',
-    renderEventsTable
-  );
+$('eventSearch').addEventListener(
+  'input',
+  renderEventsTable
+);
 
-$('eventFilter')
-  .addEventListener(
-    'change',
-    renderEventsTable
-  );
-
-
-/* =========================
-   MODAL
-========================= */
+$('eventFilter').addEventListener(
+  'change',
+  renderEventsTable
+);
 
 function clearForm(){
 
-  $('reservationForm')
-    .reset();
+  $('reservationForm').reset();
 
-  $('formMsg')
-    .innerHTML =
-    '';
+  $('formMsg').innerHTML = '';
+  $('pricePreview').textContent = '';
 
-  $('pricePreview')
-    .textContent =
-    '';
+  editing = null;
 
-  editing =
-    null;
-
-  $('approveBtn')
-    .classList
-    .add('hidden');
-
-  $('cancelBtn')
-    .classList
-    .add('hidden');
-
-  $('invoiceBtn')
-    .classList
-    .add('hidden');
-
-  $('dangerZone')
-    .classList
-    .add('hidden');
+  $('approveBtn').classList.add('hidden');
+  $('cancelBtn').classList.add('hidden');
+  $('invoiceBtn').classList.add('hidden');
+  $('dangerZone').classList.add('hidden');
 
 }
 
-function openNew(
-  date=''
-){
+function openNew(date=''){
 
   clearForm();
 
-  $('modalTitle')
-    .textContent =
+  $('modalTitle').textContent =
     'Ajouter un événement';
 
-  $('eventDate')
-    .value =
+  $('eventDate').value =
     date;
 
-  $('status')
-    .value =
+  $('status').value =
     'confirmed';
 
-  $('source')
-    .value =
+  $('source').value =
     'manual';
 
   updatePricePreview();
 
-  $('modalBack')
-    .classList
-    .remove('hidden');
+  $('modalBack').classList.remove('hidden');
 
 }
 
@@ -2260,14 +1922,10 @@ function openReservation(r){
   editing =
     r;
 
-  $('modalTitle')
-    .textContent =
-    r.full_name ||
-    (
-      hasGuests(r)
-        ? 'Événement'
-        : 'Date bloquée'
-    );
+  $('modalTitle').textContent =
+    isRealEvent(r)
+      ? (r.full_name || 'Événement')
+      : 'Date bloquée';
 
   $('eventDate').value =
     r.event_date || '';
@@ -2320,68 +1978,35 @@ function openReservation(r){
   updatePricePreview();
 
   if(
-    r.status ===
-    'pending'
+    r.status === 'pending' &&
+    isRealEvent(r)
   ){
-
-    $('approveBtn')
-      .classList
-      .remove('hidden');
-
+    $('approveBtn').classList.remove('hidden');
   }
 
-  if(
-    canGenerateInvoice(r)
-  ){
-
-    $('invoiceBtn')
-      .classList
-      .remove('hidden');
-
+  if(canGenerateInvoice(r)){
+    $('invoiceBtn').classList.remove('hidden');
   }
 
-  if(
-    r.status !==
-    'cancelled'
-  ){
-
-    $('cancelBtn')
-      .classList
-      .remove('hidden');
-
+  if(r.status !== 'cancelled'){
+    $('cancelBtn').classList.remove('hidden');
   }
 
-  $('dangerZone')
-    .classList
-    .remove('hidden');
-
-  $('modalBack')
-    .classList
-    .remove('hidden');
+  $('dangerZone').classList.remove('hidden');
+  $('modalBack').classList.remove('hidden');
 
 }
 
 $('closeModal').onclick =
 () => {
-
-  $('modalBack')
-    .classList
-    .add('hidden');
-
+  $('modalBack').classList.add('hidden');
 };
 
 $('modalBack').onclick =
 event => {
 
-  if(
-    event.target ===
-    $('modalBack')
-  ){
-
-    $('modalBack')
-      .classList
-      .add('hidden');
-
+  if(event.target === $('modalBack')){
+    $('modalBack').classList.add('hidden');
   }
 
 };
@@ -2390,20 +2015,13 @@ $('addBtn').onclick =
 () =>
   openNew();
 
-
-/* =========================
-   NAVIGATION
-========================= */
-
 $('todayBtn').onclick =
 () => {
 
   viewDate =
     new Date();
 
-  viewDate.setDate(
-    1
-  );
+  viewDate.setDate(1);
 
   renderAll();
 
@@ -2413,8 +2031,7 @@ $('prevMonth').onclick =
 () => {
 
   viewDate.setMonth(
-    viewDate.getMonth() -
-    1
+    viewDate.getMonth()-1
   );
 
   renderAll();
@@ -2425,72 +2042,53 @@ $('nextMonth').onclick =
 () => {
 
   viewDate.setMonth(
-    viewDate.getMonth() +
-    1
+    viewDate.getMonth()+1
   );
 
   renderAll();
 
 };
 
-
-/* =========================
-   PRIX
-========================= */
-
 function updatePricePreview(){
 
   const guests =
     Number(
-      $('guestCount')
-        .value
+      $('guestCount').value
     );
 
   const pricing =
-    calculateEventPrice(
-      guests
-    );
+    calculateEventPrice(guests);
 
-  if(
-    !pricing
-  ){
+  if(!pricing){
 
-    $('pricePreview')
-      .textContent =
-      'Aucun invité : cette date sera considérée comme un blocage personnel et ne générera aucun revenu.';
+    $('pricePreview').textContent =
+      'Aucun invité : cette date sera considérée comme un blocage personnel.';
 
     return;
 
   }
 
-  $('pricePreview')
-    .textContent =
+  $('pricePreview').textContent =
     `${guests} × ${pricing.pricePerPerson} $ + ${pricing.fixedFee} $ de service/installation = ${money(pricing.total)}`;
 
 }
 
-$('guestCount')
-  .addEventListener(
-    'input',
-    updatePricePreview
-  );
+$('guestCount').addEventListener(
+  'input',
+  updatePricePreview
+);
 
 $('recalculatePrice').onclick =
 () => {
 
   const pricing =
     calculateEventPrice(
-      $('guestCount')
-        .value
+      $('guestCount').value
     );
 
-  if(
-    !pricing
-  ){
+  if(!pricing){
 
-    $('quotedPrice')
-      .value =
-      '';
+    $('quotedPrice').value = '';
 
     alert(
       'Aucun prix à calculer : aucun nombre d’invités.'
@@ -2502,78 +2100,46 @@ $('recalculatePrice').onclick =
 
   }
 
-  $('quotedPrice')
-    .value =
+  $('quotedPrice').value =
     pricing.total;
 
   updatePricePreview();
 
 };
 
-
-/* =========================
-   PAYLOAD
-========================= */
-
 function getFormPayload(){
 
   const status =
-    $('status')
-      .value;
+    $('status').value;
 
   const source =
-    $('source')
-      .value;
+    $('source').value;
 
   const guestCount =
-    $('guestCount')
-      .value
-      ? Number(
-          $('guestCount')
-            .value
-        )
+    $('guestCount').value
+      ? Number($('guestCount').value)
       : null;
 
   let quotedPrice =
-    $('quotedPrice')
-      .value
-      ? Number(
-          $('quotedPrice')
-            .value
-        )
+    $('quotedPrice').value
+      ? Number($('quotedPrice').value)
       : null;
 
-  if(
-    !guestCount ||
-    guestCount <= 0
-  ){
-
-    quotedPrice =
-      null;
-
+  if(!guestCount || guestCount <= 0){
+    quotedPrice = null;
   }
 
   if(
-    status ===
-      'confirmed' &&
-    guestCount >
-      0 &&
-    quotedPrice ===
-      null
+    status === 'confirmed' &&
+    guestCount > 0 &&
+    quotedPrice === null
   ){
 
     const pricing =
-      calculateEventPrice(
-        guestCount
-      );
+      calculateEventPrice(guestCount);
 
-    if(
-      pricing
-    ){
-
-      quotedPrice =
-        pricing.total;
-
+    if(pricing){
+      quotedPrice = pricing.total;
     }
 
   }
@@ -2582,8 +2148,9 @@ function getFormPayload(){
     'reservation';
 
   if(
-    status ===
-    'unavailable'
+    status === 'unavailable' ||
+    !guestCount ||
+    guestCount <= 0
   ){
 
     blockType =
@@ -2591,10 +2158,7 @@ function getFormPayload(){
 
   }
 
-  else if(
-    source ===
-    'manual'
-  ){
+  else if(source === 'manual'){
 
     blockType =
       'manual_booked';
@@ -2602,12 +2166,17 @@ function getFormPayload(){
   }
 
   return {
+
     event_date:
-      $('eventDate')
-        .value,
+      $('eventDate').value,
 
     status:
-      status,
+      (
+        !guestCount ||
+        guestCount <= 0
+      )
+        ? 'unavailable'
+        : status,
 
     block_type:
       blockType,
@@ -2616,99 +2185,57 @@ function getFormPayload(){
       source,
 
     full_name:
-      $('fullName')
-        .value
-        .trim() ||
-      null,
+      $('fullName').value.trim() || null,
 
     email:
-      $('email')
-        .value
-        .trim() ||
-      null,
+      $('email').value.trim() || null,
 
     phone:
-      $('phone')
-        .value
-        .trim() ||
-      null,
+      $('phone').value.trim() || null,
 
     guest_count:
       guestCount,
 
     preferred_time:
-      $('preferredTime')
-        .value
-        .trim() ||
-      null,
+      $('preferredTime').value.trim() || null,
 
     city:
-      $('city')
-        .value
-        .trim() ||
-      null,
+      $('city').value.trim() || null,
 
     event_address:
-      $('eventAddress')
-        .value
-        .trim() ||
-      null,
+      $('eventAddress').value.trim() || null,
 
     quoted_price:
       quotedPrice,
 
     deposit_amount:
-      $('depositAmount')
-        .value
-        ? Number(
-            $('depositAmount')
-              .value
-          )
+      $('depositAmount').value
+        ? Number($('depositAmount').value)
         : null,
 
     message:
-      $('message')
-        .value
-        .trim() ||
-      null,
+      $('message').value.trim() || null,
 
     internal_notes:
-      $('internalNotes')
-        .value
-        .trim() ||
-      null,
+      $('internalNotes').value.trim() || null,
 
     deposit_received:
-      $('depositReceived')
-        .checked,
+      $('depositReceived').checked,
 
     menu_sent:
-      $('menuSent')
-        .checked
+      $('menuSent').checked
+
   };
 
 }
 
+function showDatabaseError(error){
 
-/* =========================
-   ERRORS
-========================= */
+  console.error(error);
 
-function showDatabaseError(
-  error
-){
+  if(error?.code === '23505'){
 
-  console.error(
-    error
-  );
-
-  if(
-    error?.code ===
-    '23505'
-  ){
-
-    $('formMsg')
-      .innerHTML =
+    $('formMsg').innerHTML =
       `
         <div class="error">
           Cette date est déjà bloquée par une autre réservation.
@@ -2720,25 +2247,17 @@ function showDatabaseError(
 
   }
 
-  $('formMsg')
-    .innerHTML =
+  $('formMsg').innerHTML =
     `
       <div class="error">
-        ${
-          escapeHtml(
-            error?.message ||
-            'Une erreur est survenue.'
-          )
-        }
+        ${escapeHtml(
+          error?.message ||
+          'Une erreur est survenue.'
+        )}
       </div>
     `;
 
 }
-
-
-/* =========================
-   SAVE
-========================= */
 
 async function saveReservation(
   options={}
@@ -2747,18 +2266,14 @@ async function saveReservation(
   const {
     closeAfter=true,
     forcedStatus=null
-  } =
-    options;
+  } = options;
 
   const payload =
     getFormPayload();
 
-  if(
-    !payload.event_date
-  ){
+  if(!payload.event_date){
 
-    $('formMsg')
-      .innerHTML =
+    $('formMsg').innerHTML =
       `
         <div class="error">
           Choisis une date.
@@ -2770,76 +2285,27 @@ async function saveReservation(
   }
 
   if(
-    forcedStatus
+    forcedStatus &&
+    payload.guest_count > 0
   ){
 
     payload.status =
       forcedStatus;
 
-    if(
-      forcedStatus ===
-      'confirmed'
-    ){
-
-      payload.block_type =
-        payload.source ===
-        'manual'
-          ? 'manual_booked'
-          : 'reservation';
-
-      if(
-        payload.guest_count >
-          0 &&
-        (
-          payload.quoted_price ===
-            null ||
-          payload.quoted_price ===
-            undefined
-        )
-      ){
-
-        const pricing =
-          calculateEventPrice(
-            payload.guest_count
-          );
-
-        if(
-          pricing
-        ){
-
-          payload.quoted_price =
-            pricing.total;
-
-        }
-
-      }
-
-    }
-
   }
 
-  $('saveBtn')
-    .disabled =
+  $('saveBtn').disabled =
     true;
 
   let result;
 
-  if(
-    editing
-  ){
+  if(editing){
 
     result =
       await db
-        .from(
-          'reservations'
-        )
-        .update(
-          payload
-        )
-        .eq(
-          'id',
-          editing.id
-        )
+        .from('reservations')
+        .update(payload)
+        .eq('id',editing.id)
         .select()
         .single();
 
@@ -2849,24 +2315,17 @@ async function saveReservation(
 
     result =
       await db
-        .from(
-          'reservations'
-        )
-        .insert(
-          payload
-        )
+        .from('reservations')
+        .insert(payload)
         .select()
         .single();
 
   }
 
-  $('saveBtn')
-    .disabled =
+  $('saveBtn').disabled =
     false;
 
-  if(
-    result.error
-  ){
+  if(result.error){
 
     showDatabaseError(
       result.error
@@ -2879,13 +2338,10 @@ async function saveReservation(
   editing =
     result.data;
 
-  $('quotedPrice')
-    .value =
-    editing?.quoted_price ||
-    '';
+  $('quotedPrice').value =
+    editing?.quoted_price || '';
 
-  $('formMsg')
-    .innerHTML =
+  $('formMsg').innerHTML =
     `
       <div class="success">
         Enregistré ✅
@@ -2898,14 +2354,10 @@ async function saveReservation(
     .classList
     .toggle(
       'hidden',
-      !canGenerateInvoice(
-        editing
-      )
+      !canGenerateInvoice(editing)
     );
 
-  if(
-    closeAfter
-  ){
+  if(closeAfter){
 
     setTimeout(
       () => {
@@ -2924,8 +2376,7 @@ async function saveReservation(
 
 }
 
-$('reservationForm')
-  .onsubmit =
+$('reservationForm').onsubmit =
 async event => {
 
   event.preventDefault();
@@ -2936,17 +2387,14 @@ async event => {
 
 };
 
-
-/* =========================
-   APPROVE
-========================= */
-
 $('approveBtn').onclick =
 async () => {
 
-  if(
-    !editing
-  ){
+  if(!editing){
+    return;
+  }
+
+  if(!isRealEvent(editing)){
     return;
   }
 
@@ -2955,117 +2403,77 @@ async () => {
       'Accepter cette réservation et garder la date bloquée?'
     );
 
-  if(
-    !ok
-  ){
+  if(!ok){
     return;
   }
 
-  $('status')
-    .value =
+  $('status').value =
     'confirmed';
 
   const success =
     await saveReservation({
       closeAfter:false,
-      forcedStatus:
-        'confirmed'
+      forcedStatus:'confirmed'
     });
 
-  if(
-    !success
-  ){
+  if(!success){
     return;
   }
 
-  const hasClientGuests =
-    hasGuests(
-      editing
-    );
+  $('formMsg').innerHTML =
+    `
+      <div class="success">
+        Réservation confirmée ✅
+        <br>
+        Le montant est maintenant enregistré dans ton chiffre d’affaires.
+        <br>
+        La facture PDF est disponible.
+      </div>
+    `;
 
-  $('formMsg')
-    .innerHTML =
-    hasClientGuests
-      ? `
-        <div class="success">
-          Réservation confirmée ✅
-          <br>
-          Le montant est maintenant enregistré dans ton chiffre d’affaires.
-          <br>
-          La facture PDF est disponible.
-        </div>
-      `
-      : `
-        <div class="success">
-          Date confirmée / bloquée ✅
-          <br>
-          Comme aucun invité n’est enregistré, aucun revenu et aucune facture n’ont été créés.
-        </div>
-      `;
-
-  $('approveBtn')
-    .classList
-    .add('hidden');
+  $('approveBtn').classList.add('hidden');
 
   $('invoiceBtn')
     .classList
     .toggle(
       'hidden',
-      !canGenerateInvoice(
-        editing
-      )
+      !canGenerateInvoice(editing)
     );
 
 };
 
-
-/* =========================
-   CANCEL
-========================= */
-
 $('cancelBtn').onclick =
 async () => {
 
-  if(
-    !editing
-  ){
+  if(!editing){
     return;
   }
 
   const ok =
     confirm(
-      'Annuler cet événement et libérer cette date sur le site public?'
+      isRealEvent(editing)
+        ? 'Annuler cet événement et libérer cette date sur le site public?'
+        : 'Libérer cette date et la rendre disponible sur le site public?'
     );
 
-  if(
-    !ok
-  ){
+  if(!ok){
     return;
   }
 
-  const {
-    error
-  } =
+  const {error} =
     await db
-      .from(
-        'reservations'
-      )
+      .from('reservations')
       .update({
-        status:
-          'cancelled'
+        status:'cancelled'
       })
       .eq(
         'id',
         editing.id
       );
 
-  if(
-    error
-  ){
+  if(error){
 
-    showDatabaseError(
-      error
-    );
+    showDatabaseError(error);
 
     return;
 
@@ -3076,51 +2484,32 @@ async () => {
 
   await loadData();
 
-  $('formMsg')
-    .innerHTML =
+  $('formMsg').innerHTML =
     `
       <div class="success">
-        Événement annulé ✅
-        <br>
-        La date est libérée et l’événement ne compte plus dans ton chiffre d’affaires.
+        Date libérée ✅
       </div>
     `;
 
-  $('status')
-    .value =
+  $('status').value =
     'cancelled';
 
-  $('approveBtn')
-    .classList
-    .add('hidden');
-
-  $('invoiceBtn')
-    .classList
-    .add('hidden');
-
-  $('cancelBtn')
-    .classList
-    .add('hidden');
+  $('approveBtn').classList.add('hidden');
+  $('invoiceBtn').classList.add('hidden');
+  $('cancelBtn').classList.add('hidden');
 
 };
-
-
-/* =========================
-   DELETE
-========================= */
 
 $('deleteBtn').onclick =
 async () => {
 
-  if(
-    !editing
-  ){
+  if(!editing){
     return;
   }
 
   if(
     !confirm(
-      'Supprimer définitivement cet événement? La date sera libérée immédiatement.'
+      'Supprimer définitivement cette entrée? La date sera libérée immédiatement.'
     )
   ){
     return;
@@ -3134,34 +2523,24 @@ async () => {
     return;
   }
 
-  $('deleteBtn')
-    .disabled =
+  $('deleteBtn').disabled =
     true;
 
-  const {
-    error
-  } =
+  const {error} =
     await db
-      .from(
-        'reservations'
-      )
+      .from('reservations')
       .delete()
       .eq(
         'id',
         editing.id
       );
 
-  $('deleteBtn')
-    .disabled =
+  $('deleteBtn').disabled =
     false;
 
-  if(
-    error
-  ){
+  if(error){
 
-    showDatabaseError(
-      error
-    );
+    showDatabaseError(error);
 
     return;
 
@@ -3172,84 +2551,44 @@ async () => {
 
   await loadData();
 
-  $('modalBack')
-    .classList
-    .add('hidden');
+  $('modalBack').classList.add('hidden');
 
   alert(
-    'Événement supprimé. La date est disponible.'
+    'Entrée supprimée. La date est disponible.'
   );
 
 };
 
-
-/* =========================
-   FACTURE PDF
-========================= */
-
 function invoiceNumber(r){
 
   const datePart =
-    (
-      r.event_date ||
-      ''
-    ).replaceAll(
-      '-',
-      ''
-    );
+    (r.event_date || '')
+      .replaceAll('-','');
 
   const idPart =
-    String(
-      r.id ||
-      ''
-    )
-    .replaceAll(
-      '-',
-      ''
-    )
-    .slice(
-      0,
-      8
-    )
-    .toUpperCase();
+    String(r.id || '')
+      .replaceAll('-','')
+      .slice(0,8)
+      .toUpperCase();
 
-  return (
-    `RAFA-${datePart}-${idPart}`
-  );
+  return `RAFA-${datePart}-${idPart}`;
 
 }
 
 function pdfText(value){
-
-  return String(
-    value ||
-    ''
-  );
-
+  return String(value || '');
 }
 
 function generateInvoicePDF(r){
 
   if(
     !r ||
-    r.status !==
-      'confirmed'
+    r.status !== 'confirmed' ||
+    !isRealEvent(r)
   ){
 
     alert(
-      'La facture est disponible uniquement pour une réservation confirmée.'
-    );
-
-    return;
-
-  }
-
-  if(
-    !hasGuests(r)
-  ){
-
-    alert(
-      'Aucune facture pour cette date : aucun nombre d’invités n’est enregistré.'
+      'La facture est disponible uniquement pour une vraie réservation confirmée.'
     );
 
     return;
@@ -3259,10 +2598,7 @@ function generateInvoicePDF(r){
   const total =
     revenueForReservation(r);
 
-  if(
-    total <=
-    0
-  ){
+  if(total <= 0){
 
     alert(
       'Aucun montant n’est disponible pour cet événement.'
@@ -3285,9 +2621,7 @@ function generateInvoicePDF(r){
 
   }
 
-  const {
-    jsPDF
-  } =
+  const {jsPDF} =
     window.jspdf;
 
   const doc =
@@ -3304,174 +2638,74 @@ function generateInvoicePDF(r){
   const customPrice =
     pricing &&
     r.quoted_price !== null &&
-    Number(
-      r.quoted_price
-    ) !==
-    Number(
-      pricing.total
-    );
+    Number(r.quoted_price) !==
+      Number(pricing.total);
 
   const deposit =
     r.deposit_received
       ? Number(
-          r.deposit_amount ||
-          0
+          r.deposit_amount || 0
         )
       : 0;
 
   const balance =
     Math.max(
-      total -
-      deposit,
+      total-deposit,
       0
     );
 
-  doc.setFillColor(
-    91,
-    31,
-    42
-  );
+  doc.setFillColor(91,31,42);
+  doc.rect(0,0,216,43,'F');
 
-  doc.rect(
-    0,
-    0,
-    216,
-    43,
-    'F'
-  );
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(25);
+  doc.text('RAFA',18,20);
 
-  doc.setTextColor(
-    255,
-    255,
-    255
-  );
+  doc.setFontSize(10);
+  doc.setFont('helvetica','normal');
+  doc.text('Pizza a domicile',18,27);
 
-  doc.setFont(
-    'helvetica',
-    'bold'
-  );
-
-  doc.setFontSize(
-    25
-  );
-
-  doc.text(
-    'RAFA',
-    18,
-    20
-  );
-
-  doc.setFontSize(
-    10
-  );
-
-  doc.setFont(
-    'helvetica',
-    'normal'
-  );
-
-  doc.text(
-    'Pizza a domicile',
-    18,
-    27
-  );
-
-  doc.setFontSize(
-    20
-  );
-
-  doc.setFont(
-    'helvetica',
-    'bold'
-  );
-
+  doc.setFontSize(20);
+  doc.setFont('helvetica','bold');
   doc.text(
     'FACTURE',
     198,
     20,
-    {
-      align:'right'
-    }
+    {align:'right'}
   );
 
-  doc.setFontSize(
-    8.5
-  );
-
-  doc.setFont(
-    'helvetica',
-    'normal'
-  );
-
+  doc.setFontSize(8.5);
+  doc.setFont('helvetica','normal');
   doc.text(
     invoiceNumber(r),
     198,
     27,
-    {
-      align:'right'
-    }
+    {align:'right'}
   );
 
-  doc.setTextColor(
-    43,
-    37,
-    36
-  );
+  doc.setTextColor(43,37,36);
+  doc.setFontSize(10);
+  doc.setFont('helvetica','bold');
+  doc.text('Rafa Pizza',18,58);
 
-  doc.setFontSize(
-    10
-  );
-
-  doc.setFont(
-    'helvetica',
-    'bold'
-  );
-
-  doc.text(
-    'Rafa Pizza',
-    18,
-    58
-  );
-
-  doc.setFont(
-    'helvetica',
-    'normal'
-  );
-
-  doc.setTextColor(
-    125,
-    112,
-    105
-  );
-
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(125,112,105);
   doc.text(
     'lapizzaderafa@gmail.com',
     18,
     64
   );
 
-  doc.setTextColor(
-    43,
-    37,
-    36
-  );
-
-  doc.setFont(
-    'helvetica',
-    'bold'
-  );
-
+  doc.setTextColor(43,37,36);
+  doc.setFont('helvetica','bold');
   doc.text(
     'Date de l evenement',
     125,
     58
   );
 
-  doc.setFont(
-    'helvetica',
-    'normal'
-  );
-
+  doc.setFont('helvetica','normal');
   doc.text(
     pdfText(
       fmtDateLong(
@@ -3482,124 +2716,69 @@ function generateInvoicePDF(r){
     64
   );
 
-  doc.setDrawColor(
-    220,
-    210,
-    205
-  );
+  doc.setDrawColor(220,210,205);
+  doc.line(18,74,198,74);
 
-  doc.line(
-    18,
-    74,
-    198,
-    74
-  );
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(10);
+  doc.text('FACTURE A',18,85);
 
-  doc.setFont(
-    'helvetica',
-    'bold'
-  );
-
-  doc.setFontSize(
-    10
-  );
-
-  doc.text(
-    'FACTURE A',
-    18,
-    85
-  );
-
-  doc.setFontSize(
-    13
-  );
-
+  doc.setFontSize(13);
   doc.text(
     pdfText(
-      r.full_name ||
-      'Client'
+      r.full_name || 'Client'
     ),
     18,
     94
   );
 
-  doc.setFont(
-    'helvetica',
-    'normal'
-  );
-
-  doc.setFontSize(
-    9
-  );
-
-  doc.setTextColor(
-    125,
-    112,
-    105
-  );
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(9);
+  doc.setTextColor(125,112,105);
 
   let clientY =
     101;
 
-  if(
-    r.email
-  ){
+  if(r.email){
 
     doc.text(
-      pdfText(
-        r.email
-      ),
+      pdfText(r.email),
       18,
       clientY
     );
 
-    clientY +=
-      5;
+    clientY += 5;
 
   }
 
-  if(
-    r.phone
-  ){
+  if(r.phone){
 
     doc.text(
-      pdfText(
-        r.phone
-      ),
+      pdfText(r.phone),
       18,
       clientY
     );
 
-    clientY +=
-      5;
+    clientY += 5;
 
   }
 
-  if(
-    r.event_address
-  ){
+  if(r.event_address){
 
     doc.text(
-      pdfText(
-        r.event_address
-      ),
+      pdfText(r.event_address),
       18,
       clientY
     );
 
-    clientY +=
-      5;
+    clientY += 5;
 
   }
 
-  if(
-    r.city
-  ){
+  if(r.city){
 
     doc.text(
-      pdfText(
-        r.city
-      ),
+      pdfText(r.city),
       18,
       clientY
     );
@@ -3609,34 +2788,12 @@ function generateInvoicePDF(r){
   let y =
     130;
 
-  doc.setFillColor(
-    246,
-    240,
-    231
-  );
+  doc.setFillColor(246,240,231);
+  doc.rect(18,y,180,10,'F');
 
-  doc.rect(
-    18,
-    y,
-    180,
-    10,
-    'F'
-  );
-
-  doc.setTextColor(
-    91,
-    31,
-    42
-  );
-
-  doc.setFont(
-    'helvetica',
-    'bold'
-  );
-
-  doc.setFontSize(
-    9
-  );
+  doc.setTextColor(91,31,42);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(9);
 
   doc.text(
     'DESCRIPTION',
@@ -3648,28 +2805,14 @@ function generateInvoicePDF(r){
     'MONTANT',
     193,
     y+6.5,
-    {
-      align:'right'
-    }
+    {align:'right'}
   );
 
-  y +=
-    20;
+  y += 20;
 
-  doc.setTextColor(
-    43,
-    37,
-    36
-  );
-
-  doc.setFont(
-    'helvetica',
-    'bold'
-  );
-
-  doc.setFontSize(
-    10
-  );
+  doc.setTextColor(43,37,36);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(10);
 
   doc.text(
     'Service Rafa Pizza a domicile',
@@ -3677,14 +2820,8 @@ function generateInvoicePDF(r){
     y
   );
 
-  doc.setFont(
-    'helvetica',
-    'normal'
-  );
-
-  doc.setFontSize(
-    9
-  );
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(9);
 
   doc.text(
     `${r.guest_count} invites`,
@@ -3721,47 +2858,24 @@ function generateInvoicePDF(r){
 
   }
 
-  doc.setFont(
-    'helvetica',
-    'bold'
-  );
+  doc.setFont('helvetica','bold');
 
   doc.text(
     money(total),
     193,
     y,
-    {
-      align:'right'
-    }
+    {align:'right'}
   );
 
-  y +=
-    43;
+  y += 43;
 
-  doc.setDrawColor(
-    220,
-    210,
-    205
-  );
+  doc.setDrawColor(220,210,205);
+  doc.line(118,y,198,y);
 
-  doc.line(
-    118,
-    y,
-    198,
-    y
-  );
+  y += 9;
 
-  y +=
-    9;
-
-  doc.setFont(
-    'helvetica',
-    'normal'
-  );
-
-  doc.setFontSize(
-    10
-  );
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(10);
 
   doc.text(
     'Total',
@@ -3769,27 +2883,18 @@ function generateInvoicePDF(r){
     y
   );
 
-  doc.setFont(
-    'helvetica',
-    'bold'
-  );
+  doc.setFont('helvetica','bold');
 
   doc.text(
     money(total),
     193,
     y,
-    {
-      align:'right'
-    }
+    {align:'right'}
   );
 
-  if(
-    deposit >
-    0
-  ){
+  if(deposit > 0){
 
-    y +=
-      8;
+    y += 8;
 
     doc.setFont(
       'helvetica',
@@ -3803,28 +2908,20 @@ function generateInvoicePDF(r){
     );
 
     doc.text(
-      '- ' +
-      money(
-        deposit
-      ),
+      '- ' + money(deposit),
       193,
       y,
-      {
-        align:'right'
-      }
+      {align:'right'}
     );
 
-    y +=
-      9;
+    y += 9;
 
     doc.setFont(
       'helvetica',
       'bold'
     );
 
-    doc.setFontSize(
-      12
-    );
+    doc.setFontSize(12);
 
     doc.text(
       'Solde',
@@ -3833,22 +2930,15 @@ function generateInvoicePDF(r){
     );
 
     doc.text(
-      money(
-        balance
-      ),
+      money(balance),
       193,
       y,
-      {
-        align:'right'
-      }
+      {align:'right'}
     );
 
   }
 
-  doc.setFontSize(
-    9
-  );
-
+  doc.setFontSize(9);
   doc.setFont(
     'helvetica',
     'normal'
@@ -3872,9 +2962,7 @@ function generateInvoicePDF(r){
     251
   );
 
-  doc.setFontSize(
-    7
-  );
+  doc.setFontSize(7);
 
   doc.text(
     'Document genere depuis Rafa Admin. Le montant correspond au prix enregistre pour cet evenement.',
@@ -3883,14 +2971,10 @@ function generateInvoicePDF(r){
   );
 
   const blob =
-    doc.output(
-      'blob'
-    );
+    doc.output('blob');
 
   const url =
-    URL.createObjectURL(
-      blob
-    );
+    URL.createObjectURL(blob);
 
   window.open(
     url,
@@ -3902,22 +2986,11 @@ function generateInvoicePDF(r){
 $('invoiceBtn').onclick =
 () => {
 
-  if(
-    editing
-  ){
-
-    generateInvoicePDF(
-      editing
-    );
-
+  if(editing){
+    generateInvoicePDF(editing);
   }
 
 };
-
-
-/* =========================
-   START
-========================= */
 
 sessionGate();
 
