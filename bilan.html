@@ -5,48 +5,424 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Rafa — Dossier comptable</title>
 <style>
-:root{--c:#F6F0E7;--w:#5B1F2A;--m:#8A7D77;--l:rgba(91,31,42,.15);--g:#447A54;--r:#9B3E4E}*{box-sizing:border-box}body{margin:0;background:#eee8df;color:#2B2524;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.hidden{display:none!important}.app{max-width:1120px;margin:auto;padding:16px}.top,.tools{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.top h1,h2{font-family:Georgia,serif;color:var(--w)}.top h1{margin:0}.btn{border:1px solid var(--l);border-radius:999px;padding:11px 15px;font-weight:800;background:#fff;color:var(--w);text-decoration:none;cursor:pointer}.btn:disabled{opacity:.55;cursor:wait}.primary{background:var(--w);color:#fff}.panel{background:var(--c);border:1px solid var(--l);border-radius:22px;margin-top:15px;overflow:hidden}.ph{padding:17px 19px;border-bottom:1px solid var(--l);display:flex;justify-content:space-between;gap:10px;align-items:center}.ph h2{margin:0;font-size:22px}.body{padding:16px 19px}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:15px}.stat{background:#fff;border:1px solid var(--l);border-radius:16px;padding:13px}.stat.dark{background:var(--w);color:#fff}.k{font-size:10px;text-transform:uppercase;color:var(--m);font-weight:800}.dark .k{color:#ddd}.v{font-size:21px;font-weight:900;color:var(--w);margin-top:4px}.dark .v{color:#fff}.event{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;padding:12px 2px;border-bottom:1px solid var(--l)}.event input{width:22px;height:22px;accent-color:var(--w)}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:900px}.table th{text-align:left;font-size:10px;text-transform:uppercase;color:var(--m);padding:9px 7px;border-bottom:1px solid var(--l)}.table td{font-size:12px;padding:10px 7px;border-bottom:1px solid var(--l);vertical-align:middle}.chip{display:inline-block;padding:5px 8px;border-radius:999px;background:#eee8df;color:var(--w);font-size:10px;font-weight:800}.ok{background:#e4efe6;color:#315e3d}.bad{background:#f5e3e6;color:#8a2f40}.note{font-size:11px;color:var(--m);line-height:1.5}.cat{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--l)}.login{max-width:420px;margin:18vh auto;background:var(--c);padding:25px;border-radius:24px;text-align:center}.login input{width:100%;padding:13px;border:1px solid var(--l);border-radius:12px;margin:10px 0}.receiptActions{display:flex;gap:5px;align-items:center;flex-wrap:wrap}.small{padding:7px 10px;font-size:10px}.progress{margin-top:10px;font-size:12px;color:var(--g);font-weight:800;line-height:1.45;min-height:18px}.progress.error{color:var(--r)}@media(max-width:800px){.stats{grid-template-columns:1fr 1fr}.top .btn{flex:1}.ph{align-items:flex-start}.app{padding:11px}}
+:root{
+  --cream:#F6F0E7;
+  --cream2:#FBF8F3;
+  --wine:#5B1F2A;
+  --ink:#2B2524;
+  --muted:#8A7D77;
+  --line:rgba(91,31,42,.15);
+  --ok:#447A54;
+  --danger:#9B3E4E;
+}
+*{box-sizing:border-box}
+html,body{max-width:100%;overflow-x:hidden}
+body{margin:0;background:#eee8df;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.hidden{display:none!important}
+.app{width:100%;max-width:1120px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 18px calc(22px + env(safe-area-inset-bottom))}
+.top,.tools{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.titleBlock{min-width:0}
+h1,h2{font-family:Georgia,"Times New Roman",serif;color:var(--wine)}
+.top h1{margin:0;font-size:36px;line-height:1.02}
+.btn{border:1px solid var(--line);border-radius:999px;padding:11px 15px;font-weight:800;background:#fff;color:var(--wine);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;min-height:44px;text-align:center}
+.btn:disabled{opacity:.55;cursor:wait}
+.btn.primary{background:var(--wine);color:#fff}
+.panel{background:var(--cream);border:1px solid var(--line);border-radius:22px;margin-top:15px;overflow:hidden}
+.ph{padding:17px 19px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}
+.ph h2{margin:0;font-size:22px;line-height:1.12}
+.body{padding:16px 19px}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-top:15px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px;min-width:0}
+.stat.dark{background:var(--wine);color:#fff}
+.k{font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:800}
+.dark .k{color:#ddd}
+.v{font-size:21px;font-weight:900;color:var(--wine);margin-top:4px;word-break:break-word}
+.dark .v{color:#fff}
+.event{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:11px;align-items:center;padding:12px 2px;border-bottom:1px solid var(--line)}
+.event:last-child{border-bottom:0}
+.event input{width:22px;height:22px;accent-color:var(--wine)}
+.tablewrap{width:100%;overflow:auto;-webkit-overflow-scrolling:touch}
+.table{width:100%;border-collapse:collapse;min-width:900px}
+.table th{text-align:left;font-size:10px;text-transform:uppercase;color:var(--muted);padding:9px 7px;border-bottom:1px solid var(--line)}
+.table td{font-size:12px;padding:10px 7px;border-bottom:1px solid var(--line);vertical-align:middle}
+.chip{display:inline-block;padding:5px 8px;border-radius:999px;background:#eee8df;color:var(--wine);font-size:10px;font-weight:800}
+.ok{background:#e4efe6;color:#315e3d}
+.note{font-size:11px;color:var(--muted);line-height:1.5}
+.cat{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}
+.cat:last-child{border-bottom:0}
+.loginWrap{min-height:100dvh;display:grid;place-items:center;padding:calc(24px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom))}
+.login{width:min(420px,100%);background:var(--cream);padding:25px;border:1px solid var(--line);border-radius:24px;text-align:center}
+.login h1{margin:0 0 8px}
+.login input{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;margin:10px 0;font-size:16px;background:#fff}
+.login .btn{width:100%}
+.receiptActions{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.small{padding:7px 10px;font-size:10px;min-height:34px}
+.progress{margin-top:10px;font-size:12px;color:var(--ok);font-weight:800;line-height:1.45;min-height:18px}
+.progress.error{color:var(--danger)}
+.errorBox{background:#f5e3e6;color:#8a2f40;border:1px solid rgba(155,62,78,.18);border-radius:14px;padding:12px 14px;margin-top:12px;font-size:12px;line-height:1.4}
+@media(max-width:800px){
+  .app{padding:calc(14px + env(safe-area-inset-top)) 12px calc(20px + env(safe-area-inset-bottom))}
+  .top{align-items:flex-start}
+  .titleBlock{width:100%}
+  .top h1{font-size:32px}
+  .top>.tools{width:100%;display:grid;grid-template-columns:1fr 1fr}
+  .top>.tools .btn{width:100%;padding:10px 8px}
+  .top>.tools .primary{grid-column:1/-1}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat{padding:13px}
+  .ph{align-items:flex-start;padding:16px}
+  .ph h2{font-size:21px}
+  .body{padding:15px}
+  .event{grid-template-columns:auto minmax(0,1fr);align-items:start}
+  .event>strong:last-child{grid-column:2}
+  .tablewrap{overflow:visible}
+  .table{min-width:0;border-collapse:separate;border-spacing:0}
+  .table thead{display:none}
+  .table,.table tbody,.table tr,.table td{display:block;width:100%}
+  .table tr{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 12px;margin-bottom:10px}
+  .table td{display:grid;grid-template-columns:112px minmax(0,1fr);gap:8px;border:0;padding:6px 0;align-items:start;overflow-wrap:anywhere}
+  .table td::before{content:attr(data-label);font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:800}
+  .receiptActions{justify-content:flex-start}
+}
+@media(max-width:430px){
+  .top h1{font-size:30px}
+  .tools.controls{display:grid!important;grid-template-columns:72px 1fr 1fr;width:100%}
+  .tools.controls>*{width:100%;padding-left:8px;padding-right:8px}
+  .v{font-size:20px}
+  .table td{grid-template-columns:98px minmax(0,1fr)}
+}
 </style>
 </head>
 <body>
-<div id="login" class="login"><h1 style="font-family:Georgia;color:#5B1F2A">Rafa Pizza</h1><input id="pw" type="password" placeholder="Mot de passe"><button id="loginBtn" class="btn primary">Se connecter</button><div id="msg" class="note"></div></div>
+<div id="loginWrap" class="loginWrap">
+  <div id="login" class="login">
+    <h1>Rafa Pizza</h1>
+    <div class="note">Dossier comptable privé</div>
+    <input id="pw" type="password" placeholder="Mot de passe" autocomplete="current-password">
+    <button id="loginBtn" class="btn primary">Se connecter</button>
+    <div id="msg" class="note" style="margin-top:10px"></div>
+  </div>
+</div>
+
 <main id="app" class="app hidden">
-<div class="top"><div><h1>Dossier comptable annuel</h1><div class="note">PDF léger + pièces justificatives séparées et numérotées.</div></div><div class="tools"><a href="finances.html" class="btn">← Finances</a><button id="pdf" class="btn">PDF seulement</button><button id="zip" class="btn primary">Télécharger le dossier comptable</button></div></div>
-<div class="tools" style="margin-top:14px;justify-content:flex-start"><select id="year" class="btn"></select><button id="all" class="btn">Tout cocher</button><button id="none" class="btn">Tout décocher</button></div>
-<div id="progress" class="progress"></div>
-<section class="stats"><div class="stat dark"><div class="k">Revenus</div><div class="v" id="revenueStat">0 $</div></div><div class="stat"><div class="k">Dépenses</div><div class="v" id="expenseStat">0 $</div></div><div class="stat dark"><div class="k">Net estimé</div><div class="v" id="netStat">0 $</div></div><div class="stat"><div class="k">Événements</div><div class="v" id="eventCount">0</div></div><div class="stat"><div class="k">Km affaires</div><div class="v" id="kmStat">0 km</div></div></section>
-<section class="panel"><div class="ph"><h2>1 · Événements à déclarer</h2><span class="note">Sélection mémorisée.</span></div><div class="body" id="events"></div></section>
-<section class="panel"><div class="ph"><h2>2 · Dépenses et pièces justificatives</h2><span id="expenseCount" class="note"></span></div><div class="body"><div class="tablewrap"><table class="table"><thead><tr><th>Pièce</th><th>Date</th><th>Catégorie</th><th>Fournisseur</th><th>Description</th><th>Montant</th><th>Facture / reçu</th></tr></thead><tbody id="expensesBody"></tbody></table></div><div class="note" style="margin-top:12px">Ajoute ici une photo ou un PDF du reçu. Les fichiers sont conservés dans l’espace privé Rafa et ne sont pas intégrés au PDF principal.</div></div></section>
-<section class="panel"><div class="ph"><h2>3 · Résumé par catégorie</h2></div><div class="body" id="categories"></div></section>
-<section class="panel"><div class="ph"><h2>4 · Dossier pour le comptable</h2></div><div class="body"><p><strong>« Télécharger le dossier comptable »</strong> crée un ZIP contenant le bilan PDF léger et toutes les factures disponibles.</p><div class="note">Avant de créer le ZIP, Rafa vérifie maintenant chaque pièce. S’il n’arrive pas à récupérer une facture, le ZIP n’est pas créé et le numéro de la pièce problématique est affiché.</div></div></section>
+  <div class="top">
+    <div class="titleBlock">
+      <h1>Dossier comptable annuel</h1>
+      <div class="note">PDF léger + pièces justificatives séparées et numérotées.</div>
+    </div>
+    <div class="tools">
+      <a href="finances.html" class="btn">← Finances</a>
+      <button id="pdf" class="btn">PDF seulement</button>
+      <button id="zip" class="btn primary">Télécharger le dossier comptable</button>
+    </div>
+  </div>
+
+  <div class="tools controls" style="margin-top:14px;justify-content:flex-start">
+    <select id="year" class="btn" aria-label="Année"></select>
+    <button id="all" class="btn">Tout cocher</button>
+    <button id="none" class="btn">Tout décocher</button>
+  </div>
+
+  <div id="progress" class="progress"></div>
+  <div id="pageError" class="errorBox hidden"></div>
+
+  <section class="stats">
+    <div class="stat dark"><div class="k">Revenus</div><div class="v" id="revenueStat">0 $</div></div>
+    <div class="stat"><div class="k">Dépenses</div><div class="v" id="expenseStat">0 $</div></div>
+    <div class="stat dark"><div class="k">Net estimé</div><div class="v" id="netStat">0 $</div></div>
+    <div class="stat"><div class="k">Événements</div><div class="v" id="eventCount">0</div></div>
+    <div class="stat"><div class="k">Km affaires</div><div class="v" id="kmStat">0 km</div></div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>1 · Événements à déclarer</h2><span class="note">Sélection mémorisée.</span></div>
+    <div class="body" id="events"></div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>2 · Dépenses et pièces justificatives</h2><span id="expenseCount" class="note"></span></div>
+    <div class="body">
+      <div class="tablewrap">
+        <table class="table">
+          <thead><tr><th>Pièce</th><th>Date</th><th>Catégorie</th><th>Fournisseur</th><th>Description</th><th>Montant</th><th>Facture / reçu</th></tr></thead>
+          <tbody id="expensesBody"></tbody>
+        </table>
+      </div>
+      <div class="note" style="margin-top:12px">Ajoute ici une photo ou un PDF du reçu. Les fichiers sont conservés dans l’espace privé Rafa et ne sont pas intégrés au PDF principal.</div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>3 · Résumé par catégorie</h2></div>
+    <div class="body" id="categories"></div>
+  </section>
+
+  <section class="panel">
+    <div class="ph"><h2>4 · Dossier pour le comptable</h2></div>
+    <div class="body">
+      <p><strong>« Télécharger le dossier comptable »</strong> crée un ZIP contenant le bilan PDF léger et toutes les factures disponibles.</p>
+      <div class="note">Avant de créer le ZIP, Rafa vérifie chaque pièce. Si une facture ne peut pas être récupérée, le ZIP n’est pas créé et le numéro de la pièce problématique est affiché.</div>
+    </div>
+  </section>
 </main>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script>
-const U='https://jetogsbyptglaihktdel.supabase.co',K='sb_publishable_YQndqxq2C-0crv0rQ_V4Upvbja',E='raphael.frenette@gmail.com',db=supabase.createClient(U,K),$=x=>document.getElementById(x);let rs=[],xs=[];
-const money=v=>new Intl.NumberFormat('fr-CA',{style:'currency',currency:'CAD'}).format(+v||0),esc=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
-function price(r){if(r.quoted_price!==null&&r.quoted_price!==undefined&&r.quoted_price!=='')return +r.quoted_price||0;let g=+r.guest_count,p,f;if(!g)return 0;if(g<=10){p=29;f=175}else if(g<=15){p=27;f=200}else if(g<=20){p=25;f=250}else if(g<=25){p=23;f=300}else if(g<=30){p=22;f=350}else if(g<=40){p=21;f=400}else if(g<=50){p=20;f=500}else if(g<=75){p=19;f=600}else{p=18;f=750}return g*p+f}
-function yEx(){return xs.filter(e=>e.expense_date?.startsWith($('year').value+'-')).sort((a,b)=>(a.expense_date||'').localeCompare(b.expense_date||''))}function yEv(){return rs.filter(r=>r.event_date?.startsWith($('year').value+'-'))}function key(){return'rafa-bilan-selection-'+$('year').value}function saved(){try{let a=JSON.parse(localStorage.getItem(key())||'null');return Array.isArray(a)?new Set(a.map(String)):null}catch{return null}}function save(){localStorage.setItem(key(),JSON.stringify([...document.querySelectorAll('.pick:checked')].map(x=>x.dataset.id)))}
-async function gate(){let{data:{session}}=await db.auth.getSession();if(session&&(session.user.email||'').toLowerCase()===E){$('login').classList.add('hidden');$('app').classList.remove('hidden');load()}}
-$('loginBtn').onclick=async()=>{let{error}=await db.auth.signInWithPassword({email:E,password:$('pw').value});if(error)$('msg').textContent='Connexion impossible';else gate()};
-async function load(){let keep=$('year').value,[a,b]=await Promise.all([db.from('reservations').select('*').order('event_date'),db.from('expenses').select('*').order('expense_date')]);if(a.error||b.error)return alert((a.error||b.error).message);rs=(a.data||[]).filter(r=>r.status==='confirmed'&&+r.guest_count>0);xs=b.data||[];let ys=[...new Set([...rs.map(r=>r.event_date?.slice(0,4)),...xs.map(e=>e.expense_date?.slice(0,4)),String(new Date().getFullYear())].filter(Boolean))].sort().reverse();$('year').innerHTML=ys.map(y=>'<option>'+y+'</option>').join('');if(keep&&ys.includes(keep))$('year').value=keep;render()}
+const SUPABASE_URL='https://jetogsbyptglaihktdel.supabase.co';
+const SUPABASE_KEY='sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja';
+const ADMIN_EMAIL='raphael.frenette@gmail.com';
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=id=>document.getElementById(id);
+let reservations=[];
+let expenses=[];
+
+const money=v=>new Intl.NumberFormat('fr-CA',{style:'currency',currency:'CAD'}).format(Number(v)||0);
+const esc=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
+
+function showPageError(message=''){
+  const box=$('pageError');
+  if(!message){box.classList.add('hidden');box.textContent='';return}
+  box.textContent=message;
+  box.classList.remove('hidden');
+}
+
+function price(r){
+  if(r.quoted_price!==null&&r.quoted_price!==undefined&&r.quoted_price!=='')return Number(r.quoted_price)||0;
+  const g=Number(r.guest_count);
+  let p,f;
+  if(!g)return 0;
+  if(g<=10){p=29;f=175}
+  else if(g<=15){p=27;f=200}
+  else if(g<=20){p=25;f=250}
+  else if(g<=25){p=23;f=300}
+  else if(g<=30){p=22;f=350}
+  else if(g<=40){p=21;f=400}
+  else if(g<=50){p=20;f=500}
+  else if(g<=75){p=19;f=600}
+  else{p=18;f=750}
+  return g*p+f;
+}
+
+function yearlyExpenses(){
+  return expenses.filter(e=>e.expense_date?.startsWith($('year').value+'-')).sort((a,b)=>(a.expense_date||'').localeCompare(b.expense_date||''));
+}
+function yearlyEvents(){return reservations.filter(r=>r.event_date?.startsWith($('year').value+'-'))}
+function selectionKey(){return 'rafa-bilan-selection-'+$('year').value}
+function savedSelection(){
+  try{
+    const a=JSON.parse(localStorage.getItem(selectionKey())||'null');
+    return Array.isArray(a)?new Set(a.map(String)):null;
+  }catch{return null}
+}
+function saveSelection(){
+  localStorage.setItem(selectionKey(),JSON.stringify([...document.querySelectorAll('.pick:checked')].map(x=>x.dataset.id)));
+}
+
+async function gate(){
+  try{
+    const {data:{session},error}=await db.auth.getSession();
+    if(error)throw error;
+    if(session&&(session.user.email||'').toLowerCase()===ADMIN_EMAIL.toLowerCase()){
+      $('loginWrap').classList.add('hidden');
+      $('app').classList.remove('hidden');
+      await load();
+    }
+  }catch(e){
+    $('msg').textContent='Connexion au service impossible. Réessaie dans un instant.';
+  }
+}
+
+$('loginBtn').onclick=async()=>{
+  $('msg').textContent='Connexion…';
+  const {error}=await db.auth.signInWithPassword({email:ADMIN_EMAIL,password:$('pw').value});
+  if(error){$('msg').textContent='Connexion impossible. Vérifie le mot de passe.';return}
+  $('msg').textContent='';
+  gate();
+};
+
+$('pw').addEventListener('keydown',e=>{if(e.key==='Enter')$('loginBtn').click()});
+
+async function load(){
+  showPageError();
+  const keep=$('year').value;
+  const [a,b]=await Promise.all([
+    db.from('reservations').select('*').order('event_date'),
+    db.from('expenses').select('*').order('expense_date')
+  ]);
+  if(a.error||b.error){
+    showPageError('Impossible de charger les données comptables. '+(a.error||b.error).message);
+    return;
+  }
+  reservations=(a.data||[]).filter(r=>r.status==='confirmed'&&Number(r.guest_count)>0);
+  expenses=b.data||[];
+  const years=[...new Set([
+    ...reservations.map(r=>r.event_date?.slice(0,4)),
+    ...expenses.map(e=>e.expense_date?.slice(0,4)),
+    String(new Date().getFullYear())
+  ].filter(Boolean))].sort().reverse();
+  $('year').innerHTML=years.map(y=>'<option>'+y+'</option>').join('');
+  if(keep&&years.includes(keep))$('year').value=keep;
+  render();
+}
+
 function piece(e,i){return e.receipt_number||('F-'+String(i+1).padStart(3,'0'))}
-function render(){let s=saved();$('events').innerHTML=yEv().map(r=>`<label class="event"><input class="pick" type="checkbox" data-id="${esc(r.id)}" ${!s||s.has(String(r.id))?'checked':''}><div><strong>${esc(r.full_name||'Événement')}</strong><div class="note">${esc(r.event_date)} · ${esc(r.city||'')} · ${esc(r.guest_count||0)} invité(s)</div></div><strong>${money(price(r))}</strong></label>`).join('')||'<div class="note">Aucun événement.</div>';document.querySelectorAll('.pick').forEach(x=>x.onchange=()=>{save();summary()});renderExpenses();summary()}
-function selected(){let ids=new Set([...document.querySelectorAll('.pick:checked')].map(x=>x.dataset.id));return yEv().filter(r=>ids.has(String(r.id)))}
-function renderExpenses(){let a=yEx();$('expenseCount').textContent=a.length+' dépense(s)';$('expensesBody').innerHTML=a.map((e,i)=>{let p=piece(e,i);return`<tr><td><strong>${p}</strong></td><td>${esc(e.expense_date)}</td><td><span class="chip">${esc(e.category||'Autre')}</span></td><td>${esc(e.vendor||'—')}</td><td>${esc(e.description||'—')}</td><td><strong>${money(e.amount)}</strong></td><td>${e.receipt_url?`<div class="receiptActions"><span class="chip ok">✓ Jointe</span><button class="btn small" onclick="viewReceipt('${esc(e.id)}')">Voir</button><button class="btn small" onclick="uploadClick('${esc(e.id)}')">Remplacer</button></div>`:`<button class="btn small" onclick="uploadClick('${esc(e.id)}')">+ Ajouter facture</button>`}<input id="file-${esc(e.id)}" class="hidden" type="file" accept="image/jpeg,image/png,image/heic,application/pdf" onchange="uploadReceipt('${esc(e.id)}',this.files[0],'${p}')"></td></tr>`}).join('');let sums={};a.forEach(e=>sums[e.category||'Autre']=(sums[e.category||'Autre']||0)+(+e.amount||0));$('categories').innerHTML=Object.entries(sums).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`<div class="cat"><span>${esc(c)}</span><strong>${money(v)}</strong></div>`).join('')}
-function summary(){let ev=selected(),ex=yEx(),rev=ev.reduce((s,r)=>s+price(r),0),xp=ex.reduce((s,e)=>s+(+e.amount||0),0),km=ev.reduce((s,r)=>s+(+r.business_km||0),0);$('revenueStat').textContent=money(rev);$('expenseStat').textContent=money(xp);$('netStat').textContent=money(rev-xp);$('eventCount').textContent=ev.length;$('kmStat').textContent=km.toFixed(1)+' km'}
-window.uploadClick=id=>$('file-'+id).click();
-window.uploadReceipt=async(id,file,p)=>{if(!file)return;if(file.size>10485760)return alert('Maximum 10 Mo.');$('progress').classList.remove('error');$('progress').textContent='Téléversement de '+file.name+'…';let ext=(file.name.split('.').pop()||'jpg').toLowerCase(),path=$('year').value+'/'+p+'-'+Date.now()+'.'+ext,{error}=await db.storage.from('receipts').upload(path,file,{upsert:false});if(error){$('progress').textContent='';return alert(error.message)}let old=xs.find(x=>String(x.id)===String(id)),{error:u}=await db.from('expenses').update({receipt_number:p,receipt_url:path,receipt_filename:file.name}).eq('id',id);if(u){await db.storage.from('receipts').remove([path]);$('progress').textContent='';return alert(u.message)}if(old?.receipt_url)await db.storage.from('receipts').remove([old.receipt_url]);$('progress').textContent='✓ Facture ajoutée à '+p;await load();setTimeout(()=>$('progress').textContent='',2500)};
-window.viewReceipt=async id=>{let e=xs.find(x=>String(x.id)===String(id));if(!e?.receipt_url)return;let{data,error}=await db.storage.from('receipts').createSignedUrl(e.receipt_url,120);if(error)return alert(error.message);window.open(data.signedUrl,'_blank')};
-$('year').onchange=render;$('all').onclick=()=>{document.querySelectorAll('.pick').forEach(x=>x.checked=true);save();summary()};$('none').onclick=()=>{document.querySelectorAll('.pick').forEach(x=>x.checked=false);save();summary()};
-function makePdf(){let ev=selected(),ex=yEx(),y=$('year').value,rev=ev.reduce((s,r)=>s+price(r),0),xp=ex.reduce((s,e)=>s+(+e.amount||0),0),km=ev.reduce((s,r)=>s+(+r.business_km||0),0),{jsPDF}=window.jspdf,d=new jsPDF({unit:'mm',format:'letter'});d.setFillColor(91,31,42);d.rect(0,0,216,30,'F');d.setTextColor(255,255,255);d.setFont('helvetica','bold');d.setFontSize(22);d.text('RAFA',16,18);d.setFontSize(11);d.text('DOSSIER COMPTABLE '+y,198,18,{align:'right'});d.setTextColor(43,37,36);d.setFontSize(15);d.text('Sommaire financier',16,43);d.setFontSize(10);d.text('Revenus sélectionnés : '+money(rev),16,54);d.text('Dépenses enregistrées : '+money(xp),16,61);d.text('Bénéfice net estimé : '+money(rev-xp),16,68);d.text('Événements : '+ev.length,112,54);d.text('Kilométrage : '+km.toFixed(1)+' km',112,61);d.autoTable({startY:78,head:[['Date','Événement','Ville','Revenus']],body:ev.map(r=>[r.event_date||'',r.full_name||'',r.city||'',money(price(r))]),styles:{fontSize:8},headStyles:{fillColor:[91,31,42]},columnStyles:{3:{halign:'right'}}});let sy=d.lastAutoTable.finalY+9;if(sy>245){d.addPage();sy=20}d.setFontSize(14);d.text('Registre des dépenses',16,sy);d.autoTable({startY:sy+5,head:[['Pièce','Date','Catégorie','Fournisseur','Description','Montant','Jointe']],body:ex.map((e,i)=>[piece(e,i),e.expense_date||'',e.category||'',e.vendor||'',e.description||'',money(e.amount),e.receipt_url?'Oui':'Non']),styles:{fontSize:7},headStyles:{fillColor:[91,31,42]},columnStyles:{5:{halign:'right'}},margin:{left:8,right:8}});return d}
+
+function render(){
+  const saved=savedSelection();
+  $('events').innerHTML=yearlyEvents().map(r=>`<label class="event">
+    <input class="pick" type="checkbox" data-id="${esc(r.id)}" ${!saved||saved.has(String(r.id))?'checked':''}>
+    <div><strong>${esc(r.full_name||'Événement')}</strong><div class="note">${esc(r.event_date)} · ${esc(r.city||'')} · ${esc(r.guest_count||0)} invité(s)</div></div>
+    <strong>${money(price(r))}</strong>
+  </label>`).join('')||'<div class="note">Aucun événement.</div>';
+
+  document.querySelectorAll('.pick').forEach(x=>x.onchange=()=>{saveSelection();summary()});
+  renderExpenses();
+  summary();
+}
+
+function selectedEvents(){
+  const ids=new Set([...document.querySelectorAll('.pick:checked')].map(x=>x.dataset.id));
+  return yearlyEvents().filter(r=>ids.has(String(r.id)));
+}
+
+function renderExpenses(){
+  const a=yearlyExpenses();
+  $('expenseCount').textContent=a.length+' dépense(s)';
+  $('expensesBody').innerHTML=a.map((e,i)=>{
+    const p=piece(e,i);
+    const actions=e.receipt_url
+      ? `<div class="receiptActions"><span class="chip ok">✓ Jointe</span><button class="btn small" onclick="viewReceipt('${esc(e.id)}')">Voir</button><button class="btn small" onclick="uploadClick('${esc(e.id)}')">Remplacer</button></div>`
+      : `<button class="btn small" onclick="uploadClick('${esc(e.id)}')">+ Ajouter facture</button>`;
+    return `<tr>
+      <td data-label="Pièce"><strong>${esc(p)}</strong></td>
+      <td data-label="Date">${esc(e.expense_date)}</td>
+      <td data-label="Catégorie"><span class="chip">${esc(e.category||'Autre')}</span></td>
+      <td data-label="Fournisseur">${esc(e.vendor||'—')}</td>
+      <td data-label="Description">${esc(e.description||'—')}</td>
+      <td data-label="Montant"><strong>${money(e.amount)}</strong></td>
+      <td data-label="Facture / reçu">${actions}<input id="file-${esc(e.id)}" class="hidden" type="file" accept="image/jpeg,image/png,image/heic,application/pdf" onchange="uploadReceipt('${esc(e.id)}',this.files[0],'${esc(p)}')"></td>
+    </tr>`;
+  }).join('')||'<tr><td data-label="Dépenses">Aucune dépense pour cette année.</td></tr>';
+
+  const sums={};
+  a.forEach(e=>sums[e.category||'Autre']=(sums[e.category||'Autre']||0)+(Number(e.amount)||0));
+  $('categories').innerHTML=Object.entries(sums).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`<div class="cat"><span>${esc(c)}</span><strong>${money(v)}</strong></div>`).join('')||'<div class="note">Aucune dépense à résumer.</div>';
+}
+
+function summary(){
+  const ev=selectedEvents(),ex=yearlyExpenses();
+  const rev=ev.reduce((s,r)=>s+price(r),0);
+  const xp=ex.reduce((s,e)=>s+(Number(e.amount)||0),0);
+  const km=ev.reduce((s,r)=>s+(Number(r.business_km)||0),0);
+  $('revenueStat').textContent=money(rev);
+  $('expenseStat').textContent=money(xp);
+  $('netStat').textContent=money(rev-xp);
+  $('eventCount').textContent=ev.length;
+  $('kmStat').textContent=km.toFixed(1)+' km';
+}
+
+window.uploadClick=id=>$('file-'+id)?.click();
+
+window.uploadReceipt=async(id,file,p)=>{
+  if(!file)return;
+  if(file.size>10485760){showPageError('Le fichier dépasse 10 Mo.');return}
+  showPageError();
+  $('progress').classList.remove('error');
+  $('progress').textContent='Téléversement de '+file.name+'…';
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+  const path=$('year').value+'/'+p+'-'+Date.now()+'.'+ext;
+  const {error}=await db.storage.from('receipts').upload(path,file,{upsert:false});
+  if(error){$('progress').textContent='';showPageError(error.message);return}
+  const old=expenses.find(x=>String(x.id)===String(id));
+  const {error:updateError}=await db.from('expenses').update({receipt_number:p,receipt_url:path,receipt_filename:file.name}).eq('id',id);
+  if(updateError){
+    await db.storage.from('receipts').remove([path]);
+    $('progress').textContent='';
+    showPageError(updateError.message);
+    return;
+  }
+  if(old?.receipt_url)await db.storage.from('receipts').remove([old.receipt_url]);
+  $('progress').textContent='✓ Facture ajoutée à '+p;
+  await load();
+  setTimeout(()=>{$('progress').textContent=''},2500);
+};
+
+window.viewReceipt=async id=>{
+  const e=expenses.find(x=>String(x.id)===String(id));
+  if(!e?.receipt_url)return;
+  const {data,error}=await db.storage.from('receipts').createSignedUrl(e.receipt_url,120);
+  if(error){showPageError(error.message);return}
+  window.open(data.signedUrl,'_blank');
+};
+
+$('year').onchange=render;
+$('all').onclick=()=>{document.querySelectorAll('.pick').forEach(x=>x.checked=true);saveSelection();summary()};
+$('none').onclick=()=>{document.querySelectorAll('.pick').forEach(x=>x.checked=false);saveSelection();summary()};
+
+function makePdf(){
+  const ev=selectedEvents(),ex=yearlyExpenses(),y=$('year').value;
+  const rev=ev.reduce((s,r)=>s+price(r),0),xp=ex.reduce((s,e)=>s+(Number(e.amount)||0),0),km=ev.reduce((s,r)=>s+(Number(r.business_km)||0),0);
+  const {jsPDF}=window.jspdf;
+  const d=new jsPDF({unit:'mm',format:'letter'});
+  d.setFillColor(91,31,42);d.rect(0,0,216,30,'F');
+  d.setTextColor(255,255,255);d.setFont('helvetica','bold');d.setFontSize(22);d.text('RAFA',16,18);d.setFontSize(11);d.text('DOSSIER COMPTABLE '+y,198,18,{align:'right'});
+  d.setTextColor(43,37,36);d.setFontSize(15);d.text('Sommaire financier',16,43);
+  d.setFontSize(10);d.text('Revenus sélectionnés : '+money(rev),16,54);d.text('Dépenses enregistrées : '+money(xp),16,61);d.text('Bénéfice net estimé : '+money(rev-xp),16,68);d.text('Événements : '+ev.length,112,54);d.text('Kilométrage : '+km.toFixed(1)+' km',112,61);
+  d.autoTable({startY:78,head:[['Date','Événement','Ville','Revenus']],body:ev.map(r=>[r.event_date||'',r.full_name||'',r.city||'',money(price(r))]),styles:{fontSize:8},headStyles:{fillColor:[91,31,42]},columnStyles:{3:{halign:'right'}}});
+  let sy=d.lastAutoTable.finalY+9;if(sy>245){d.addPage();sy=20}
+  d.setFontSize(14);d.text('Registre des dépenses',16,sy);
+  d.autoTable({startY:sy+5,head:[['Pièce','Date','Catégorie','Fournisseur','Description','Montant','Jointe']],body:ex.map((e,i)=>[piece(e,i),e.expense_date||'',e.category||'',e.vendor||'',e.description||'',money(e.amount),e.receipt_url?'Oui':'Non']),styles:{fontSize:7},headStyles:{fillColor:[91,31,42]},columnStyles:{5:{halign:'right'}},margin:{left:8,right:8}});
+  return d;
+}
+
 $('pdf').onclick=()=>makePdf().save('Rafa-Bilan-'+$('year').value+'.pdf');
-$('zip').onclick=async()=>{let btn=$('zip'),y=$('year').value,ex=yEx(),withReceipts=ex.filter(e=>!!e.receipt_url);btn.disabled=true;$('progress').classList.remove('error');$('progress').textContent='Vérification de '+withReceipts.length+' pièce(s) justificative(s)…';try{let z=new JSZip(),pdf=makePdf().output('blob');z.file('Rafa-Bilan-'+y+'.pdf',pdf);let folder=z.folder('Pieces-justificatives'),ok=0,failed=[];for(let i=0;i<withReceipts.length;i++){let e=withReceipts[i],originalIndex=ex.findIndex(x=>String(x.id)===String(e.id)),p=piece(e,originalIndex);$('progress').textContent='Récupération des pièces : '+ok+'/'+withReceipts.length+' · '+p;let{data,error}=await db.storage.from('receipts').download(e.receipt_url);if(error||!data){failed.push(p);continue}let ab=await data.arrayBuffer();if(!ab||ab.byteLength===0){failed.push(p);continue}let ext=(e.receipt_filename?.split('.').pop()||e.receipt_url.split('.').pop()||'pdf').replace(/[^a-z0-9]/gi,'').toLowerCase()||'pdf',vendor=(e.vendor||'Recu').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9_-]/gi,'-').replace(/-+/g,'-').slice(0,35);folder.file(p+'_'+vendor+'.'+ext,new Uint8Array(ab));ok++;$('progress').textContent='✓ '+ok+'/'+withReceipts.length+' pièce(s) ajoutée(s)';}
-if(failed.length)throw new Error('Impossible de récupérer '+failed.length+' pièce(s) : '+failed.join(', ')+'. Le ZIP n’a pas été créé.');
-if(ok!==withReceipts.length)throw new Error('Vérification incomplète : '+ok+'/'+withReceipts.length+' pièces. Le ZIP n’a pas été créé.');
-$('progress').textContent='✓ '+ok+'/'+withReceipts.length+' pièces vérifiées. Création du ZIP…';let blob=await z.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});if(!blob||blob.size===0)throw new Error('Le ZIP généré est vide.');let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Rafa-Dossier-comptable-'+y+'.zip';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);$('progress').textContent='✓ Dossier prêt — '+ok+'/'+withReceipts.length+' pièces justificatives incluses.';}catch(e){$('progress').classList.add('error');$('progress').textContent='Erreur : '+e.message;alert(e.message)}finally{btn.disabled=false}};
+
+$('zip').onclick=async()=>{
+  const btn=$('zip'),y=$('year').value,ex=yearlyExpenses(),withReceipts=ex.filter(e=>!!e.receipt_url);
+  btn.disabled=true;
+  showPageError();
+  $('progress').classList.remove('error');
+  $('progress').textContent='Vérification de '+withReceipts.length+' pièce(s) justificative(s)…';
+  try{
+    const z=new JSZip();
+    z.file('Rafa-Bilan-'+y+'.pdf',makePdf().output('blob'));
+    const folder=z.folder('Pieces-justificatives');
+    let ok=0;
+    const failed=[];
+    for(let i=0;i<withReceipts.length;i++){
+      const e=withReceipts[i];
+      const originalIndex=ex.findIndex(x=>String(x.id)===String(e.id));
+      const p=piece(e,originalIndex);
+      $('progress').textContent='Récupération des pièces : '+ok+'/'+withReceipts.length+' · '+p;
+      const {data,error}=await db.storage.from('receipts').download(e.receipt_url);
+      if(error||!data){failed.push(p);continue}
+      const ab=await data.arrayBuffer();
+      if(!ab||ab.byteLength===0){failed.push(p);continue}
+      const ext=(e.receipt_filename?.split('.').pop()||e.receipt_url.split('.').pop()||'pdf').replace(/[^a-z0-9]/gi,'').toLowerCase()||'pdf';
+      const vendor=(e.vendor||'Recu').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9_-]/gi,'-').replace(/-+/g,'-').slice(0,35);
+      folder.file(p+'_'+vendor+'.'+ext,new Uint8Array(ab));
+      ok++;
+      $('progress').textContent='✓ '+ok+'/'+withReceipts.length+' pièce(s) ajoutée(s)';
+    }
+    if(failed.length)throw new Error('Impossible de récupérer '+failed.length+' pièce(s) : '+failed.join(', ')+'. Le ZIP n’a pas été créé.');
+    if(ok!==withReceipts.length)throw new Error('Vérification incomplète : '+ok+'/'+withReceipts.length+' pièces. Le ZIP n’a pas été créé.');
+    $('progress').textContent='✓ '+ok+'/'+withReceipts.length+' pièces vérifiées. Création du ZIP…';
+    const blob=await z.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
+    if(!blob||blob.size===0)throw new Error('Le ZIP généré est vide.');
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download='Rafa-Dossier-comptable-'+y+'.zip';document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),10000);
+    $('progress').textContent='✓ Dossier prêt — '+ok+'/'+withReceipts.length+' pièces justificatives incluses.';
+  }catch(e){
+    $('progress').classList.add('error');
+    $('progress').textContent='Erreur : '+e.message;
+    showPageError(e.message);
+  }finally{btn.disabled=false}
+};
+
 gate();
 </script>
 </body>
