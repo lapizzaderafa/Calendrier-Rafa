@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Rafa Pizza — Import Crumple</title>
+<style>
+:root{--cream:#F6F0E7;--cream2:#FBF8F3;--wine:#5B1F2A;--wine2:#7A2D3C;--ink:#2B2524;--muted:#8A7D77;--line:rgba(91,31,42,.16);--ok:#447A54;--danger:#9B3E4E}
+*{box-sizing:border-box}body{margin:0;background:#eee8df;color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.hidden{display:none!important}.app{max-width:1050px;margin:auto;padding:18px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}.brand h1{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--wine);font-size:34px}.brand p{margin:4px 0 0;color:var(--muted);font-size:12px}.nav{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:999px;padding:11px 16px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.btn.primary{background:var(--wine);color:#fff}.btn.secondary{background:#fff;color:var(--wine);border:1px solid var(--line)}.btn.danger{background:var(--danger);color:#fff}.btn:disabled{opacity:.5;cursor:not-allowed}.panel{background:var(--cream);border:1px solid var(--line);border-radius:24px;box-shadow:0 14px 34px rgba(65,35,39,.08);overflow:hidden;margin-bottom:16px}.panel-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.panel-head h2{margin:0;color:var(--wine);font-family:Georgia,"Times New Roman",serif;font-size:23px}.panel-body{padding:18px 20px}.drop{border:2px dashed rgba(91,31,42,.25);border-radius:18px;padding:28px;text-align:center;background:var(--cream2)}.drop input{display:none}.drop strong{display:block;color:var(--wine);font-size:18px;margin-bottom:6px}.note{font-size:12px;color:var(--muted);line-height:1.5}.mapping{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:10px;color:var(--wine);font-weight:900;text-transform:uppercase}.field select{border:1px solid var(--line);border-radius:12px;background:#fff;padding:10px;font-size:13px}.table-wrap{width:100%;overflow:auto}.table{width:100%;border-collapse:collapse;min-width:760px}.table th{font-size:10px;text-transform:uppercase;text-align:left;color:var(--muted);padding:10px 8px;border-bottom:1px solid var(--line)}.table td{padding:10px 8px;border-bottom:1px solid var(--line);font-size:12px}.chip{display:inline-block;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800}.chip.new{background:#e4efe6;color:#315e3d}.chip.dup{background:#eee8df;color:#7c6d67}.status{border-radius:14px;padding:12px 14px;margin-top:12px;font-size:12px}.status.ok{background:#e4efe6;color:#315e3d;border:1px solid #bdd5c3}.status.err{background:#f5e3e6;color:#8a2f40;border:1px solid #e7bbc4}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.login-wrap{min-height:90vh;display:grid;place-items:center;padding:20px}.login{width:min(430px,100%);background:var(--cream);border:1px solid var(--line);border-radius:28px;padding:30px;box-shadow:0 18px 45px rgba(65,35,39,.12);text-align:center}.login h1{font-family:Georgia,"Times New Roman",serif;color:var(--wine);font-size:36px;margin:0 0 8px}.login input{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px;font-size:16px;margin:12px 0 8px}.login .btn{width:100%;margin-top:6px}@media(max-width:700px){.mapping{grid-template-columns:1fr}.app{padding:9px}.brand h1{font-size:28px}.nav{width:100%}.nav .btn{flex:1}}
+</style>
+</head>
+<body>
+<div id="loginWrap" class="login-wrap">
+  <div class="login">
+    <h1>Rafa Pizza</h1>
+    <p class="note">Import Crumple · dépenses privées</p>
+    <input id="password" type="password" placeholder="Mot de passe" autocomplete="current-password">
+    <button id="loginBtn" class="btn primary">Se connecter</button>
+    <a class="btn secondary" href="finances.html">Retour aux finances</a>
+    <div id="loginMsg" class="note" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<div id="app" class="app hidden">
+  <div class="topbar">
+    <div class="brand">
+      <h1>Rafa · Crumple</h1>
+      <p>Importer les reçus Crumple directement dans les dépenses Rafa.</p>
+    </div>
+    <div class="nav">
+      <a class="btn secondary" href="admin.html">Réservations</a>
+      <a class="btn secondary" href="finances.html">Finances</a>
+      <button id="logoutBtn" class="btn secondary">Déconnexion</button>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="panel-head"><h2>1 · Choisir le CSV Crumple</h2></div>
+    <div class="panel-body">
+      <label class="drop" for="csvFile">
+        <strong>📄 Sélectionner le fichier CSV</strong>
+        <span class="note">Exporte tes reçus depuis Crumple, puis sélectionne le fichier ici.</span>
+        <input id="csvFile" type="file" accept=".csv,text/csv">
+      </label>
+      <div id="fileInfo" class="note" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <section id="mappingPanel" class="panel hidden">
+    <div class="panel-head"><h2>2 · Vérifier les colonnes</h2><span class="note">Détection automatique — modifiable au besoin.</span></div>
+    <div class="panel-body">
+      <div class="mapping">
+        <div class="field"><label>Date</label><select id="mapDate"></select></div>
+        <div class="field"><label>Commerce / fournisseur</label><select id="mapVendor"></select></div>
+        <div class="field"><label>Total payé</label><select id="mapAmount"></select></div>
+        <div class="field"><label>Catégorie Crumple</label><select id="mapCategory"></select></div>
+        <div class="field"><label>Description</label><select id="mapDescription"></select></div>
+        <div class="field"><label>Notes</label><select id="mapNotes"></select></div>
+      </div>
+      <div class="actions"><button id="previewBtn" class="btn primary">Actualiser l’aperçu</button></div>
+    </div>
+  </section>
+
+  <section id="previewPanel" class="panel hidden">
+    <div class="panel-head"><h2>3 · Aperçu</h2><span id="previewSummary" class="note"></span></div>
+    <div class="panel-body">
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Date</th><th>Commerce</th><th>Catégorie Rafa</th><th>Description</th><th>Total</th><th>État</th></tr></thead>
+          <tbody id="previewBody"></tbody>
+        </table>
+      </div>
+      <div class="actions">
+        <button id="importBtn" class="btn primary">Importer les nouvelles dépenses</button>
+        <a class="btn secondary" href="finances.html">Voir mes finances</a>
+      </div>
+      <div id="importStatus"></div>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script>
+const SUPABASE_URL='https://jetogsbyptglaihktdel.supabase.co';
+const SUPABASE_KEY='sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja';
+const ADMIN_EMAIL='raphael.frenette@gmail.com';
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=id=>document.getElementById(id);
+let rawRows=[];let headers=[];let currentPreview=[];let existingExpenses=[];
+
+const aliases={
+  date:['date','receipt date','transaction date','purchase date','created at','date achat','date de achat','date du reçu','date du recu'],
+  vendor:['merchant','vendor','store','retailer','business','supplier','commerce','fournisseur','marchand','merchant name'],
+  amount:['total','amount','grand total','total amount','paid','amount paid','montant','montant total','total paid'],
+  category:['category','categorie','catégorie','expense category','type'],
+  description:['description','title','item','memo','objet','details','détails'],
+  notes:['notes','note','comment','comments','commentaire','commentaires']
+};
+function norm(v){return String(v??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/[^a-z0-9]+/g,' ')}
+function detect(field){const wanted=aliases[field].map(norm);let best='';let score=-1;headers.forEach(h=>{const n=norm(h);let s=wanted.includes(n)?100:wanted.reduce((m,a)=>Math.max(m,n.includes(a)||a.includes(n)?60:0),0);if(s>score){score=s;best=h}});return score>0?best:''}
+function setStatus(msg,type='ok'){$('importStatus').innerHTML='<div class="status '+(type==='err'?'err':'ok')+'">'+msg+'</div>'}
+function money(v){return new Intl.NumberFormat('fr-CA',{style:'currency',currency:'CAD'}).format(Number(v||0))}
+function esc(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;')}
+function parseAmount(v){if(typeof v==='number')return v;let s=String(v??'').trim().replace(/\s/g,'').replace(/[$€£]/g,'');if(!s)return NaN;if(s.includes(',')&&s.includes('.')){if(s.lastIndexOf(',')>s.lastIndexOf('.'))s=s.replace(/\./g,'').replace(',','.');else s=s.replace(/,/g,'')}else if(s.includes(','))s=s.replace(',','.');return Number(s)}
+function parseDate(v){if(!v)return'';const s=String(v).trim();if(/^\d{4}-\d{2}-\d{2}/.test(s))return s.slice(0,10);let m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/);if(m){let y=Number(m[3]);if(y<100)y+=2000;return String(y).padStart(4,'0')+'-'+String(Number(m[2])).padStart(2,'0')+'-'+String(Number(m[1])).padStart(2,'0')}const d=new Date(s);if(!isNaN(d))return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');return''}
+function classify(vendor,description,sourceCat){const t=norm([vendor,description,sourceCat].join(' '));if(/propane|gas cylinder|bonbonne/.test(t))return'Propane';if(/paton|pate|dough/.test(t))return'Pâtons';if(/gozney|four|oven/.test(t))return'Four / équipement durable';if(/stationnement|parking|peage|toll|uber|taxi|essence|gasoline/.test(t))return'Déplacement / stationnement / péage';if(/facebook|instagram|meta|google|web|site|domain|domaine|marketing|publicite/.test(t))return'Marketing / site web';if(/assurance|insurance|permis|permit|mapaq/.test(t))return'Assurance / permis';if(/frais bancaire|bank fee|stripe|square|paypal/.test(t))return'Frais bancaires / paiement';if(/costco|iga|metro|super c|maxi|walmart|provigo|epicerie|grocery|aliment|food|fromage|mozzarella|pepperoni/.test(t))return'Ingrédients / épicerie';if(/canadian tire|rona|home depot|amazon|materiel|ustensile|bac|table|glaciere|yeti/.test(t))return'Matériel de cuisine';return'Autre'}
+function signature(x){return [x.expense_date,Number(x.amount||0).toFixed(2),norm(x.vendor)].join('|')}
+function selectOptions(id,selected,optional=true){const el=$(id);el.innerHTML=(optional?'<option value="">— Aucun —</option>':'')+headers.map(h=>'<option value="'+esc(h)+'">'+esc(h)+'</option>').join('');if(selected&&headers.includes(selected))el.value=selected}
+async function loadExisting(){const {data,error}=await db.from('expenses').select('*');if(error)throw error;existingExpenses=data||[]}
+function buildPreview(){const md=$('mapDate').value,mv=$('mapVendor').value,ma=$('mapAmount').value,mc=$('mapCategory').value,mdesc=$('mapDescription').value,mn=$('mapNotes').value;if(!md||!ma){setStatus('Choisis au minimum les colonnes Date et Total payé.','err');return}const existingSet=new Set(existingExpenses.map(signature));currentPreview=rawRows.map((r,i)=>{const vendor=mv?String(r[mv]??'').trim():'';const amount=parseAmount(r[ma]);const date=parseDate(r[md]);const sourceDescription=mdesc?String(r[mdesc]??'').trim():'';const sourceCat=mc?String(r[mc]??'').trim():'';const notes=mn?String(r[mn]??'').trim():'';const description=sourceDescription||('Reçu Crumple'+(vendor?' · '+vendor:''));const item={expense_date:date,amount,vendor,category:classify(vendor,description,sourceCat),description,notes:notes?('Crumple · '+notes):'Importé de Crumple'};return {...item,_row:i+2,_valid:Boolean(date&&Number.isFinite(amount)&&amount>=0),_duplicate:existingSet.has(signature(item))}}).filter(x=>x._valid);renderPreview()}
+function renderPreview(){const body=$('previewBody');body.innerHTML='';currentPreview.forEach(x=>{const tr=document.createElement('tr');tr.innerHTML='<td>'+esc(x.expense_date)+'</td><td>'+esc(x.vendor||'—')+'</td><td>'+esc(x.category)+'</td><td>'+esc(x.description)+'</td><td><strong>'+money(x.amount)+'</strong></td><td><span class="chip '+(x._duplicate?'dup':'new')+'">'+(x._duplicate?'Déjà importé':'Nouveau')+'</span></td>';body.appendChild(tr)});const n=currentPreview.filter(x=>!x._duplicate).length,d=currentPreview.filter(x=>x._duplicate).length;$('previewSummary').textContent=n+' nouveau(x) · '+d+' doublon(s) ignoré(s)';$('previewPanel').classList.remove('hidden');$('importBtn').disabled=n===0}
+async function sessionGate(){const {data:{session}}=await db.auth.getSession();if(session&&(session.user.email||'').toLowerCase()===ADMIN_EMAIL.toLowerCase()){$('loginWrap').classList.add('hidden');$('app').classList.remove('hidden');try{await loadExisting()}catch(e){alert('Impossible de charger les dépenses : '+e.message)}}else{$('loginWrap').classList.remove('hidden');$('app').classList.add('hidden')}}
+$('loginBtn').onclick=async()=>{const p=$('password').value;if(!p){$('loginMsg').textContent='Entrez votre mot de passe.';return}$('loginMsg').textContent='Connexion…';const {error}=await db.auth.signInWithPassword({email:ADMIN_EMAIL,password:p});if(error){$('loginMsg').textContent='Connexion impossible. Vérifiez le mot de passe.';return}await sessionGate()};
+$('password').addEventListener('keydown',e=>{if(e.key==='Enter')$('loginBtn').click()});
+$('logoutBtn').onclick=async()=>{await db.auth.signOut();location.href='admin.html'};
+$('csvFile').addEventListener('change',()=>{const file=$('csvFile').files[0];if(!file)return;$('fileInfo').textContent=file.name+' · '+Math.round(file.size/1024)+' Ko';Papa.parse(file,{header:true,skipEmptyLines:true,transformHeader:h=>String(h).trim(),complete:res=>{rawRows=res.data||[];headers=res.meta.fields||Object.keys(rawRows[0]||{});if(!headers.length){setStatus('Aucune colonne détectée dans ce fichier.','err');return}selectOptions('mapDate',detect('date'),false);selectOptions('mapVendor',detect('vendor'));selectOptions('mapAmount',detect('amount'),false);selectOptions('mapCategory',detect('category'));selectOptions('mapDescription',detect('description'));selectOptions('mapNotes',detect('notes'));$('mappingPanel').classList.remove('hidden');buildPreview()},error:err=>setStatus('Impossible de lire le CSV : '+err.message,'err')})});
+$('previewBtn').onclick=buildPreview;
+['mapDate','mapVendor','mapAmount','mapCategory','mapDescription','mapNotes'].forEach(id=>$(id).addEventListener('change',buildPreview));
+$('importBtn').onclick=async()=>{const rows=currentPreview.filter(x=>!x._duplicate).map(({_row,_valid,_duplicate,...x})=>x);if(!rows.length)return;$('importBtn').disabled=true;setStatus('Import en cours…');const {data,error}=await db.from('expenses').insert(rows).select('*');if(error){setStatus('Erreur Supabase : '+error.message,'err');$('importBtn').disabled=false;return}existingExpenses=[...existingExpenses,...(data||[])];setStatus('✅ '+rows.length+' dépense(s) ajoutée(s) à Rafa. Les totaux sont maintenant à jour.');buildPreview()};
+sessionGate();
+</script>
+</body>
+</html>
