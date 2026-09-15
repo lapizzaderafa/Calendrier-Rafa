@@ -1,793 +1,779 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Rafa Pizza — Pizza à domicile</title>
-  <meta name="description" content="Rafa Pizza prépare et sert des pizzas sur place pour vos événements. Consultez les prix, le menu et les disponibilités, puis envoyez votre demande en quelques minutes.">
-  <meta name="robots" content="index,follow">
-  <meta name="theme-color" content="#5B1F2A">
-  <style>
-    :root{
-      --cream:#F6F0E7;
-      --cream2:#FBF8F3;
-      --paper:#FFFDFC;
-      --wine:#5B1F2A;
-      --wine2:#7A2D3C;
-      --ink:#2B2524;
-      --muted:#81746F;
-      --line:rgba(91,31,42,.14);
-      --soft:rgba(91,31,42,.055);
-      --shadow:0 18px 50px rgba(62,37,39,.08);
-      --ok:#52745D;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      background:#ECE5DC;
-      color:var(--ink);
-      font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      -webkit-font-smoothing:antialiased;
-    }
-    button,input{font:inherit}
-    a{color:inherit}
-    .site{
-      width:min(1180px,100%);
-      margin:0 auto;
-      background:var(--cream);
-      min-height:100vh;
-      box-shadow:var(--shadow);
-    }
-    .site-header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-      padding:20px 34px;
-      border-bottom:1px solid var(--line);
-      background:rgba(246,240,231,.96);
-      position:sticky;
-      top:0;
-      z-index:40;
-      backdrop-filter:blur(12px);
-    }
-    .brand{text-decoration:none;display:inline-flex;flex-direction:column;gap:1px}
-    .brand strong{
-      color:var(--wine);
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:25px;
-      font-weight:500;
-      letter-spacing:-.02em;
-    }
-    .brand span{
-      color:var(--muted);
-      font-size:9px;
-      font-weight:800;
-      letter-spacing:.11em;
-      text-transform:uppercase;
-    }
-    .nav{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
-    .nav a{
-      text-decoration:none;
-      font-size:11px;
-      font-weight:800;
-      padding:10px 13px;
-      border-radius:999px;
-      color:var(--wine);
-    }
-    .nav a:hover{background:var(--soft)}
-    .nav .cta{background:var(--wine);color:#fff;padding-inline:17px}
-    .hero{
-      display:grid;
-      grid-template-columns:.9fr 1.1fr;
-      gap:38px;
-      align-items:center;
-      padding:48px 34px 42px;
-      border-bottom:1px solid var(--line);
-    }
-    .hero-copy{max-width:510px;padding-left:10px}
-    .eyebrow{
-      margin:0 0 13px;
-      color:var(--wine2);
-      font-size:10px;
-      font-weight:900;
-      letter-spacing:.13em;
-      text-transform:uppercase;
-    }
-    h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--wine);font-weight:500}
-    h1{
-      font-size:clamp(45px,7vw,76px);
-      line-height:.96;
-      letter-spacing:-.045em;
-      margin:0 0 22px;
-    }
-    .hero-copy .lead{
-      margin:0;
-      max-width:470px;
-      font-size:17px;
-      line-height:1.7;
-      color:#4D4441;
-    }
-    .hero-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:28px}
-    .button{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:45px;
-      padding:0 18px;
-      border-radius:999px;
-      text-decoration:none;
-      font-size:12px;
-      font-weight:900;
-      border:1px solid var(--line);
-      background:var(--cream2);
-      color:var(--wine);
-      cursor:pointer;
-    }
-    .button.primary{background:var(--wine);color:#fff;border-color:var(--wine)}
-    .hero-media{position:relative}
-    .hero-media img{
-      width:100%;
-      display:block;
-      aspect-ratio:4/3;
-      object-fit:cover;
-      border-radius:26px;
-    }
-    .hero-badge{
-      position:absolute;
-      left:18px;
-      bottom:18px;
-      background:rgba(255,253,250,.94);
-      color:var(--wine);
-      border-radius:16px;
-      padding:11px 14px;
-      font-size:11px;
-      font-weight:900;
-      box-shadow:0 8px 24px rgba(0,0,0,.10);
-    }
-    .section{padding:58px 34px;border-bottom:1px solid var(--line)}
-    .section.alt{background:var(--cream2)}
-    .inner{max-width:980px;margin:0 auto}
-    .section-head{max-width:690px;margin-bottom:28px}
-    .section-kicker{
-      margin:0 0 8px;
-      color:var(--wine2);
-      font-size:9px;
-      font-weight:900;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-    .section-title{
-      font-size:clamp(31px,4vw,45px);
-      letter-spacing:-.025em;
-      margin:0 0 10px;
-    }
-    .section-copy{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.7;
-    }
-    .steps{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      border:1px solid var(--line);
-      border-radius:22px;
-      overflow:hidden;
-      background:var(--cream);
-    }
-    .step{padding:24px 20px;min-height:188px;border-right:1px solid var(--line)}
-    .step:last-child{border-right:0}
-    .step-number{
-      display:inline-grid;
-      place-items:center;
-      width:34px;height:34px;
-      border-radius:50%;
-      background:var(--wine);
-      color:white;
-      font-size:11px;
-      font-weight:900;
-      margin-bottom:32px;
-    }
-    .step h3{font-size:20px;margin:0 0 8px}
-    .step p{font-size:11px;line-height:1.6;color:var(--muted);margin:0}
-    .process-note{
-      margin-top:14px;
-      border-left:3px solid var(--wine);
-      padding:10px 13px;
-      background:var(--soft);
-      border-radius:0 12px 12px 0;
-      color:var(--wine);
-      font-size:11px;
-      font-weight:800;
-      line-height:1.55;
-    }
-    .experience-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-    }
-    .experience-card{
-      padding:22px;
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:var(--paper);
-    }
-    .experience-card span{
-      display:block;
-      color:var(--muted);
-      font-size:9px;
-      text-transform:uppercase;
-      letter-spacing:.09em;
-      font-weight:900;
-      margin-bottom:7px;
-    }
-    .experience-card strong{
-      display:block;
-      color:var(--wine);
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:22px;
-      font-weight:500;
-    }
-    .experience-card p{font-size:11px;color:var(--muted);line-height:1.55;margin:8px 0 0}
-    .estimator-card{
-      border:1px solid var(--line);
-      border-radius:22px;
-      padding:24px;
-      background:var(--cream);
-    }
-    .guest-value{
-      display:block;
-      color:var(--wine);
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:36px;
-      font-weight:500;
-      margin-bottom:13px;
-    }
-    .price-slider{width:100%;accent-color:var(--wine)}
-    .slider-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:7px}
-    .estimate-results{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
-    .estimate-box{padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--paper)}
-    .estimate-box span{display:block;color:var(--muted);font-size:8.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
-    .estimate-box strong{display:block;color:var(--wine);font-family:Georgia,serif;font-size:27px;font-weight:500;margin-top:4px}
-    .estimate-note{margin:15px 0 0;color:var(--muted);font-size:10.5px;line-height:1.6}
-    .large-event-note{display:none;margin-top:12px;color:var(--wine2);font-size:10.5px;font-weight:800}
-    .large-event-note.show{display:block}
-    .section-action{margin-top:19px}
-    .pizza-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
-    }
-    .pizza-card{
-      border:1px solid var(--line);
-      border-radius:18px;
-      overflow:hidden;
-      background:var(--paper);
-      cursor:pointer;
-      transition:transform .18s ease,box-shadow .18s ease;
-    }
-    .pizza-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(91,31,42,.08)}
-    .pizza-card img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
-    .pizza-card-body{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 13px}
-    .pizza-name{font-family:Georgia,serif;color:var(--wine);font-size:17px}
-    .pizza-view{color:var(--muted);font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
-    .menu-note{
-      margin-top:14px;
-      padding:15px 16px;
-      background:var(--soft);
-      border:1px solid var(--line);
-      border-radius:14px;
-      color:var(--wine);
-      font-size:11px;
-      line-height:1.6;
-    }
-    .viewer{
-      position:fixed;inset:0;background:rgba(24,15,16,.96);z-index:100;
-      display:none;align-items:center;justify-content:center;padding:20px;
-    }
-    .viewer.open{display:flex}
-    .viewer img{max-width:94vw;max-height:86vh;border-radius:16px;display:block}
-    .viewer-close{
-      position:fixed;top:16px;right:16px;width:44px;height:44px;border:0;border-radius:50%;
-      background:#fff;color:var(--wine);font-size:27px;cursor:pointer;
-    }
-    .viewer-caption{
-      position:fixed;left:50%;bottom:16px;transform:translateX(-50%);
-      background:#fff;color:var(--wine);padding:9px 14px;border-radius:999px;font-size:11px;font-weight:900;
-    }
-    .calendar-card{
-      border:1px solid var(--line);
-      border-radius:22px;
-      background:var(--cream);
-      padding:20px;
-    }
-    .calendar-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-    .calendar-toolbar h3{margin:0;font-size:25px;text-align:center}
-    .month-nav{
-      width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--paper);
-      color:var(--wine);font-size:22px;cursor:pointer;
-    }
-    .month-nav:disabled{opacity:.3;cursor:not-allowed}
-    .weekdays,.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}
-    .weekday{text-align:center;color:var(--muted);font-size:9px;font-weight:900;text-transform:uppercase;padding:4px 0}
-    .day{
-      min-height:102px;border:1px solid var(--line);border-radius:14px;padding:9px;position:relative;
-      background:rgba(255,255,255,.4);text-decoration:none;color:inherit;
-    }
-    a.day{transition:transform .14s ease,border-color .14s ease,background .14s ease}
-    a.day:hover{transform:translateY(-1px);border-color:rgba(91,31,42,.33);background:#fff}
-    .day.empty{background:transparent;border-color:transparent}
-    .day .num{font-size:14px;font-weight:900;color:var(--wine)}
-    .day .status{
-      position:absolute;left:7px;right:7px;bottom:7px;padding:5px 3px;border-radius:999px;
-      font-size:8px;font-weight:900;text-align:center;
-    }
-    .day.available .status{background:rgba(82,116,93,.11);color:var(--ok)}
-    .day.booked{background:var(--wine)}
-    .day.booked .num,.day.booked .status{color:white}
-    .day.booked .status{background:rgba(255,255,255,.12)}
-    .day.unavailable,.day.past{background:rgba(130,116,111,.08)}
-    .day.unavailable .num,.day.unavailable .status,.day.past .num,.day.past .status{color:#918681}
-    .calendar-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:15px;font-size:9px;color:var(--muted);font-weight:800}
-    .legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
-    .legend-dot.available{background:var(--ok)}
-    .legend-dot.booked{background:var(--wine)}
-    .legend-dot.unavailable{background:#AAA09A}
-    .calendar-help{margin:13px 0 0;color:var(--muted);font-size:10.5px;line-height:1.55}
-    .calendar-error{display:none;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--wine);font-size:11px;margin-top:12px}
-    .calendar-error.show{display:block}
-    .final-cta{
-      display:flex;align-items:center;justify-content:space-between;gap:28px;
-      padding:36px 34px;background:var(--wine);color:#fff;
-    }
-    .final-cta h2{color:#fff;margin:0 0 6px;font-size:31px}
-    .final-cta p{margin:0;opacity:.82;font-size:12px;line-height:1.55}
-    .final-cta .button{background:#fff;border-color:#fff;color:var(--wine);flex:0 0 auto}
-    .footer{padding:22px 34px;color:var(--muted);font-size:9.5px;text-align:center;background:var(--cream2)}
-    @media(max-width:900px){
-      .site-header{padding:16px 20px;position:relative}
-      .nav a:not(.cta){display:none}
-      .hero{grid-template-columns:1fr;padding:35px 20px 28px;gap:26px}
-      .hero-copy{padding-left:0;max-width:660px}
-      .hero-media img{aspect-ratio:16/10}
-      .section{padding:43px 20px}
-      .steps{grid-template-columns:1fr 1fr}
-      .step:nth-child(2){border-right:0}
-      .step:nth-child(-n+2){border-bottom:1px solid var(--line)}
-      .pizza-grid{grid-template-columns:repeat(3,1fr)}
-    }
-    @media(max-width:640px){
-      .brand span{display:none}
-      .site-header{padding:14px 15px}
-      .brand strong{font-size:22px}
-      .nav .cta{padding:9px 13px;font-size:10px}
-      .hero{padding:28px 15px 22px}
-      h1{font-size:48px}
-      .hero-copy .lead{font-size:14px}
-      .hero-actions{display:grid;grid-template-columns:1fr}
-      .button{width:100%}
-      .hero-media img{border-radius:19px;aspect-ratio:4/3}
-      .hero-badge{left:11px;bottom:11px;font-size:9.5px}
-      .section{padding:38px 15px}
-      .section-title{font-size:33px}
-      .steps{grid-template-columns:1fr}
-      .step{min-height:0;border-right:0;border-bottom:1px solid var(--line);padding:18px}
-      .step:nth-child(2){border-right:0}
-      .step:last-child{border-bottom:0}
-      .step-number{margin-bottom:18px}
-      .experience-grid{grid-template-columns:1fr}
-      .estimate-results{grid-template-columns:1fr}
-      .pizza-grid{display:flex;overflow:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
-      .pizza-card{flex:0 0 72%;scroll-snap-align:start}
-      .calendar-card{padding:12px 8px}
-      .calendar-toolbar{padding:0 4px}
-      .calendar-toolbar h3{font-size:20px}
-      .weekdays,.calendar-grid{gap:3px}
-      .weekday{font-size:7px}
-      .day{min-height:72px;padding:5px;border-radius:10px}
-      .day .num{font-size:12px}
-      .day .status{left:2px;right:2px;bottom:3px;font-size:6.7px;padding:4px 1px}
-      .final-cta{display:block;padding:31px 15px}
-      .final-cta .button{margin-top:18px}
-      .footer{padding:20px 15px}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rafa Pizza — Pizza à domicile</title>
+<meta name="description" content="Rafa Pizza prépare et sert des pizzas sur place pour vos événements. Consultez les prix, le menu et les disponibilités, puis envoyez votre demande en quelques minutes.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#5B1F2A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+--cream:#F6F0E7;
+--cream2:#FBF8F3;
+--paper:#FFFDFC;
+--wine:#5B1F2A;
+--wine2:#7A2D3C;
+--ink:#2B2524;
+--muted:#81746F;
+--line:rgba(91,31,42,.14);
+--soft:rgba(91,31,42,.055);
+--shadow:0 18px 50px rgba(62,37,39,.08);
+--ok:#52745D;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+margin:0;
+background:#ECE5DC;
+color:var(--ink);
+font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+-webkit-font-smoothing:antialiased;
+}
+button,input{font:inherit}
+a{color:inherit}
+.site{
+width:min(1180px,100%);
+margin:0 auto;
+background:var(--cream);
+min-height:100vh;
+box-shadow:var(--shadow);
+}
+.site-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+padding:20px 34px;
+border-bottom:1px solid var(--line);
+background:rgba(246,240,231,.96);
+position:sticky;
+top:0;
+z-index:40;
+backdrop-filter:blur(12px);
+}
+.brand{
+text-decoration:none;
+display:inline-flex;
+align-items:center;
+gap:11px;
+min-width:0;
+}
+.brand-mark{
+display:grid;
+place-items:center;
+width:126px;
+height:52px;
+padding:7px 13px;
+border-radius:16px;
+background:var(--wine);
+box-shadow:0 7px 18px rgba(91,31,42,.12);
+flex:0 0 auto;
+}
+.brand-mark img{display:block;width:100%;height:100%;object-fit:contain}
+.brand-copy{display:flex;flex-direction:column;gap:1px;min-width:0}
+.brand-copy strong{
+color:var(--wine);
+font-size:10px;
+font-weight:800;
+letter-spacing:.10em;
+text-transform:uppercase;
+white-space:nowrap;
+}
+.brand-copy span{
+color:var(--muted);
+font-size:8px;
+font-weight:700;
+letter-spacing:.09em;
+text-transform:uppercase;
+white-space:nowrap;
+}
+.nav{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.nav a{
+text-decoration:none;
+font-size:11px;
+font-weight:800;
+padding:10px 13px;
+border-radius:999px;
+color:var(--wine);
+}
+.nav a:hover{background:var(--soft)}
+.nav .cta{background:var(--wine);color:#fff;padding-inline:17px}
+.hero{
+display:grid;
+grid-template-columns:.9fr 1.1fr;
+gap:38px;
+align-items:center;
+padding:48px 34px 42px;
+border-bottom:1px solid var(--line);
+}
+.hero-copy{max-width:510px;padding-left:10px}
+.eyebrow{
+margin:0 0 13px;
+color:var(--wine2);
+font-size:10px;
+font-weight:900;
+letter-spacing:.13em;
+text-transform:uppercase;
+}
+h1,h2{font-family:"Kalam","Segoe Print","Bradley Hand",cursive;color:var(--wine);font-weight:700}
+h3{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--wine);font-weight:800}
+h1{
+font-size:clamp(45px,7vw,76px);
+line-height:1.02;
+letter-spacing:-.025em;
+margin:0 0 22px;
+}
+.hero-copy .lead{
+margin:0;
+max-width:470px;
+font-size:17px;
+line-height:1.7;
+color:#4D4441;
+}
+.hero-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:28px}
+.button{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-height:45px;
+padding:0 18px;
+border-radius:999px;
+text-decoration:none;
+font-size:12px;
+font-weight:900;
+border:1px solid var(--line);
+background:var(--cream2);
+color:var(--wine);
+cursor:pointer;
+}
+.button.primary{background:var(--wine);color:#fff;border-color:var(--wine)}
+.hero-media{position:relative}
+.hero-media img{
+width:100%;
+display:block;
+aspect-ratio:4/3;
+object-fit:cover;
+border-radius:26px;
+}
+.hero-badge{
+position:absolute;
+left:18px;
+bottom:18px;
+background:rgba(255,253,250,.94);
+color:var(--wine);
+border-radius:16px;
+padding:11px 14px;
+font-size:11px;
+font-weight:900;
+box-shadow:0 8px 24px rgba(0,0,0,.10);
+}
+.section{padding:58px 34px;border-bottom:1px solid var(--line)}
+.section.alt{background:var(--cream2)}
+.inner{max-width:980px;margin:0 auto}
+.section-head{max-width:690px;margin-bottom:28px}
+.section-kicker{
+margin:0 0 8px;
+color:var(--wine2);
+font-size:9px;
+font-weight:900;
+letter-spacing:.12em;
+text-transform:uppercase;
+}
+.section-title{
+font-size:clamp(32px,4.2vw,48px);
+line-height:1.05;
+letter-spacing:-.015em;
+margin:0 0 10px;
+}
+.section-copy{
+margin:0;
+color:var(--muted);
+font-size:14px;
+line-height:1.7;
+}
+.steps{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+border:1px solid var(--line);
+border-radius:22px;
+overflow:hidden;
+background:var(--cream);
+}
+.step{padding:24px 20px;min-height:188px;border-right:1px solid var(--line)}
+.step:last-child{border-right:0}
+.step-number{
+display:inline-grid;
+place-items:center;
+width:34px;height:34px;
+border-radius:50%;
+background:var(--wine);
+color:white;
+font-size:11px;
+font-weight:900;
+margin-bottom:32px;
+}
+.step h3{font-size:20px;margin:0 0 8px}
+.step p{font-size:11px;line-height:1.6;color:var(--muted);margin:0}
+.process-note{
+margin-top:14px;
+border-left:3px solid var(--wine);
+padding:10px 13px;
+background:var(--soft);
+border-radius:0 12px 12px 0;
+color:var(--wine);
+font-size:11px;
+font-weight:800;
+line-height:1.55;
+}
+.experience-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+}
+.experience-card{
+padding:22px;
+border:1px solid var(--line);
+border-radius:18px;
+background:var(--paper);
+}
+.experience-card span{
+display:block;
+color:var(--muted);
+font-size:9px;
+text-transform:uppercase;
+letter-spacing:.09em;
+font-weight:900;
+margin-bottom:7px;
+}
+.experience-card strong{
+display:block;
+color:var(--wine);
+font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+font-size:20px;
+font-weight:800;
+}
+.experience-card p{font-size:11px;color:var(--muted);line-height:1.55;margin:8px 0 0}
+.estimator-card{
+border:1px solid var(--line);
+border-radius:22px;
+padding:24px;
+background:var(--cream);
+}
+.guest-value{
+display:block;
+color:var(--wine);
+font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+font-size:34px;
+font-weight:800;
+margin-bottom:13px;
+}
+.price-slider{width:100%;accent-color:var(--wine)}
+.slider-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:7px}
+.estimate-results{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.estimate-box{padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--paper)}
+.estimate-box span{display:block;color:var(--muted);font-size:8.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.estimate-box strong{display:block;color:var(--wine);font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:25px;font-weight:800;margin-top:4px}
+.estimate-note{margin:15px 0 0;color:var(--muted);font-size:10.5px;line-height:1.6}
+.large-event-note{display:none;margin-top:12px;color:var(--wine2);font-size:10.5px;font-weight:800}
+.large-event-note.show{display:block}
+.section-action{margin-top:19px}
+.pizza-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+}
+.pizza-card{
+border:1px solid var(--line);
+border-radius:18px;
+overflow:hidden;
+background:var(--paper);
+cursor:pointer;
+transition:transform .18s ease,box-shadow .18s ease;
+}
+.pizza-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(91,31,42,.08)}
+.pizza-card img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+.pizza-card-body{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 13px}
+.pizza-name{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--wine);font-size:15px;font-weight:800}
+.pizza-view{color:var(--muted);font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+.menu-note{
+margin-top:14px;
+padding:15px 16px;
+background:var(--soft);
+border:1px solid var(--line);
+border-radius:14px;
+color:var(--wine);
+font-size:11px;
+line-height:1.6;
+}
+.viewer{
+position:fixed;inset:0;background:rgba(24,15,16,.96);z-index:100;
+display:none;align-items:center;justify-content:center;padding:20px;
+}
+.viewer.open{display:flex}
+.viewer img{max-width:94vw;max-height:86vh;border-radius:16px;display:block}
+.viewer-close{
+position:fixed;top:16px;right:16px;width:44px;height:44px;border:0;border-radius:50%;
+background:#fff;color:var(--wine);font-size:27px;cursor:pointer;
+}
+.viewer-caption{
+position:fixed;left:50%;bottom:16px;transform:translateX(-50%);
+background:#fff;color:var(--wine);padding:9px 14px;border-radius:999px;font-size:11px;font-weight:900;
+}
+.calendar-card{
+border:1px solid var(--line);
+border-radius:22px;
+background:var(--cream);
+padding:20px;
+}
+.calendar-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.calendar-toolbar h3{margin:0;font-size:25px;text-align:center}
+.month-nav{
+width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--paper);
+color:var(--wine);font-size:22px;cursor:pointer;
+}
+.month-nav:disabled{opacity:.3;cursor:not-allowed}
+.weekdays,.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}
+.weekday{text-align:center;color:var(--muted);font-size:9px;font-weight:900;text-transform:uppercase;padding:4px 0}
+.day{
+min-height:102px;border:1px solid var(--line);border-radius:14px;padding:9px;position:relative;
+background:rgba(255,255,255,.4);text-decoration:none;color:inherit;
+}
+a.day{transition:transform .14s ease,border-color .14s ease,background .14s ease}
+a.day:hover{transform:translateY(-1px);border-color:rgba(91,31,42,.33);background:#fff}
+.day.empty{background:transparent;border-color:transparent}
+.day .num{font-size:14px;font-weight:900;color:var(--wine)}
+.day .status{
+position:absolute;left:7px;right:7px;bottom:7px;padding:5px 3px;border-radius:999px;
+font-size:8px;font-weight:900;text-align:center;
+}
+.day.available .status{background:rgba(82,116,93,.11);color:var(--ok)}
+.day.booked{background:var(--wine)}
+.day.booked .num,.day.booked .status{color:white}
+.day.booked .status{background:rgba(255,255,255,.12)}
+.day.unavailable,.day.past{background:rgba(130,116,111,.08)}
+.day.unavailable .num,.day.unavailable .status,.day.past .num,.day.past .status{color:#918681}
+.calendar-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:15px;font-size:9px;color:var(--muted);font-weight:800}
+.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.legend-dot.available{background:var(--ok)}
+.legend-dot.booked{background:var(--wine)}
+.legend-dot.unavailable{background:#AAA09A}
+.calendar-help{margin:13px 0 0;color:var(--muted);font-size:10.5px;line-height:1.55}
+.calendar-error{display:none;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--wine);font-size:11px;margin-top:12px}
+.calendar-error.show{display:block}
+.final-cta{
+display:flex;align-items:center;justify-content:space-between;gap:28px;
+padding:36px 34px;background:var(--wine);color:#fff;
+}
+.final-cta h2{color:#fff;margin:0 0 6px;font-size:31px}
+.final-cta p{margin:0;opacity:.82;font-size:12px;line-height:1.55}
+.final-cta .button{background:#fff;border-color:#fff;color:var(--wine);flex:0 0 auto}
+.footer{padding:22px 34px;color:var(--muted);font-size:9.5px;text-align:center;background:var(--cream2)}
+@media(max-width:900px){
+.site-header{padding:16px 20px;position:relative}
+.nav a:not(.cta){display:none}
+.hero{grid-template-columns:1fr;padding:35px 20px 28px;gap:26px}
+.hero-copy{padding-left:0;max-width:660px}
+.hero-media img{aspect-ratio:16/10}
+.section{padding:43px 20px}
+.steps{grid-template-columns:1fr 1fr}
+.step:nth-child(2){border-right:0}
+.step:nth-child(-n+2){border-bottom:1px solid var(--line)}
+.pizza-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:640px){
+.brand-copy{display:none}
+.brand-mark{width:108px;height:45px;padding:6px 11px;border-radius:14px}
+.site-header{padding:12px 15px}
+.nav .cta{padding:9px 13px;font-size:10px}
+.hero{padding:28px 15px 22px}
+h1{font-size:48px}
+.hero-copy .lead{font-size:14px}
+.hero-actions{display:grid;grid-template-columns:1fr}
+.button{width:100%}
+.hero-media img{border-radius:19px;aspect-ratio:4/3}
+.hero-badge{left:11px;bottom:11px;font-size:9.5px}
+.section{padding:38px 15px}
+.section-title{font-size:33px}
+.steps{grid-template-columns:1fr}
+.step{min-height:0;border-right:0;border-bottom:1px solid var(--line);padding:18px}
+.step:nth-child(2){border-right:0}
+.step:last-child{border-bottom:0}
+.step-number{margin-bottom:18px}
+.experience-grid{grid-template-columns:1fr}
+.estimate-results{grid-template-columns:1fr}
+.pizza-grid{display:flex;overflow:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+.pizza-card{flex:0 0 72%;scroll-snap-align:start}
+.calendar-card{padding:12px 8px}
+.calendar-toolbar{padding:0 4px}
+.calendar-toolbar h3{font-size:20px}
+.weekdays,.calendar-grid{gap:3px}
+.weekday{font-size:7px}
+.day{min-height:72px;padding:5px;border-radius:10px}
+.day .num{font-size:12px}
+.day .status{left:2px;right:2px;bottom:3px;font-size:6.7px;padding:4px 1px}
+.final-cta{display:block;padding:31px 15px}
+.final-cta .button{margin-top:18px}
+.footer{padding:20px 15px}
+}
+</style>
 </head>
 <body>
-  <main class="site">
-    <header class="site-header">
-      <a class="brand" href="./index.html" aria-label="Rafa Pizza, accueil">
-        <strong>Rafa Pizza</strong>
-        <span>Pizza à domicile · événements</span>
-      </a>
-      <nav class="nav" aria-label="Navigation principale">
-        <a href="#fonctionnement">Comment ça marche</a>
-        <a href="#prix">Prix</a>
-        <a href="#pizzas">Pizzas</a>
-        <a class="cta" href="#disponibilites">Voir les disponibilités</a>
-      </nav>
-    </header>
-
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">Une expérience pizza, chez vous</p>
-        <h1>La pizza vient à vous.</h1>
-        <p class="lead">Rafa s’installe sur place, prépare les pizzas devant vos invités et les sert en continu. Vous choisissez la date; le menu vient ensuite, une fois l’événement confirmé.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#disponibilites">Voir les disponibilités</a>
-          <a class="button" href="#fonctionnement">Comprendre l’expérience</a>
-        </div>
-      </div>
-      <div class="hero-media">
-        <img src="FE0F2EED-EA4C-4039-A532-16A5FF633ED0.jpeg" alt="Rafa Pizza en service lors d'un événement">
-        <div class="hero-badge">Préparé sur place · servi en continu</div>
-      </div>
-    </section>
-
-    <section id="fonctionnement" class="section alt">
-      <div class="inner">
-        <div class="section-head">
-          <p class="section-kicker">Simple du début à la fin</p>
-          <h2 class="section-title">Comment ça fonctionne</h2>
-          <p class="section-copy">La réservation se fait dans un ordre clair. Vous n’avez pas besoin de décider de vos pizzas avant de savoir si votre date est confirmée.</p>
-        </div>
-        <div class="steps">
-          <article class="step">
-            <span class="step-number">01</span>
-            <h3>Choisissez une date</h3>
-            <p>Consultez les disponibilités réelles dans le calendrier.</p>
-          </article>
-          <article class="step">
-            <span class="step-number">02</span>
-            <h3>Envoyez votre demande</h3>
-            <p>Quelques informations suffisent : invités, heure, secteur et coordonnées.</p>
-          </article>
-          <article class="step">
-            <span class="step-number">03</span>
-            <h3>Composez votre menu</h3>
-            <p>Après confirmation, vous choisissez vos 4 créations Rafa. Le menu peut ensuite être ajusté avec nous.</p>
-          </article>
-          <article class="step">
-            <span class="step-number">04</span>
-            <h3>Profitez</h3>
-            <p>Rafa s’installe, cuisine et sert les pizzas tout au long de l’événement.</p>
-          </article>
-        </div>
-        <div class="process-note">Le menu n’est pas à choisir au moment de la demande. D’abord la date, ensuite la confirmation, puis vos 4 pizzas.</div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="inner">
-        <div class="section-head">
-          <p class="section-kicker">L’expérience Rafa</p>
-          <h2 class="section-title">Tout est pensé pour rester simple.</h2>
-          <p class="section-copy">Une formule conviviale, claire et organisée : les pizzas sortent au fur et à mesure et les invités se servent pendant l’événement.</p>
-        </div>
-        <div class="experience-grid">
-          <article class="experience-card">
-            <span>Votre menu</span>
-            <strong>4 créations au choix</strong>
-            <p>Vous les choisissez après la confirmation de votre événement.</p>
-          </article>
-          <article class="experience-card">
-            <span>Le format</span>
-            <strong>Pizzas 11 po</strong>
-            <p>Découpées et servies pour permettre à tout le monde de goûter.</p>
-          </article>
-          <article class="experience-card">
-            <span>Le service</span>
-            <strong>En continu</strong>
-            <p>Les pizzas sont préparées sur place tout au long du service.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="prix" class="section alt">
-      <div class="inner">
-        <div class="section-head">
-          <p class="section-kicker">Tarification transparente</p>
-          <h2 class="section-title">Estimez votre événement.</h2>
-          <p class="section-copy">Ajustez simplement le nombre d’invités. Vous voyez séparément le prix par personne et les frais de service et d’installation.</p>
-        </div>
-        <div class="estimator-card">
-          <strong class="guest-value"><span id="guestNumber">20</span> invités</strong>
-          <input id="guestSlider" class="price-slider" type="range" min="1" max="100" value="20" aria-label="Nombre d'invités">
-          <div class="slider-labels"><span>1</span><span>50</span><span>100 invités</span></div>
-          <div class="estimate-results">
-            <div class="estimate-box">
-              <span>Prix par personne</span>
-              <strong id="personPrice">—</strong>
-            </div>
-            <div class="estimate-box">
-              <span>Service & installation</span>
-              <strong id="eventFee">—</strong>
-            </div>
-          </div>
-          <div id="largeEventNote" class="large-event-note">Pour les groupes de plus de 50 invités, la tarification est adaptée au volume.</div>
-          <p class="estimate-note">Cette estimation sert à planifier votre événement. Les détails et le montant final sont confirmés avec vous avant l’événement.</p>
-          <div class="section-action"><a class="button primary" href="#disponibilites">Vérifier ma date</a></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="pizzas" class="section">
-      <div class="inner">
-        <div class="section-head">
-          <p class="section-kicker">Les créations Rafa</p>
-          <h2 class="section-title">Découvrez le menu.</h2>
-          <p class="section-copy">Parcourez les créations maintenant, sans avoir à faire votre choix tout de suite. Votre menu final de 4 pizzas sera composé après la confirmation de votre réservation.</p>
-        </div>
-        <div id="pizzaGrid" class="pizza-grid" aria-label="Galerie des pizzas Rafa"></div>
-        <div class="menu-note"><strong>Quand vais-je choisir?</strong> Une fois votre événement confirmé. Vous aurez alors le temps de choisir vos 4 créations et de discuter avec Rafa si vous souhaitez apporter un ajustement.</div>
-      </div>
-    </section>
-
-    <section id="disponibilites" class="section alt">
-      <div class="inner">
-        <div class="section-head">
-          <p class="section-kicker">Étape 1</p>
-          <h2 class="section-title">Votre date est-elle disponible?</h2>
-          <p class="section-copy">Cliquez sur une date disponible pour commencer votre demande. Une demande envoyée place la date en attente jusqu’à sa confirmation.</p>
-        </div>
-        <div class="calendar-card">
-          <div class="calendar-toolbar">
-            <button id="prevMonth" class="month-nav" type="button" aria-label="Mois précédent">‹</button>
-            <h3 id="monthTitle">Chargement…</h3>
-            <button id="nextMonth" class="month-nav" type="button" aria-label="Mois suivant">›</button>
-          </div>
-          <div class="weekdays" aria-hidden="true">
-            <div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mer</div><div class="weekday">Jeu</div><div class="weekday">Ven</div><div class="weekday">Sam</div><div class="weekday">Dim</div>
-          </div>
-          <div id="calendarGrid" class="calendar-grid"></div>
-          <div class="calendar-legend">
-            <span><i class="legend-dot available"></i>Disponible</span>
-            <span><i class="legend-dot booked"></i>Réservé / en attente</span>
-            <span><i class="legend-dot unavailable"></i>Indisponible</span>
-          </div>
-          <p class="calendar-help">Le calendrier est actuellement ouvert jusqu’au 30 novembre 2026.</p>
-          <div id="calendarError" class="calendar-error">Les disponibilités n’ont pas pu être chargées. Réessayez dans quelques instants.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="final-cta">
-      <div>
-        <h2>Vous avez votre date?</h2>
-        <p>Sélectionnez-la dans le calendrier. La demande prend seulement quelques minutes.</p>
-      </div>
-      <a class="button" href="#disponibilites">Voir le calendrier</a>
-    </section>
-
-    <footer class="footer">Rafa Pizza · Les disponibilités sont mises à jour au fil des demandes et réservations.</footer>
-  </main>
-
-  <div id="imageViewer" class="viewer" role="dialog" aria-modal="true" aria-label="Photo de pizza">
-    <button id="viewerClose" class="viewer-close" type="button" aria-label="Fermer">×</button>
-    <img id="viewerImg" alt="">
-    <div id="viewerCaption" class="viewer-caption"></div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = "https://jetogsbyptglaihktdel.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    const BOOKING_START = new Date(2026, 8, 1);
-    const BOOKING_END = new Date(2026, 10, 30);
-    const MONTHS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
-    const PIZZA_NAMES = ["Margherita","’Nduja e miel","New York","Parma","Golosa","Cipolla","Quattro","Fungus","Figus","Montréal","Jardin","Mortadella"];
-
-    const pizzaFile = name => ({
-      "’Nduja e miel":"nduja-e-miel",
-      "New York":"new-york",
-      "Montréal":"montreal"
-    }[name] || name.toLowerCase());
-
-    const PIZZAS = PIZZA_NAMES.map(name => ({
-      name,
-      img:`pizzas/${pizzaFile(name)}-hd.jpg?v=9`
-    }));
-
-    const $ = id => document.getElementById(id);
-
-    function renderPizzas(){
-      const grid = $("pizzaGrid");
-      grid.innerHTML = "";
-      PIZZAS.forEach(pizza => {
-        const card = document.createElement("article");
-        card.className = "pizza-card";
-        card.tabIndex = 0;
-        card.setAttribute("role","button");
-        card.setAttribute("aria-label",`Agrandir ${pizza.name}`);
-        card.innerHTML = `
-          <img src="${pizza.img}" alt="Pizza ${pizza.name}" loading="lazy">
-          <div class="pizza-card-body">
-            <span class="pizza-name">${pizza.name}</span>
-            <span class="pizza-view">Voir</span>
-          </div>`;
-        card.addEventListener("click",() => openViewer(pizza));
-        card.addEventListener("keydown",event => {
-          if(event.key === "Enter" || event.key === " "){
-            event.preventDefault();
-            openViewer(pizza);
-          }
-        });
-        grid.appendChild(card);
-      });
-    }
-
-    const viewer = $("imageViewer");
-    const viewerImg = $("viewerImg");
-    const viewerCaption = $("viewerCaption");
-
-    function openViewer(pizza){
-      viewerImg.src = pizza.img;
-      viewerImg.alt = `Pizza ${pizza.name}`;
-      viewerCaption.textContent = pizza.name;
-      viewer.classList.add("open");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeViewer(){
-      viewer.classList.remove("open");
-      document.body.style.overflow = "";
-    }
-
-    $("viewerClose").addEventListener("click",closeViewer);
-    viewer.addEventListener("click",event => {
-      if(event.target === viewer) closeViewer();
-    });
-    document.addEventListener("keydown",event => {
-      if(event.key === "Escape" && viewer.classList.contains("open")) closeViewer();
-    });
-
-    function calculateEventPrice(guests){
-      guests = Number(guests);
-      let pricePerPerson, fixedFee;
-      if(guests <= 10){ pricePerPerson = 29; fixedFee = 175; }
-      else if(guests <= 15){ pricePerPerson = 27; fixedFee = 200; }
-      else if(guests <= 20){ pricePerPerson = 25; fixedFee = 250; }
-      else if(guests <= 25){ pricePerPerson = 23; fixedFee = 300; }
-      else if(guests <= 30){ pricePerPerson = 22; fixedFee = 350; }
-      else if(guests <= 40){ pricePerPerson = 21; fixedFee = 400; }
-      else if(guests <= 50){ pricePerPerson = 20; fixedFee = 500; }
-      else if(guests <= 75){ pricePerPerson = 19; fixedFee = 600; }
-      else { pricePerPerson = 18; fixedFee = 750; }
-      return {pricePerPerson,fixedFee};
-    }
-
-    function updateEstimator(){
-      const guests = Number($("guestSlider").value);
-      const pricing = calculateEventPrice(guests);
-      $("guestNumber").textContent = guests;
-      $("personPrice").textContent = `${pricing.pricePerPerson} $`;
-      $("eventFee").textContent = `${pricing.fixedFee} $`;
-      $("largeEventNote").classList.toggle("show",guests > 50);
-    }
-
-    $("guestSlider").addEventListener("input",updateEstimator);
-    updateEstimator();
-
-    let blockedDates = new Map();
-    let viewDate = startViewDate();
-
-    function startViewDate(){
-      const now = new Date();
-      const current = new Date(now.getFullYear(),now.getMonth(),1);
-      if(current < BOOKING_START) return new Date(BOOKING_START);
-      if(current > BOOKING_END) return new Date(BOOKING_END.getFullYear(),BOOKING_END.getMonth(),1);
-      return current;
-    }
-
-    function localDateOnly(){
-      const now = new Date();
-      return new Date(now.getFullYear(),now.getMonth(),now.getDate());
-    }
-
-    function dateKey(year,month,day){
-      return `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-    }
-
-    function mondayIndex(jsDay){
-      return (jsDay + 6) % 7;
-    }
-
-    function sameOrBeforeMonth(a,b){
-      return a.getFullYear() < b.getFullYear() ||
-        (a.getFullYear() === b.getFullYear() && a.getMonth() <= b.getMonth());
-    }
-
-    function sameOrAfterMonth(a,b){
-      return a.getFullYear() > b.getFullYear() ||
-        (a.getFullYear() === b.getFullYear() && a.getMonth() >= b.getMonth());
-    }
-
-    function renderCalendar(){
-      const year = viewDate.getFullYear();
-      const month = viewDate.getMonth();
-      $("monthTitle").textContent = `${MONTHS[month]} ${year}`;
-      $("prevMonth").disabled = sameOrBeforeMonth(viewDate,BOOKING_START);
-      $("nextMonth").disabled = sameOrAfterMonth(viewDate,new Date(BOOKING_END.getFullYear(),BOOKING_END.getMonth(),1));
-
-      const grid = $("calendarGrid");
-      grid.innerHTML = "";
-      const firstDay = new Date(year,month,1);
-      const daysInMonth = new Date(year,month+1,0).getDate();
-      const today = localDateOnly();
-
-      for(let i=0;i<mondayIndex(firstDay.getDay());i++){
-        const empty = document.createElement("div");
-        empty.className = "day empty";
-        grid.appendChild(empty);
-      }
-
-      for(let day=1;day<=daysInMonth;day++){
-        const date = new Date(year,month,day);
-        const key = dateKey(year,month,day);
-        const afterBookingEnd = date > BOOKING_END;
-        const beforeBookingStart = date < BOOKING_START;
-        const isPast = date < today;
-        const stored = blockedDates.get(key);
-
-        let status;
-        if(beforeBookingStart || afterBookingEnd || isPast) status = "past";
-        else if(stored === "booked") status = "booked";
-        else if(stored === "unavailable") status = "unavailable";
-        else status = "available";
-
-        const el = document.createElement(status === "available" ? "a" : "div");
-        el.className = `day ${status}`;
-        el.innerHTML = `<div class="num">${day}</div><div class="status">${
-          status === "available" ? "Disponible" :
-          status === "booked" ? "Réservé" :
-          status === "unavailable" ? "Indisponible" : "Passé"
-        }</div>`;
-
-        if(status === "available"){
-          el.href = `./reserve.html?date=${encodeURIComponent(key)}`;
-          el.setAttribute("aria-label",`${day} ${MONTHS[month]} ${year}, disponible`);
-        }
-        grid.appendChild(el);
-      }
-    }
-
-    $("prevMonth").addEventListener("click",() => {
-      const candidate = new Date(viewDate.getFullYear(),viewDate.getMonth()-1,1);
-      if(!sameOrBeforeMonth(candidate,new Date(BOOKING_START.getFullYear(),BOOKING_START.getMonth()-1,1))){
-        viewDate = candidate;
-        renderCalendar();
-      }
-    });
-
-    $("nextMonth").addEventListener("click",() => {
-      const candidate = new Date(viewDate.getFullYear(),viewDate.getMonth()+1,1);
-      const endMonth = new Date(BOOKING_END.getFullYear(),BOOKING_END.getMonth(),1);
-      if(sameOrBeforeMonth(candidate,endMonth)){
-        viewDate = candidate;
-        renderCalendar();
-      }
-    });
-
-    async function loadCalendar(){
-      $("calendarError").classList.remove("show");
-      try{
-        const {data,error} = await db.rpc("get_calendar_blocks");
-        if(error) throw error;
-        blockedDates = new Map((data || []).map(row => [row.event_date,row.display_status]));
-      }catch(error){
-        console.error("Calendar load failed",error);
-        $("calendarError").classList.add("show");
-      }
-      renderCalendar();
-    }
-
-    renderPizzas();
-    loadCalendar();
-  </script>
+<main class="site">
+<header class="site-header">
+<a class="brand" href="./index.html" aria-label="Rafa Pizza, accueil">
+<span class="brand-mark"><img src="assets/rafa-logo-officiel.png" alt="Rafa"></span>
+<span class="brand-copy"><strong>Pizza à domicile</strong><span>Événements</span></span>
+</a>
+<nav class="nav" aria-label="Navigation principale">
+<a href="#fonctionnement">Comment ça marche</a>
+<a href="#prix">Prix</a>
+<a href="#pizzas">Pizzas</a>
+<a class="cta" href="#disponibilites">Voir les disponibilités</a>
+</nav>
+</header>
+<section class="hero">
+<div class="hero-copy">
+<p class="eyebrow">Une expérience pizza, chez vous</p>
+<h1>La pizza vient à vous.</h1>
+<p class="lead">Rafa s’installe sur place, prépare les pizzas devant vos invités et les sert en continu. Vous choisissez la date; le menu vient ensuite, une fois l’événement confirmé.</p>
+<div class="hero-actions">
+<a class="button primary" href="#disponibilites">Voir les disponibilités</a>
+<a class="button" href="#fonctionnement">Comprendre l’expérience</a>
+</div>
+</div>
+<div class="hero-media">
+<img src="FE0F2EED-EA4C-4039-A532-16A5FF633ED0.jpeg" alt="Rafa Pizza en service lors d'un événement">
+<div class="hero-badge">Préparé sur place · servi en continu</div>
+</div>
+</section>
+<section id="fonctionnement" class="section alt">
+<div class="inner">
+<div class="section-head">
+<p class="section-kicker">Simple du début à la fin</p>
+<h2 class="section-title">Comment ça fonctionne</h2>
+<p class="section-copy">La réservation se fait dans un ordre clair. Vous n’avez pas besoin de décider de vos pizzas avant de savoir si votre date est confirmée.</p>
+</div>
+<div class="steps">
+<article class="step">
+<span class="step-number">01</span>
+<h3>Choisissez une date</h3>
+<p>Consultez les disponibilités réelles dans le calendrier.</p>
+</article>
+<article class="step">
+<span class="step-number">02</span>
+<h3>Envoyez votre demande</h3>
+<p>Quelques informations suffisent : invités, heure, secteur et coordonnées.</p>
+</article>
+<article class="step">
+<span class="step-number">03</span>
+<h3>Composez votre menu</h3>
+<p>Après confirmation, vous choisissez vos 4 créations Rafa. Le menu peut ensuite être ajusté avec nous.</p>
+</article>
+<article class="step">
+<span class="step-number">04</span>
+<h3>Profitez</h3>
+<p>Rafa s’installe, cuisine et sert les pizzas tout au long de l’événement.</p>
+</article>
+</div>
+<div class="process-note">Le menu n’est pas à choisir au moment de la demande. D’abord la date, ensuite la confirmation, puis vos 4 pizzas.</div>
+</div>
+</section>
+<section class="section">
+<div class="inner">
+<div class="section-head">
+<p class="section-kicker">L’expérience Rafa</p>
+<h2 class="section-title">Tout est pensé pour rester simple.</h2>
+<p class="section-copy">Une formule conviviale, claire et organisée : les pizzas sortent au fur et à mesure et les invités se servent pendant l’événement.</p>
+</div>
+<div class="experience-grid">
+<article class="experience-card">
+<span>Votre menu</span>
+<strong>4 créations au choix</strong>
+<p>Vous les choisissez après la confirmation de votre événement.</p>
+</article>
+<article class="experience-card">
+<span>Le format</span>
+<strong>Pizzas 11 po</strong>
+<p>Découpées et servies pour permettre à tout le monde de goûter.</p>
+</article>
+<article class="experience-card">
+<span>Le service</span>
+<strong>En continu</strong>
+<p>Les pizzas sont préparées sur place tout au long du service.</p>
+</article>
+</div>
+</div>
+</section>
+<section id="prix" class="section alt">
+<div class="inner">
+<div class="section-head">
+<p class="section-kicker">Tarification transparente</p>
+<h2 class="section-title">Estimez votre événement.</h2>
+<p class="section-copy">Ajustez simplement le nombre d’invités. Vous voyez séparément le prix par personne et les frais de service et d’installation.</p>
+</div>
+<div class="estimator-card">
+<strong class="guest-value"><span id="guestNumber">20</span> invités</strong>
+<input id="guestSlider" class="price-slider" type="range" min="1" max="100" value="20" aria-label="Nombre d'invités">
+<div class="slider-labels"><span>1</span><span>50</span><span>100 invités</span></div>
+<div class="estimate-results">
+<div class="estimate-box">
+<span>Prix par personne</span>
+<strong id="personPrice">—</strong>
+</div>
+<div class="estimate-box">
+<span>Service & installation</span>
+<strong id="eventFee">—</strong>
+</div>
+</div>
+<div id="largeEventNote" class="large-event-note">Pour les groupes de plus de 50 invités, la tarification est adaptée au volume.</div>
+<p class="estimate-note">Cette estimation sert à planifier votre événement. Les détails et le montant final sont confirmés avec vous avant l’événement.</p>
+<div class="section-action"><a class="button primary" href="#disponibilites">Vérifier ma date</a></div>
+</div>
+</div>
+</section>
+<section id="pizzas" class="section">
+<div class="inner">
+<div class="section-head">
+<p class="section-kicker">Les créations Rafa</p>
+<h2 class="section-title">Découvrez le menu.</h2>
+<p class="section-copy">Parcourez les créations maintenant, sans avoir à faire votre choix tout de suite. Votre menu final de 4 pizzas sera composé après la confirmation de votre réservation.</p>
+</div>
+<div id="pizzaGrid" class="pizza-grid" aria-label="Galerie des pizzas Rafa"></div>
+<div class="menu-note"><strong>Quand vais-je choisir?</strong> Une fois votre événement confirmé. Vous aurez alors le temps de choisir vos 4 créations et de discuter avec Rafa si vous souhaitez apporter un ajustement.</div>
+</div>
+</section>
+<section id="disponibilites" class="section alt">
+<div class="inner">
+<div class="section-head">
+<p class="section-kicker">Étape 1</p>
+<h2 class="section-title">Votre date est-elle disponible?</h2>
+<p class="section-copy">Cliquez sur une date disponible pour commencer votre demande. Une demande envoyée place la date en attente jusqu’à sa confirmation.</p>
+</div>
+<div class="calendar-card">
+<div class="calendar-toolbar">
+<button id="prevMonth" class="month-nav" type="button" aria-label="Mois précédent">‹</button>
+<h3 id="monthTitle">Chargement…</h3>
+<button id="nextMonth" class="month-nav" type="button" aria-label="Mois suivant">›</button>
+</div>
+<div class="weekdays" aria-hidden="true">
+<div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mer</div><div class="weekday">Jeu</div><div class="weekday">Ven</div><div class="weekday">Sam</div><div class="weekday">Dim</div>
+</div>
+<div id="calendarGrid" class="calendar-grid"></div>
+<div class="calendar-legend">
+<span><i class="legend-dot available"></i>Disponible</span>
+<span><i class="legend-dot booked"></i>Réservé / en attente</span>
+<span><i class="legend-dot unavailable"></i>Indisponible</span>
+</div>
+<p class="calendar-help">Le calendrier est actuellement ouvert jusqu’au 30 novembre 2026.</p>
+<div id="calendarError" class="calendar-error">Les disponibilités n’ont pas pu être chargées. Réessayez dans quelques instants.</div>
+</div>
+</div>
+</section>
+<section class="final-cta">
+<div>
+<h2>Vous avez votre date?</h2>
+<p>Sélectionnez-la dans le calendrier. La demande prend seulement quelques minutes.</p>
+</div>
+<a class="button" href="#disponibilites">Voir le calendrier</a>
+</section>
+<footer class="footer">Rafa Pizza · Les disponibilités sont mises à jour au fil des demandes et réservations.</footer>
+</main>
+<div id="imageViewer" class="viewer" role="dialog" aria-modal="true" aria-label="Photo de pizza">
+<button id="viewerClose" class="viewer-close" type="button" aria-label="Fermer">×</button>
+<img id="viewerImg" alt="">
+<div id="viewerCaption" class="viewer-caption"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://jetogsbyptglaihktdel.supabase.co";
+const SUPABASE_KEY = "sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const BOOKING_START = new Date(2026, 8, 1);
+const BOOKING_END = new Date(2026, 10, 30);
+const MONTHS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+const PIZZA_NAMES = ["Margherita","’Nduja e miel","New York","Parma","Golosa","Cipolla","Quattro","Fungus","Figus","Montréal","Jardin","Mortadella"];
+const pizzaFile = name => ({
+"’Nduja e miel":"nduja-e-miel",
+"New York":"new-york",
+"Montréal":"montreal"
+}[name] || name.toLowerCase());
+const PIZZAS = PIZZA_NAMES.map(name => ({
+name,
+img:`pizzas/${pizzaFile(name)}-hd.jpg?v=9`
+}));
+const $ = id => document.getElementById(id);
+function renderPizzas(){
+const grid = $("pizzaGrid");
+grid.innerHTML = "";
+PIZZAS.forEach(pizza => {
+const card = document.createElement("article");
+card.className = "pizza-card";
+card.tabIndex = 0;
+card.setAttribute("role","button");
+card.setAttribute("aria-label",`Agrandir ${pizza.name}`);
+card.innerHTML = `
+<img src="${pizza.img}" alt="Pizza ${pizza.name}" loading="lazy">
+<div class="pizza-card-body">
+<span class="pizza-name">${pizza.name}</span>
+<span class="pizza-view">Voir</span>
+</div>`;
+card.addEventListener("click",() => openViewer(pizza));
+card.addEventListener("keydown",event => {
+if(event.key === "Enter" || event.key === " "){
+event.preventDefault();
+openViewer(pizza);
+}
+});
+grid.appendChild(card);
+});
+}
+const viewer = $("imageViewer");
+const viewerImg = $("viewerImg");
+const viewerCaption = $("viewerCaption");
+function openViewer(pizza){
+viewerImg.src = pizza.img;
+viewerImg.alt = `Pizza ${pizza.name}`;
+viewerCaption.textContent = pizza.name;
+viewer.classList.add("open");
+document.body.style.overflow = "hidden";
+}
+function closeViewer(){
+viewer.classList.remove("open");
+document.body.style.overflow = "";
+}
+$("viewerClose").addEventListener("click",closeViewer);
+viewer.addEventListener("click",event => {
+if(event.target === viewer) closeViewer();
+});
+document.addEventListener("keydown",event => {
+if(event.key === "Escape" && viewer.classList.contains("open")) closeViewer();
+});
+function calculateEventPrice(guests){
+guests = Number(guests);
+let pricePerPerson, fixedFee;
+if(guests <= 10){ pricePerPerson = 29; fixedFee = 175; }
+else if(guests <= 15){ pricePerPerson = 27; fixedFee = 200; }
+else if(guests <= 20){ pricePerPerson = 25; fixedFee = 250; }
+else if(guests <= 25){ pricePerPerson = 23; fixedFee = 300; }
+else if(guests <= 30){ pricePerPerson = 22; fixedFee = 350; }
+else if(guests <= 40){ pricePerPerson = 21; fixedFee = 400; }
+else if(guests <= 50){ pricePerPerson = 20; fixedFee = 500; }
+else if(guests <= 75){ pricePerPerson = 19; fixedFee = 600; }
+else { pricePerPerson = 18; fixedFee = 750; }
+return {pricePerPerson,fixedFee};
+}
+function updateEstimator(){
+const guests = Number($("guestSlider").value);
+const pricing = calculateEventPrice(guests);
+$("guestNumber").textContent = guests;
+$("personPrice").textContent = `${pricing.pricePerPerson} $`;
+$("eventFee").textContent = `${pricing.fixedFee} $`;
+$("largeEventNote").classList.toggle("show",guests > 50);
+}
+$("guestSlider").addEventListener("input",updateEstimator);
+updateEstimator();
+let blockedDates = new Map();
+let viewDate = startViewDate();
+function startViewDate(){
+const now = new Date();
+const current = new Date(now.getFullYear(),now.getMonth(),1);
+if(current < BOOKING_START) return new Date(BOOKING_START);
+if(current > BOOKING_END) return new Date(BOOKING_END.getFullYear(),BOOKING_END.getMonth(),1);
+return current;
+}
+function localDateOnly(){
+const now = new Date();
+return new Date(now.getFullYear(),now.getMonth(),now.getDate());
+}
+function dateKey(year,month,day){
+return `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+}
+function mondayIndex(jsDay){
+return (jsDay + 6) % 7;
+}
+function sameOrBeforeMonth(a,b){
+return a.getFullYear() < b.getFullYear() ||
+(a.getFullYear() === b.getFullYear() && a.getMonth() <= b.getMonth());
+}
+function sameOrAfterMonth(a,b){
+return a.getFullYear() > b.getFullYear() ||
+(a.getFullYear() === b.getFullYear() && a.getMonth() >= b.getMonth());
+}
+function renderCalendar(){
+const year = viewDate.getFullYear();
+const month = viewDate.getMonth();
+$("monthTitle").textContent = `${MONTHS[month]} ${year}`;
+$("prevMonth").disabled = sameOrBeforeMonth(viewDate,BOOKING_START);
+$("nextMonth").disabled = sameOrAfterMonth(viewDate,new Date(BOOKING_END.getFullYear(),BOOKING_END.getMonth(),1));
+const grid = $("calendarGrid");
+grid.innerHTML = "";
+const firstDay = new Date(year,month,1);
+const daysInMonth = new Date(year,month+1,0).getDate();
+const today = localDateOnly();
+for(let i=0;i<mondayIndex(firstDay.getDay());i++){
+const empty = document.createElement("div");
+empty.className = "day empty";
+grid.appendChild(empty);
+}
+for(let day=1;day<=daysInMonth;day++){
+const date = new Date(year,month,day);
+const key = dateKey(year,month,day);
+const afterBookingEnd = date > BOOKING_END;
+const beforeBookingStart = date < BOOKING_START;
+const isPast = date < today;
+const stored = blockedDates.get(key);
+let status;
+if(beforeBookingStart || afterBookingEnd || isPast) status = "past";
+else if(stored === "booked") status = "booked";
+else if(stored === "unavailable") status = "unavailable";
+else status = "available";
+const el = document.createElement(status === "available" ? "a" : "div");
+el.className = `day ${status}`;
+el.innerHTML = `<div class="num">${day}</div><div class="status">${
+status === "available" ? "Disponible" :
+status === "booked" ? "Réservé" :
+status === "unavailable" ? "Indisponible" : "Passé"
+}</div>`;
+if(status === "available"){
+el.href = `./reserve.html?date=${encodeURIComponent(key)}`;
+el.setAttribute("aria-label",`${day} ${MONTHS[month]} ${year}, disponible`);
+}
+grid.appendChild(el);
+}
+}
+$("prevMonth").addEventListener("click",() => {
+const candidate = new Date(viewDate.getFullYear(),viewDate.getMonth()-1,1);
+if(!sameOrBeforeMonth(candidate,new Date(BOOKING_START.getFullYear(),BOOKING_START.getMonth()-1,1))){
+viewDate = candidate;
+renderCalendar();
+}
+});
+$("nextMonth").addEventListener("click",() => {
+const candidate = new Date(viewDate.getFullYear(),viewDate.getMonth()+1,1);
+const endMonth = new Date(BOOKING_END.getFullYear(),BOOKING_END.getMonth(),1);
+if(sameOrBeforeMonth(candidate,endMonth)){
+viewDate = candidate;
+renderCalendar();
+}
+});
+async function loadCalendar(){
+$("calendarError").classList.remove("show");
+try{
+const {data,error} = await db.rpc("get_calendar_blocks");
+if(error) throw error;
+blockedDates = new Map((data || []).map(row => [row.event_date,row.display_status]));
+}catch(error){
+console.error("Calendar load failed",error);
+$("calendarError").classList.add("show");
+}
+renderCalendar();
+}
+renderPizzas();
+loadCalendar();
+</script>
 </body>
 </html>
