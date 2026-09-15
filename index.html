@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./assets/site.css?v=2">
+<link rel="stylesheet" href="./assets/site.css?v=3">
 <style>
 .nav a{
   display:inline-flex;
@@ -22,8 +22,9 @@
   text-align:center;
   padding:0 14px;
 }
+#prix,#pizzas,#disponibilites{scroll-margin-top:88px}
 @media (max-width:900px){
-  .site-header{gap:8px;padding:8px 12px;position:relative}
+  .site-header{gap:8px;padding:8px 12px;position:sticky!important;top:0!important;z-index:50!important}
   .brand{min-width:78px!important}
   .brand img{width:82px!important;height:52px!important}
   .nav{gap:4px;flex-wrap:nowrap;min-width:0;justify-content:flex-end}
@@ -31,7 +32,7 @@
   .nav a:not(.cta){background:rgba(91,31,42,.055);border:1px solid rgba(91,31,42,.10)}
 }
 @media (max-width:380px){
-  .site-header{gap:6px;padding-inline:9px}
+  .site-header{gap:6px;padding-inline:9px;position:sticky!important;top:0!important;z-index:50!important}
   .brand{min-width:66px!important}
   .brand img{width:70px!important;height:48px!important}
   .nav{gap:3px}
@@ -175,6 +176,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./assets/site.js?v=1"></script>
+<script src="./assets/site.js?v=2"></script>
 </body>
 </html>
