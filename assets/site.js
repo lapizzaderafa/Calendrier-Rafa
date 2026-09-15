@@ -168,3 +168,10 @@ async function loadCalendar(){
 }
 renderPizzas();
 loadCalendar();
+
+const siteHeader = document.querySelector(".site-header");
+if(siteHeader){
+  siteHeader.style.position = "sticky";
+  siteHeader.style.top = "0";
+  siteHeader.style.zIndex = "40";
+}
