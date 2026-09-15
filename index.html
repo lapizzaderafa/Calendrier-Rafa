@@ -11,6 +11,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./assets/site.css?v=2">
+<style>
+@media (max-width:900px){
+  .site-header{gap:8px;padding:8px 12px;position:relative}
+  .brand{min-width:78px!important}
+  .brand img{width:82px!important;height:52px!important}
+  .nav{gap:3px;flex-wrap:nowrap;min-width:0;justify-content:flex-end}
+  .nav a:not(.cta){display:inline-flex;align-items:center;justify-content:center;background:rgba(91,31,42,.055);border:1px solid rgba(91,31,42,.10)}
+  .nav a{font-size:8px;padding:7px 6px;white-space:nowrap;line-height:1}
+  .nav .cta{padding:8px 10px;font-size:9px}
+}
+@media (max-width:380px){
+  .site-header{gap:6px;padding-inline:9px}
+  .brand{min-width:66px!important}
+  .brand img{width:70px!important;height:48px!important}
+  .nav{gap:2px}
+  .nav a{font-size:7.2px;padding:6px 4px}
+  .nav .cta{font-size:8px;padding:7px 7px}
+}
+</style>
 </head>
 <body>
 <main class="site">
