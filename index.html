@@ -1,804 +1,779 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Rafa Pizza — Pizza à domicile</title>
-  <meta name="description" content="Rafa Pizza prépare et sert des pizzas sur place pour vos événements. Consultez les prix, le menu et les disponibilités, puis envoyez votre demande en quelques minutes.">
-  <meta name="robots" content="index,follow">
-  <meta name="theme-color" content="#5B1F2A">
-  <style>
-    :root{
-      --cream:#F6F0E7;
-      --cream2:#FBF8F3;
-      --paper:#FFFDFC;
-      --wine:#5B1F2A;
-      --wine2:#7A2D3C;
-      --ink:#2B2524;
-      --muted:#81746F;
-      --line:rgba(91,31,42,.14);
-      --soft:rgba(91,31,42,.055);
-      --shadow:0 18px 50px rgba(62,37,39,.08);
-      --ok:#52745D;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      background:#ECE5DC;
-      color:var(--ink);
-      font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      -webkit-font-smoothing:antialiased;
-    }
-    button,input{font:inherit}
-    a{color:inherit}
-    .site{
-      width:min(1180px,100%);
-      margin:0 auto;
-      background:var(--cream);
-      min-height:100vh;
-      box-shadow:var(--shadow);
-    }
-    .site-header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-      padding:20px 34px;
-      border-bottom:1px solid var(--line);
-      background:rgba(246,240,231,.96);
-      position:sticky;
-      top:0;
-      z-index:40;
-      backdrop-filter:blur(12px);
-    }
-    .brand{text-decoration:none;display:inline-flex;flex-direction:column;gap:1px}
-    .brand strong{
-      color:var(--wine);
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:25px;
-      font-weight:500;
-      letter-spacing:-.02em;
-    }
-    .brand span{
-      color:var(--muted);
-      font-size:9px;
-      font-weight:800;
-      letter-spacing:.11em;
-      text-transform:uppercase;
-    }
-    .nav{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
-    .nav a{
-      text-decoration:none;
-      font-size:11px;
-      font-weight:800;
-      padding:10px 13px;
-      border-radius:999px;
-      color:var(--wine);
-    }
-    .nav a:hover{background:var(--soft)}
-    .nav .cta{background:var(--wine);color:#fff;padding-inline:17px}
-    .hero{
-      display:grid;
-      grid-template-columns:.9fr 1.1fr;
-      gap:38px;
-      align-items:center;
-      padding:48px 34px 42px;
-      border-bottom:1px solid var(--line);
-    }
-    .hero-copy{max-width:510px;padding-left:10px}
-    .eyebrow{
-      margin:0 0 13px;
-      color:var(--wine2);
-      font-size:10px;
-      font-weight:900;
-      letter-spacing:.13em;
-      text-transform:uppercase;
-    }
-    h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--wine);font-weight:500}
-    h1{
-      font-size:clamp(45px,7vw,76px);
-      line-height:.96;
-      letter-spacing:-.045em;
-      margin:0 0 22px;
-    }
-    .hero-copy .lead{
-      margin:0;
-      max-width:470px;
-      font-size:17px;
-      line-height:1.7;
-      color:#4D4441;
-    }
-    .hero-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:28px}
-    .button{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:45px;
-      padding:0 18px;
-      border-radius:999px;
-      text-decoration:none;
-      font-size:12px;
-      font-weight:900;
-      border:1px solid var(--line);
-      background:var(--cream2);
-      color:var(--wine);
-      cursor:pointer;
-    }
-    .button.primary{background:var(--wine);color:#fff;border-color:var(--wine)}
-    .hero-media{position:relative}
-    .hero-media img{
-      width:100%;
-      display:block;
-      aspect-ratio:4/3;
-      object-fit:cover;
-      border-radius:26px;
-    }
-    .hero-badge{
-      position:absolute;
-      left:18px;
-      bottom:18px;
-      background:rgba(255,253,250,.94);
-      color:var(--wine);
-      border-radius:16px;
-      padding:11px 14px;
-      font-size:11px;
-      font-weight:900;
-      box-shadow:0 8px 24px rgba(0,0,0,.10);
-    }
-    .section{padding:58px 34px;border-bottom:1px solid var(--line)}
-    .section.alt{background:var(--cream2)}
-    .inner{max-width:980px;margin:0 auto}
-    .section-head{max-width:690px;margin-bottom:28px}
-    .section-kicker{
-      margin:0 0 8px;
-      color:var(--wine2);
-      font-size:9px;
-      font-weight:900;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-    .section-title{
-      font-size:clamp(31px,4vw,45px);
-      letter-spacing:-.025em;
-      margin:0 0 10px;
-    }
-    .section-copy{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.7;
-    }
-    .steps{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      border:1px solid var(--line);
-      border-radius:22px;
-      overflow:hidden;
-      background:var(--cream);
-    }
-    .step{padding:24px 20px;min-height:188px;border-right:1px solid var(--line)}
-    .step:last-child{border-right:0}
-    .step-number{
-      display:inline-grid;
-      place-items:center;
-      width:34px;height:34px;
-      border-radius:50%;
-      background:var(--wine);
-      color:white;
-      font-size:11px;
-      font-weight:900;
-      margin-bottom:32px;
-    }
-    .step h3{font-size:20px;margin:0 0 8px}
-    .step p{font-size:11px;line-height:1.6;color:var(--muted);margin:0}
-    .process-note{
-      margin-top:14px;
-      border-left:3px solid var(--wine);
-      padding:10px 13px;
-      background:var(--soft);
-      border-radius:0 12px 12px 0;
-      color:var(--wine);
-      font-size:11px;
-      font-weight:800;
-      line-height:1.55;
-    }
-    .experience-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-    }
-    .experience-card{
-      padding:22px;
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:var(--paper);
-    }
-    .experience-card span{
-      display:block;
-      color:var(--muted);
-      font-size:9px;
-      text-transform:uppercase;
-      letter-spacing:.09em;
-      font-weight:900;
-      margin-bottom:7px;
-    }
-    .experience-card strong{
-      display:block;
-      color:var(--wine);
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:22px;
-      font-weight:500;
-    }
-    .experience-card p{font-size:11px;color:var(--muted);line-height:1.55;margin:8px 0 0}
-    .estimator-card{
-      border:1px solid var(--line);
-      border-radius:22px;
-      padding:24px;
-      background:var(--cream);
-    }
-    .guest-value{
-      display:block;
-      color:var(--wine);
-      font-family:Georgia,"Times New Roman",serif;
-      font-size:36px;
-      font-weight:500;
-      margin-bottom:13px;
-    }
-    .price-slider{width:100%;accent-color:var(--wine)}
-    .slider-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:7px}
-    .estimate-results{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
-    .estimate-box{padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--paper)}
-    .estimate-box span{display:block;color:var(--muted);font-size:8.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
-    .estimate-box strong{display:block;color:var(--wine);font-family:Georgia,serif;font-size:27px;font-weight:500;margin-top:4px}
-    .estimate-note{margin:15px 0 0;color:var(--muted);font-size:10.5px;line-height:1.6}
-    .large-event-note{display:none;margin-top:12px;color:var(--wine2);font-size:10.5px;font-weight:800}
-    .large-event-note.show{display:block}
-    .section-action{margin-top:19px}
-    .pizza-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
-    }
-    .pizza-card{
-      border:1px solid var(--line);
-      border-radius:18px;
-      overflow:hidden;
-      background:var(--paper);
-      cursor:pointer;
-      transition:transform .18s ease,box-shadow .18s ease;
-    }
-    .pizza-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(91,31,42,.08)}
-    .pizza-card img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
-    .pizza-card-body{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 13px}
-    .pizza-name{font-family:Georgia,serif;color:var(--wine);font-size:17px}
-    .pizza-view{color:var(--muted);font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
-    .menu-note{
-      margin-top:14px;
-      padding:15px 16px;
-      background:var(--soft);
-      border:1px solid var(--line);
-      border-radius:14px;
-      color:var(--wine);
-      font-size:11px;
-      line-height:1.6;
-    }
-    .viewer{
-      position:fixed;inset:0;background:rgba(24,15,16,.96);z-index:100;
-      display:none;align-items:center;justify-content:center;padding:20px;
-    }
-    .viewer.open{display:flex}
-    .viewer img{max-width:94vw;max-height:86vh;border-radius:16px;display:block}
-    .viewer-close{
-      position:fixed;top:16px;right:16px;width:44px;height:44px;border:0;border-radius:50%;
-      background:#fff;color:var(--wine);font-size:27px;cursor:pointer;
-    }
-    .viewer-caption{
-      position:fixed;left:50%;bottom:16px;transform:translateX(-50%);
-      background:#fff;color:var(--wine);padding:9px 14px;border-radius:999px;font-size:11px;font-weight:900;
-    }
-    .calendar-card{
-      border:1px solid var(--line);
-      border-radius:22px;
-      background:var(--cream);
-      padding:20px;
-    }
-    .calendar-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-    .calendar-toolbar h3{margin:0;font-size:25px;text-align:center}
-    .month-nav{
-      width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--paper);
-      color:var(--wine);font-size:22px;cursor:pointer;
-    }
-    .month-nav:disabled{opacity:.3;cursor:not-allowed}
-    .weekdays,.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}
-    .weekday{text-align:center;color:var(--muted);font-size:9px;font-weight:900;text-transform:uppercase;padding:4px 0}
-    .day{
-      min-height:102px;border:1px solid var(--line);border-radius:14px;padding:9px;position:relative;
-      background:rgba(255,255,255,.4);text-decoration:none;color:inherit;
-    }
-    a.day{transition:transform .14s ease,border-color .14s ease,background .14s ease}
-    a.day:hover{transform:translateY(-1px);border-color:rgba(91,31,42,.33);background:#fff}
-    .day.empty{background:transparent;border-color:transparent}
-    .day .num{font-size:14px;font-weight:900;color:var(--wine)}
-    .day .status{
-      position:absolute;left:7px;right:7px;bottom:7px;padding:5px 3px;border-radius:999px;
-      font-size:8px;font-weight:900;text-align:center;
-    }
-    .day.available .status{background:rgba(82,116,93,.11);color:var(--ok)}
-    .day.booked{background:var(--wine)}
-    .day.booked .num,.day.booked .status{color:white}
-    .day.booked .status{background:rgba(255,255,255,.12)}
-    .day.unavailable,.day.past{background:rgba(130,116,111,.08)}
-    .day.unavailable .num,.day.unavailable .status,.day.past .num,.day.past .status{color:#918681}
-    .calendar-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:15px;font-size:9px;color:var(--muted);font-weight:800}
-    .legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
-    .legend-dot.available{background:var(--ok)}
-    .legend-dot.booked{background:var(--wine)}
-    .legend-dot.unavailable{background:#AAA09A}
-    .calendar-help{margin:13px 0 0;color:var(--muted);font-size:10.5px;line-height:1.55}
-    .calendar-error{display:none;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--wine);font-size:11px;margin-top:12px}
-    .calendar-error.show{display:block}
-    .final-cta{
-      display:flex;align-items:center;justify-content:space-between;gap:28px;
-      padding:36px 34px;background:var(--wine);color:#fff;
-    }
-    .final-cta h2{color:#fff;margin:0 0 6px;font-size:31px}
-    .final-cta p{margin:0;opacity:.82;font-size:12px;line-height:1.55}
-    .final-cta .button{background:#fff;border-color:#fff;color:var(--wine);flex:0 0 auto}
-    .footer{padding:22px 34px;color:var(--muted);font-size:9.5px;text-align:center;background:var(--cream2)}
-    @media(max-width:900px){
-      .site-header{padding:16px 20px;position:relative}
-      .nav a:not(.cta){display:none}
-      .hero{grid-template-columns:1fr;padding:35px 20px 28px;gap:26px}
-      .hero-copy{padding-left:0;max-width:660px}
-      .hero-media img{aspect-ratio:16/10}
-      .section{padding:43px 20px}
-      .steps{grid-template-columns:1fr 1fr}
-      .step:nth-child(2){border-right:0}
-      .step:nth-child(-n+2){border-bottom:1px solid var(--line)}
-      .pizza-grid{grid-template-columns:repeat(3,1fr)}
-    }
-    @media(max-width:640px){
-      .brand span{display:none}
-      .site-header{padding:14px 15px}
-      .brand strong{font-size:22px}
-      .nav .cta{padding:9px 13px;font-size:10px}
-      .hero{padding:28px 15px 22px}
-      h1{font-size:48px}
-      .hero-copy .lead{font-size:14px}
-      .hero-actions{display:grid;grid-template-columns:1fr}
-      .button{width:100%}
-      .hero-media img{border-radius:19px;aspect-ratio:4/3}
-      .hero-badge{left:11px;bottom:11px;font-size:9.5px}
-      .section{padding:38px 15px}
-      .section-title{font-size:33px}
-      .steps{grid-template-columns:1fr}
-      .step{min-height:0;border-right:0;border-bottom:1px solid var(--line);padding:18px}
-      .step:nth-child(2){border-right:0}
-      .step:last-child{border-bottom:0}
-      .step-number{margin-bottom:18px}
-      .experience-grid{grid-template-columns:1fr}
-      .estimate-results{grid-template-columns:1fr}
-      .pizza-grid{display:flex;overflow:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
-      .pizza-card{flex:0 0 72%;scroll-snap-align:start}
-      .calendar-card{padding:12px 8px}
-      .calendar-toolbar{padding:0 4px}
-      .calendar-toolbar h3{font-size:20px}
-      .weekdays,.calendar-grid{gap:3px}
-      .weekday{font-size:7px}
-      .day{min-height:72px;padding:5px;border-radius:10px}
-      .day .num{font-size:12px}
-      .day .status{left:2px;right:2px;bottom:3px;font-size:6.7px;padding:4px 1px}
-      .final-cta{display:block;padding:31px 15px}
-      .final-cta .button{margin-top:18px}
-      .footer{padding:20px 15px}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rafa Pizza — Pizza à domicile</title>
+<meta name="description" content="Rafa Pizza prépare et sert des pizzas sur place pour vos événements. Consultez les prix, le menu et les disponibilités, puis envoyez votre demande en quelques minutes.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#5B1F2A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style id="rafa-brand-refresh">
-body{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
-h1,h2{font-family:"Kalam","Segoe Print","Bradley Hand",cursive!important;font-weight:700!important}
-h3{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;font-weight:800!important}
-.hero h1{line-height:1.03!important;letter-spacing:-.02em!important}
-.section-title{line-height:1.05!important;letter-spacing:-.012em!important}
-.experience-card strong,.guest-value,.estimate-box strong,.pizza-name{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;font-weight:800!important}
-.brand{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:0!important;width:132px;height:54px;padding:7px 14px;background:var(--wine);border-radius:16px;box-shadow:0 7px 18px rgba(91,31,42,.13);text-decoration:none;flex:0 0 auto}
-.brand-logo{display:block;width:100%;height:100%;object-fit:contain}
-@media(max-width:720px){.brand{width:108px;height:45px;padding:6px 11px;border-radius:14px}.site-header{padding-top:12px!important;padding-bottom:12px!important}}
+<style>
+:root{
+--cream:#F6F0E7;
+--cream2:#FBF8F3;
+--paper:#FFFDFC;
+--wine:#5B1F2A;
+--wine2:#7A2D3C;
+--ink:#2B2524;
+--muted:#81746F;
+--line:rgba(91,31,42,.14);
+--soft:rgba(91,31,42,.055);
+--shadow:0 18px 50px rgba(62,37,39,.08);
+--ok:#52745D;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+margin:0;
+background:#ECE5DC;
+color:var(--ink);
+font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+-webkit-font-smoothing:antialiased;
+}
+button,input{font:inherit}
+a{color:inherit}
+.site{
+width:min(1180px,100%);
+margin:0 auto;
+background:var(--cream);
+min-height:100vh;
+box-shadow:var(--shadow);
+}
+.site-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:20px;
+padding:20px 34px;
+border-bottom:1px solid var(--line);
+background:rgba(246,240,231,.96);
+position:sticky;
+top:0;
+z-index:40;
+backdrop-filter:blur(12px);
+}
+.brand{
+text-decoration:none;
+display:inline-flex;
+align-items:center;
+gap:11px;
+min-width:0;
+}
+.brand-mark{
+display:grid;
+place-items:center;
+width:126px;
+height:52px;
+padding:7px 13px;
+border-radius:16px;
+background:var(--wine);
+box-shadow:0 7px 18px rgba(91,31,42,.12);
+flex:0 0 auto;
+}
+.brand-mark img{display:block;width:100%;height:100%;object-fit:contain}
+.brand-copy{display:flex;flex-direction:column;gap:1px;min-width:0}
+.brand-copy strong{
+color:var(--wine);
+font-size:10px;
+font-weight:800;
+letter-spacing:.10em;
+text-transform:uppercase;
+white-space:nowrap;
+}
+.brand-copy span{
+color:var(--muted);
+font-size:8px;
+font-weight:700;
+letter-spacing:.09em;
+text-transform:uppercase;
+white-space:nowrap;
+}
+.nav{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.nav a{
+text-decoration:none;
+font-size:11px;
+font-weight:800;
+padding:10px 13px;
+border-radius:999px;
+color:var(--wine);
+}
+.nav a:hover{background:var(--soft)}
+.nav .cta{background:var(--wine);color:#fff;padding-inline:17px}
+.hero{
+display:grid;
+grid-template-columns:.9fr 1.1fr;
+gap:38px;
+align-items:center;
+padding:48px 34px 42px;
+border-bottom:1px solid var(--line);
+}
+.hero-copy{max-width:510px;padding-left:10px}
+.eyebrow{
+margin:0 0 13px;
+color:var(--wine2);
+font-size:10px;
+font-weight:900;
+letter-spacing:.13em;
+text-transform:uppercase;
+}
+h1,h2{font-family:"Kalam","Segoe Print","Bradley Hand",cursive;color:var(--wine);font-weight:700}
+h3{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--wine);font-weight:800}
+h1{
+font-size:clamp(45px,7vw,76px);
+line-height:1.02;
+letter-spacing:-.025em;
+margin:0 0 22px;
+}
+.hero-copy .lead{
+margin:0;
+max-width:470px;
+font-size:17px;
+line-height:1.7;
+color:#4D4441;
+}
+.hero-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:28px}
+.button{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+min-height:45px;
+padding:0 18px;
+border-radius:999px;
+text-decoration:none;
+font-size:12px;
+font-weight:900;
+border:1px solid var(--line);
+background:var(--cream2);
+color:var(--wine);
+cursor:pointer;
+}
+.button.primary{background:var(--wine);color:#fff;border-color:var(--wine)}
+.hero-media{position:relative}
+.hero-media img{
+width:100%;
+display:block;
+aspect-ratio:4/3;
+object-fit:cover;
+border-radius:26px;
+}
+.hero-badge{
+position:absolute;
+left:18px;
+bottom:18px;
+background:rgba(255,253,250,.94);
+color:var(--wine);
+border-radius:16px;
+padding:11px 14px;
+font-size:11px;
+font-weight:900;
+box-shadow:0 8px 24px rgba(0,0,0,.10);
+}
+.section{padding:58px 34px;border-bottom:1px solid var(--line)}
+.section.alt{background:var(--cream2)}
+.inner{max-width:980px;margin:0 auto}
+.section-head{max-width:690px;margin-bottom:28px}
+.section-kicker{
+margin:0 0 8px;
+color:var(--wine2);
+font-size:9px;
+font-weight:900;
+letter-spacing:.12em;
+text-transform:uppercase;
+}
+.section-title{
+font-size:clamp(32px,4.2vw,48px);
+line-height:1.05;
+letter-spacing:-.015em;
+margin:0 0 10px;
+}
+.section-copy{
+margin:0;
+color:var(--muted);
+font-size:14px;
+line-height:1.7;
+}
+.steps{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+border:1px solid var(--line);
+border-radius:22px;
+overflow:hidden;
+background:var(--cream);
+}
+.step{padding:24px 20px;min-height:188px;border-right:1px solid var(--line)}
+.step:last-child{border-right:0}
+.step-number{
+display:inline-grid;
+place-items:center;
+width:34px;height:34px;
+border-radius:50%;
+background:var(--wine);
+color:white;
+font-size:11px;
+font-weight:900;
+margin-bottom:32px;
+}
+.step h3{font-size:20px;margin:0 0 8px}
+.step p{font-size:11px;line-height:1.6;color:var(--muted);margin:0}
+.process-note{
+margin-top:14px;
+border-left:3px solid var(--wine);
+padding:10px 13px;
+background:var(--soft);
+border-radius:0 12px 12px 0;
+color:var(--wine);
+font-size:11px;
+font-weight:800;
+line-height:1.55;
+}
+.experience-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+}
+.experience-card{
+padding:22px;
+border:1px solid var(--line);
+border-radius:18px;
+background:var(--paper);
+}
+.experience-card span{
+display:block;
+color:var(--muted);
+font-size:9px;
+text-transform:uppercase;
+letter-spacing:.09em;
+font-weight:900;
+margin-bottom:7px;
+}
+.experience-card strong{
+display:block;
+color:var(--wine);
+font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+font-size:20px;
+font-weight:800;
+}
+.experience-card p{font-size:11px;color:var(--muted);line-height:1.55;margin:8px 0 0}
+.estimator-card{
+border:1px solid var(--line);
+border-radius:22px;
+padding:24px;
+background:var(--cream);
+}
+.guest-value{
+display:block;
+color:var(--wine);
+font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+font-size:34px;
+font-weight:800;
+margin-bottom:13px;
+}
+.price-slider{width:100%;accent-color:var(--wine)}
+.slider-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-top:7px}
+.estimate-results{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.estimate-box{padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--paper)}
+.estimate-box span{display:block;color:var(--muted);font-size:8.5px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.estimate-box strong{display:block;color:var(--wine);font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:25px;font-weight:800;margin-top:4px}
+.estimate-note{margin:15px 0 0;color:var(--muted);font-size:10.5px;line-height:1.6}
+.large-event-note{display:none;margin-top:12px;color:var(--wine2);font-size:10.5px;font-weight:800}
+.large-event-note.show{display:block}
+.section-action{margin-top:19px}
+.pizza-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+}
+.pizza-card{
+border:1px solid var(--line);
+border-radius:18px;
+overflow:hidden;
+background:var(--paper);
+cursor:pointer;
+transition:transform .18s ease,box-shadow .18s ease;
+}
+.pizza-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(91,31,42,.08)}
+.pizza-card img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+.pizza-card-body{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 13px}
+.pizza-name{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--wine);font-size:15px;font-weight:800}
+.pizza-view{color:var(--muted);font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+.menu-note{
+margin-top:14px;
+padding:15px 16px;
+background:var(--soft);
+border:1px solid var(--line);
+border-radius:14px;
+color:var(--wine);
+font-size:11px;
+line-height:1.6;
+}
+.viewer{
+position:fixed;inset:0;background:rgba(24,15,16,.96);z-index:100;
+display:none;align-items:center;justify-content:center;padding:20px;
+}
+.viewer.open{display:flex}
+.viewer img{max-width:94vw;max-height:86vh;border-radius:16px;display:block}
+.viewer-close{
+position:fixed;top:16px;right:16px;width:44px;height:44px;border:0;border-radius:50%;
+background:#fff;color:var(--wine);font-size:27px;cursor:pointer;
+}
+.viewer-caption{
+position:fixed;left:50%;bottom:16px;transform:translateX(-50%);
+background:#fff;color:var(--wine);padding:9px 14px;border-radius:999px;font-size:11px;font-weight:900;
+}
+.calendar-card{
+border:1px solid var(--line);
+border-radius:22px;
+background:var(--cream);
+padding:20px;
+}
+.calendar-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.calendar-toolbar h3{margin:0;font-size:25px;text-align:center}
+.month-nav{
+width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--paper);
+color:var(--wine);font-size:22px;cursor:pointer;
+}
+.month-nav:disabled{opacity:.3;cursor:not-allowed}
+.weekdays,.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}
+.weekday{text-align:center;color:var(--muted);font-size:9px;font-weight:900;text-transform:uppercase;padding:4px 0}
+.day{
+min-height:102px;border:1px solid var(--line);border-radius:14px;padding:9px;position:relative;
+background:rgba(255,255,255,.4);text-decoration:none;color:inherit;
+}
+a.day{transition:transform .14s ease,border-color .14s ease,background .14s ease}
+a.day:hover{transform:translateY(-1px);border-color:rgba(91,31,42,.33);background:#fff}
+.day.empty{background:transparent;border-color:transparent}
+.day .num{font-size:14px;font-weight:900;color:var(--wine)}
+.day .status{
+position:absolute;left:7px;right:7px;bottom:7px;padding:5px 3px;border-radius:999px;
+font-size:8px;font-weight:900;text-align:center;
+}
+.day.available .status{background:rgba(82,116,93,.11);color:var(--ok)}
+.day.booked{background:var(--wine)}
+.day.booked .num,.day.booked .status{color:white}
+.day.booked .status{background:rgba(255,255,255,.12)}
+.day.unavailable,.day.past{background:rgba(130,116,111,.08)}
+.day.unavailable .num,.day.unavailable .status,.day.past .num,.day.past .status{color:#918681}
+.calendar-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:15px;font-size:9px;color:var(--muted);font-weight:800}
+.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.legend-dot.available{background:var(--ok)}
+.legend-dot.booked{background:var(--wine)}
+.legend-dot.unavailable{background:#AAA09A}
+.calendar-help{margin:13px 0 0;color:var(--muted);font-size:10.5px;line-height:1.55}
+.calendar-error{display:none;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--wine);font-size:11px;margin-top:12px}
+.calendar-error.show{display:block}
+.final-cta{
+display:flex;align-items:center;justify-content:space-between;gap:28px;
+padding:36px 34px;background:var(--wine);color:#fff;
+}
+.final-cta h2{color:#fff;margin:0 0 6px;font-size:31px}
+.final-cta p{margin:0;opacity:.82;font-size:12px;line-height:1.55}
+.final-cta .button{background:#fff;border-color:#fff;color:var(--wine);flex:0 0 auto}
+.footer{padding:22px 34px;color:var(--muted);font-size:9.5px;text-align:center;background:var(--cream2)}
+@media(max-width:900px){
+.site-header{padding:16px 20px;position:relative}
+.nav a:not(.cta){display:none}
+.hero{grid-template-columns:1fr;padding:35px 20px 28px;gap:26px}
+.hero-copy{padding-left:0;max-width:660px}
+.hero-media img{aspect-ratio:16/10}
+.section{padding:43px 20px}
+.steps{grid-template-columns:1fr 1fr}
+.step:nth-child(2){border-right:0}
+.step:nth-child(-n+2){border-bottom:1px solid var(--line)}
+.pizza-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:640px){
+.brand-copy{display:none}
+.brand-mark{width:108px;height:45px;padding:6px 11px;border-radius:14px}
+.site-header{padding:12px 15px}
+.nav .cta{padding:9px 13px;font-size:10px}
+.hero{padding:28px 15px 22px}
+h1{font-size:48px}
+.hero-copy .lead{font-size:14px}
+.hero-actions{display:grid;grid-template-columns:1fr}
+.button{width:100%}
+.hero-media img{border-radius:19px;aspect-ratio:4/3}
+.hero-badge{left:11px;bottom:11px;font-size:9.5px}
+.section{padding:38px 15px}
+.section-title{font-size:33px}
+.steps{grid-template-columns:1fr}
+.step{min-height:0;border-right:0;border-bottom:1px solid var(--line);padding:18px}
+.step:nth-child(2){border-right:0}
+.step:last-child{border-bottom:0}
+.step-number{margin-bottom:18px}
+.experience-grid{grid-template-columns:1fr}
+.estimate-results{grid-template-columns:1fr}
+.pizza-grid{display:flex;overflow:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+.pizza-card{flex:0 0 72%;scroll-snap-align:start}
+.calendar-card{padding:12px 8px}
+.calendar-toolbar{padding:0 4px}
+.calendar-toolbar h3{font-size:20px}
+.weekdays,.calendar-grid{gap:3px}
+.weekday{font-size:7px}
+.day{min-height:72px;padding:5px;border-radius:10px}
+.day .num{font-size:12px}
+.day .status{left:2px;right:2px;bottom:3px;font-size:6.7px;padding:4px 1px}
+.final-cta{display:block;padding:31px 15px}
+.final-cta .button{margin-top:18px}
+.footer{padding:20px 15px}
+}
 </style>
 </head>
 <body>
-  <main class="site">
-    <header class="site-header">
-      <a class="brand" href="./index.html" aria-label="Rafa Pizza, accueil"><img class="brand-logo" src="data:image/webp;base64,UklGRuQqAABXRUJQVlA4WAoAAAAQAAAA7wAAfAAAQUxQSIMTAAAB96e2bRvG9v+Xt2SNiASd4kMJCI0kOZIqq+rcG/6Ap3t0ECL6PwGSgP/7CF0y6vI/oVsytFsSvgzJL7SblsieW22fWfl/FrmbwGJJLH8DWzVCXSwpQA9bB8JtOLXBiXQTv58PP1yeuk0AhXwB7aBaqhQkrZv2TZ20ra29SlUUltPRVL7V6IWohNJBwOqTtAlWSQBG7b9i9y2et7ff1aS2YprBxx0mHPaYBkCZW6Tw8zMzMzMVGYOUxkCpWDthgzhxDXLknb+v98H7c5/dncOfoqICeD/EQsF8T8lJeUAsMr+B6RkACtX9xZ2z4PsfzhKwMbLn3/20avS4q6tv3kupK4TaFD8V5SgeuX7djpDPV//PKRukiQinOZKSei/DkH1PV9x94UwARHzffc/wtQ5MrkzeGZqqaJfz8/NBQOVIvy/AMtc/MNnU/dTj4FBqrxmA1KnmLkDq4489pjjj9wwu2pZr9ebkvd9cW73vscf2fbQtq3fAJTcO05svPxZ9KlEc8s8ROoOGRk2POvZF558WEXDQDR98r6vfPq27WBShyk47RJqJVo0v5LUFSnD0S97xUXrgMgOpiViaRBBIEvA3i9df9W9kNRZzmmHEYlySbn37q4wc73s2162Bmo3CUAUBxDh6sHCp96yDFI3KdJplo12w6ceW4W6IMErf+186MvECAMBER49ce8PT2PWQUa1nizaQnEuNnlKnPqxV1JjYjxDkXG/402QOkfEFCFal9srSRMn8YN7vCYx3v159w8eTdUxsphntLnqAuyZqyISY2/W58JT6NZQPMZok3/0HGzSZLPUiYlMwYaN3QJbIEYSfGgZmiyp7hNiUi2nRHRH8MV+CkZp/WN/n8RkJ+4mmGBFbKUz3e7dWsVIwvL3HCubrMRNdZooIj21RdENob2fwRml8NUXRmKiZVNfrZzJDn1uh3knwNsQIwz3Hkcz6YnvIph08Xd0otstX+55WxHhPsX2h5h0qfpqlScuV9d9wnIHaPFfaDmcJGDHWz/OxFtccBYaRRSoLYsXHe82edK7tiZvpV+7L2z7xF++Zg2kiYNvJdNmQEQMUQyQZC2pnr6EDkj7/1JOm+H5qm87dQVAEpOuPHMZrbpTiTY9K7URwfOIiZP+5f4qtxDBLc8GUJXE5ItTjnaVRe7B4jd27npqz969+/Yv1uotn1l92Pojj5mF3AbGycoTl/g50e7XZkjJRDca56UsFQRe7bvyutuf2OsUbzjpuS99Pl4m47BVaNKM66q6TDA/r0SXnkOLXr37N+8HkKEmEQ5wyd8rRwmwYhWTbhx3sIo2TjczOtTZhAoE1R/8GokIgmKZqE9bwFuwhCas4ieVKbb8zJOz6FC5HVEW3HxJCqd1WfVoaoNg0sUne2WK5d+C6NY1G4rC6nOVaD9YvDwTLRzYS0yWxXHnhRVFeuqvLXeKWD9LaU6fxmhVAzx94caUKQ4emzyes6xWUa1/eFrRKbByytUsgo+qamdgiE8hyp3NkZj051Eevbn/VNCpYg1OYRW3kJqoQMF+iBaCL6DJUp0uwoqybthu3i0wSxSEfWMraiCpkZyKVqOqP4FPGMedhIrgnRLdKtZSGmx7WjSiqZxDaRygAVm33WsTd/pUXeS9nZ+M3DGwvIWHIjVpXrH+TCIaSAItQf8UxqSdRTA0BoTz2Z0WHRRFD1O1Y/gpJxFqMnBJru77oPKEBafRUAMIPoPRuaspf5ihambO+cdSLAGk+sQ3R2LCnePRsMFK3EJ0z6oi8ciwxpY5/sW9bEXDf7ByTZhi9ZFlkZ68B++aYBkqgN3EoBgmCy4+nyyplVSfc4qLSWP9bJSE87U9Fl0Dy4lmYeymONWc/23rkGhXMXMBYvI2TDvNg+AujO6dQQWK/UQzE7OvP486iZaDcxEdeASuZhDcS/cGU5Tawf00tgTf8vopR7QtjutFB4iNBM2FsYXooOWogIMHiGFK8JwbnVq0HcHKaacTD6c8LWzvIKhoHsHBOYYqwWlvq33eRNsKNBXqhkNQkXY93UHBsgJgbgEtUcoc9T2vsyyjdReP9+nG4BAaB+A8vrd7hLWwvwaQ1az+1u9YgSfaj8Qj++iMWdRkafB4GN2bKtQs2IUhy6z49u97BosmqbVI9X1Yd6yksVj6BOqg3gzFezDL9C7/8U30k9F+wANfRtEdU82WBts7qZoqCfZWTvWGHz2JvhkjzD2+tBkFgDpAWAvwFF28YnkJzNcz3/YL30RfxgjdePTKnQRLg07sTaMS8XQHiZkp1EgWF/7C7efQlwXteyRu/AzJ6dLeDKUBu4jOgaqi0OKcPzq1L0O07l5x23sehaBTUyrC2EcXr+yFmoFnM9F+eI+t35NIomPNioTvJzpHTCsY44jcY9c7PwqJ7lVRpIWaLp5hrHNi7j3/vpNEBwuIaAQL0UmriPHxZPV7/nYryekkA6lRaD6I/8qyjA/9w2ZSBN0kyhdE94qVjGfkSFz7d18mhdPdKtpXdRCsJcYhvMfn/umzpHA6250oWqCTVzP6IE/x9X+6EsMZV0ki8PHKlNcQYyJJEBFjsWp04dn2/MoqLDGuMjKDldxHIjUBVBAsIMZRRmaomfuIgtnRuaWrT4ZKjKkpQ2/TxsOn9z7+4KOQwsdEonxxLGQZlh97xOG9/hOPPLwHUvhIYDUakfuu7zMqMaamzLrLLjtv0xTAnruued+DpDwCCqJo/zikzKqXv/I5R1YA+cmvfuza7SSPEQQrGXHU6coNbzPGNWVO/oErDofIhJRg7zv/dKvU2oiDg4xc8tU/9AObIHIgkmDPR/7qDtIInJVoNJD6f01aotGZ4phf/PYV9MNMAOE+xa7f/hs0Dh5F4GhE5rz5d0+kj0kAEU6P/jt+82HUlqhWM3K3L3zalow+wQ/97rqok0IMj3qKa38QjUF4Cxk0EnHE37+GxSQxPCAne+KXcLUEMyvRqAJ+jTQOFUdf81IWK1EaubdtHWMoIEoCYiQcccbxi2aiNHKP8y3Ujli1kpFHXb1jLCpeuM0Xk9Fmf2rVujGIAJU4Iz7xMBYr0aY7m9bT9poxUIpXHYZGx9FHINFyzcpqZMIoj5SyiAgwuRdNrQgTLUdwzLJ2xKrK1VIMw+o13041OqUs0X7MP0G0YmiJbPHQQ1xFs5nGyaOAzAglrG4FVhE0jQDPA9QAuBobmQhGq737iCKraoav/ONenQpSvOh77tiw8eiNh8/a3CO3XrkV82HBzkAxgqFRJtYWiCBVvqSxxb6N2EgSW1waEex80qKZEnDEoeuWK6ZWnPSGk3KiUKz6N5rue8+vPp2GGF/fYyML9u9SFFEErps/mLwgVPvlVKOQbXnQnFEHd+23aGJw2u9fdsJqhtaJcu9bOEgE0dO9l99jA5R2bDVHjIptc9bCOkqdD7zp2pSbofB/J40icbsYy1toaiz7y3kHdyDAEi2qCkEIAqKefvJ5siWJLxCMXvBgKIrWlkgc0A88adFImD8wgxqpWeI1jKXbwufxIcaGT3o9n5AYzwD60zeyJHExGoelt1C+oQTj0Xjkzy03Auvnc0nDNLCBbPqeKo8DUW3enGKAbO2X/GCdGfO6dykJ2fRdlTOWXu26C28WzBaJg9hbdlbRTFnPRUPE0ibJ33hqMJ7BtfOKJZb/8JsWphj/eBuJxE95MKZhmx9IUbCiCBapnvqQ6ogmGM/DhwwMGubez0YeF9VX4YDlTd+RK8bfdIdhWvd47eNCcE0mmq1BzUL9A4Q+hNHceNZyV6OmKS4+JzOuUT3wFQuouGLZ4iSIx2bp8Zs+z/hY/xoaR1pLYahewOPWJ6topti4ibaC74kYG5y3HFSQOCvERD7xDLRie+6PD56+elfyBqxYgxoFhBO2+za8GXW6CFsigdREvv7FSuMTtu+DCow1YgLDuaeX+HZfyGNE8OGaaLB8BcX9RcL4NKFm8EICJICgqfHc2Vrjg6eP32+e2MdEOm+hZ58ZN5v7cKMVy6KZ4OAcBLeQaG6ckTJABIM1SLwAZ7z/DSq+TEyCeB6cuVjXY4Wnz25JPmx5r4CgzuBs+UaKZsSJx2EE5c7paKxy+vrHDT7STxOw2Hsf0/ycz+fxAt5Hw9W4GgW4Q+jpBylQPXMWRovy6WOwsSL0loNKvMXncs7jECK0xL331UssczFizN2evNI0ZAXlHoDFlqLgQlqefQZj7rbnXaps/T1+sF4SaCQBBIFbxTXf86TqDeeRxo2wj5CGLCOaCVgi7ixBnEtuQ8yuCI0XOd2wPYmjv+C+iIQgQO14RjJj6R1//28YnDlba+yQn0caNFsCSEDwVQREA+PUNaEWYLpi3ML4G5Ix85uPOeAQgatqIyqWLuzf+eBXP/7JWoQ4A48Yu5w+oSGHUBiwWA+4/2ByUBM/9HSslSkF456rz5thsP67Lz3jyFXGwNpQSaRdH/rKU4/tObBnTx9IGeAkJtOvIA2YKgH6ecDD2xQ0z5yLWlkIjR3i9SSUgHToIdNWpZXHvfaSrBJPj77pXgabhQcQbEBo/Dw/sMq0ZHkL2ZdYfwslcBHRyq4D8rHzdM8yE6iKzPC//dF+UqPw6p+ZqYMgCAYHq0FM4IL/KmnJOqSSGgKMO4uM82eyyoInnyCiPZdawf0nSSwVAkHqb/z6tFsjFHeYMoXBCsQoI5PUSl3vPFQGJAq1REBwOypAccV8KsO41hfqaClLydvJOnszzXM/5vaIaCToO8Wiz0hd1utFK2T7xyfMYaoECJYGd89VUdC33769aqHi132+ptUIY+teWvbVad4aAf1FUCNgGrWwm2jP4cDb/20n3kqk3f+ggNSaa8f98oI8ddfvWwuJC7zfjve48dtWXvIZohXZmXdTVFO+mnLxSHvhFR87fvY7/3Ab7Wb7p0fNCaIgyANI+QuUBPwmVRnqfSkvtBDBgWtvmbtl7pEVtOMr9h+0gnqxhakW4F7ajuCx6x76zh09Dq5EbUT19J8TBOX1ILgJRTM8bVlBaiBJVVLFFT5f5ok7P44SidXHhFoAnXo3gBrkRaIgWnFuiV4bQVTc+hmSUQdrN2S1QNYf7KxYQEVDndvnqohmhN5tpCqlJMKDganq3eZ1gWP5U5tJmQycekxtLcjXbFlINAyipjBg7RKpme68C2/B3Q5+/mHk2QHOWutqwXt3/q1YIIpiiG2/TU4JftM5DD/kyCOf8W0vXgfprP3UDSJ7xac/togzUDzfQmVk1ZvlDQAvYUhEI1L9b2rBe9x5E+YMv5AgiiB+OLOP8kBLMD5GlMCCz3/0F15/2cvXHn3CqZvWG+6P/8cJ8CpU5wDCMz0efPstpGBI6Dm0oWrNdUFTUZcIVi4plOtt2yovCDR302bMGaqonolQUZ3+/AvsREV9BhvH7c9lkSsx3D36NRtedQK84F537/drd/c7fmQNMhrKDzkRtRBHnYCawCIRjRAriCJC8exjcqQhuV5cdL/yDDCaGoedFCpTXHArOykMWEADSLzPcxnhIQUhSZAqW2BNwPLv//Qud997x9++pIJEc8WRh3kLbsc1EwtANIJVtLyJqm8ShM8vun/pdZBE88Qxs14GR+3mcawZMMfQxMucFhAEYrCEjCduT8DG81943jEGJFEqjlsRKsGZKdlPqViLt8POJzdADiXcv/L9U5hRLDZOB1GgmBaPRkmwDw1CvS/LS9qN4C/oJTGwSqLV1RSH8TDRBPaBVLCaaInP/cSrNvVg/oF/uLiCRLvrATUjdiV2PK1oBvsZnniTjUfufU4CS8mM9nOkaOZ67E68idhD+XSFWoKpTces/sa2h4Ak2k4QzTzdhvZ8DS95ogFmt6Y8BkRv5zrEyPfux6NJbW/fn6IJPE0U9SraDmUGpiRGeJDKo0Gu6n8gcSvRTDzUJPEmPMYhHTwOGx077qeqY5Avztz6e+Y0fwQViGW91kASRDDix59GHkAQeUY/RAqux5ol7seHkX7wj6p6HGzvEeMQbLlh3qbIdV1Hmv7sa/cTjYIdKJpBVY1gPIN7Pkev8rrf11Ta97OkRc8z/xKNgg+vdDUQ6UJExJJoTXnVDRXjaHD6D7z6GJZu/tkeRnPjxPlcNws8Jmzpy3/oRSsAf+o/TsEgEr+8qbYG/Y1/h9FUfsiJRCAAtWX1aX9MNQ4owcozzjgqnrhzGkShmNrs/WawsDhxEcGxF520bO+rN0ACsLzhR7xJ/o7LcmoEsWEKBjUONcrff6xsLMCUGZxEceJdeaFk78GJgxTOwGQMVLx+Xd+GZH7dgkKRDxCMUnnlpZEYW5mAEC1WfI8vNgseDYuJA5MgiaGCi4meBGRd8ExPJcC+R+h5e16xiW4Uh+/OUXAHRhfH8mVEXwp6nEO7T3y2b6qjhYgaqx+nKxP/7LmRcS3RSfjCF396JcCDP0G7ofoj15N6uQ41icjqVXzy83Sm6fg5iwbZvv4FeTdBPu71F63e8dkP726JML70lx8+QK8XOQIQMgN2f/DPbqNDE7+Z+g1cv9W36KrE4NQWmMGmH/jAtiPF8N0P3v6Jz4KsQ5Sqj7x8vmdLIriUDg+rkqVKjDIZsPL44zYcsjbFgaee3rrjMcASnSqt+PBLoi/IUxzSC3XXmFqVKKzC6Vrzqd/+0ZWA5raE899ASRoUEUEXKzj28nNnd/7mv9T8D1mWAR4gdRQAVlA4IDoXAAAQVgCdASrwAH0APikQhkIhoQvcwwAMAUJSI7kHB7fTWbv9L/d/S4tX+A/rfGMVV51Hjn7P+gPa9/nPUN+oPYA/WL09f8z1Cf2v/p+oD+Zf3H9sfds/xn7je5D+n/7b2AP5L/mfWR/4vsCf1v/e///3AP5F/XfVi/5f7k/At+3v7pf+f5A/5l/YP+p+33//+QD0APUg/gH7wd0X/Pvwp/T3yu/xv4/frb5mPpn8z+Xn9g/yv9r6f7Pj+F5z96/AC/H/574Duzb1L/IegF6v/SP9//ffyA9I7Us8D/8v3AP5X/Rf+J6xf6zwffsf+Z9gD+M/0P/Wf3z91v9V9M/9J/z/9H50Pzb/I/+D/S/AJ/Jv6N/q/7x/mv/J/pP///+PvL9in7a+xD+pX31JifwILLEdtb24+uF4ChOehajpRiapFuzQhIMfykclHzdlp6Iarg/qUDd7U0W+kHS7pnNin5vJfEVbTju3awVIwQekgiMOwC0Klaf+KIxx0T7z5m6U8v7hXFduvJWAjGBSKHdbucWiICMyl5iXJahej2wQeeGCO5LPtVTZgrMYMzVvpHD8kPtU3LCx2VaYSkCmibsYnihnNo09KFyaqO64Y+Qi/QgEL5blAIExr7hF4IvcV1Jp8ONJP8IED5hcUfOTQzOZzGH/wam/0KTn77ALpembML+oqzhJMXsVGP/tl5gOIKQzk9N99svjvKdVpTNUtivmDcmj/pXGDKPokq6nl3YfvfLnyGotfBW6WgA4Jddtx6ZDHyjmfb8WlWDW5vzypA3j2WNSn8XYLE54sF4b3Kx0IC4kaKB0PtMKJhzl8BsgG+WOiT0w83Plh9KN+RBdw48GJtmhWeRgYjxZG98TVuaXgo2NaViftmrZ3PKtXrI1ni/v7KPPYi34eQ7rCWb/edCy7BLR7O4AD/Av9fUAAP71rOo/gfzhmC+hFqxMdWAWgRz5GYz9nRiwlP/4/UQn4315eE8N2f7e4hzNvjA3+kALcHISXsIDYtXEusxe0LvJhBfNyBbfgQMF0kgHUloHb4DeLKte9i637/G70rSW3nD5Ah2c8vMVFaISazKrET5CuxTEj3vkKvu466lpxdQuhqmLL0OOvRz7EDa3iaJqWy+NXH4vcJfz7+IMXT9v/nRTyt7+TZY/lvVnXc3e7u6JkxvrfaSm4MhH2oANrh+GYNJmqviORTTkMqthBZHsP4m4ryfLHibcFSRpzRJZrMpbTKzxKpu9t25OQZ5gRsf1BLL5eUCh2Bd84yQramUYkZz77sQkDUkpQzBW9EcTaKmX/xzLf9AEZPMq97QBS2p+TyIoHp0T9zXwi/EOxERHeNoF/u7AA3VVmVZn1Nsek5f9hGcjtoJlxoovEA4ggYEnCFE9ttoykp5HIhv0zS9fwDZDB6qfj/eyWg6v3MXHY+TOxgO3FBx22+RAjW9xOYbZkteK4g/bgGrB2l85uPi/XoxdRwODmNkc0r8q7cg4GLGf2Ht+gKD8D/ekcw2AzzO9zkI4GHMCJ4r8CcDhm+aa0+sT+EDLdd/DyXzAGejf58VikIuWcXrl7NPtwWmZgstwW2HbQyxBe/UBs4uAWUwmJNWNv0nldIDtIaKY8Xz4gAvhTQBvJWJMGmh/3THrR0DaodVtDjq9ysv9qSnKeDN2d+VWtCMrBCBD6qoEWcz2Ee/xsnyhe+Thb/kwOQnHgjYAvcj5Duhyd3jarcseQPszPVXnXvz+1VYXnAIQI9xJsOEDX7/WHheH+VM5fwJ4fj641ztew7LON9ZOt4fvNnq6ul27RB7GuS/sYxy2XL0e9anUNNierpLZo+i+4HtH1zFXez4YELgKwYRKuOg7izWITYXGKSaEfutPikqCMH4o1XXSeSKU2prUgxswslqFzfDkX0SJL6s/fFU2r5B/BLDv1Zj4SP5DDA10sJ2v+Hpi8sM0YjUyL3ERExYUCgOo1i9IN0vbsJD7i3baXDb+uCTsfnL1b4NmEpiiMCLCwXFnfdpE+Uc9A0r+1ChhSpawXnB9AxgspKk/W6ZKVDU2n/8MbbHHSJjqBvkfjoVDQpHt3cA113ZNGzm6FjysADt/DeMfiOEVpmDxYu0hzsfLKMz59UjCAcYzyJspdsTduKYo7NxSJaPqA8MZwSOEf93oNye3UhhtYrqpAyXrHv5O9qUbii+yGYP4ektZuI6oL+zV3mAG7pzlnG1+BCNSiSw5EnXmjZk9oPZWPeDl7Y68+gMJRIlX79IkBT5STNfYVKkMeJ8ElTloxHrScqAkcMcpT7TNWSNkiQxSlv9FNG2gb4sWZl3GdTO43yQ4EBBQ2pVCdG+KMHZ7qp/HI1yodDrSSO1AUUNsNL+pxsxU0mbuYMrnQ/j0rlaiZABrjLt+sPZriqS3HCnW3ChNVN7UT/EukS1USXG9qJvLmiyp6QNOEjLIIBcjOaVsyZBC9YQznSkAE2VYppVOqVIjw1QtUc0MqESAlzoBP5gQVzAGnW4CPqdMPmN8D/thWWzDrKpJStaWgf4Nrm+VoIxUI3h3xbT9NqToPs8LoBHIvQ7EsuvlxAbyHMLlLn7S5twl0/XMxNGX7FQ2Fs6G5XXkwNAw1ca5A2A50KYxfu6c4UFUYZgTLNpOJ0Pa8VqI8Pxv7HXML1npai7dqArnU8tZOoSfYBsb6futI7ZmpUNpvVh3MtrmSpe5sPcgM5F+J2ns2swtxKsiMIecYnpYIyHRVbvOezgFQKXU/n4A260Gh07hclze08R4vNS/PiO5pB+wgJu/ujTUDSJosmvRKD+KxhsodBjeUko4XknLfQJfhrN+pmOLxYj+zTwscA87V/QPTHkgSNKw10l+HV40yy46lUgUn020b6yuTixmYIsPqxmYzh1p9+z8IVrtcdB/OxKcC5xarcypImcw+FLpF1y1UKerHLqVGUvRFCBWMolqXgn4U6Tuqs43e7MguhHvEy4YfRShsgr3cC8ESGkSYK1fhuNKZwA/lOyTRT6yGLMYPZWiYdI23Qf/WqpuXpGve3gijSVBNpD5S/ZnwlTk+IoXW6RIwSjQwImt+UqaytOGst/jqAAPQU8X4ffx2XJetyf5tVd4hi2OFx0DrgrzFLxEyB21sJmv2pqboy2C4NqcMXsRRxKVx0gqxeOwVR7oSwIPbOA5PDNFg/JoUdt4mMEl0qdtR/TyIQMR/WOsdNZm6EoJY5epSf7IsFDBs7CQJQNHci+h2/VBol6oGs1gzATHhjt4PZX0Gp7M9sBMsSnk5hXcxYGdiNu+EhRPJePX7xj1oelDSebxTarC8SaSmt5iEEJxarIsDjCosKZhXZ0NigSPRYp72BW0afA1ZoKPMQ/5qpu43GUMnThSxeqPJLyk0w4XY8C8zPz4zEyxkwDRdk4OqQoRayZuGwVPOEASOwUpDguCHC0UDnXWefBW+ETl93EI/7yQu9UXcWRV9ie0ABPOOGOesCEGZ/qEn3JuC8nOFnJAdg7MX+s/mpGP/B0z3Y2r9I0PDyIj4/Fek1oT5TZhxUVpfU78eQ2WTVingsf9j1THNJeTUORBpaf4ozBqh7XqZaS1IHR9WeEFfKBhyoID0xazdME9GWb4+crcJ7UKcPQ7eK6A+mnC4i5m6ERdPWojALV4pVBEmtFjl5LccmSzcoJD8p4SpWZpRB80O/LoMDQJsFga4gTvlytC7YJ/blERiI7+V/ynxIUt6qPiI2dCXL5Tfkn5bW1ffm4lomuOfdkIuXWMbJ/0e79VT5Hy9ZFDdPrAys1fucUM21c8WukvNkQkUb50m2+K9lO8Cro8nAXJaZ/hiwNIrdrRnSPlnBjewzPoVtd9D/HzEJ1VsRJMI3QD3jUbKoTERDL5nJ0NJSGqo4dkggDbmQcQIckfI3nMKrWdFD+epmOZgnI7i+i39mtvsITVxNlnT1lz2OKpXDxTiLVQcfk4QPG1S4ajK1pJisOZkDi3dZPrysPm7bJOkOqZniXrNOz/t3n///9iFgDOf9LBQiSJBR6MpQeRi9qdqrm2uqtjsODr6IoClRHEFgo5uEFpfvEIdOGPATnvgindq1nF+bKAsFRnankTWVaEFONxEA+74JnfMbfRBBmF6RlexuXhXq8LgIHHIODONRmlM+EOUtSACr963f5WJzivS2KKXfJ79LcZrhR/iTCJV17fGKl7311XNzQxL3tC5HOcPYC4o9recGbIZk3C9+6gEdSzTRQl7yusCW9fHtEcWeEPVqkTX33JtH7Gy2DWEJO0pnwo+J7CUqMfdZ8RHd+GvAGQ9VkB4XaC2CpV7nUEAV/+JjzH/Bh6Yk631vggr2y6sL/xmuSp221Cs3XMft0HHAvFqSezpMnyVuMe+FHnjepPYZcBp7VV0n/au/Y5xC1bD5uBUbanOrmdOiU8h3Mj9Jq9hblB9x78OAhgId2HXRhWYKRKJtPJL3Xw5Iewfub2aQB6KspjpMcECZi3zY2uW0yg7Fft2zIT8YqCDIG/hMTk/JVlj/Nz++lWAs+ofAckU+rfzuGyv/pngb0vdLbkiU+jwBiKXFpbLMQ0kbJTveHOZd79v6QWz+dTcQYJTdN4GaeQi+KquJgU4wMTS6HgQSFo4sN79CKQUtDhT3tHcBu0+mPvOxkzLqDhlJOxzKsKJiutMhS2LrvjHSsRieXoSsxRdTsIwlmDgYxpd8ZETVXnTw+pwlKVA0l/N8qRdcziECy53BmF3GX+zF8BcDrCA6qmeOlTrt0a7xiSpRR2hIEgeAkgwE6uBtZYodeU0IU8wjkhCaoLHrnJLKXeBnMttk6Ra606phiRUNCnlQUVhdfB6VJbaL0cIP9U1lZjVwYjjWhHCUg5VOSnQrmxQE4wkwbIqIVdHrcQuO2NemZTaBf2TDS1X5gKnzpRN4ljIwQ2eVFo9COL8WwnVJTLYQbVVp800rxsHL7EYSYeEl7s7lRyZtjrmwlBrdUeUD9gypNoE3M4CPhSK85v/js1J+nFfymPxfAefHN6U5YkyJDrzarIzgEfdVJ1dJUmgAhyGW6iIe1X3dxIf75OfH9mG+AI+gDLZeaY3cFdx6Bwg+TBH36Ylbwut6Iw72W8xHj7Y6TewsZDWSaDQ0W6wKgqsbiRLv8JMosjBVDDLqiY/8ytvnaM3/pCsHca4+f2SUlX/kTycPgaTY7y+CiywSKgY9BvYMPYE//9L+A8BgB1ZQFM+XzRWIRKSVhrMNtWWZUabdVHBroirwz+BqlnghdCaSDVSI9DiHZyzB0EM3UvJTbgRzmHE4bEXO3KLz1bmvTOEls6WMWfiYLtXUy9ogiVdAZyHPUL2vQLRyUXVvIIwWM5801hnbxnMlFyobeLw9fF0mjz5e04O9CXiPlBMeJds2T1Ihf5fIxCJ1tDFaj5uxOjvXe53ZMmsamZZ38a2sOwTJfhWtHP/VHO67oUYB1cQfTB3brr8/GRmaVCm88whtMrRB35ReLvfOAnxqbI1EtRf40RRq8vp4v5wcNOBpTQ3By600nS1kWPUBF+c/V+WPl1s2I3WoZ06cq/fhFn8JRyvaRURfxF+4BqLz2jBE+F4LYddR5S8z+WniK/qWsTohmYA0zr/C8DxWinL/hq9rgq0UEj1DqCHfqm0YRLPJJvWbQsah4aKZxMDuhR19NkAvttwXvdUDaUvwx0RjJUlGv1JQubCeIDjGNWbOVNuOPaEj6SqtMYN75/vN28jvqPOH4MIkXQxch9wOWGEsZ4PPCbW35EZkwUvMnix7Li3jqCEiUzNTA3Te1EQWMG7JvGBlsQk3PsWvK6GeOoIX87GnUq9IsiJFI6J0l+8l0nRXaYFv4CNBMjng7uxKddwiE/joSJ9KH3ehbUnCiXy47WyokijPFj5e4fpFmpuCJYggXVNS84tFQ93QbUoGZLwRsmfLo7iBEmnr9sATJxLVXdl8XEBZxHkoE7RAaq+1DIphQDj71pmC1YJM525LGrtQKZ8gIkJKfvzU3ar9qoOngFi74FPz3oyOtZPH8Oyn/silMcP7ewQNEjwrsHBX6pI8Cndr2Yma+8VxF1WrzAxKQnVIPzGkxbsNexkcZfsoakAhphc58yhzdSxqMJVg/3Lx8TEgTSdx0rardXzNhC5uN7Q6YwkdQ20QOf9LP/1stwyy1AkPceHXxqF/mwivbvzSAcu2nGedzJZrTVJqECMQAdtJhs538vtZkWJ9MBSPIbWPz3pirfnx5ejay+rrrByQBJyCt9x2nWxRG4GnIA9q9+Q20E5/Raf3KVosKWV3uxlHl4G2NGsAQQbuADCdYd3hSXRN8N7L5BFeOlBIafuz0jx6OJ14fC04anyVC2YA/J/BgALaBkVjIROne6kqN1kz/qx/LqfEYisrZmdBSpkm7lmLMyfjSmTtwAZEF6a6p55E5BXyppfpU6s+9Dag6p8k7ioQYCz1P4dwO5jXUHR82HnLjSkwguxqwMq6Nsf6e6zG9nCD6lZBSzphc2XyE1/M22/mok6W7wnNq9XOK8cn5SAntm/2cwn1EdR8Jdz+oQR8hgS1o+QuLy4JfK33vPVhDUTwCcn4LjD5JdVAHgquR/G3NkUSfdgqYB9rUg3oy4ZYZ2rIJXfnLj0vGJ4+a/9/ca23Gk3mu47ZdWdMIVJMdBDgYsBSkAFh/9UZdYulte2m73NF43FV5rqkur72/r9nBVkHHNdEciNQiwvmUYWDdVNGYmhDmWFRcZBHNseZhpehNYHXyVIFCxO24x97cuic9Q+Va95pE2cd9Pu4dR5R+RZp8bPW9ku0jgaoUUl9IAK+yanz7AsB7VnbEcUqleX15NQf50yvql/h0Gf+Tmt5jWwjOj+WErAPoTeYb/Pp+POxgmf9GFyaW+7zC2YUwdKDiWqcFac9tKSlQTRqQgBnoNfYaZD3kpDHvFDNvXAnDyJd7QeKSwX1PjAAdDoExahKDa5j4X70Ru4C14d/56CF/masqfclV/JWuMzBs6mFRUnNjH+5d2iUfBgRBBruBHp1YaWlPWZ2Qz100nQuVxxbXAigOrg3m9aHDxTWYPhWFq3FIk3rkIHZ2iC73mnXCmYlv4q6WWF1E2pyc26T94ZBbvq+jIseeUiW/SneOalDHngWx/Zi1La6i60KltpGyDIb4YMftP/5rOuPL9IuXspnUG0aPg21DEm6jScXZFLXZGHFUNL1enW5rbgowehBRohjZxltXYE1lEdWw1QrirU4ubcMWY0hzZS4RrUNwinv9wxJKsXEr16hkdc5XjqsrgjvsQ8NZiUhwnxkvgTmxHTHfhT5575VpZjvxtmUOWcKWno+aBy61F2kdos8urkhNp9LcK1CcSCm2KbjgKzqfTqK4p+OHISFzifd1caQ3msnSk8duI/kg6CKLD2XN4sGOiz9VG7ryqN7tmeRSjhPLFFnNrleRcYqYCWW5kPquTvD1Fl7XlC4Rxd5rmGvVgQkGPNPUHUlnnm969Rsd+3Wi02l4j5Pz56CwwcRrHy1E4X542XuxAFnHGBeMOKMDamonRE0dLR+jBxtf/sSUAG7KI4jRKE2G3Mc7uiMe2SWjd23/YhA+gWon0v1VITAOugJAS+vFugL9p+6kXFgbm9rUqPjyVuj5YrfW/yxPN8PadfRsBUhV/5jS/U6RtV5AaPRN/fCrfJWPXql/BVJbH3cn75oFMoQGd2FFR0agwAT3Duvg8JbLpveNc//ppb5Aw07QdY+vQmT8WAAqoTVGtJKe13AWcQtQvCekiYQR1UYfPRoWNRiHD5KIuFiCVftI5aTXv4htvXg/I/a37fF3ch1f13ze7495iwX8HnNgpxISGE7gb+bnDz8x119aNAp/ZVOBo5B/WllQGqcDxh1hLVKhzi8iI+HqjPo04tmZ/naAlOCJAC4RPKru+QyuwkwXYJmEN75BW2OB3TFPRHAcSYrbSQig9G8v6cOO8ZNM6hRz3KuNex4dPio3c3jD4gLq5L114Njl2aPt7sh0N/FgQAAA=" alt="Rafa"></a>
-      <nav class="nav" aria-label="Navigation principale">
-        <a href="#fonctionnement">Comment ça marche</a>
-        <a href="#prix">Prix</a>
-        <a href="#pizzas">Pizzas</a>
-        <a class="cta" href="#disponibilites">Voir les disponibilités</a>
-      </nav>
-    </header>
-
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">Une expérience pizza, chez vous</p>
-        <h1>La pizza vient à vous.</h1>
-        <p class="lead">Rafa s’installe sur place, prépare les pizzas devant vos invités et les sert en continu. Vous choisissez la date; le menu vient ensuite, une fois l’événement confirmé.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#disponibilites">Voir les disponibilités</a>
-          <a class="button" href="#fonctionnement">Comprendre l’expérience</a>
-        </div>
-      </div>
-      <div class="hero-media">
-        <img src="FE0F2EED-EA4C-4039-A532-16A5FF633ED0.jpeg" alt="Rafa Pizza en service lors d'un événement">
-        <div class="hero-badge">Préparé sur place · servi en continu</div>
-      </div>
-    </section>
-
-    <section id="fonctionnement" class="section alt">
-      <div class="inner">
-        <div class="section-head">
-          <p class="section-kicker">Simple du début à la fin</p>
-          <h2 class="section-title">Comment ça fonctionne</h2>
-          <p class="section-copy">La réservation se fait dans un ordre clair. Vous n’avez pas besoin de décider de vos pizzas avant de savoir si votre date est confirmée.</p>
-        </div>
-        <div class="steps">
-          <article class="step">
-            <span class="step-number">01</span>
-            <h3>Choisissez une date</h3>
-            <p>Consultez les disponibilités réelles dans le calendrier.</p>
-          </article>
-          <article class="step">
-            <span class="step-number">02</span>
-            <h3>Envoyez votre demande</h3>
-            <p>Quelques informations suffisent : invités, heure, secteur et coordonnées.</p>
-          </article>
-          <article class="step">
-            <span class="step-number">03</span>
-            <h3>Composez votre menu</h3>
-            <p>Après confirmation, vous choisissez vos 4 créations Rafa. Le menu peut ensuite être ajusté avec nous.</p>
-          </article>
-          <article class="step">
-            <span class="step-number">04</span>
-            <h3>Profitez</h3>
-            <p>Rafa s’installe, cuisine et sert les pizzas tout au long de l’événement.</p>
-          </article>
-        </div>
-        <div class="process-note">Le menu n’est pas à choisir au moment de la demande. D’abord la date, ensuite la confirmation, puis vos 4 pizzas.</div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="inner">
-        <div class="section-head">
-          <p class="section-kicker">L’expérience Rafa</p>
-          <h2 class="section-title">Tout est pensé pour rester simple.</h2>
-          <p class="section-copy">Une formule conviviale, claire et organisée : les pizzas sortent au fur et à mesure et les invités se servent pendant l’événement.</p>
-        </div>
-        <div class="experience-grid">
-          <article class="experience-card">
-            <span>Votre menu</span>
-            <strong>4 créations au choix</strong>
-            <p>Vous les choisissez après la confirmation de votre événement.</p>
-          </article>
-          <article class="experience-card">
-            <span>Le format</span>
-            <strong>Pizzas 11 po</strong>
-            <p>Découpées et servies pour permettre à tout le monde de goûter.</p>
-          </article>
-          <article class="experience-card">
-            <span>Le service</span>
-            <strong>En continu</strong>
-            <p>Les pizzas sont préparées sur place tout au long du service.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="prix" class="section alt">
-      <div class="inner">
-        <div class="section-head">
-          <p class="section-kicker">Tarification transparente</p>
-          <h2 class="section-title">Estimez votre événement.</h2>
-          <p class="section-copy">Ajustez simplement le nombre d’invités. Vous voyez séparément le prix par personne et les frais de service et d’installation.</p>
-        </div>
-        <div class="estimator-card">
-          <strong class="guest-value"><span id="guestNumber">20</span> invités</strong>
-          <input id="guestSlider" class="price-slider" type="range" min="1" max="100" value="20" aria-label="Nombre d'invités">
-          <div class="slider-labels"><span>1</span><span>50</span><span>100 invités</span></div>
-          <div class="estimate-results">
-            <div class="estimate-box">
-              <span>Prix par personne</span>
-              <strong id="personPrice">—</strong>
-            </div>
-            <div class="estimate-box">
-              <span>Service & installation</span>
-              <strong id="eventFee">—</strong>
-            </div>
-          </div>
-          <div id="largeEventNote" class="large-event-note">Pour les groupes de plus de 50 invités, la tarification est adaptée au volume.</div>
-          <p class="estimate-note">Cette estimation sert à planifier votre événement. Les détails et le montant final sont confirmés avec vous avant l’événement.</p>
-          <div class="section-action"><a class="button primary" href="#disponibilites">Vérifier ma date</a></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="pizzas" class="section">
-      <div class="inner">
-        <div class="section-head">
-          <p class="section-kicker">Les créations Rafa</p>
-          <h2 class="section-title">Découvrez le menu.</h2>
-          <p class="section-copy">Parcourez les créations maintenant, sans avoir à faire votre choix tout de suite. Votre menu final de 4 pizzas sera composé après la confirmation de votre réservation.</p>
-        </div>
-        <div id="pizzaGrid" class="pizza-grid" aria-label="Galerie des pizzas Rafa"></div>
-        <div class="menu-note"><strong>Quand vais-je choisir?</strong> Une fois votre événement confirmé. Vous aurez alors le temps de choisir vos 4 créations et de discuter avec Rafa si vous souhaitez apporter un ajustement.</div>
-      </div>
-    </section>
-
-    <section id="disponibilites" class="section alt">
-      <div class="inner">
-        <div class="section-head">
-          <p class="section-kicker">Étape 1</p>
-          <h2 class="section-title">Votre date est-elle disponible?</h2>
-          <p class="section-copy">Cliquez sur une date disponible pour commencer votre demande. Une demande envoyée place la date en attente jusqu’à sa confirmation.</p>
-        </div>
-        <div class="calendar-card">
-          <div class="calendar-toolbar">
-            <button id="prevMonth" class="month-nav" type="button" aria-label="Mois précédent">‹</button>
-            <h3 id="monthTitle">Chargement…</h3>
-            <button id="nextMonth" class="month-nav" type="button" aria-label="Mois suivant">›</button>
-          </div>
-          <div class="weekdays" aria-hidden="true">
-            <div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mer</div><div class="weekday">Jeu</div><div class="weekday">Ven</div><div class="weekday">Sam</div><div class="weekday">Dim</div>
-          </div>
-          <div id="calendarGrid" class="calendar-grid"></div>
-          <div class="calendar-legend">
-            <span><i class="legend-dot available"></i>Disponible</span>
-            <span><i class="legend-dot booked"></i>Réservé / en attente</span>
-            <span><i class="legend-dot unavailable"></i>Indisponible</span>
-          </div>
-          <p class="calendar-help">Le calendrier est actuellement ouvert jusqu’au 30 novembre 2026.</p>
-          <div id="calendarError" class="calendar-error">Les disponibilités n’ont pas pu être chargées. Réessayez dans quelques instants.</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="final-cta">
-      <div>
-        <h2>Vous avez votre date?</h2>
-        <p>Sélectionnez-la dans le calendrier. La demande prend seulement quelques minutes.</p>
-      </div>
-      <a class="button" href="#disponibilites">Voir le calendrier</a>
-    </section>
-
-    <footer class="footer">Rafa Pizza · Les disponibilités sont mises à jour au fil des demandes et réservations.</footer>
-  </main>
-
-  <div id="imageViewer" class="viewer" role="dialog" aria-modal="true" aria-label="Photo de pizza">
-    <button id="viewerClose" class="viewer-close" type="button" aria-label="Fermer">×</button>
-    <img id="viewerImg" alt="">
-    <div id="viewerCaption" class="viewer-caption"></div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = "https://jetogsbyptglaihktdel.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
-    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    const BOOKING_START = new Date(2026, 8, 1);
-    const BOOKING_END = new Date(2026, 10, 30);
-    const MONTHS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
-    const PIZZA_NAMES = ["Margherita","’Nduja e miel","New York","Parma","Golosa","Cipolla","Quattro","Fungus","Figus","Montréal","Jardin","Mortadella"];
-
-    const pizzaFile = name => ({
-      "’Nduja e miel":"nduja-e-miel",
-      "New York":"new-york",
-      "Montréal":"montreal"
-    }[name] || name.toLowerCase());
-
-    const PIZZAS = PIZZA_NAMES.map(name => ({
-      name,
-      img:`pizzas/${pizzaFile(name)}-hd.jpg?v=9`
-    }));
-
-    const $ = id => document.getElementById(id);
-
-    function renderPizzas(){
-      const grid = $("pizzaGrid");
-      grid.innerHTML = "";
-      PIZZAS.forEach(pizza => {
-        const card = document.createElement("article");
-        card.className = "pizza-card";
-        card.tabIndex = 0;
-        card.setAttribute("role","button");
-        card.setAttribute("aria-label",`Agrandir ${pizza.name}`);
-        card.innerHTML = `
-          <img src="${pizza.img}" alt="Pizza ${pizza.name}" loading="lazy">
-          <div class="pizza-card-body">
-            <span class="pizza-name">${pizza.name}</span>
-            <span class="pizza-view">Voir</span>
-          </div>`;
-        card.addEventListener("click",() => openViewer(pizza));
-        card.addEventListener("keydown",event => {
-          if(event.key === "Enter" || event.key === " "){
-            event.preventDefault();
-            openViewer(pizza);
-          }
-        });
-        grid.appendChild(card);
-      });
-    }
-
-    const viewer = $("imageViewer");
-    const viewerImg = $("viewerImg");
-    const viewerCaption = $("viewerCaption");
-
-    function openViewer(pizza){
-      viewerImg.src = pizza.img;
-      viewerImg.alt = `Pizza ${pizza.name}`;
-      viewerCaption.textContent = pizza.name;
-      viewer.classList.add("open");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeViewer(){
-      viewer.classList.remove("open");
-      document.body.style.overflow = "";
-    }
-
-    $("viewerClose").addEventListener("click",closeViewer);
-    viewer.addEventListener("click",event => {
-      if(event.target === viewer) closeViewer();
-    });
-    document.addEventListener("keydown",event => {
-      if(event.key === "Escape" && viewer.classList.contains("open")) closeViewer();
-    });
-
-    function calculateEventPrice(guests){
-      guests = Number(guests);
-      let pricePerPerson, fixedFee;
-      if(guests <= 10){ pricePerPerson = 29; fixedFee = 175; }
-      else if(guests <= 15){ pricePerPerson = 27; fixedFee = 200; }
-      else if(guests <= 20){ pricePerPerson = 25; fixedFee = 250; }
-      else if(guests <= 25){ pricePerPerson = 23; fixedFee = 300; }
-      else if(guests <= 30){ pricePerPerson = 22; fixedFee = 350; }
-      else if(guests <= 40){ pricePerPerson = 21; fixedFee = 400; }
-      else if(guests <= 50){ pricePerPerson = 20; fixedFee = 500; }
-      else if(guests <= 75){ pricePerPerson = 19; fixedFee = 600; }
-      else { pricePerPerson = 18; fixedFee = 750; }
-      return {pricePerPerson,fixedFee};
-    }
-
-    function updateEstimator(){
-      const guests = Number($("guestSlider").value);
-      const pricing = calculateEventPrice(guests);
-      $("guestNumber").textContent = guests;
-      $("personPrice").textContent = `${pricing.pricePerPerson} $`;
-      $("eventFee").textContent = `${pricing.fixedFee} $`;
-      $("largeEventNote").classList.toggle("show",guests > 50);
-    }
-
-    $("guestSlider").addEventListener("input",updateEstimator);
-    updateEstimator();
-
-    let blockedDates = new Map();
-    let viewDate = startViewDate();
-
-    function startViewDate(){
-      const now = new Date();
-      const current = new Date(now.getFullYear(),now.getMonth(),1);
-      if(current < BOOKING_START) return new Date(BOOKING_START);
-      if(current > BOOKING_END) return new Date(BOOKING_END.getFullYear(),BOOKING_END.getMonth(),1);
-      return current;
-    }
-
-    function localDateOnly(){
-      const now = new Date();
-      return new Date(now.getFullYear(),now.getMonth(),now.getDate());
-    }
-
-    function dateKey(year,month,day){
-      return `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-    }
-
-    function mondayIndex(jsDay){
-      return (jsDay + 6) % 7;
-    }
-
-    function sameOrBeforeMonth(a,b){
-      return a.getFullYear() < b.getFullYear() ||
-        (a.getFullYear() === b.getFullYear() && a.getMonth() <= b.getMonth());
-    }
-
-    function sameOrAfterMonth(a,b){
-      return a.getFullYear() > b.getFullYear() ||
-        (a.getFullYear() === b.getFullYear() && a.getMonth() >= b.getMonth());
-    }
-
-    function renderCalendar(){
-      const year = viewDate.getFullYear();
-      const month = viewDate.getMonth();
-      $("monthTitle").textContent = `${MONTHS[month]} ${year}`;
-      $("prevMonth").disabled = sameOrBeforeMonth(viewDate,BOOKING_START);
-      $("nextMonth").disabled = sameOrAfterMonth(viewDate,new Date(BOOKING_END.getFullYear(),BOOKING_END.getMonth(),1));
-
-      const grid = $("calendarGrid");
-      grid.innerHTML = "";
-      const firstDay = new Date(year,month,1);
-      const daysInMonth = new Date(year,month+1,0).getDate();
-      const today = localDateOnly();
-
-      for(let i=0;i<mondayIndex(firstDay.getDay());i++){
-        const empty = document.createElement("div");
-        empty.className = "day empty";
-        grid.appendChild(empty);
-      }
-
-      for(let day=1;day<=daysInMonth;day++){
-        const date = new Date(year,month,day);
-        const key = dateKey(year,month,day);
-        const afterBookingEnd = date > BOOKING_END;
-        const beforeBookingStart = date < BOOKING_START;
-        const isPast = date < today;
-        const stored = blockedDates.get(key);
-
-        let status;
-        if(beforeBookingStart || afterBookingEnd || isPast) status = "past";
-        else if(stored === "booked") status = "booked";
-        else if(stored === "unavailable") status = "unavailable";
-        else status = "available";
-
-        const el = document.createElement(status === "available" ? "a" : "div");
-        el.className = `day ${status}`;
-        el.innerHTML = `<div class="num">${day}</div><div class="status">${
-          status === "available" ? "Disponible" :
-          status === "booked" ? "Réservé" :
-          status === "unavailable" ? "Indisponible" : "Passé"
-        }</div>`;
-
-        if(status === "available"){
-          el.href = `./reserve.html?date=${encodeURIComponent(key)}`;
-          el.setAttribute("aria-label",`${day} ${MONTHS[month]} ${year}, disponible`);
-        }
-        grid.appendChild(el);
-      }
-    }
-
-    $("prevMonth").addEventListener("click",() => {
-      const candidate = new Date(viewDate.getFullYear(),viewDate.getMonth()-1,1);
-      if(!sameOrBeforeMonth(candidate,new Date(BOOKING_START.getFullYear(),BOOKING_START.getMonth()-1,1))){
-        viewDate = candidate;
-        renderCalendar();
-      }
-    });
-
-    $("nextMonth").addEventListener("click",() => {
-      const candidate = new Date(viewDate.getFullYear(),viewDate.getMonth()+1,1);
-      const endMonth = new Date(BOOKING_END.getFullYear(),BOOKING_END.getMonth(),1);
-      if(sameOrBeforeMonth(candidate,endMonth)){
-        viewDate = candidate;
-        renderCalendar();
-      }
-    });
-
-    async function loadCalendar(){
-      $("calendarError").classList.remove("show");
-      try{
-        const {data,error} = await db.rpc("get_calendar_blocks");
-        if(error) throw error;
-        blockedDates = new Map((data || []).map(row => [row.event_date,row.display_status]));
-      }catch(error){
-        console.error("Calendar load failed",error);
-        $("calendarError").classList.add("show");
-      }
-      renderCalendar();
-    }
-
-    renderPizzas();
-    loadCalendar();
-  </script>
+<main class="site">
+<header class="site-header">
+<a class="brand" href="./index.html" aria-label="Rafa Pizza, accueil">
+<span class="brand-mark"><img src="assets/rafa-logo-officiel.png" alt="Rafa"></span>
+<span class="brand-copy"><strong>Pizza à domicile</strong><span>Événements</span></span>
+</a>
+<nav class="nav" aria-label="Navigation principale">
+<a href="#fonctionnement">Comment ça marche</a>
+<a href="#prix">Prix</a>
+<a href="#pizzas">Pizzas</a>
+<a class="cta" href="#disponibilites">Voir les disponibilités</a>
+</nav>
+</header>
+<section class="hero">
+<div class="hero-copy">
+<p class="eyebrow">Une expérience pizza, chez vous</p>
+<h1>La pizza vient à vous.</h1>
+<p class="lead">Rafa s’installe sur place, prépare les pizzas devant vos invités et les sert en continu. Vous choisissez la date; le menu vient ensuite, une fois l’événement confirmé.</p>
+<div class="hero-actions">
+<a class="button primary" href="#disponibilites">Voir les disponibilités</a>
+<a class="button" href="#fonctionnement">Comprendre l’expérience</a>
+</div>
+</div>
+<div class="hero-media">
+<img src="FE0F2EED-EA4C-4039-A532-16A5FF633ED0.jpeg" alt="Rafa Pizza en service lors d'un événement">
+<div class="hero-badge">Préparé sur place · servi en continu</div>
+</div>
+</section>
+<section id="fonctionnement" class="section alt">
+<div class="inner">
+<div class="section-head">
+<p class="section-kicker">Simple du début à la fin</p>
+<h2 class="section-title">Comment ça fonctionne</h2>
+<p class="section-copy">La réservation se fait dans un ordre clair. Vous n’avez pas besoin de décider de vos pizzas avant de savoir si votre date est confirmée.</p>
+</div>
+<div class="steps">
+<article class="step">
+<span class="step-number">01</span>
+<h3>Choisissez une date</h3>
+<p>Consultez les disponibilités réelles dans le calendrier.</p>
+</article>
+<article class="step">
+<span class="step-number">02</span>
+<h3>Envoyez votre demande</h3>
+<p>Quelques informations suffisent : invités, heure, secteur et coordonnées.</p>
+</article>
+<article class="step">
+<span class="step-number">03</span>
+<h3>Composez votre menu</h3>
+<p>Après confirmation, vous choisissez vos 4 créations Rafa. Le menu peut ensuite être ajusté avec nous.</p>
+</article>
+<article class="step">
+<span class="step-number">04</span>
+<h3>Profitez</h3>
+<p>Rafa s’installe, cuisine et sert les pizzas tout au long de l’événement.</p>
+</article>
+</div>
+<div class="process-note">Le menu n’est pas à choisir au moment de la demande. D’abord la date, ensuite la confirmation, puis vos 4 pizzas.</div>
+</div>
+</section>
+<section class="section">
+<div class="inner">
+<div class="section-head">
+<p class="section-kicker">L’expérience Rafa</p>
+<h2 class="section-title">Tout est pensé pour rester simple.</h2>
+<p class="section-copy">Une formule conviviale, claire et organisée : les pizzas sortent au fur et à mesure et les invités se servent pendant l’événement.</p>
+</div>
+<div class="experience-grid">
+<article class="experience-card">
+<span>Votre menu</span>
+<strong>4 créations au choix</strong>
+<p>Vous les choisissez après la confirmation de votre événement.</p>
+</article>
+<article class="experience-card">
+<span>Le format</span>
+<strong>Pizzas 11 po</strong>
+<p>Découpées et servies pour permettre à tout le monde de goûter.</p>
+</article>
+<article class="experience-card">
+<span>Le service</span>
+<strong>En continu</strong>
+<p>Les pizzas sont préparées sur place tout au long du service.</p>
+</article>
+</div>
+</div>
+</section>
+<section id="prix" class="section alt">
+<div class="inner">
+<div class="section-head">
+<p class="section-kicker">Tarification transparente</p>
+<h2 class="section-title">Estimez votre événement.</h2>
+<p class="section-copy">Ajustez simplement le nombre d’invités. Vous voyez séparément le prix par personne et les frais de service et d’installation.</p>
+</div>
+<div class="estimator-card">
+<strong class="guest-value"><span id="guestNumber">20</span> invités</strong>
+<input id="guestSlider" class="price-slider" type="range" min="1" max="100" value="20" aria-label="Nombre d'invités">
+<div class="slider-labels"><span>1</span><span>50</span><span>100 invités</span></div>
+<div class="estimate-results">
+<div class="estimate-box">
+<span>Prix par personne</span>
+<strong id="personPrice">—</strong>
+</div>
+<div class="estimate-box">
+<span>Service & installation</span>
+<strong id="eventFee">—</strong>
+</div>
+</div>
+<div id="largeEventNote" class="large-event-note">Pour les groupes de plus de 50 invités, la tarification est adaptée au volume.</div>
+<p class="estimate-note">Cette estimation sert à planifier votre événement. Les détails et le montant final sont confirmés avec vous avant l’événement.</p>
+<div class="section-action"><a class="button primary" href="#disponibilites">Vérifier ma date</a></div>
+</div>
+</div>
+</section>
+<section id="pizzas" class="section">
+<div class="inner">
+<div class="section-head">
+<p class="section-kicker">Les créations Rafa</p>
+<h2 class="section-title">Découvrez le menu.</h2>
+<p class="section-copy">Parcourez les créations maintenant, sans avoir à faire votre choix tout de suite. Votre menu final de 4 pizzas sera composé après la confirmation de votre réservation.</p>
+</div>
+<div id="pizzaGrid" class="pizza-grid" aria-label="Galerie des pizzas Rafa"></div>
+<div class="menu-note"><strong>Quand vais-je choisir?</strong> Une fois votre événement confirmé. Vous aurez alors le temps de choisir vos 4 créations et de discuter avec Rafa si vous souhaitez apporter un ajustement.</div>
+</div>
+</section>
+<section id="disponibilites" class="section alt">
+<div class="inner">
+<div class="section-head">
+<p class="section-kicker">Étape 1</p>
+<h2 class="section-title">Votre date est-elle disponible?</h2>
+<p class="section-copy">Cliquez sur une date disponible pour commencer votre demande. Une demande envoyée place la date en attente jusqu’à sa confirmation.</p>
+</div>
+<div class="calendar-card">
+<div class="calendar-toolbar">
+<button id="prevMonth" class="month-nav" type="button" aria-label="Mois précédent">‹</button>
+<h3 id="monthTitle">Chargement…</h3>
+<button id="nextMonth" class="month-nav" type="button" aria-label="Mois suivant">›</button>
+</div>
+<div class="weekdays" aria-hidden="true">
+<div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mer</div><div class="weekday">Jeu</div><div class="weekday">Ven</div><div class="weekday">Sam</div><div class="weekday">Dim</div>
+</div>
+<div id="calendarGrid" class="calendar-grid"></div>
+<div class="calendar-legend">
+<span><i class="legend-dot available"></i>Disponible</span>
+<span><i class="legend-dot booked"></i>Réservé / en attente</span>
+<span><i class="legend-dot unavailable"></i>Indisponible</span>
+</div>
+<p class="calendar-help">Le calendrier est actuellement ouvert jusqu’au 30 novembre 2026.</p>
+<div id="calendarError" class="calendar-error">Les disponibilités n’ont pas pu être chargées. Réessayez dans quelques instants.</div>
+</div>
+</div>
+</section>
+<section class="final-cta">
+<div>
+<h2>Vous avez votre date?</h2>
+<p>Sélectionnez-la dans le calendrier. La demande prend seulement quelques minutes.</p>
+</div>
+<a class="button" href="#disponibilites">Voir le calendrier</a>
+</section>
+<footer class="footer">Rafa Pizza · Les disponibilités sont mises à jour au fil des demandes et réservations.</footer>
+</main>
+<div id="imageViewer" class="viewer" role="dialog" aria-modal="true" aria-label="Photo de pizza">
+<button id="viewerClose" class="viewer-close" type="button" aria-label="Fermer">×</button>
+<img id="viewerImg" alt="">
+<div id="viewerCaption" class="viewer-caption"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://jetogsbyptglaihktdel.supabase.co";
+const SUPABASE_KEY = "sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const BOOKING_START = new Date(2026, 8, 1);
+const BOOKING_END = new Date(2026, 10, 30);
+const MONTHS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+const PIZZA_NAMES = ["Margherita","’Nduja e miel","New York","Parma","Golosa","Cipolla","Quattro","Fungus","Figus","Montréal","Jardin","Mortadella"];
+const pizzaFile = name => ({
+"’Nduja e miel":"nduja-e-miel",
+"New York":"new-york",
+"Montréal":"montreal"
+}[name] || name.toLowerCase());
+const PIZZAS = PIZZA_NAMES.map(name => ({
+name,
+img:`pizzas/${pizzaFile(name)}-hd.jpg?v=9`
+}));
+const $ = id => document.getElementById(id);
+function renderPizzas(){
+const grid = $("pizzaGrid");
+grid.innerHTML = "";
+PIZZAS.forEach(pizza => {
+const card = document.createElement("article");
+card.className = "pizza-card";
+card.tabIndex = 0;
+card.setAttribute("role","button");
+card.setAttribute("aria-label",`Agrandir ${pizza.name}`);
+card.innerHTML = `
+<img src="${pizza.img}" alt="Pizza ${pizza.name}" loading="lazy">
+<div class="pizza-card-body">
+<span class="pizza-name">${pizza.name}</span>
+<span class="pizza-view">Voir</span>
+</div>`;
+card.addEventListener("click",() => openViewer(pizza));
+card.addEventListener("keydown",event => {
+if(event.key === "Enter" || event.key === " "){
+event.preventDefault();
+openViewer(pizza);
+}
+});
+grid.appendChild(card);
+});
+}
+const viewer = $("imageViewer");
+const viewerImg = $("viewerImg");
+const viewerCaption = $("viewerCaption");
+function openViewer(pizza){
+viewerImg.src = pizza.img;
+viewerImg.alt = `Pizza ${pizza.name}`;
+viewerCaption.textContent = pizza.name;
+viewer.classList.add("open");
+document.body.style.overflow = "hidden";
+}
+function closeViewer(){
+viewer.classList.remove("open");
+document.body.style.overflow = "";
+}
+$("viewerClose").addEventListener("click",closeViewer);
+viewer.addEventListener("click",event => {
+if(event.target === viewer) closeViewer();
+});
+document.addEventListener("keydown",event => {
+if(event.key === "Escape" && viewer.classList.contains("open")) closeViewer();
+});
+function calculateEventPrice(guests){
+guests = Number(guests);
+let pricePerPerson, fixedFee;
+if(guests <= 10){ pricePerPerson = 29; fixedFee = 175; }
+else if(guests <= 15){ pricePerPerson = 27; fixedFee = 200; }
+else if(guests <= 20){ pricePerPerson = 25; fixedFee = 250; }
+else if(guests <= 25){ pricePerPerson = 23; fixedFee = 300; }
+else if(guests <= 30){ pricePerPerson = 22; fixedFee = 350; }
+else if(guests <= 40){ pricePerPerson = 21; fixedFee = 400; }
+else if(guests <= 50){ pricePerPerson = 20; fixedFee = 500; }
+else if(guests <= 75){ pricePerPerson = 19; fixedFee = 600; }
+else { pricePerPerson = 18; fixedFee = 750; }
+return {pricePerPerson,fixedFee};
+}
+function updateEstimator(){
+const guests = Number($("guestSlider").value);
+const pricing = calculateEventPrice(guests);
+$("guestNumber").textContent = guests;
+$("personPrice").textContent = `${pricing.pricePerPerson} $`;
+$("eventFee").textContent = `${pricing.fixedFee} $`;
+$("largeEventNote").classList.toggle("show",guests > 50);
+}
+$("guestSlider").addEventListener("input",updateEstimator);
+updateEstimator();
+let blockedDates = new Map();
+let viewDate = startViewDate();
+function startViewDate(){
+const now = new Date();
+const current = new Date(now.getFullYear(),now.getMonth(),1);
+if(current < BOOKING_START) return new Date(BOOKING_START);
+if(current > BOOKING_END) return new Date(BOOKING_END.getFullYear(),BOOKING_END.getMonth(),1);
+return current;
+}
+function localDateOnly(){
+const now = new Date();
+return new Date(now.getFullYear(),now.getMonth(),now.getDate());
+}
+function dateKey(year,month,day){
+return `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+}
+function mondayIndex(jsDay){
+return (jsDay + 6) % 7;
+}
+function sameOrBeforeMonth(a,b){
+return a.getFullYear() < b.getFullYear() ||
+(a.getFullYear() === b.getFullYear() && a.getMonth() <= b.getMonth());
+}
+function sameOrAfterMonth(a,b){
+return a.getFullYear() > b.getFullYear() ||
+(a.getFullYear() === b.getFullYear() && a.getMonth() >= b.getMonth());
+}
+function renderCalendar(){
+const year = viewDate.getFullYear();
+const month = viewDate.getMonth();
+$("monthTitle").textContent = `${MONTHS[month]} ${year}`;
+$("prevMonth").disabled = sameOrBeforeMonth(viewDate,BOOKING_START);
+$("nextMonth").disabled = sameOrAfterMonth(viewDate,new Date(BOOKING_END.getFullYear(),BOOKING_END.getMonth(),1));
+const grid = $("calendarGrid");
+grid.innerHTML = "";
+const firstDay = new Date(year,month,1);
+const daysInMonth = new Date(year,month+1,0).getDate();
+const today = localDateOnly();
+for(let i=0;i<mondayIndex(firstDay.getDay());i++){
+const empty = document.createElement("div");
+empty.className = "day empty";
+grid.appendChild(empty);
+}
+for(let day=1;day<=daysInMonth;day++){
+const date = new Date(year,month,day);
+const key = dateKey(year,month,day);
+const afterBookingEnd = date > BOOKING_END;
+const beforeBookingStart = date < BOOKING_START;
+const isPast = date < today;
+const stored = blockedDates.get(key);
+let status;
+if(beforeBookingStart || afterBookingEnd || isPast) status = "past";
+else if(stored === "booked") status = "booked";
+else if(stored === "unavailable") status = "unavailable";
+else status = "available";
+const el = document.createElement(status === "available" ? "a" : "div");
+el.className = `day ${status}`;
+el.innerHTML = `<div class="num">${day}</div><div class="status">${
+status === "available" ? "Disponible" :
+status === "booked" ? "Réservé" :
+status === "unavailable" ? "Indisponible" : "Passé"
+}</div>`;
+if(status === "available"){
+el.href = `./reserve.html?date=${encodeURIComponent(key)}`;
+el.setAttribute("aria-label",`${day} ${MONTHS[month]} ${year}, disponible`);
+}
+grid.appendChild(el);
+}
+}
+$("prevMonth").addEventListener("click",() => {
+const candidate = new Date(viewDate.getFullYear(),viewDate.getMonth()-1,1);
+if(!sameOrBeforeMonth(candidate,new Date(BOOKING_START.getFullYear(),BOOKING_START.getMonth()-1,1))){
+viewDate = candidate;
+renderCalendar();
+}
+});
+$("nextMonth").addEventListener("click",() => {
+const candidate = new Date(viewDate.getFullYear(),viewDate.getMonth()+1,1);
+const endMonth = new Date(BOOKING_END.getFullYear(),BOOKING_END.getMonth(),1);
+if(sameOrBeforeMonth(candidate,endMonth)){
+viewDate = candidate;
+renderCalendar();
+}
+});
+async function loadCalendar(){
+$("calendarError").classList.remove("show");
+try{
+const {data,error} = await db.rpc("get_calendar_blocks");
+if(error) throw error;
+blockedDates = new Map((data || []).map(row => [row.event_date,row.display_status]));
+}catch(error){
+console.error("Calendar load failed",error);
+$("calendarError").classList.add("show");
+}
+renderCalendar();
+}
+renderPizzas();
+loadCalendar();
+</script>
 </body>
 </html>
