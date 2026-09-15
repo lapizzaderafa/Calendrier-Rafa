@@ -1,0 +1,112 @@
+name: Apply Rafa brand typography v2
+
+on:
+  push:
+    branches:
+      - rafa-brand-typography-logo-20260915
+    paths:
+      - .github/workflows/apply-rafa-brand-v2.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-brand:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: rafa-brand-typography-logo-20260915
+
+      - name: Apply visual identity only
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          helper = Path('.github/workflows/apply-rafa-brand.yml').read_text(encoding='utf-8')
+          m = re.search(r'LOGO_B64 = """(.*?)"""', helper, re.S)
+          if not m:
+              raise SystemExit('Logo payload not found')
+          logo_uri = 'data:image/webp;base64,' + m.group(1).strip()
+
+          font_links = '''<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">'''
+
+          index_overrides = '''<style id="rafa-brand-refresh">
+body{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
+h1,h2{font-family:"Kalam","Segoe Print","Bradley Hand",cursive!important;font-weight:700!important}
+h3{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;font-weight:800!important}
+.hero h1{line-height:1.03!important;letter-spacing:-.02em!important}
+.section-title{line-height:1.05!important;letter-spacing:-.012em!important}
+.experience-card strong,.guest-value,.estimate-box strong,.pizza-name{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;font-weight:800!important}
+.brand{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:0!important;width:132px;height:54px;padding:7px 14px;background:var(--wine);border-radius:16px;box-shadow:0 7px 18px rgba(91,31,42,.13);text-decoration:none;flex:0 0 auto}
+.brand-logo{display:block;width:100%;height:100%;object-fit:contain}
+@media(max-width:720px){.brand{width:108px;height:45px;padding:6px 11px;border-radius:14px}.site-header{padding-top:12px!important;padding-bottom:12px!important}}
+</style>'''
+
+          reserve_overrides = '''<style id="rafa-brand-refresh">
+body{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important}
+h1,h2{font-family:"Kalam","Segoe Print","Bradley Hand",cursive!important;font-weight:700!important}
+h3{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;font-weight:800!important}
+h1{line-height:1.05!important;letter-spacing:-.015em!important}
+.date-card strong,.timeline-step strong{font-family:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;font-weight:800!important}
+.brand{display:flex!important;align-items:center!important;justify-content:center!important;width:118px;height:49px;padding:6px 12px;background:var(--wine);border-radius:15px;box-shadow:0 7px 18px rgba(91,31,42,.13);text-decoration:none;flex:0 0 auto}
+.brand-logo{display:block;width:100%;height:100%;object-fit:contain}
+@media(max-width:650px){.brand{width:102px;height:42px;padding:5px 10px;border-radius:13px}.top{padding-top:13px!important;padding-bottom:13px!important}}
+</style>'''
+
+          def apply(path, overrides, reserve=False):
+              p = Path(path)
+              t = p.read_text(encoding='utf-8')
+              if 'id="rafa-brand-refresh"' in t:
+                  raise SystemExit(f'Brand refresh already present in {path}')
+              pattern = r'<a class="brand" href="\./index\.html"[^>]*>.*?</a>'
+              replacement = f'<a class="brand" href="./index.html" aria-label="Rafa Pizza, accueil"><img class="brand-logo" src="{logo_uri}" alt="Rafa"></a>'
+              t, n = re.subn(pattern, replacement, t, count=1, flags=re.S)
+              if n != 1:
+                  raise SystemExit(f'Brand header not found in {path}')
+              t = t.replace('</head>', font_links + '\n' + overrides + '\n</head>', 1)
+              p.write_text(t, encoding='utf-8')
+
+          apply('index.html', index_overrides)
+          apply('reserve.html', reserve_overrides, True)
+          PY
+
+      - name: Validate pages
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, subprocess
+          for name in ('index.html','reserve.html'):
+              text=Path(name).read_text(encoding='utf-8')
+              assert text.count('id="rafa-brand-refresh"') == 1
+              assert text.count('class="brand-logo"') == 1
+              assert 'family=Kalam' in text and 'family=Manrope' in text
+              assert 'data:image/webp;base64,' in text
+              ids=re.findall(r'\bid="([^"]+)"',text)
+              assert len(ids)==len(set(ids)),f'duplicate id in {name}'
+              scripts=re.findall(r'<script>(.*?)</script>',text,re.S)
+              js='\n'.join(scripts)
+              tmp=Path('/tmp')/(name+'.js')
+              tmp.write_text(js,encoding='utf-8')
+              subprocess.run(['node','--check',str(tmp)],check=True)
+          index=Path('index.html').read_text(encoding='utf-8')
+          reserve=Path('reserve.html').read_text(encoding='utf-8')
+          assert './reserve.html?date=' in index
+          assert 'create_reservation' in reserve
+          assert 'get_calendar_blocks' in index and 'get_calendar_blocks' in reserve
+          PY
+
+      - name: Commit clean brand update
+        shell: bash
+        run: |
+          git config user.name "Rafa site automation"
+          git config user.email "actions@users.noreply.github.com"
+          git rm .github/workflows/apply-rafa-brand.yml .github/workflows/apply-rafa-brand-v2.yml
+          git add index.html reserve.html
+          git commit -m "Harmonise la typographie et intègre le logo officiel Rafa"
+          git push origin HEAD:rafa-brand-typography-logo-20260915
