@@ -1,1 +1,506 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rafa Pizza — Réservation</title><style>:root{--cream:#F6F0E7;--cream2:#FBF8F3;--wine:#5B1F2A;--wine2:#7A2D3C;--ink:#2B2524;--muted:#8A7D77;--line:rgba(91,31,42,.16)}*{box-sizing:border-box}body{margin:0;padding:12px;background:transparent;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink)}.shell{max-width:760px;margin:auto;background:var(--cream);border:1px solid var(--line);border-radius:28px;overflow:hidden}.top,.date-section,.form-wrap{padding:26px 30px}.top,.date-section{border-bottom:1px solid var(--line)}.date-section{background:var(--cream2)}h1,h2,h3{font-family:Georgia,serif;color:var(--wine);font-weight:500}.main-title{margin:0}.back,.menu-link{color:var(--wine2);font-size:11px;font-weight:800;text-decoration:none}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}.field{display:flex;flex-direction:column;gap:6px}.full,.menu-box{grid-column:1/-1}label{color:var(--wine);font-size:11px;font-weight:800}input,textarea,select{width:100%;border:1px solid var(--line);background:rgba(255,255,255,.62);border-radius:13px;padding:12px 13px;font-size:14px}textarea{min-height:100px}.menu-box{padding:17px;border:1px solid var(--line);border-radius:17px;background:var(--cream2)}.pizza-selects{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pizza-slot{display:flex;flex-direction:column;gap:6px}.custom-pizza{display:none}.custom-pizza.show{display:block}.submit,.home{margin-top:22px;width:100%;border:0;border-radius:999px;padding:14px 18px;background:var(--wine);color:white;font-weight:800}.message{display:none;margin-top:14px}.message.error{display:block;color:#8B3342}.confirmation{display:none;padding:40px 30px;text-align:center}.confirmation.show{display:block}.hidden-bot{position:absolute;left:-9999px}@media(max-width:650px){body{padding:4px}.shell{border-radius:20px}.top,.date-section,.form-wrap{padding-left:18px;padding-right:18px}.form-grid,.pizza-selects{grid-template-columns:1fr}.full,.menu-box{grid-column:auto}}</style></head><body><div class="shell"><div id="bookingPage"><div class="top"><h1 class="main-title">Rafa Pizza · Réservation</h1><a class="back" href="./index.html">← Retour au calendrier</a></div><section class="date-section"><h2 id="dateTitle">Chargement…</h2><p>Remplissez votre demande de réservation.</p></section><div class="form-wrap"><form id="reservationForm"><div class="hidden-bot"><input id="website"></div><div class="form-grid"><div class="field"><label>Nom complet *</label><input id="fullName" required></div><div class="field"><label>Courriel *</label><input id="email" type="email" required></div><div class="field"><label>Téléphone *</label><input id="phone" required></div><div class="field"><label>Nombre de personnes *</label><input id="guestCount" type="number" min="1" max="100" required></div><div class="field"><label>Ville / secteur *</label><input id="city" required></div><div class="field"><label>Heure souhaitée *</label><input id="preferredTime" type="time" required></div><section class="menu-box"><h3>Votre menu · 4 pizzas</h3><p>Choisissez simplement 4 sortes. Vous pourrez toujours ajuster votre menu avec Rafa par la suite.</p><a class="menu-link" href="./index.html#pizzas">Voir les photos →</a><div id="pizzaSelects" class="pizza-selects"></div></section><div class="field full"><label>Notes ou préférences</label><textarea id="notes"></textarea></div></div><button id="submitButton" class="submit">Soumettre ma réservation</button><div id="errorMessage" class="message"></div></form></div></div><div id="confirmation" class="confirmation"><h2>Date réservée ✓</h2><p id="confirmationText"></p><a class="home" href="./index.html">Retour au calendrier</a></div></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>const YEAR=2026,SUPABASE_URL="https://jetogsbyptglaihktdel.supabase.co",SUPABASE_KEY="sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja",supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY),monthNames=["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"],PIZZAS=["Margherita","’Nduja e miel","New York","Parma","Golosa","Cipolla","Quattro","Fungus","Figus","Montréal","Jardin","Mortadella"];const params=new URLSearchParams(location.search),day=+params.get("day"),month=+params.get("month"),form=document.getElementById("reservationForm"),submitButton=document.getElementById("submitButton"),errorMessage=document.getElementById("errorMessage");function isoDate(){return `${YEAR}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`}function formattedDate(){return `${day} ${monthNames[month]} ${YEAR}`}function showError(t){errorMessage.textContent=t;errorMessage.className="message error"}function buildMenuSelectors(){let saved=JSON.parse(localStorage.getItem("rafaPizzaChoices")||"[]").slice(0,4);for(let i=0;i<4;i++){let slot=document.createElement("div");slot.className="pizza-slot";let lab=document.createElement("label");lab.textContent=`Choix ${i+1} *`;let sel=document.createElement("select");sel.id=`pizza${i+1}`;sel.required=true;sel.innerHTML='<option value="">Choisir une pizza</option>'+PIZZAS.map(p=>`<option>${p}</option>`).join('')+'<option value="__other__">Autre — proposer ma propre pizza</option>';if(saved[i]&&PIZZAS.includes(saved[i]))sel.value=saved[i];let custom=document.createElement("input");custom.id=`customPizza${i+1}`;custom.className="custom-pizza";custom.placeholder="Décrivez votre pizza";sel.onchange=()=>{custom.classList.toggle("show",sel.value==="__other__");custom.required=sel.value==="__other__"};slot.append(lab,sel,custom);pizzaSelects.append(slot)}}buildMenuSelectors();function getMenu(){return[1,2,3,4].map(i=>{let s=document.getElementById(`pizza${i}`),c=document.getElementById(`customPizza${i}`);return s.value==="__other__"?c.value.trim():s.value})}function validateMenu(){let raw=[1,2,3,4].map(i=>document.getElementById(`pizza${i}`).value);if(raw.some(v=>!v)){showError("Choisissez vos 4 pizzas avant d’envoyer la réservation.");return false}let named=raw.filter(v=>v!=="__other__");if(new Set(named).size!==named.length){showError("Choisissez quatre sortes différentes.");return false}return true}async function init(){dateTitle.textContent=formattedDate();let{data}=await supabaseClient.rpc("get_calendar_blocks");if((data||[]).some(r=>r.event_date===isoDate())){showError("Cette date vient malheureusement d’être réservée.");form.style.display="none"}}init();form.onsubmit=async e=>{e.preventDefault();if(!form.reportValidity()||!validateMenu())return;submitButton.disabled=true;let menu=getMenu(),notes=document.getElementById("notes").value.trim(),payload={p_event_date:isoDate(),p_full_name:fullName.value.trim(),p_email:email.value.trim(),p_phone:phone.value.trim(),p_guest_count:+guestCount.value,p_city:city.value.trim(),p_preferred_time:preferredTime.value,p_message:(notes?notes+"\n\n":"")+"Menu (4 choix): "+menu.join(" | "),p_website:website.value.trim()};try{let{data,error}=await supabaseClient.rpc("create_reservation",payload);if(error)throw error;if(data&&data.ok===true){localStorage.setItem("rafaPizzaChoices",JSON.stringify(menu.filter(x=>PIZZAS.includes(x))));bookingPage.style.display="none";confirmation.classList.add("show");confirmationText.textContent=`Votre demande pour le ${formattedDate()} a bien été enregistrée. Rafa vous contactera pour confirmer les détails.`;try{await fetch("https://formsubmit.co/ajax/lapizzaderafa@gmail.com",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({_subject:"🍕 Nouvelle réservation Rafa Pizza — "+formattedDate(),_template:"table",_replyto:payload.p_email,"Date de l'événement":formattedDate(),"Nom du client":payload.p_full_name,"Courriel du client":payload.p_email,"Téléphone":payload.p_phone,"Nombre de personnes":payload.p_guest_count,"Ville / secteur":payload.p_city,"Heure souhaitée":payload.p_preferred_time,"Menu choisi":menu.join(" · "),"Notes / préférences":notes||"Aucune note"})})}catch(_){}return}showError("La réservation n’a pas pu être enregistrée. Réessayez.")}catch(err){showError("Une erreur est survenue. Réessayez.")}finally{submitButton.disabled=false}};</script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Rafa Pizza — Demande de réservation</title>
+  <meta name="description" content="Envoyez votre demande de réservation Rafa Pizza. Le menu de 4 pizzas sera choisi après la confirmation de votre événement.">
+  <meta name="robots" content="noindex,follow">
+  <meta name="theme-color" content="#5B1F2A">
+  <style>
+    :root{
+      --cream:#F6F0E7;
+      --cream2:#FBF8F3;
+      --paper:#FFFDFC;
+      --wine:#5B1F2A;
+      --wine2:#7A2D3C;
+      --ink:#2B2524;
+      --muted:#81746F;
+      --line:rgba(91,31,42,.14);
+      --soft:rgba(91,31,42,.055);
+      --ok:#52745D;
+      --danger:#973D4D;
+      --shadow:0 18px 50px rgba(62,37,39,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:#ECE5DC;
+      color:var(--ink);
+      font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+    button,input,textarea{font:inherit}
+    .site{
+      width:min(900px,100%);
+      margin:0 auto;
+      min-height:100vh;
+      background:var(--cream);
+      box-shadow:var(--shadow);
+    }
+    .top{
+      padding:20px 30px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+    }
+    .brand{text-decoration:none}
+    .brand strong{
+      color:var(--wine);
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:24px;
+      font-weight:500;
+    }
+    .back{color:var(--wine);font-size:10.5px;font-weight:900;text-decoration:none}
+    .content{padding:38px 30px 55px}
+    .inner{max-width:700px;margin:auto}
+    .step-label{
+      display:inline-block;
+      color:var(--wine2);
+      background:var(--soft);
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:9px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:16px;
+    }
+    h1,h2,h3{font-family:Georgia,"Times New Roman",serif;color:var(--wine);font-weight:500}
+    h1{font-size:clamp(34px,6vw,52px);letter-spacing:-.035em;margin:0 0 10px;line-height:1}
+    .lead{color:var(--muted);font-size:13px;line-height:1.65;margin:0 0 25px}
+    .date-card{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      padding:17px 18px;
+      border:1px solid var(--line);
+      border-radius:17px;
+      background:var(--paper);
+      margin-bottom:17px;
+    }
+    .date-card span{display:block;color:var(--muted);font-size:8.5px;text-transform:uppercase;font-weight:900;letter-spacing:.08em;margin-bottom:3px}
+    .date-card strong{color:var(--wine);font-family:Georgia,serif;font-size:21px;font-weight:500}
+    .date-card a{color:var(--wine);font-size:10px;font-weight:900}
+    .reassurance{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      margin-bottom:24px;
+    }
+    .reassurance div{
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:13px;
+      color:var(--muted);
+      background:var(--cream2);
+      font-size:9.5px;
+      line-height:1.45;
+    }
+    .reassurance strong{display:block;color:var(--wine);font-size:10px;margin-bottom:3px}
+    .form-card{
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:var(--cream2);
+      padding:22px;
+    }
+    .form-section + .form-section{margin-top:25px;padding-top:24px;border-top:1px solid var(--line)}
+    .form-section h2{font-size:22px;margin:0 0 5px}
+    .form-section .helper{color:var(--muted);font-size:10px;line-height:1.5;margin:0 0 15px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field.full{grid-column:1/-1}
+    label{color:var(--wine);font-size:9.5px;font-weight:900}
+    input,textarea{
+      width:100%;
+      border:1px solid var(--line);
+      background:var(--paper);
+      color:var(--ink);
+      border-radius:12px;
+      padding:12px 13px;
+      font-size:14px;
+      outline:none;
+    }
+    input:focus,textarea:focus{border-color:rgba(91,31,42,.48);box-shadow:0 0 0 3px var(--soft)}
+    textarea{min-height:95px;resize:vertical}
+    .submit{
+      width:100%;
+      margin-top:20px;
+      border:0;
+      border-radius:999px;
+      min-height:48px;
+      background:var(--wine);
+      color:#fff;
+      font-size:12px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .submit:disabled{opacity:.55;cursor:wait}
+    .fineprint{margin:10px 4px 0;color:var(--muted);font-size:9.5px;line-height:1.55;text-align:center}
+    .message{display:none;margin-top:13px;padding:11px 12px;border-radius:12px;font-size:11px;line-height:1.5}
+    .message.error{display:block;background:#F6E6E9;color:var(--danger);border:1px solid #E7C2C8}
+    .hidden-bot{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+    .unavailable{
+      display:none;
+      padding:22px;
+      border:1px solid var(--line);
+      border-radius:17px;
+      background:var(--paper);
+      margin-top:20px;
+      text-align:center;
+    }
+    .unavailable.show{display:block}
+    .unavailable h2{margin:0 0 8px}
+    .unavailable p{color:var(--muted);font-size:11px;line-height:1.55}
+    .unavailable a{
+      display:inline-flex;margin-top:10px;padding:11px 15px;border-radius:999px;
+      background:var(--wine);color:#fff;text-decoration:none;font-size:10px;font-weight:900;
+    }
+    .confirmation{display:none;padding:55px 30px 65px}
+    .confirmation.show{display:block}
+    .confirmation-inner{max-width:700px;margin:auto}
+    .check{
+      display:grid;place-items:center;width:48px;height:48px;border-radius:50%;
+      background:var(--ok);color:#fff;font-size:24px;font-weight:900;margin-bottom:17px;
+    }
+    .confirmation h1{margin-bottom:12px}
+    .confirmation .lead{font-size:14px}
+    .timeline{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      margin:27px 0 18px;
+      background:var(--paper);
+    }
+    .timeline-step{padding:16px 12px;border-right:1px solid var(--line);min-height:112px}
+    .timeline-step:last-child{border-right:0}
+    .timeline-step span{display:block;font-size:8px;font-weight:900;text-transform:uppercase;color:var(--muted);margin-bottom:15px}
+    .timeline-step strong{display:block;color:var(--wine);font-family:Georgia,serif;font-size:16px;font-weight:500}
+    .timeline-step.done{background:rgba(82,116,93,.08)}
+    .timeline-step.done span{color:var(--ok)}
+    .confirmation-note{
+      padding:14px 15px;border-radius:13px;background:var(--soft);border:1px solid var(--line);
+      color:var(--wine);font-size:10.5px;line-height:1.55;margin-bottom:18px;
+    }
+    .actions{display:flex;gap:9px;flex-wrap:wrap}
+    .button{
+      display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 17px;border-radius:999px;
+      border:1px solid var(--line);text-decoration:none;color:var(--wine);font-size:10.5px;font-weight:900;background:var(--paper);
+    }
+    .button.primary{background:var(--wine);border-color:var(--wine);color:white}
+    @media(max-width:650px){
+      .top{padding:15px}
+      .brand strong{font-size:21px}
+      .content,.confirmation{padding:31px 15px 45px}
+      h1{font-size:39px}
+      .date-card{align-items:flex-start}
+      .reassurance{grid-template-columns:1fr}
+      .form-card{padding:17px}
+      .form-grid{grid-template-columns:1fr}
+      .field.full{grid-column:auto}
+      .timeline{grid-template-columns:1fr 1fr}
+      .timeline-step:nth-child(2){border-right:0}
+      .timeline-step:nth-child(-n+2){border-bottom:1px solid var(--line)}
+      .actions{display:grid;grid-template-columns:1fr}
+      .button{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <main class="site">
+    <header class="top">
+      <a class="brand" href="./index.html"><strong>Rafa Pizza</strong></a>
+      <a class="back" href="./index.html#disponibilites">← Changer de date</a>
+    </header>
+
+    <section id="bookingPage" class="content">
+      <div class="inner">
+        <span class="step-label">Étape 2 · Votre demande</span>
+        <h1>Quelques détails, puis c’est tout.</h1>
+        <p class="lead">Envoyez votre demande pour cette date. Vous n’avez pas à choisir vos pizzas maintenant : le menu de 4 créations vient après la confirmation.</p>
+
+        <div class="date-card">
+          <div>
+            <span>Date demandée</span>
+            <strong id="dateTitle">Chargement…</strong>
+          </div>
+          <a href="./index.html#disponibilites">Modifier</a>
+        </div>
+
+        <div class="reassurance">
+          <div><strong>Aucun paiement maintenant</strong>Vous envoyez simplement une demande.</div>
+          <div><strong>Menu plus tard</strong>Vos 4 pizzas sont choisies après confirmation.</div>
+          <div><strong>Date mise en attente</strong>Elle est bloquée pendant que Rafa traite la demande.</div>
+        </div>
+
+        <form id="reservationForm" class="form-card">
+          <div class="hidden-bot" aria-hidden="true">
+            <label>Site web<input id="website" tabindex="-1" autocomplete="off"></label>
+          </div>
+
+          <section class="form-section">
+            <h2>Votre événement</h2>
+            <p class="helper">Seulement les informations nécessaires pour valider la demande.</p>
+            <div class="form-grid">
+              <div class="field">
+                <label for="guestCount">Nombre de personnes *</label>
+                <input id="guestCount" type="number" min="1" max="100" inputmode="numeric" required>
+              </div>
+              <div class="field">
+                <label for="preferredTime">Heure souhaitée *</label>
+                <input id="preferredTime" type="time" required>
+              </div>
+              <div class="field full">
+                <label for="city">Ville / secteur *</label>
+                <input id="city" autocomplete="address-level2" required>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h2>Vos coordonnées</h2>
+            <p class="helper">Rafa les utilisera pour confirmer les détails de l’événement.</p>
+            <div class="form-grid">
+              <div class="field full">
+                <label for="fullName">Nom complet *</label>
+                <input id="fullName" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="email">Courriel *</label>
+                <input id="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="field">
+                <label for="phone">Téléphone *</label>
+                <input id="phone" type="tel" autocomplete="tel" required>
+              </div>
+              <div class="field full">
+                <label for="notes">Quelque chose à nous préciser? <span style="font-weight:500;color:var(--muted)">(facultatif)</span></label>
+                <textarea id="notes" placeholder="Allergies à signaler, contexte de l’événement, question particulière…"></textarea>
+              </div>
+            </div>
+          </section>
+
+          <button id="submitButton" class="submit" type="submit">Envoyer ma demande</button>
+          <p class="fineprint">Après l’envoi, Rafa vous contactera pour confirmer l’événement. Votre menu sera choisi ensuite.</p>
+          <div id="errorMessage" class="message"></div>
+        </form>
+
+        <div id="unavailableBox" class="unavailable">
+          <h2>Cette date n’est plus disponible.</h2>
+          <p>Une autre demande ou réservation a été enregistrée entre-temps.</p>
+          <a href="./index.html#disponibilites">Choisir une autre date</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="confirmation" class="confirmation">
+      <div class="confirmation-inner">
+        <div class="check">✓</div>
+        <span class="step-label">Demande envoyée</span>
+        <h1>Demande reçue.</h1>
+        <p id="confirmationText" class="lead">Votre demande a bien été enregistrée.</p>
+
+        <div class="timeline">
+          <div class="timeline-step done">
+            <span>01 · Fait</span>
+            <strong>Demande envoyée</strong>
+          </div>
+          <div class="timeline-step">
+            <span>02 · Ensuite</span>
+            <strong>Confirmation Rafa</strong>
+          </div>
+          <div class="timeline-step">
+            <span>03</span>
+            <strong>Choix des 4 pizzas</strong>
+          </div>
+          <div class="timeline-step">
+            <span>04</span>
+            <strong>Votre événement</strong>
+          </div>
+        </div>
+
+        <div class="confirmation-note"><strong>Pas besoin de choisir le menu maintenant.</strong> Une fois l’événement confirmé, vous pourrez choisir vos 4 créations Rafa et les ajuster au besoin.</div>
+        <div class="actions">
+          <a class="button primary" href="./index.html#pizzas">Découvrir les pizzas</a>
+          <a class="button" href="./index.html">Retour à l’accueil</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://jetogsbyptglaihktdel.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const MONTHS = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+    const $ = id => document.getElementById(id);
+    const params = new URLSearchParams(location.search);
+    const BOOKING_START = "2026-09-01";
+    const BOOKING_END = "2026-11-30";
+
+    function parseRequestedDate(){
+      const direct = params.get("date");
+      if(direct && /^\d{4}-\d{2}-\d{2}$/.test(direct)){
+        const [year,month,day] = direct.split("-").map(Number);
+        const date = new Date(year,month-1,day);
+        if(date.getFullYear() === year && date.getMonth() === month-1 && date.getDate() === day){
+          return direct;
+        }
+      }
+
+      const oldDay = Number(params.get("day"));
+      const oldMonth = Number(params.get("month"));
+      if(Number.isInteger(oldDay) && oldDay > 0 && Number.isInteger(oldMonth) && oldMonth >= 0 && oldMonth <= 11){
+        return `2026-${String(oldMonth+1).padStart(2,"0")}-${String(oldDay).padStart(2,"0")}`;
+      }
+      return null;
+    }
+
+    const eventDate = parseRequestedDate();
+
+    function todayKey(){
+      const now = new Date();
+      return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+    }
+
+    function isBookableDate(iso){
+      if(!iso) return false;
+      const minDate = todayKey() > BOOKING_START ? todayKey() : BOOKING_START;
+      return iso >= minDate && iso <= BOOKING_END;
+    }
+
+    function formattedDate(iso){
+      if(!iso) return "";
+      const [year,month,day] = iso.split("-").map(Number);
+      return `${day} ${MONTHS[month-1]} ${year}`;
+    }
+
+    function showError(text){
+      $("errorMessage").textContent = text;
+      $("errorMessage").className = "message error";
+    }
+
+    function showUnavailable(title,message){
+      $("reservationForm").style.display = "none";
+      $("unavailableBox").classList.add("show");
+      const heading = $("unavailableBox").querySelector("h2");
+      const copy = $("unavailableBox").querySelector("p");
+      if(title) heading.textContent = title;
+      if(message) copy.textContent = message;
+    }
+
+    async function init(){
+      if(!eventDate){
+        $("dateTitle").textContent = "Date invalide";
+        showUnavailable("Aucune date valide n’a été sélectionnée.","Retournez au calendrier pour choisir une date disponible.");
+        return;
+      }
+
+      $("dateTitle").textContent = formattedDate(eventDate);
+
+      if(!isBookableDate(eventDate)){
+        showUnavailable("Cette date ne peut pas être demandée.","Retournez au calendrier pour choisir une date actuellement ouverte aux réservations.");
+        return;
+      }
+
+      try{
+        const {data,error} = await db.rpc("get_calendar_blocks");
+        if(error) throw error;
+        if((data || []).some(row => row.event_date === eventDate)){
+          showUnavailable("Cette date n’est plus disponible.","Une autre demande ou réservation a été enregistrée entre-temps.");
+        }
+      }catch(error){
+        console.error("Availability check failed",error);
+        showError("Impossible de vérifier la disponibilité pour le moment. Réessayez dans quelques instants.");
+        $("submitButton").disabled = true;
+      }
+    }
+
+    $("reservationForm").addEventListener("submit",async event => {
+      event.preventDefault();
+      const form = $("reservationForm");
+      if(!form.reportValidity()) return;
+      if(!eventDate || !isBookableDate(eventDate)){
+        showError("Veuillez retourner au calendrier et sélectionner une date disponible.");
+        return;
+      }
+
+      const submitButton = $("submitButton");
+      submitButton.disabled = true;
+      submitButton.textContent = "Envoi en cours…";
+      $("errorMessage").className = "message";
+
+      const notes = $("notes").value.trim();
+      const payload = {
+        p_event_date:eventDate,
+        p_full_name:$("fullName").value.trim(),
+        p_email:$("email").value.trim(),
+        p_phone:$("phone").value.trim(),
+        p_guest_count:Number($("guestCount").value),
+        p_city:$("city").value.trim(),
+        p_preferred_time:$("preferredTime").value,
+        p_message:notes,
+        p_website:$("website").value.trim()
+      };
+
+      try{
+        const {data,error} = await db.rpc("create_reservation",payload);
+        if(error) throw error;
+
+        if(data && data.ok === true){
+          $("bookingPage").style.display = "none";
+          $("confirmation").classList.add("show");
+          $("confirmationText").textContent = `Votre demande pour le ${formattedDate(eventDate)} est maintenant en attente de confirmation. Rafa vous contactera pour les prochaines étapes.`;
+          window.scrollTo({top:0,behavior:"smooth"});
+
+          try{
+            await fetch("https://formsubmit.co/ajax/lapizzaderafa@gmail.com",{
+              method:"POST",
+              headers:{"Content-Type":"application/json","Accept":"application/json"},
+              body:JSON.stringify({
+                _subject:`🍕 Nouvelle demande Rafa Pizza — ${formattedDate(eventDate)}`,
+                _template:"table",
+                _replyto:payload.p_email,
+                "Date de l'événement":formattedDate(eventDate),
+                "Nom du client":payload.p_full_name,
+                "Courriel du client":payload.p_email,
+                "Téléphone":payload.p_phone,
+                "Nombre de personnes":payload.p_guest_count,
+                "Ville / secteur":payload.p_city,
+                "Heure souhaitée":payload.p_preferred_time,
+                "Notes / préférences":notes || "Aucune note",
+                "Menu":"À choisir après confirmation"
+              })
+            });
+          }catch(notificationError){
+            console.warn("Notification email failed",notificationError);
+          }
+          return;
+        }
+
+        if(data && data.code === "date_taken"){
+          showUnavailable("Cette date vient d’être prise.","Une autre demande a été enregistrée quelques instants avant la vôtre.");
+          return;
+        }
+
+        showError("La demande n’a pas pu être enregistrée. Réessayez.");
+      }catch(error){
+        console.error("Reservation submit failed",error);
+        showError("Une erreur est survenue. Votre demande n’a pas été envoyée. Réessayez.");
+      }finally{
+        submitButton.disabled = false;
+        submitButton.textContent = "Envoyer ma demande";
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>
