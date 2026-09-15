@@ -1,0 +1,3000 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Rafa Pizza — Administration</title>
+
+<style>
+:root{
+  --cream:#F6F0E7;
+  --cream2:#FBF8F3;
+  --wine:#5B1F2A;
+  --wine2:#7A2D3C;
+  --ink:#2B2524;
+  --muted:#8A7D77;
+  --line:rgba(91,31,42,.16);
+  --pending:#D9942B;
+  --ok:#447A54;
+  --blocked:#4B4B4B;
+  --danger:#9B3E4E;
+}
+
+*{box-sizing:border-box}
+
+html,body{
+  margin:0;
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+body{
+  background:#eee8df;
+  color:var(--ink);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+.hidden{display:none!important}
+
+.app{
+  width:100%;
+  max-width:1180px;
+  margin:auto;
+  padding:18px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.brand{
+  flex:1 1 320px;
+  min-width:0;
+}
+
+.brand h1{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--wine);
+  font-size:34px;
+}
+
+.brand p{
+  margin:3px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.admin-nav{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border:0;
+  border-radius:999px;
+  padding:11px 16px;
+  font-weight:800;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-family:inherit;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn.primary{background:var(--wine);color:#fff}
+.btn.secondary{background:#fff;color:var(--wine);border:1px solid var(--line)}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.ok{background:var(--ok);color:#fff}
+.btn.warning{background:var(--pending);color:#fff}
+.btn.small{padding:8px 12px;font-size:12px}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin-bottom:16px;
+}
+
+.stat{
+  min-width:0;
+  background:var(--cream2);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+}
+
+.stat.money-stat{background:var(--wine);color:#fff}
+
+.stat .n{
+  font-size:25px;
+  font-weight:900;
+  color:var(--wine);
+  overflow-wrap:anywhere;
+}
+
+.stat.money-stat .n{color:#fff}
+
+.stat .t{
+  font-size:11px;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+.stat.money-stat .t{color:rgba(255,255,255,.72)}
+
+.finance-note{
+  font-size:10px;
+  color:var(--muted);
+  margin:-7px 0 16px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.6fr) minmax(0,.9fr);
+  gap:18px;
+}
+
+.panel{
+  min-width:0;
+  background:var(--cream);
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:0 14px 34px rgba(65,35,39,.08);
+  overflow:hidden;
+}
+
+.panel-head{
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.panel-head h2{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--wine);
+  font-size:23px;
+}
+
+.panel-body{padding:18px 20px}
+
+.calendar-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.calendar-head h3{
+  margin:0;
+  color:var(--wine);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:24px;
+  text-align:center;
+}
+
+.navbtn{
+  flex:0 0 auto;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--wine);
+  border-radius:10px;
+  width:38px;
+  height:34px;
+  cursor:pointer;
+  font-size:18px;
+}
+
+.week,.days{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:6px;
+}
+
+.week div{
+  text-align:center;
+  font-size:10px;
+  font-weight:900;
+  color:var(--muted);
+  padding:5px;
+}
+
+.day{
+  min-width:0;
+  min-height:92px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#fff;
+  padding:7px;
+  cursor:pointer;
+}
+
+.day.out{opacity:.34}
+.day.today{outline:2px solid var(--wine)}
+
+.daynum{font-size:11px;font-weight:900}
+
+.event-pill{
+  font-size:9px;
+  font-weight:800;
+  color:#fff;
+  border-radius:999px;
+  padding:5px 6px;
+  margin-top:5px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.event-pill.pending{background:var(--pending)}
+.event-pill.confirmed{background:var(--ok)}
+.event-pill.unavailable{background:var(--blocked)}
+
+.legend{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:14px;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  display:inline-block;
+  margin-right:5px;
+}
+
+.list{display:flex;flex-direction:column;gap:10px}
+
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:13px;
+  cursor:pointer;
+}
+
+.card:hover{border-color:var(--wine2)}
+
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+}
+
+.card h4{margin:0 0 4px;font-size:14px;color:var(--wine)}
+
+.meta{
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.badge{
+  border-radius:999px;
+  padding:5px 8px;
+  font-size:9px;
+  color:#fff;
+  font-weight:900;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.badge.pending{background:var(--pending)}
+.badge.confirmed{background:var(--ok)}
+.badge.unavailable{background:var(--blocked)}
+.badge.cancelled{background:#aaa}
+
+.empty{font-size:12px;color:var(--muted);padding:12px 0}
+
+.all-events{margin-top:18px}
+
+.events-tools{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.events-tools input,.events-tools select{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  padding:10px 12px;
+  font-size:13px;
+}
+
+.events-tools input{min-width:220px}
+
+.table-wrap{
+  width:100%;
+  max-width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+.events-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:950px;
+}
+
+.events-table th{
+  text-align:left;
+  font-size:10px;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding:10px 9px;
+  border-bottom:1px solid var(--line);
+}
+
+.events-table td{
+  padding:12px 9px;
+  border-bottom:1px solid var(--line);
+  font-size:12px;
+  vertical-align:middle;
+}
+
+.events-table tbody tr{cursor:pointer}
+.events-table tbody tr:hover{background:rgba(91,31,42,.04)}
+
+.client-name{font-weight:900;color:var(--wine)}
+
+.invoice-link{
+  border:0;
+  padding:0;
+  background:transparent;
+  color:var(--wine);
+  text-decoration:underline;
+  text-decoration-style:dotted;
+  text-underline-offset:3px;
+  font:inherit;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.pdf-tag{
+  display:inline-block;
+  margin-left:5px;
+  font-size:8px;
+  background:var(--wine);
+  color:#fff;
+  border-radius:999px;
+  padding:3px 5px;
+}
+
+.check-yes{font-weight:900;color:var(--ok)}
+.check-no{color:#aaa}
+.money{font-weight:800}
+
+.login-wrap{
+  min-height:90vh;
+  display:grid;
+  place-items:center;
+  padding:20px;
+}
+
+.login{
+  width:min(430px,100%);
+  background:var(--cream);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:30px;
+  box-shadow:0 18px 45px rgba(65,35,39,.12);
+  text-align:center;
+}
+
+.login h1{
+  font-family:Georgia,"Times New Roman",serif;
+  color:var(--wine);
+  margin:0 0 8px;
+  font-size:36px;
+}
+
+.login p{color:var(--muted);font-size:13px}
+
+.login-email{
+  font-size:12px;
+  font-weight:800;
+  color:var(--wine);
+  margin:18px 0 7px;
+}
+
+.login input{
+  width:100%;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:14px;
+  padding:14px;
+  font-size:16px;
+  margin-bottom:10px;
+}
+
+.login .btn{width:100%;margin-top:4px}
+
+.notice{font-size:12px;margin-top:12px;color:var(--muted)}
+
+.modal-back{
+  position:fixed;
+  inset:0;
+  background:rgba(30,20,20,.48);
+  display:grid;
+  place-items:center;
+  padding:16px;
+  z-index:30;
+}
+
+.modal{
+  width:min(760px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:var(--cream);
+  border-radius:24px;
+  border:1px solid var(--line);
+}
+
+.modal-head{
+  position:sticky;
+  top:0;
+  background:var(--cream);
+  z-index:2;
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.modal-head h2{
+  margin:0;
+  color:var(--wine);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+.x{
+  background:transparent;
+  border:0;
+  font-size:25px;
+  color:var(--wine);
+  cursor:pointer;
+}
+
+.form{padding:18px 20px}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+
+.field label{
+  font-size:10px;
+  color:var(--wine);
+  font-weight:900;
+}
+
+.field input,.field select,.field textarea{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:12px;
+  padding:11px;
+  font-size:14px;
+  width:100%;
+}
+
+.field textarea{min-height:90px;resize:vertical}
+
+.price-preview{
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.45;
+  margin-top:3px;
+}
+
+.block-note{
+  background:#eee8df;
+  border:1px solid var(--line);
+  padding:9px 11px;
+  border-radius:11px;
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.5;
+  margin-top:5px;
+}
+
+.checks{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  margin:14px 0;
+}
+
+.checks label{font-size:12px;font-weight:700}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.danger-zone{
+  border-top:1px solid var(--line);
+  margin-top:20px;
+  padding-top:16px;
+}
+
+.danger-zone-title{
+  font-size:10px;
+  text-transform:uppercase;
+  font-weight:900;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.error{
+  background:#f5e3e6;
+  color:#8a2f40;
+  border:1px solid #e7bbc4;
+  border-radius:12px;
+  padding:10px;
+  font-size:12px;
+  margin-top:12px;
+}
+
+.success{
+  background:#e4efe6;
+  color:#315e3d;
+  border:1px solid #bdd5c3;
+  border-radius:12px;
+  padding:10px;
+  font-size:12px;
+  margin-top:12px;
+}
+
+@media(max-width:850px){
+  .grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .day{min-height:74px}
+}
+
+@media(max-width:620px){
+  .app{padding:10px}
+  .topbar{flex-direction:column;align-items:stretch}
+  .brand{width:100%;flex:none}
+  .brand h1{font-size:28px}
+
+  .admin-nav{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .admin-nav .btn{
+    width:100%;
+    min-width:0;
+    padding:11px 8px;
+    font-size:12px;
+  }
+
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat{padding:12px}
+  .stat .n{font-size:21px}
+
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+
+  .day{min-height:63px;padding:4px}
+  .event-pill{font-size:0;height:8px;padding:0;margin-top:3px}
+
+  .events-tools{width:100%}
+  .events-tools input,.events-tools select{width:100%;min-width:0}
+
+  .actions .btn{width:100%}
+  .panel-head,.panel-body{padding-left:14px;padding-right:14px}
+}
+</style>
+</head>
+
+<body>
+
+<div id="loginWrap" class="login-wrap">
+  <div class="login">
+    <h1>Rafa Pizza</h1>
+    <p>Tableau de bord privé des réservations.</p>
+
+    <div class="login-email">raphael.frenette@gmail.com</div>
+
+    <input id="password" type="password" placeholder="Mot de passe" autocomplete="current-password">
+
+    <button id="loginBtn" class="btn primary">Se connecter</button>
+
+    <button id="forgotBtn" class="btn secondary">
+      Réinitialiser mon mot de passe
+    </button>
+
+    <div id="loginMsg" class="notice"></div>
+  </div>
+</div>
+
+<div id="app" class="app hidden">
+
+  <div class="topbar">
+    <div class="brand">
+      <h1>Rafa · Réservations</h1>
+      <p>Réservations, chiffre d’affaires et factures.</p>
+    </div>
+
+    <nav class="admin-nav" aria-label="Navigation administration">
+      <a href="admin.html" class="btn secondary">🏠 Accueil</a>
+      <a href="finances.html" class="btn secondary">💰 Finances</a>
+      <button id="addBtn" class="btn primary">+ Ajouter</button>
+      <button id="logoutBtn" class="btn secondary">Déconnexion</button>
+    </nav>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div id="pendingStat" class="n">0</div>
+      <div class="t">Demandes en attente</div>
+    </div>
+
+    <div class="stat">
+      <div id="confirmedStat" class="n">0</div>
+      <div class="t">Événements clients à venir</div>
+    </div>
+
+    <div class="stat money-stat">
+      <div id="monthRevenueStat" class="n">0 $</div>
+      <div class="t">CA du mois</div>
+    </div>
+
+    <div class="stat money-stat">
+      <div id="totalRevenueStat" class="n">0 $</div>
+      <div class="t">CA total</div>
+    </div>
+  </div>
+
+  <div id="financeNote" class="finance-note"></div>
+
+  <div class="grid">
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Calendrier</h2>
+        <button id="todayBtn" class="btn secondary small">Aujourd’hui</button>
+      </div>
+
+      <div class="panel-body">
+        <div class="calendar-head">
+          <button id="prevMonth" class="navbtn">‹</button>
+          <h3 id="monthTitle"></h3>
+          <button id="nextMonth" class="navbtn">›</button>
+        </div>
+
+        <div class="week">
+          <div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div>
+          <div>Ven</div><div>Sam</div><div>Dim</div>
+        </div>
+
+        <div id="days" class="days"></div>
+
+        <div class="legend">
+          <span><span class="dot" style="background:#D9942B"></span>En attente</span>
+          <span><span class="dot" style="background:#447A54"></span>Confirmé</span>
+          <span><span class="dot" style="background:#4B4B4B"></span>Bloqué</span>
+        </div>
+      </div>
+    </section>
+
+    <div>
+      <section class="panel">
+        <div class="panel-head"><h2>À traiter</h2></div>
+        <div class="panel-body">
+          <div id="pendingList" class="list"></div>
+        </div>
+      </section>
+
+      <section class="panel" style="margin-top:18px">
+        <div class="panel-head"><h2>À venir</h2></div>
+        <div class="panel-body">
+          <div id="upcomingList" class="list"></div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <section class="panel all-events">
+    <div class="panel-head">
+      <h2>Tous les événements</h2>
+
+      <div class="events-tools">
+        <input id="eventSearch" type="search" placeholder="Rechercher client, ville...">
+
+        <select id="eventFilter">
+          <option value="future">À venir</option>
+          <option value="all" selected>Tous</option>
+          <option value="confirmed">Confirmés</option>
+          <option value="pending">En attente</option>
+          <option value="cancelled">Annulés</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="table-wrap">
+        <table class="events-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Client / facture</th>
+              <th>Invités</th>
+              <th>Ville</th>
+              <th>Montant</th>
+              <th>Dépôt</th>
+              <th>Menu</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody id="eventsTableBody"></tbody>
+        </table>
+      </div>
+
+      <div id="eventsEmpty" class="empty hidden">Aucun événement.</div>
+    </div>
+  </section>
+
+</div>
+
+<div id="modalBack" class="modal-back hidden">
+  <div class="modal">
+
+    <div class="modal-head">
+      <h2 id="modalTitle">Réservation</h2>
+      <button id="closeModal" class="x" type="button">×</button>
+    </div>
+
+    <form id="reservationForm" class="form">
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="eventDate">Date</label>
+          <input id="eventDate" type="date" required>
+        </div>
+
+        <div class="field">
+          <label for="status">Statut</label>
+          <select id="status">
+            <option value="pending">En attente</option>
+            <option value="confirmed">Confirmé</option>
+            <option value="unavailable">Bloqué / indisponible</option>
+            <option value="cancelled">Annulé</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="fullName">Nom du client</label>
+          <input id="fullName">
+        </div>
+
+        <div class="field">
+          <label for="source">Source</label>
+          <select id="source">
+            <option value="site">Site web</option>
+            <option value="instagram">Instagram</option>
+            <option value="facebook">Facebook</option>
+            <option value="phone">Téléphone</option>
+            <option value="manual">Manuel</option>
+            <option value="other">Autre</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="email">Courriel</label>
+          <input id="email" type="email">
+        </div>
+
+        <div class="field">
+          <label for="phone">Téléphone</label>
+          <input id="phone">
+        </div>
+
+        <div class="field">
+          <label for="guestCount">Nombre d’invités</label>
+          <input id="guestCount" type="number" min="0">
+
+          <div class="block-note">
+            Si ce champ est vide ou à 0, la date est considérée comme un blocage personnel.
+            Elle reste indisponible dans le calendrier, mais n'est pas considérée comme une réservation.
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="preferredTime">Heure souhaitée</label>
+          <input id="preferredTime">
+        </div>
+
+        <div class="field">
+          <label for="city">Ville</label>
+          <input id="city">
+        </div>
+
+        <div class="field">
+          <label for="eventAddress">Adresse de l’événement</label>
+          <input id="eventAddress">
+        </div>
+
+        <div class="field">
+          <label for="quotedPrice">Prix de l’événement ($)</label>
+          <input id="quotedPrice" type="number" step="0.01" min="0">
+
+          <div id="pricePreview" class="price-preview"></div>
+
+          <button id="recalculatePrice" type="button" class="btn secondary small">
+            Recalculer selon le site
+          </button>
+        </div>
+
+        <div class="field">
+          <label for="depositAmount">Dépôt ($)</label>
+          <input id="depositAmount" type="number" step="0.01" min="0">
+        </div>
+
+        <div class="field full">
+          <label for="message">Message / préférences du client</label>
+          <textarea id="message"></textarea>
+        </div>
+
+        <div class="field full">
+          <label for="internalNotes">Notes internes</label>
+          <textarea id="internalNotes"></textarea>
+        </div>
+      </div>
+
+      <div class="checks">
+        <label><input id="depositReceived" type="checkbox"> Dépôt reçu</label>
+        <label><input id="menuSent" type="checkbox"> Menu envoyé</label>
+      </div>
+
+      <div id="formMsg"></div>
+
+      <div class="actions">
+        <button id="saveBtn" class="btn primary" type="submit">Enregistrer</button>
+
+        <button id="approveBtn" class="btn ok hidden" type="button">
+          Accepter la réservation
+        </button>
+
+        <button id="invoiceBtn" class="btn secondary hidden" type="button">
+          Ouvrir la facture PDF
+        </button>
+
+        <button id="cancelBtn" class="btn warning hidden" type="button">
+          Annuler / libérer la date
+        </button>
+      </div>
+
+      <div id="dangerZone" class="danger-zone hidden">
+        <div class="danger-zone-title">Suppression</div>
+        <button id="deleteBtn" class="btn danger" type="button">
+          Supprimer définitivement
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+
+<script>
+
+const SUPABASE_URL =
+  'https://jetogsbyptglaihktdel.supabase.co';
+
+const SUPABASE_KEY =
+  'sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja';
+
+const ADMIN_EMAIL =
+  'raphael.frenette@gmail.com';
+
+const ADMIN_URL =
+  'https://lapizzaderafa.github.io/Calendrier-Rafa/admin.html';
+
+const db =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+const $ =
+  id =>
+    document.getElementById(id);
+
+let reservations = [];
+let editing = null;
+
+let viewDate = new Date();
+viewDate.setDate(1);
+
+const monthNames = [
+  'Janvier','Février','Mars','Avril','Mai','Juin',
+  'Juillet','Août','Septembre','Octobre','Novembre','Décembre'
+];
+
+function escapeHtml(value){
+  return String(value || '')
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'","&#039;");
+}
+
+function localToday(){
+
+  const d = new Date();
+
+  return [
+    d.getFullYear(),
+    String(d.getMonth()+1).padStart(2,'0'),
+    String(d.getDate()).padStart(2,'0')
+  ].join('-');
+
+}
+
+function fmtDate(d){
+
+  if(!d){
+    return '—';
+  }
+
+  return new Intl.DateTimeFormat(
+    'fr-CA',
+    {
+      weekday:'short',
+      day:'numeric',
+      month:'short',
+      year:'numeric'
+    }
+  ).format(
+    new Date(d+'T12:00:00')
+  );
+
+}
+
+function fmtDateLong(d){
+
+  if(!d){
+    return '';
+  }
+
+  return new Intl.DateTimeFormat(
+    'fr-CA',
+    {
+      day:'numeric',
+      month:'long',
+      year:'numeric'
+    }
+  ).format(
+    new Date(d+'T12:00:00')
+  );
+
+}
+
+function money(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    value === ''
+  ){
+    return '—';
+  }
+
+  return new Intl.NumberFormat(
+    'fr-CA',
+    {
+      style:'currency',
+      currency:'CAD',
+      minimumFractionDigits:0,
+      maximumFractionDigits:2
+    }
+  ).format(Number(value));
+
+}
+
+function statusText(status){
+
+  if(status === 'pending'){
+    return 'Attente';
+  }
+
+  if(status === 'confirmed'){
+    return 'Confirmé';
+  }
+
+  if(status === 'unavailable'){
+    return 'Bloqué';
+  }
+
+  if(status === 'cancelled'){
+    return 'Annulé';
+  }
+
+  return status || '—';
+
+}
+
+function activeReservation(r){
+
+  return [
+    'pending',
+    'confirmed',
+    'unavailable'
+  ].includes(r.status);
+
+}
+
+function hasGuests(r){
+
+  return Number(r?.guest_count) > 0;
+
+}
+
+function isRealEvent(r){
+
+  return hasGuests(r);
+
+}
+
+function calculateEventPrice(guests){
+
+  guests = Number(guests);
+
+  if(!guests || guests <= 0){
+    return null;
+  }
+
+  let pricePerPerson;
+  let fixedFee;
+
+  if(guests <= 10){
+    pricePerPerson = 29;
+    fixedFee = 175;
+  }
+
+  else if(guests <= 15){
+    pricePerPerson = 27;
+    fixedFee = 200;
+  }
+
+  else if(guests <= 20){
+    pricePerPerson = 25;
+    fixedFee = 250;
+  }
+
+  else if(guests <= 25){
+    pricePerPerson = 23;
+    fixedFee = 300;
+  }
+
+  else if(guests <= 30){
+    pricePerPerson = 22;
+    fixedFee = 350;
+  }
+
+  else if(guests <= 40){
+    pricePerPerson = 21;
+    fixedFee = 400;
+  }
+
+  else if(guests <= 50){
+    pricePerPerson = 20;
+    fixedFee = 500;
+  }
+
+  else if(guests <= 75){
+    pricePerPerson = 19;
+    fixedFee = 600;
+  }
+
+  else{
+    pricePerPerson = 18;
+    fixedFee = 750;
+  }
+
+  return {
+    pricePerPerson,
+    fixedFee,
+    guestSubtotal:guests * pricePerPerson,
+    total:guests * pricePerPerson + fixedFee
+  };
+
+}
+
+function revenueForReservation(r){
+
+  if(
+    r.status !== 'confirmed' ||
+    !isRealEvent(r)
+  ){
+    return 0;
+  }
+
+  if(
+    r.quoted_price !== null &&
+    r.quoted_price !== undefined &&
+    r.quoted_price !== ''
+  ){
+    return Number(r.quoted_price) || 0;
+  }
+
+  const pricing =
+    calculateEventPrice(r.guest_count);
+
+  return pricing
+    ? pricing.total
+    : 0;
+
+}
+
+function canGenerateInvoice(r){
+
+  return (
+    !!r &&
+    r.status === 'confirmed' &&
+    isRealEvent(r) &&
+    revenueForReservation(r) > 0
+  );
+
+}
+
+async function sessionGate(){
+
+  const {
+    data:{session}
+  } =
+    await db.auth.getSession();
+
+  if(
+    session &&
+    (session.user.email || '').toLowerCase() === ADMIN_EMAIL.toLowerCase()
+  ){
+
+    $('loginWrap').classList.add('hidden');
+    $('app').classList.remove('hidden');
+
+    await loadData();
+
+  }
+
+  else{
+
+    $('loginWrap').classList.remove('hidden');
+    $('app').classList.add('hidden');
+
+  }
+
+}
+
+$('loginBtn').onclick =
+async () => {
+
+  const password =
+    $('password').value;
+
+  if(!password){
+
+    $('loginMsg').textContent =
+      'Entre ton mot de passe.';
+
+    return;
+
+  }
+
+  $('loginMsg').textContent =
+    'Connexion…';
+
+  const {error} =
+    await db.auth.signInWithPassword({
+      email:ADMIN_EMAIL,
+      password
+    });
+
+  if(error){
+
+    $('loginMsg').textContent =
+      'Connexion impossible. Vérifie ton mot de passe.';
+
+    return;
+
+  }
+
+  await sessionGate();
+
+};
+
+$('password').addEventListener(
+  'keydown',
+  e => {
+
+    if(e.key === 'Enter'){
+      $('loginBtn').click();
+    }
+
+  }
+);
+
+$('forgotBtn').onclick =
+async () => {
+
+  $('loginMsg').textContent =
+    'Envoi du courriel…';
+
+  const {error} =
+    await db.auth.resetPasswordForEmail(
+      ADMIN_EMAIL,
+      {
+        redirectTo:ADMIN_URL
+      }
+    );
+
+  $('loginMsg').textContent =
+    error
+      ? error.message
+      : 'Courriel de récupération envoyé.';
+
+};
+
+$('logoutBtn').onclick =
+async () => {
+
+  await db.auth.signOut();
+
+  window.location.href =
+    ADMIN_URL;
+
+};
+
+let recoveryHandled = false;
+
+db.auth.onAuthStateChange(
+  async event => {
+
+    if(
+      event === 'PASSWORD_RECOVERY' &&
+      !recoveryHandled
+    ){
+
+      recoveryHandled = true;
+
+      const newPassword =
+        prompt(
+          'Entre ton nouveau mot de passe.'
+        );
+
+      if(!newPassword){
+        return;
+      }
+
+      const {error} =
+        await db.auth.updateUser({
+          password:newPassword
+        });
+
+      if(error){
+
+        alert(
+          'Impossible de modifier le mot de passe : ' +
+          error.message
+        );
+
+        return;
+
+      }
+
+      alert(
+        'Ton mot de passe a été modifié.'
+      );
+
+      window.location.href =
+        ADMIN_URL;
+
+    }
+
+  }
+);
+
+async function loadData(){
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from('reservations')
+      .select('*')
+      .order(
+        'event_date',
+        {
+          ascending:true
+        }
+      );
+
+  if(error){
+
+    alert(
+      'Impossible de charger les réservations : ' +
+      error.message
+    );
+
+    return;
+
+  }
+
+  reservations =
+    data || [];
+
+  renderAll();
+
+}
+
+function renderAll(){
+
+  renderStats();
+  renderCalendar();
+  renderLists();
+  renderEventsTable();
+
+}
+
+function renderStats(){
+
+  const today =
+    localToday();
+
+  $('pendingStat').textContent =
+    reservations.filter(
+      r =>
+        r.status === 'pending' &&
+        isRealEvent(r)
+    ).length;
+
+  $('confirmedStat').textContent =
+    reservations.filter(
+      r =>
+        r.status === 'confirmed' &&
+        r.event_date >= today &&
+        isRealEvent(r)
+    ).length;
+
+  const now =
+    new Date();
+
+  const monthPrefix =
+    now.getFullYear() +
+    '-' +
+    String(now.getMonth()+1)
+      .padStart(2,'0');
+
+  const billable =
+    reservations.filter(
+      r =>
+        r.status === 'confirmed' &&
+        isRealEvent(r)
+    );
+
+  const monthRevenue =
+    billable
+      .filter(
+        r =>
+          r.event_date &&
+          r.event_date.startsWith(monthPrefix)
+      )
+      .reduce(
+        (total,r) =>
+          total + revenueForReservation(r),
+        0
+      );
+
+  const totalRevenue =
+    billable.reduce(
+      (total,r) =>
+        total + revenueForReservation(r),
+      0
+    );
+
+  $('monthRevenueStat').textContent =
+    money(monthRevenue);
+
+  $('totalRevenueStat').textContent =
+    money(totalRevenue);
+
+  $('financeNote').textContent =
+    'Le chiffre d’affaires comprend uniquement les vraies réservations confirmées.';
+
+}
+
+function renderCalendar(){
+
+  const year =
+    viewDate.getFullYear();
+
+  const month =
+    viewDate.getMonth();
+
+  $('monthTitle').textContent =
+    `${monthNames[month]} ${year}`;
+
+  const first =
+    new Date(year,month,1);
+
+  const start =
+    new Date(first);
+
+  const mondayIndex =
+    (first.getDay()+6)%7;
+
+  start.setDate(
+    first.getDate()-mondayIndex
+  );
+
+  $('days').innerHTML = '';
+
+  const today =
+    localToday();
+
+  for(let i=0;i<42;i++){
+
+    const d =
+      new Date(start);
+
+    d.setDate(
+      start.getDate()+i
+    );
+
+    const iso =
+      [
+        d.getFullYear(),
+        String(d.getMonth()+1).padStart(2,'0'),
+        String(d.getDate()).padStart(2,'0')
+      ].join('-');
+
+    const cell =
+      document.createElement('div');
+
+    cell.className =
+      'day';
+
+    if(d.getMonth() !== month){
+      cell.classList.add('out');
+    }
+
+    if(iso === today){
+      cell.classList.add('today');
+    }
+
+    cell.innerHTML =
+      `
+        <div class="daynum">
+          ${d.getDate()}
+        </div>
+      `;
+
+    const dayEvents =
+      reservations.filter(
+        r =>
+          r.event_date === iso &&
+          activeReservation(r)
+      );
+
+    dayEvents.forEach(
+      r => {
+
+        const pill =
+          document.createElement('div');
+
+        let pillStatus =
+          r.status;
+
+        if(!isRealEvent(r)){
+          pillStatus = 'unavailable';
+        }
+
+        pill.className =
+          `event-pill ${pillStatus}`;
+
+        pill.textContent =
+          isRealEvent(r)
+            ? (r.full_name || 'Événement')
+            : 'Bloqué';
+
+        pill.onclick =
+          event => {
+
+            event.stopPropagation();
+
+            openReservation(r);
+
+          };
+
+        cell.appendChild(pill);
+
+      }
+    );
+
+    cell.onclick =
+      () =>
+        openNew(iso);
+
+    $('days').appendChild(cell);
+
+  }
+
+}
+
+function renderLists(){
+
+  const today =
+    localToday();
+
+  const pending =
+    reservations.filter(
+      r =>
+        r.status === 'pending' &&
+        isRealEvent(r)
+    );
+
+  const upcoming =
+    reservations.filter(
+      r =>
+        r.event_date >= today &&
+        r.status === 'confirmed' &&
+        isRealEvent(r)
+    );
+
+  $('pendingList').innerHTML =
+    pending.length
+      ? ''
+      : `
+        <div class="empty">
+          Aucune demande en attente.
+        </div>
+      `;
+
+  pending.forEach(
+    r =>
+      $('pendingList')
+        .appendChild(
+          reservationCard(r)
+        )
+  );
+
+  $('upcomingList').innerHTML =
+    upcoming.length
+      ? ''
+      : `
+        <div class="empty">
+          Aucun événement à venir.
+        </div>
+      `;
+
+  upcoming.forEach(
+    r =>
+      $('upcomingList')
+        .appendChild(
+          reservationCard(r)
+        )
+  );
+
+}
+
+function reservationCard(r){
+
+  const div =
+    document.createElement('div');
+
+  div.className =
+    'card';
+
+  const title =
+    r.full_name ||
+    'Événement';
+
+  const revenue =
+    revenueForReservation(r);
+
+  div.innerHTML =
+    `
+      <div class="card-top">
+        <div>
+          <h4>
+            ${escapeHtml(title)}
+          </h4>
+
+          <div class="meta">
+            ${fmtDate(r.event_date)}
+            · ${r.guest_count} pers.
+            ${
+              r.city
+                ? ` · ${escapeHtml(r.city)}`
+                : ''
+            }
+            ${
+              revenue > 0
+                ? ` · ${money(revenue)}`
+                : ''
+            }
+          </div>
+        </div>
+
+        <span class="badge ${r.status}">
+          ${statusText(r.status)}
+        </span>
+      </div>
+    `;
+
+  div.onclick =
+    () =>
+      openReservation(r);
+
+  return div;
+
+}
+
+function renderEventsTable(){
+
+  const today =
+    localToday();
+
+  const filter =
+    $('eventFilter').value;
+
+  const search =
+    $('eventSearch')
+      .value
+      .trim()
+      .toLowerCase();
+
+  let rows =
+    reservations.filter(
+      r => isRealEvent(r)
+    );
+
+  if(filter === 'future'){
+
+    rows =
+      rows.filter(
+        r =>
+          r.event_date >= today &&
+          r.status !== 'cancelled'
+      );
+
+  }
+
+  else if(filter !== 'all'){
+
+    rows =
+      rows.filter(
+        r =>
+          r.status === filter
+      );
+
+  }
+
+  if(search){
+
+    rows =
+      rows.filter(
+        r => {
+
+          const haystack =
+            [
+              r.full_name,
+              r.email,
+              r.phone,
+              r.city,
+              r.event_address,
+              r.source
+            ]
+            .filter(Boolean)
+            .join(' ')
+            .toLowerCase();
+
+          return haystack.includes(search);
+
+        }
+      );
+
+  }
+
+  rows.sort(
+    (a,b) =>
+      (a.event_date || '')
+        .localeCompare(
+          b.event_date || ''
+        )
+  );
+
+  const tbody =
+    $('eventsTableBody');
+
+  tbody.innerHTML =
+    '';
+
+  $('eventsEmpty')
+    .classList
+    .toggle(
+      'hidden',
+      rows.length > 0
+    );
+
+  rows.forEach(
+    r => {
+
+      const tr =
+        document.createElement('tr');
+
+      const invoiceAvailable =
+        canGenerateInvoice(r);
+
+      const displayName =
+        r.full_name ||
+        'Événement';
+
+      const clientHtml =
+        invoiceAvailable
+          ? `
+            <button
+              class="invoice-link"
+              data-invoice="${r.id}"
+              type="button"
+            >
+              ${escapeHtml(displayName)}
+              <span class="pdf-tag">PDF</span>
+            </button>
+          `
+          : `
+            <span class="client-name">
+              ${escapeHtml(displayName)}
+            </span>
+          `;
+
+      const revenue =
+        revenueForReservation(r);
+
+      tr.innerHTML =
+        `
+          <td>
+            <strong>${fmtDate(r.event_date)}</strong>
+          </td>
+
+          <td>${clientHtml}</td>
+
+          <td>
+            ${r.guest_count}
+          </td>
+
+          <td>
+            ${escapeHtml(r.city || '—')}
+          </td>
+
+          <td class="money">
+            ${
+              revenue > 0
+                ? money(revenue)
+                : '—'
+            }
+          </td>
+
+          <td>
+            ${
+              r.deposit_received
+                ? '<span class="check-yes">✓ Reçu</span>'
+                : '<span class="check-no">—</span>'
+            }
+          </td>
+
+          <td>
+            ${
+              r.menu_sent
+                ? '<span class="check-yes">✓ Envoyé</span>'
+                : '<span class="check-no">—</span>'
+            }
+          </td>
+
+          <td>
+            <span class="badge ${r.status}">
+              ${statusText(r.status)}
+            </span>
+          </td>
+        `;
+
+      tr.onclick =
+        () =>
+          openReservation(r);
+
+      const invoiceButton =
+        tr.querySelector(
+          '[data-invoice]'
+        );
+
+      if(invoiceButton){
+
+        invoiceButton.onclick =
+          event => {
+
+            event.stopPropagation();
+
+            generateInvoicePDF(r);
+
+          };
+
+      }
+
+      tbody.appendChild(tr);
+
+    }
+  );
+
+}
+
+$('eventSearch').addEventListener(
+  'input',
+  renderEventsTable
+);
+
+$('eventFilter').addEventListener(
+  'change',
+  renderEventsTable
+);
+
+function clearForm(){
+
+  $('reservationForm').reset();
+
+  $('formMsg').innerHTML = '';
+  $('pricePreview').textContent = '';
+
+  editing = null;
+
+  $('approveBtn').classList.add('hidden');
+  $('cancelBtn').classList.add('hidden');
+  $('invoiceBtn').classList.add('hidden');
+  $('dangerZone').classList.add('hidden');
+
+}
+
+function openNew(date=''){
+
+  clearForm();
+
+  $('modalTitle').textContent =
+    'Ajouter un événement';
+
+  $('eventDate').value =
+    date;
+
+  $('status').value =
+    'confirmed';
+
+  $('source').value =
+    'manual';
+
+  updatePricePreview();
+
+  $('modalBack').classList.remove('hidden');
+
+}
+
+function openReservation(r){
+
+  clearForm();
+
+  editing =
+    r;
+
+  $('modalTitle').textContent =
+    isRealEvent(r)
+      ? (r.full_name || 'Événement')
+      : 'Date bloquée';
+
+  $('eventDate').value =
+    r.event_date || '';
+
+  $('status').value =
+    r.status || 'pending';
+
+  $('source').value =
+    r.source || 'site';
+
+  $('fullName').value =
+    r.full_name || '';
+
+  $('email').value =
+    r.email || '';
+
+  $('phone').value =
+    r.phone || '';
+
+  $('guestCount').value =
+    r.guest_count || '';
+
+  $('preferredTime').value =
+    r.preferred_time || '';
+
+  $('city').value =
+    r.city || '';
+
+  $('eventAddress').value =
+    r.event_address || '';
+
+  $('quotedPrice').value =
+    r.quoted_price || '';
+
+  $('depositAmount').value =
+    r.deposit_amount || '';
+
+  $('message').value =
+    r.message || '';
+
+  $('internalNotes').value =
+    r.internal_notes || '';
+
+  $('depositReceived').checked =
+    !!r.deposit_received;
+
+  $('menuSent').checked =
+    !!r.menu_sent;
+
+  updatePricePreview();
+
+  if(
+    r.status === 'pending' &&
+    isRealEvent(r)
+  ){
+    $('approveBtn').classList.remove('hidden');
+  }
+
+  if(canGenerateInvoice(r)){
+    $('invoiceBtn').classList.remove('hidden');
+  }
+
+  if(r.status !== 'cancelled'){
+    $('cancelBtn').classList.remove('hidden');
+  }
+
+  $('dangerZone').classList.remove('hidden');
+  $('modalBack').classList.remove('hidden');
+
+}
+
+$('closeModal').onclick =
+() => {
+  $('modalBack').classList.add('hidden');
+};
+
+$('modalBack').onclick =
+event => {
+
+  if(event.target === $('modalBack')){
+    $('modalBack').classList.add('hidden');
+  }
+
+};
+
+$('addBtn').onclick =
+() =>
+  openNew();
+
+$('todayBtn').onclick =
+() => {
+
+  viewDate =
+    new Date();
+
+  viewDate.setDate(1);
+
+  renderAll();
+
+};
+
+$('prevMonth').onclick =
+() => {
+
+  viewDate.setMonth(
+    viewDate.getMonth()-1
+  );
+
+  renderAll();
+
+};
+
+$('nextMonth').onclick =
+() => {
+
+  viewDate.setMonth(
+    viewDate.getMonth()+1
+  );
+
+  renderAll();
+
+};
+
+function updatePricePreview(){
+
+  const guests =
+    Number(
+      $('guestCount').value
+    );
+
+  const pricing =
+    calculateEventPrice(guests);
+
+  if(!pricing){
+
+    $('pricePreview').textContent =
+      'Aucun invité : cette date sera considérée comme un blocage personnel.';
+
+    return;
+
+  }
+
+  $('pricePreview').textContent =
+    `${guests} × ${pricing.pricePerPerson} $ + ${pricing.fixedFee} $ de service/installation = ${money(pricing.total)}`;
+
+}
+
+$('guestCount').addEventListener(
+  'input',
+  updatePricePreview
+);
+
+$('recalculatePrice').onclick =
+() => {
+
+  const pricing =
+    calculateEventPrice(
+      $('guestCount').value
+    );
+
+  if(!pricing){
+
+    $('quotedPrice').value = '';
+
+    alert(
+      'Aucun prix à calculer : aucun nombre d’invités.'
+    );
+
+    updatePricePreview();
+
+    return;
+
+  }
+
+  $('quotedPrice').value =
+    pricing.total;
+
+  updatePricePreview();
+
+};
+
+function getFormPayload(){
+
+  const status =
+    $('status').value;
+
+  const source =
+    $('source').value;
+
+  const guestCount =
+    $('guestCount').value
+      ? Number($('guestCount').value)
+      : null;
+
+  let quotedPrice =
+    $('quotedPrice').value
+      ? Number($('quotedPrice').value)
+      : null;
+
+  if(!guestCount || guestCount <= 0){
+    quotedPrice = null;
+  }
+
+  if(
+    status === 'confirmed' &&
+    guestCount > 0 &&
+    quotedPrice === null
+  ){
+
+    const pricing =
+      calculateEventPrice(guestCount);
+
+    if(pricing){
+      quotedPrice = pricing.total;
+    }
+
+  }
+
+  let blockType =
+    'reservation';
+
+  if(
+    status === 'unavailable' ||
+    !guestCount ||
+    guestCount <= 0
+  ){
+
+    blockType =
+      'unavailable';
+
+  }
+
+  else if(source === 'manual'){
+
+    blockType =
+      'manual_booked';
+
+  }
+
+  return {
+
+    event_date:
+      $('eventDate').value,
+
+    status:
+      (
+        !guestCount ||
+        guestCount <= 0
+      )
+        ? 'unavailable'
+        : status,
+
+    block_type:
+      blockType,
+
+    source:
+      source,
+
+    full_name:
+      $('fullName').value.trim() || null,
+
+    email:
+      $('email').value.trim() || null,
+
+    phone:
+      $('phone').value.trim() || null,
+
+    guest_count:
+      guestCount,
+
+    preferred_time:
+      $('preferredTime').value.trim() || null,
+
+    city:
+      $('city').value.trim() || null,
+
+    event_address:
+      $('eventAddress').value.trim() || null,
+
+    quoted_price:
+      quotedPrice,
+
+    deposit_amount:
+      $('depositAmount').value
+        ? Number($('depositAmount').value)
+        : null,
+
+    message:
+      $('message').value.trim() || null,
+
+    internal_notes:
+      $('internalNotes').value.trim() || null,
+
+    deposit_received:
+      $('depositReceived').checked,
+
+    menu_sent:
+      $('menuSent').checked
+
+  };
+
+}
+
+function showDatabaseError(error){
+
+  console.error(error);
+
+  if(error?.code === '23505'){
+
+    $('formMsg').innerHTML =
+      `
+        <div class="error">
+          Cette date est déjà bloquée par une autre réservation.
+          Choisis une autre date ou libère l’événement existant.
+        </div>
+      `;
+
+    return;
+
+  }
+
+  $('formMsg').innerHTML =
+    `
+      <div class="error">
+        ${escapeHtml(
+          error?.message ||
+          'Une erreur est survenue.'
+        )}
+      </div>
+    `;
+
+}
+
+async function saveReservation(
+  options={}
+){
+
+  const {
+    closeAfter=true,
+    forcedStatus=null
+  } = options;
+
+  const payload =
+    getFormPayload();
+
+  if(!payload.event_date){
+
+    $('formMsg').innerHTML =
+      `
+        <div class="error">
+          Choisis une date.
+        </div>
+      `;
+
+    return false;
+
+  }
+
+  if(
+    forcedStatus &&
+    payload.guest_count > 0
+  ){
+
+    payload.status =
+      forcedStatus;
+
+  }
+
+  $('saveBtn').disabled =
+    true;
+
+  let result;
+
+  if(editing){
+
+    result =
+      await db
+        .from('reservations')
+        .update(payload)
+        .eq('id',editing.id)
+        .select()
+        .single();
+
+  }
+
+  else{
+
+    result =
+      await db
+        .from('reservations')
+        .insert(payload)
+        .select()
+        .single();
+
+  }
+
+  $('saveBtn').disabled =
+    false;
+
+  if(result.error){
+
+    showDatabaseError(
+      result.error
+    );
+
+    return false;
+
+  }
+
+  editing =
+    result.data;
+
+  $('quotedPrice').value =
+    editing?.quoted_price || '';
+
+  $('formMsg').innerHTML =
+    `
+      <div class="success">
+        Enregistré ✅
+      </div>
+    `;
+
+  await loadData();
+
+  $('invoiceBtn')
+    .classList
+    .toggle(
+      'hidden',
+      !canGenerateInvoice(editing)
+    );
+
+  if(closeAfter){
+
+    setTimeout(
+      () => {
+
+        $('modalBack')
+          .classList
+          .add('hidden');
+
+      },
+      350
+    );
+
+  }
+
+  return true;
+
+}
+
+$('reservationForm').onsubmit =
+async event => {
+
+  event.preventDefault();
+
+  await saveReservation({
+    closeAfter:true
+  });
+
+};
+
+$('approveBtn').onclick =
+async () => {
+
+  if(!editing){
+    return;
+  }
+
+  if(!isRealEvent(editing)){
+    return;
+  }
+
+  const ok =
+    confirm(
+      'Accepter cette réservation et garder la date bloquée?'
+    );
+
+  if(!ok){
+    return;
+  }
+
+  $('status').value =
+    'confirmed';
+
+  const success =
+    await saveReservation({
+      closeAfter:false,
+      forcedStatus:'confirmed'
+    });
+
+  if(!success){
+    return;
+  }
+
+  $('formMsg').innerHTML =
+    `
+      <div class="success">
+        Réservation confirmée ✅
+        <br>
+        Le montant est maintenant enregistré dans ton chiffre d’affaires.
+        <br>
+        La facture PDF est disponible.
+      </div>
+    `;
+
+  $('approveBtn').classList.add('hidden');
+
+  $('invoiceBtn')
+    .classList
+    .toggle(
+      'hidden',
+      !canGenerateInvoice(editing)
+    );
+
+};
+
+$('cancelBtn').onclick =
+async () => {
+
+  if(!editing){
+    return;
+  }
+
+  const ok =
+    confirm(
+      isRealEvent(editing)
+        ? 'Annuler cet événement et libérer cette date sur le site public?'
+        : 'Libérer cette date et la rendre disponible sur le site public?'
+    );
+
+  if(!ok){
+    return;
+  }
+
+  const {error} =
+    await db
+      .from('reservations')
+      .update({
+        status:'cancelled'
+      })
+      .eq(
+        'id',
+        editing.id
+      );
+
+  if(error){
+
+    showDatabaseError(error);
+
+    return;
+
+  }
+
+  editing.status =
+    'cancelled';
+
+  await loadData();
+
+  $('formMsg').innerHTML =
+    `
+      <div class="success">
+        Date libérée ✅
+      </div>
+    `;
+
+  $('status').value =
+    'cancelled';
+
+  $('approveBtn').classList.add('hidden');
+  $('invoiceBtn').classList.add('hidden');
+  $('cancelBtn').classList.add('hidden');
+
+};
+
+$('deleteBtn').onclick =
+async () => {
+
+  if(!editing){
+    return;
+  }
+
+  if(
+    !confirm(
+      'Supprimer définitivement cette entrée? La date sera libérée immédiatement.'
+    )
+  ){
+    return;
+  }
+
+  if(
+    !confirm(
+      'Cette action est irréversible. Confirmer la suppression?'
+    )
+  ){
+    return;
+  }
+
+  $('deleteBtn').disabled =
+    true;
+
+  const {error} =
+    await db
+      .from('reservations')
+      .delete()
+      .eq(
+        'id',
+        editing.id
+      );
+
+  $('deleteBtn').disabled =
+    false;
+
+  if(error){
+
+    showDatabaseError(error);
+
+    return;
+
+  }
+
+  editing =
+    null;
+
+  await loadData();
+
+  $('modalBack').classList.add('hidden');
+
+  alert(
+    'Entrée supprimée. La date est disponible.'
+  );
+
+};
+
+function invoiceNumber(r){
+
+  const datePart =
+    (r.event_date || '')
+      .replaceAll('-','');
+
+  const idPart =
+    String(r.id || '')
+      .replaceAll('-','')
+      .slice(0,8)
+      .toUpperCase();
+
+  return `RAFA-${datePart}-${idPart}`;
+
+}
+
+function pdfText(value){
+  return String(value || '');
+}
+
+function generateInvoicePDF(r){
+
+  if(
+    !r ||
+    r.status !== 'confirmed' ||
+    !isRealEvent(r)
+  ){
+
+    alert(
+      'La facture est disponible uniquement pour une vraie réservation confirmée.'
+    );
+
+    return;
+
+  }
+
+  const total =
+    revenueForReservation(r);
+
+  if(total <= 0){
+
+    alert(
+      'Aucun montant n’est disponible pour cet événement.'
+    );
+
+    return;
+
+  }
+
+  if(
+    !window.jspdf ||
+    !window.jspdf.jsPDF
+  ){
+
+    alert(
+      'Le module PDF n’est pas encore chargé. Réessaie dans quelques secondes.'
+    );
+
+    return;
+
+  }
+
+  const {jsPDF} =
+    window.jspdf;
+
+  const doc =
+    new jsPDF({
+      unit:'mm',
+      format:'letter'
+    });
+
+  const pricing =
+    calculateEventPrice(
+      r.guest_count
+    );
+
+  const customPrice =
+    pricing &&
+    r.quoted_price !== null &&
+    Number(r.quoted_price) !==
+      Number(pricing.total);
+
+  const deposit =
+    r.deposit_received
+      ? Number(
+          r.deposit_amount || 0
+        )
+      : 0;
+
+  const balance =
+    Math.max(
+      total-deposit,
+      0
+    );
+
+  doc.setFillColor(91,31,42);
+  doc.rect(0,0,216,43,'F');
+
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(25);
+  doc.text('RAFA',18,20);
+
+  doc.setFontSize(10);
+  doc.setFont('helvetica','normal');
+  doc.text('Pizza a domicile',18,27);
+
+  doc.setFontSize(20);
+  doc.setFont('helvetica','bold');
+  doc.text(
+    'FACTURE',
+    198,
+    20,
+    {align:'right'}
+  );
+
+  doc.setFontSize(8.5);
+  doc.setFont('helvetica','normal');
+  doc.text(
+    invoiceNumber(r),
+    198,
+    27,
+    {align:'right'}
+  );
+
+  doc.setTextColor(43,37,36);
+  doc.setFontSize(10);
+  doc.setFont('helvetica','bold');
+  doc.text('Rafa Pizza',18,58);
+
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(125,112,105);
+  doc.text(
+    'lapizzaderafa@gmail.com',
+    18,
+    64
+  );
+
+  doc.setTextColor(43,37,36);
+  doc.setFont('helvetica','bold');
+  doc.text(
+    'Date de l evenement',
+    125,
+    58
+  );
+
+  doc.setFont('helvetica','normal');
+  doc.text(
+    pdfText(
+      fmtDateLong(
+        r.event_date
+      )
+    ),
+    125,
+    64
+  );
+
+  doc.setDrawColor(220,210,205);
+  doc.line(18,74,198,74);
+
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(10);
+  doc.text('FACTURE A',18,85);
+
+  doc.setFontSize(13);
+  doc.text(
+    pdfText(
+      r.full_name || 'Client'
+    ),
+    18,
+    94
+  );
+
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(9);
+  doc.setTextColor(125,112,105);
+
+  let clientY =
+    101;
+
+  if(r.email){
+
+    doc.text(
+      pdfText(r.email),
+      18,
+      clientY
+    );
+
+    clientY += 5;
+
+  }
+
+  if(r.phone){
+
+    doc.text(
+      pdfText(r.phone),
+      18,
+      clientY
+    );
+
+    clientY += 5;
+
+  }
+
+  if(r.event_address){
+
+    doc.text(
+      pdfText(r.event_address),
+      18,
+      clientY
+    );
+
+    clientY += 5;
+
+  }
+
+  if(r.city){
+
+    doc.text(
+      pdfText(r.city),
+      18,
+      clientY
+    );
+
+  }
+
+  let y =
+    130;
+
+  doc.setFillColor(246,240,231);
+  doc.rect(18,y,180,10,'F');
+
+  doc.setTextColor(91,31,42);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(9);
+
+  doc.text(
+    'DESCRIPTION',
+    22,
+    y+6.5
+  );
+
+  doc.text(
+    'MONTANT',
+    193,
+    y+6.5,
+    {align:'right'}
+  );
+
+  y += 20;
+
+  doc.setTextColor(43,37,36);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(10);
+
+  doc.text(
+    'Service Rafa Pizza a domicile',
+    22,
+    y
+  );
+
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(9);
+
+  doc.text(
+    `${r.guest_count} invites`,
+    22,
+    y+6
+  );
+
+  if(
+    pricing &&
+    !customPrice
+  ){
+
+    doc.text(
+      `${r.guest_count} x ${pricing.pricePerPerson} $ / personne`,
+      22,
+      y+12
+    );
+
+    doc.text(
+      `Service et installation : ${pricing.fixedFee} $`,
+      22,
+      y+18
+    );
+
+  }
+
+  else{
+
+    doc.text(
+      'Montant convenu pour l evenement',
+      22,
+      y+12
+    );
+
+  }
+
+  doc.setFont('helvetica','bold');
+
+  doc.text(
+    money(total),
+    193,
+    y,
+    {align:'right'}
+  );
+
+  y += 43;
+
+  doc.setDrawColor(220,210,205);
+  doc.line(118,y,198,y);
+
+  y += 9;
+
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(10);
+
+  doc.text(
+    'Total',
+    130,
+    y
+  );
+
+  doc.setFont('helvetica','bold');
+
+  doc.text(
+    money(total),
+    193,
+    y,
+    {align:'right'}
+  );
+
+  if(deposit > 0){
+
+    y += 8;
+
+    doc.setFont(
+      'helvetica',
+      'normal'
+    );
+
+    doc.text(
+      'Depot recu',
+      130,
+      y
+    );
+
+    doc.text(
+      '- ' + money(deposit),
+      193,
+      y,
+      {align:'right'}
+    );
+
+    y += 9;
+
+    doc.setFont(
+      'helvetica',
+      'bold'
+    );
+
+    doc.setFontSize(12);
+
+    doc.text(
+      'Solde',
+      130,
+      y
+    );
+
+    doc.text(
+      money(balance),
+      193,
+      y,
+      {align:'right'}
+    );
+
+  }
+
+  doc.setFontSize(9);
+  doc.setFont(
+    'helvetica',
+    'normal'
+  );
+
+  doc.setTextColor(
+    125,
+    112,
+    105
+  );
+
+  doc.text(
+    'Merci d avoir choisi Rafa Pizza.',
+    18,
+    245
+  );
+
+  doc.text(
+    'Vous invitez votre monde. On s occupe du reste.',
+    18,
+    251
+  );
+
+  doc.setFontSize(7);
+
+  doc.text(
+    'Document genere depuis Rafa Admin. Le montant correspond au prix enregistre pour cet evenement.',
+    18,
+    266
+  );
+
+  const blob =
+    doc.output('blob');
+
+  const url =
+    URL.createObjectURL(blob);
+
+  window.open(
+    url,
+    '_blank'
+  );
+
+}
+
+$('invoiceBtn').onclick =
+() => {
+
+  if(editing){
+    generateInvoicePDF(editing);
+  }
+
+};
+
+sessionGate();
+
+</script>
+
+</body>
+</html>
