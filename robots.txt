@@ -1,4 +1,12 @@
 User-agent: *
 Allow: /
+Disallow: /admin.html
+Disallow: /admin-original.html
+Disallow: /bilan.html
+Disallow: /crumple.html
+Disallow: /finances.html
+Disallow: /menus-admin.html
+Disallow: /menu.html
+Disallow: /reserve.html
 
 Sitemap: https://rafapizza.ca/sitemap.xml
