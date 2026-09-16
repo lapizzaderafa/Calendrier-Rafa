@@ -19,172 +19,24 @@ h1,h2,.section-title{font-weight:700!important}
 .nav a{display:inline-flex;align-items:center;justify-content:center;min-width:96px;height:38px;box-sizing:border-box;text-align:center;padding:0 14px;font-weight:700}
 #prix,#pizzas,#disponibilites{scroll-margin-top:82px}
 .site-header{padding-top:8px!important;padding-bottom:8px!important}
-.brand{min-width:112px!important}
-.brand img{width:112px!important;height:56px!important}
-.hero-copy{max-width:620px!important}
-.hero-copy h1{font-size:clamp(42px,5.25vw,60px)!important;line-height:1.035!important;letter-spacing:-.032em!important;font-weight:700!important;margin-bottom:25px!important}
-.hero-actions{margin-top:27px!important}
-.hero-actions .primary{max-width:250px}
-.button,.nav a,.experience-card,.step,.estimator-card,.calendar-card{border-radius:18px}
-.nav .cta,.button{border-radius:999px}
-@media (max-width:900px){
-  .site-header{gap:8px;padding:7px 12px!important;position:sticky!important;top:0!important;z-index:50!important}
-  .brand{min-width:72px!important}
-  .brand img{width:76px!important;height:48px!important}
-  .nav{gap:5px;flex-wrap:nowrap;min-width:0;justify-content:flex-end}
-  .nav a,.nav a:not(.cta),.nav .cta{display:inline-flex!important;align-items:center;justify-content:center;min-width:70px;width:70px;height:32px;font-size:8px;padding:0 6px;white-space:nowrap;line-height:1;box-sizing:border-box}
-  .nav a:not(.cta){background:transparent!important;border:1px solid rgba(91,31,42,.09)!important;border-radius:999px!important}
-  .hero{padding-top:44px!important}
-  .hero-copy{max-width:350px!important}
-  .hero-copy h1{font-size:41px!important;line-height:1.055!important;letter-spacing:-.028em!important;margin-bottom:23px!important}
-  .hero-actions{display:block!important;margin-top:25px!important}
-  .hero-actions .primary{width:100%!important;max-width:none!important}
-}
-@media (max-width:380px){
-  .site-header{gap:6px;padding-inline:9px!important;position:sticky!important;top:0!important;z-index:50!important}
-  .brand{min-width:62px!important}
-  .brand img{width:66px!important;height:44px!important}
-  .nav{gap:3px}
-  .nav a,.nav a:not(.cta),.nav .cta{display:inline-flex!important;min-width:64px;width:64px;height:30px;font-size:7.2px;padding:0 4px}
-  .hero-copy h1{font-size:38px!important}
-}
+.brand{min-width:112px!important}.brand img{width:112px!important;height:56px!important}
+.hero-copy{max-width:620px!important}.hero-copy h1{font-size:clamp(42px,5.25vw,60px)!important;line-height:1.035!important;letter-spacing:-.032em!important;font-weight:700!important;margin-bottom:25px!important}
+.hero-actions{margin-top:27px!important}.hero-actions .primary{max-width:250px}
+.button,.nav a,.experience-card,.step,.estimator-card,.calendar-card{border-radius:18px}.nav .cta,.button{border-radius:999px}
+@media(max-width:900px){.site-header{gap:8px;padding:7px 12px!important;position:sticky!important;top:0!important;z-index:50!important}.brand{min-width:72px!important}.brand img{width:76px!important;height:48px!important}.nav{gap:5px;flex-wrap:nowrap;min-width:0;justify-content:flex-end}.nav a,.nav a:not(.cta),.nav .cta{display:inline-flex!important;align-items:center;justify-content:center;min-width:70px;width:70px;height:32px;font-size:8px;padding:0 6px;white-space:nowrap;line-height:1;box-sizing:border-box}.nav a:not(.cta){background:transparent!important;border:1px solid rgba(91,31,42,.09)!important;border-radius:999px!important}.hero{padding-top:44px!important}.hero-copy{max-width:350px!important}.hero-copy h1{font-size:41px!important;line-height:1.055!important;letter-spacing:-.028em!important;margin-bottom:23px!important}.hero-actions{display:block!important;margin-top:25px!important}.hero-actions .primary{width:100%!important;max-width:none!important}}
+@media(max-width:380px){.site-header{gap:6px;padding-inline:9px!important;position:sticky!important;top:0!important;z-index:50!important}.brand{min-width:62px!important}.brand img{width:66px!important;height:44px!important}.nav{gap:3px}.nav a,.nav a:not(.cta),.nav .cta{display:inline-flex!important;min-width:64px;width:64px;height:30px;font-size:7.2px;padding:0 4px}.hero-copy h1{font-size:38px!important}}
 </style>
 </head>
 <body>
 <main class="site">
-<header class="site-header">
-<a class="brand" href="./index.html" aria-label="Rafa Pizza, accueil" style="justify-content:flex-start">
-<img src="./assets/rafa-header-clean.svg?v=5" alt="Rafa" style="display:block;object-fit:contain;object-position:left center" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block'">
-<span style="display:none;font-family:'Manrope',sans-serif;font-size:30px;font-weight:800;letter-spacing:-0.055em;color:#5B1F2A;line-height:1">Rafa</span>
-</a>
-<nav class="nav" aria-label="Navigation principale">
-<a href="#prix">Prix</a>
-<a href="#pizzas">Nos pizzas</a>
-<a class="cta" href="#disponibilites">Réserver</a>
-</nav>
-</header>
-
-<section class="hero">
-<div class="hero-copy">
-<h1>La pizza, chez vous.</h1>
-<p class="lead">Rafa s’installe sur place, prépare les pizzas devant vos invités et les sert en continu. Vous choisissez la date; le menu vient ensuite, une fois l’événement confirmé.</p>
-<div class="hero-actions">
-<a class="button primary" href="#disponibilites">Réserver</a>
-</div>
-</div>
-<div class="hero-media">
-<img src="FE0F2EED-EA4C-4039-A532-16A5FF633ED0.jpeg" alt="Rafa Pizza en service lors d'un événement">
-<div class="hero-badge">Préparé sur place · servi en continu</div>
-</div>
-</section>
-
-<section id="fonctionnement" class="section alt">
-<div class="inner">
-<div class="section-head">
-<p class="section-kicker">Simple du début à la fin</p>
-<h2 class="section-title">Comment ça fonctionne</h2>
-<p class="section-copy">La réservation se fait dans un ordre clair. Vous n’avez pas besoin de décider de vos pizzas avant de savoir si votre date est confirmée.</p>
-</div>
-<div class="steps">
-<article class="step"><span class="step-number">01</span><h3>Choisissez une date</h3><p>Consultez les disponibilités réelles dans le calendrier.</p></article>
-<article class="step"><span class="step-number">02</span><h3>Envoyez votre demande</h3><p>Quelques informations suffisent : invités, heure, secteur et coordonnées.</p></article>
-<article class="step"><span class="step-number">03</span><h3>Composez votre menu</h3><p>Après confirmation, vous choisissez vos 4 créations Rafa. Le menu peut ensuite être ajusté avec nous.</p></article>
-<article class="step"><span class="step-number">04</span><h3>Profitez</h3><p>Rafa s’installe, cuisine et sert les pizzas tout au long de l’événement.</p></article>
-</div>
-</div>
-</section>
-
-<section class="section">
-<div class="inner">
-<div class="section-head">
-<p class="section-kicker">L’expérience Rafa</p>
-<h2 class="section-title">Tout est pensé pour rester simple.</h2>
-<p class="section-copy">Une formule conviviale, claire et organisée : les pizzas sortent au fur et à mesure et les invités se servent pendant l’événement.</p>
-</div>
-<div class="experience-grid">
-<article class="experience-card"><span>Votre menu</span><strong>4 créations au choix</strong><p>Vous les choisissez après la confirmation de votre événement.</p></article>
-<article class="experience-card"><span>Le format</span><strong>Pizzas 11 po</strong><p>Découpées et servies pour permettre à tout le monde de goûter.</p></article>
-<article class="experience-card"><span>Le service</span><strong>En continu</strong><p>Les pizzas sont préparées sur place tout au long du service.</p></article>
-</div>
-</div>
-</section>
-
-<section id="prix" class="section alt">
-<div class="inner">
-<div class="section-head">
-<p class="section-kicker">Tarification transparente</p>
-<h2 class="section-title">Estimez votre événement.</h2>
-<p class="section-copy">Ajustez simplement le nombre d’invités. Vous voyez séparément le prix par personne et les frais de service et d’installation.</p>
-</div>
-<div class="estimator-card">
-<strong class="guest-value"><span id="guestNumber">20</span> invités</strong>
-<input id="guestSlider" class="price-slider" type="range" min="1" max="100" value="20" aria-label="Nombre d'invités">
-<div class="slider-labels"><span>1</span><span>50</span><span>100 invités</span></div>
-<div class="estimate-results">
-<div class="estimate-box"><span>Prix par personne</span><strong id="personPrice">—</strong></div>
-<div class="estimate-box"><span>Service & installation</span><strong id="eventFee">—</strong></div>
-</div>
-<div id="largeEventNote" class="large-event-note">Pour les groupes de plus de 50 invités, la tarification est adaptée au volume.</div>
-<p class="estimate-note">Cette estimation sert à planifier votre événement. Les détails et le montant final sont confirmés avec vous avant l’événement.</p>
-<div class="section-action"><a class="button primary" href="#disponibilites">Vérifier ma date</a></div>
-</div>
-</div>
-</section>
-
-<section id="pizzas" class="section">
-<div class="inner">
-<div class="section-head">
-<p class="section-kicker">Les créations Rafa</p>
-<h2 class="section-title">Découvrez le menu.</h2>
-<p class="section-copy">Parcourez les créations maintenant, sans avoir à faire votre choix tout de suite. Votre menu final de 4 pizzas sera composé après la confirmation de votre réservation.</p>
-</div>
-<div id="pizzaGrid" class="pizza-grid" aria-label="Galerie des pizzas Rafa"></div>
-<div class="menu-note"><strong>Quand vais-je choisir?</strong> Une fois votre événement confirmé. Vous aurez alors le temps de choisir vos 4 créations et de discuter avec Rafa si vous souhaitez apporter un ajustement.</div>
-</div>
-</section>
-
-<section id="disponibilites" class="section alt">
-<div class="inner">
-<div class="section-head">
-<p class="section-kicker">Étape 1</p>
-<h2 class="section-title">Votre date est-elle disponible?</h2>
-<p class="section-copy">Cliquez sur une date disponible pour commencer votre demande. Une demande envoyée place la date en attente jusqu’à sa confirmation.</p>
-</div>
-<div class="calendar-card">
-<div class="calendar-toolbar">
-<button id="prevMonth" class="month-nav" type="button" aria-label="Mois précédent">‹</button>
-<h3 id="monthTitle">Chargement…</h3>
-<button id="nextMonth" class="month-nav" type="button" aria-label="Mois suivant">›</button>
-</div>
-<div class="weekdays" aria-hidden="true">
-<div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mer</div><div class="weekday">Jeu</div><div class="weekday">Ven</div><div class="weekday">Sam</div><div class="weekday">Dim</div>
-</div>
-<div id="calendarGrid" class="calendar-grid"></div>
-<div class="calendar-legend">
-<span><i class="legend-dot available"></i>Disponible</span>
-<span><i class="legend-dot booked"></i>Réservé / en attente</span>
-<span><i class="legend-dot unavailable"></i>Indisponible</span>
-</div>
-<p class="calendar-help">Le calendrier est actuellement ouvert jusqu’au 30 novembre 2026.</p>
-<div id="calendarError" class="calendar-error">Les disponibilités n’ont pas pu être chargées. Réessayez dans quelques instants.</div>
-</div>
-</div>
-</section>
-
-<section class="final-cta">
-<div><h2>Vous avez votre date?</h2><p>Sélectionnez-la dans le calendrier. La demande prend seulement quelques minutes.</p></div>
-<a class="button" href="#disponibilites">Voir le calendrier</a>
-</section>
-<footer class="footer">Rafa Pizza · Les disponibilités sont mises à jour au fil des demandes et réservations.</footer>
-</main>
-
-<div id="imageViewer" class="viewer" role="dialog" aria-modal="true" aria-label="Photo de pizza">
-<button id="viewerClose" class="viewer-close" type="button" aria-label="Fermer">×</button>
-<img id="viewerImg" alt="">
-<div id="viewerCaption" class="viewer-caption"></div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./assets/site.js?v=2"></script>
-</body>
-</html>
+<header class="site-header"><a class="brand" href="./index.html" aria-label="Rafa Pizza, accueil" style="justify-content:flex-start"><img src="./assets/rafa-header-clean.svg?v=5" alt="Rafa" style="display:block;object-fit:contain;object-position:left center" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block'"><span style="display:none;font-family:'Manrope',sans-serif;font-size:30px;font-weight:800;letter-spacing:-0.055em;color:#5B1F2A;line-height:1">Rafa</span></a><nav class="nav" aria-label="Navigation principale"><a href="#prix">Prix</a><a href="#pizzas">Nos pizzas</a><a class="cta" href="#disponibilites">Réserver</a></nav></header>
+<section class="hero"><div class="hero-copy"><h1>La pizza, chez vous.</h1><p class="lead">Rafa s’installe chez vous, prépare les pizzas devant vos invités et les sert au fur et à mesure. Vous profitez de votre monde, on s’occupe du reste.</p><div class="hero-actions"><a class="button primary" href="#disponibilites">Réserver</a></div></div><div class="hero-media"><img src="FE0F2EED-EA4C-4039-A532-16A5FF633ED0.jpeg" alt="Rafa Pizza en service lors d'un événement"><div class="hero-badge">Préparé sur place · servi en continu</div></div></section>
+<section id="fonctionnement" class="section alt"><div class="inner"><div class="section-head"><p class="section-kicker">Simple du début à la fin</p><h2 class="section-title">Comment ça fonctionne</h2><p class="section-copy">La réservation se fait dans un ordre clair. Vous n’avez pas besoin de décider de vos pizzas avant de savoir si votre date est confirmée.</p></div><div class="steps"><article class="step"><span class="step-number">01</span><h3>Choisissez une date</h3><p>Consultez les disponibilités réelles dans le calendrier.</p></article><article class="step"><span class="step-number">02</span><h3>Envoyez votre demande</h3><p>Quelques informations suffisent : invités, heure, secteur et coordonnées.</p></article><article class="step"><span class="step-number">03</span><h3>Composez votre menu</h3><p>Après confirmation, vous choisissez vos 4 créations Rafa. Le menu peut ensuite être ajusté avec nous.</p></article><article class="step"><span class="step-number">04</span><h3>Profitez</h3><p>Rafa s’installe, cuisine et sert les pizzas tout au long de l’événement.</p></article></div></div></section>
+<section class="section"><div class="inner"><div class="section-head"><p class="section-kicker">L’expérience Rafa</p><h2 class="section-title">Tout est pensé pour rester simple.</h2><p class="section-copy">Une formule conviviale, claire et organisée : les pizzas sortent au fur et à mesure et les invités se servent pendant l’événement.</p></div><div class="experience-grid"><article class="experience-card"><span>Votre menu</span><strong>4 créations au choix</strong><p>Vous les choisissez après la confirmation de votre événement.</p></article><article class="experience-card"><span>Le format</span><strong>Pizzas 11 po</strong><p>Découpées et servies pour permettre à tout le monde de goûter.</p></article><article class="experience-card"><span>Le service</span><strong>En continu</strong><p>Les pizzas sont préparées sur place tout au long du service.</p></article></div></div></section>
+<section id="prix" class="section alt"><div class="inner"><div class="section-head"><p class="section-kicker">Tarification transparente</p><h2 class="section-title">Estimez votre événement.</h2><p class="section-copy">Ajustez simplement le nombre d’invités. Vous voyez séparément le prix par personne et les frais de service et d’installation.</p></div><div class="estimator-card"><strong class="guest-value"><span id="guestNumber">20</span> invités</strong><input id="guestSlider" class="price-slider" type="range" min="1" max="100" value="20" aria-label="Nombre d'invités"><div class="slider-labels"><span>1</span><span>50</span><span>100 invités</span></div><div class="estimate-results"><div class="estimate-box"><span>Prix par personne</span><strong id="personPrice">—</strong></div><div class="estimate-box"><span>Service & installation</span><strong id="eventFee">—</strong></div></div><div id="largeEventNote" class="large-event-note">Pour les groupes de plus de 50 invités, la tarification est adaptée au volume.</div><p class="estimate-note">Cette estimation sert à planifier votre événement. Les détails et le montant final sont confirmés avec vous avant l’événement.</p><div class="section-action"><a class="button primary" href="#disponibilites">Vérifier ma date</a></div></div></div></section>
+<section id="pizzas" class="section"><div class="inner"><div class="section-head"><p class="section-kicker">Les créations Rafa</p><h2 class="section-title">Découvrez le menu.</h2><p class="section-copy">Parcourez les créations maintenant, sans avoir à faire votre choix tout de suite. Votre menu final de 4 pizzas sera composé après la confirmation de votre réservation.</p></div><div id="pizzaGrid" class="pizza-grid" aria-label="Galerie des pizzas Rafa"></div><div class="menu-note"><strong>Quand vais-je choisir?</strong> Une fois votre événement confirmé. Vous aurez alors le temps de choisir vos 4 créations et de discuter avec Rafa si vous souhaitez apporter un ajustement.</div></div></section>
+<section id="disponibilites" class="section alt"><div class="inner"><div class="section-head"><p class="section-kicker">Étape 1</p><h2 class="section-title">Votre date est-elle disponible?</h2><p class="section-copy">Cliquez sur une date disponible pour commencer votre demande. Une demande envoyée place la date en attente jusqu’à sa confirmation.</p></div><div class="calendar-card"><div class="calendar-toolbar"><button id="prevMonth" class="month-nav" type="button" aria-label="Mois précédent">‹</button><h3 id="monthTitle">Chargement…</h3><button id="nextMonth" class="month-nav" type="button" aria-label="Mois suivant">›</button></div><div class="weekdays" aria-hidden="true"><div class="weekday">Lun</div><div class="weekday">Mar</div><div class="weekday">Mer</div><div class="weekday">Jeu</div><div class="weekday">Ven</div><div class="weekday">Sam</div><div class="weekday">Dim</div></div><div id="calendarGrid" class="calendar-grid"></div><div class="calendar-legend"><span><i class="legend-dot available"></i>Disponible</span><span><i class="legend-dot booked"></i>Réservé / en attente</span><span><i class="legend-dot unavailable"></i>Indisponible</span></div><p class="calendar-help">Le calendrier est actuellement ouvert jusqu’au 30 novembre 2026.</p><div id="calendarError" class="calendar-error">Les disponibilités n’ont pas pu être chargées. Réessayez dans quelques instants.</div></div></div></section>
+<section class="final-cta"><div><h2>Vous avez votre date?</h2><p>Sélectionnez-la dans le calendrier. La demande prend seulement quelques minutes.</p></div><a class="button" href="#disponibilites">Voir le calendrier</a></section><footer class="footer">Rafa Pizza · Les disponibilités sont mises à jour au fil des demandes et réservations.</footer></main>
+<div id="imageViewer" class="viewer" role="dialog" aria-modal="true" aria-label="Photo de pizza"><button id="viewerClose" class="viewer-close" type="button" aria-label="Fermer">×</button><img id="viewerImg" alt=""><div id="viewerCaption" class="viewer-caption"></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./assets/site.js?v=2"></script>
+</body></html>
