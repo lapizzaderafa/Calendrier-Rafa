@@ -2,7 +2,7 @@ const SUPABASE_URL = "https://jetogsbyptglaihktdel.supabase.co";
 const SUPABASE_KEY = "sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const BOOKING_START = new Date(2026, 8, 1);
-const BOOKING_END = new Date(2026, 10, 30);
+const BOOKING_END = new Date(2026, 9, 31);
 const MONTHS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
 const PIZZA_NAMES = ["Margherita","’Nduja e miel","New York","Parma","Golosa","Cipolla","Quattro","Fungus","Figus","Montréal","Jardin","Mortadella"];
 const pizzaFile = name => ({"’Nduja e miel":"nduja-e-miel","New York":"new-york","Montréal":"montreal"}[name] || name.toLowerCase());
