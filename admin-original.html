@@ -2868,6 +2868,357 @@ function generateInvoicePDF(r){
     );
   }
 
+  else if(r.id === '407237b8-97f2-4998-91e0-94c84bd7f27e'){
+    detailLines.push('Prix convenu - base initiale : 22 personnes');
+    detailLines.push('22 x 23 $ / personne : 506,00 
+  if(
+    Array.isArray(r.menu_choices) &&
+    r.menu_choices.length
+  ){
+    const menuText =
+      'Menu : ' +
+      r.menu_choices.join(' | ');
+
+    const wrappedMenu =
+      doc.splitTextToSize(
+        menuText,
+        118
+      );
+
+    wrappedMenu.forEach(
+      line =>
+        detailLines.push(line)
+    );
+  }
+
+  let detailY =
+    y + 6;
+
+  detailLines.forEach(
+    line => {
+
+      doc.text(
+        pdfText(line),
+        22,
+        detailY
+      );
+
+      detailY += 5;
+
+    }
+  );
+
+  y =
+    Math.max(
+      y + 43,
+      detailY + 9
+    );
+
+  doc.setDrawColor(220,210,205);
+  doc.line(118,y,198,y);
+
+  y += 9;
+
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(10);
+
+  doc.text(
+    'Total',
+    130,
+    y
+  );
+
+  doc.setFont('helvetica','bold');
+
+  doc.text(
+    money(total),
+    193,
+    y,
+    {align:'right'}
+  );
+
+  if(deposit > 0){
+
+    y += 8;
+
+    doc.setFont(
+      'helvetica',
+      'normal'
+    );
+
+    doc.text(
+      'Depot recu',
+      130,
+      y
+    );
+
+    doc.text(
+      '- ' + money(deposit),
+      193,
+      y,
+      {align:'right'}
+    );
+
+    y += 9;
+
+    doc.setFont(
+      'helvetica',
+      'bold'
+    );
+
+    doc.setFontSize(12);
+
+    doc.text(
+      'Solde',
+      130,
+      y
+    );
+
+    doc.text(
+      money(balance),
+      193,
+      y,
+      {align:'right'}
+    );
+
+  }
+
+  doc.setFontSize(9);
+  doc.setFont(
+    'helvetica',
+    'normal'
+  );
+
+  doc.setTextColor(
+    125,
+    112,
+    105
+  );
+
+  doc.text(
+    'Merci d avoir choisi Rafa Pizza.',
+    18,
+    245
+  );
+
+  doc.text(
+    'Vous invitez votre monde. On s occupe du reste.',
+    18,
+    251
+  );
+
+  doc.setFontSize(7);
+
+  doc.text(
+    'Document genere depuis Rafa Admin. Le montant correspond au prix enregistre pour cet evenement.',
+    18,
+    266
+  );
+
+  const blob =
+    doc.output('blob');
+
+  const url =
+    URL.createObjectURL(blob);
+
+  window.open(
+    url,
+    '_blank'
+  );
+
+}
+
+$('invoiceBtn').onclick =
+() => {
+
+  if(editing){
+    generateInvoicePDF(editing);
+  }
+
+};
+
+sessionGate();
+
+</script>
+
+</body>
+</html>);
+    detailLines.push('Service et installation : 300,00 
+  if(
+    Array.isArray(r.menu_choices) &&
+    r.menu_choices.length
+  ){
+    const menuText =
+      'Menu : ' +
+      r.menu_choices.join(' | ');
+
+    const wrappedMenu =
+      doc.splitTextToSize(
+        menuText,
+        118
+      );
+
+    wrappedMenu.forEach(
+      line =>
+        detailLines.push(line)
+    );
+  }
+
+  let detailY =
+    y + 6;
+
+  detailLines.forEach(
+    line => {
+
+      doc.text(
+        pdfText(line),
+        22,
+        detailY
+      );
+
+      detailY += 5;
+
+    }
+  );
+
+  y =
+    Math.max(
+      y + 43,
+      detailY + 9
+    );
+
+  doc.setDrawColor(220,210,205);
+  doc.line(118,y,198,y);
+
+  y += 9;
+
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(10);
+
+  doc.text(
+    'Total',
+    130,
+    y
+  );
+
+  doc.setFont('helvetica','bold');
+
+  doc.text(
+    money(total),
+    193,
+    y,
+    {align:'right'}
+  );
+
+  if(deposit > 0){
+
+    y += 8;
+
+    doc.setFont(
+      'helvetica',
+      'normal'
+    );
+
+    doc.text(
+      'Depot recu',
+      130,
+      y
+    );
+
+    doc.text(
+      '- ' + money(deposit),
+      193,
+      y,
+      {align:'right'}
+    );
+
+    y += 9;
+
+    doc.setFont(
+      'helvetica',
+      'bold'
+    );
+
+    doc.setFontSize(12);
+
+    doc.text(
+      'Solde',
+      130,
+      y
+    );
+
+    doc.text(
+      money(balance),
+      193,
+      y,
+      {align:'right'}
+    );
+
+  }
+
+  doc.setFontSize(9);
+  doc.setFont(
+    'helvetica',
+    'normal'
+  );
+
+  doc.setTextColor(
+    125,
+    112,
+    105
+  );
+
+  doc.text(
+    'Merci d avoir choisi Rafa Pizza.',
+    18,
+    245
+  );
+
+  doc.text(
+    'Vous invitez votre monde. On s occupe du reste.',
+    18,
+    251
+  );
+
+  doc.setFontSize(7);
+
+  doc.text(
+    'Document genere depuis Rafa Admin. Le montant correspond au prix enregistre pour cet evenement.',
+    18,
+    266
+  );
+
+  const blob =
+    doc.output('blob');
+
+  const url =
+    URL.createObjectURL(blob);
+
+  window.open(
+    url,
+    '_blank'
+  );
+
+}
+
+$('invoiceBtn').onclick =
+() => {
+
+  if(editing){
+    generateInvoicePDF(editing);
+  }
+
+};
+
+sessionGate();
+
+</script>
+
+</body>
+</html>);
+    detailLines.push('Nombre final de convives : 20');
+  }
+
   else{
     detailLines.push(
       'Forfait evenement personnalise'
