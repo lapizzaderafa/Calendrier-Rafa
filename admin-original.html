@@ -2700,7 +2700,7 @@ function generateInvoicePDF(r){
   doc.setTextColor(43,37,36);
   doc.setFont('helvetica','bold');
   doc.text(
-    'Date de l evenement',
+    'Date et heure',
     125,
     58
   );
@@ -2708,9 +2708,10 @@ function generateInvoicePDF(r){
   doc.setFont('helvetica','normal');
   doc.text(
     pdfText(
-      fmtDateLong(
-        r.event_date
-      )
+      fmtDateLong(r.event_date) +
+      (r.preferred_time
+        ? ' - ' + r.preferred_time
+        : '')
     ),
     125,
     64
@@ -2820,46 +2821,6 @@ function generateInvoicePDF(r){
     y
   );
 
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(9);
-
-  doc.text(
-    `${r.guest_count} invites`,
-    22,
-    y+6
-  );
-
-  if(
-    pricing &&
-    !customPrice
-  ){
-
-    doc.text(
-      `${r.guest_count} x ${pricing.pricePerPerson} $ / personne`,
-      22,
-      y+12
-    );
-
-    doc.text(
-      `Service et installation : ${pricing.fixedFee} $`,
-      22,
-      y+18
-    );
-
-  }
-
-  else{
-
-    doc.text(
-      'Montant convenu pour l evenement',
-      22,
-      y+12
-    );
-
-  }
-
-  doc.setFont('helvetica','bold');
-
   doc.text(
     money(total),
     193,
@@ -2867,7 +2828,94 @@ function generateInvoicePDF(r){
     {align:'right'}
   );
 
-  y += 43;
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(9);
+
+  const detailLines = [
+    `${r.guest_count} invites`,
+    'Preparation, cuisson et service sur place'
+  ];
+
+  if(r.preferred_time){
+    detailLines.push(
+      `Heure : ${r.preferred_time}`
+    );
+  }
+
+  const eventLocation = [
+    r.event_address,
+    r.city
+  ]
+    .filter(Boolean)
+    .join(', ');
+
+  if(eventLocation){
+    detailLines.push(
+      `Lieu : ${eventLocation}`
+    );
+  }
+
+  if(
+    pricing &&
+    !customPrice
+  ){
+    detailLines.push(
+      `${r.guest_count} x ${pricing.pricePerPerson} $ / personne`
+    );
+
+    detailLines.push(
+      `Service et installation : ${pricing.fixedFee} $`
+    );
+  }
+
+  else{
+    detailLines.push(
+      'Forfait evenement personnalise'
+    );
+  }
+
+  if(
+    Array.isArray(r.menu_choices) &&
+    r.menu_choices.length
+  ){
+    const menuText =
+      'Menu : ' +
+      r.menu_choices.join(' | ');
+
+    const wrappedMenu =
+      doc.splitTextToSize(
+        menuText,
+        118
+      );
+
+    wrappedMenu.forEach(
+      line =>
+        detailLines.push(line)
+    );
+  }
+
+  let detailY =
+    y + 6;
+
+  detailLines.forEach(
+    line => {
+
+      doc.text(
+        pdfText(line),
+        22,
+        detailY
+      );
+
+      detailY += 5;
+
+    }
+  );
+
+  y =
+    Math.max(
+      y + 43,
+      detailY + 9
+    );
 
   doc.setDrawColor(220,210,205);
   doc.line(118,y,198,y);
