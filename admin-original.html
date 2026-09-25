@@ -2869,8 +2869,16 @@ function generateInvoicePDF(r){
   }
 
   else if(r.id === '407237b8-97f2-4998-91e0-94c84bd7f27e'){
-    detailLines.push('Prix convenu - base initiale : 22 personnes');
-    detailLines.push('22 x 23 $ / personne : 506,00 
+    detailLines.push('20 x 25 $ / personne : 500,00 $');
+    detailLines.push('Service, installation et deplacements : 306,00 $');
+  }
+
+  else{
+    detailLines.push(
+      'Forfait evenement personnalise'
+    );
+  }
+
   if(
     Array.isArray(r.menu_choices) &&
     r.menu_choices.length
