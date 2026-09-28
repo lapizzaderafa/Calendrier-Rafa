@@ -12,24 +12,84 @@ html,body{margin:0;min-height:100%;background:#eee8df;color:#5B1F2A;font-family:
 <div id="boot" class="boot"><div class="boot-card"><div class="boot-title">Rafa Pizza</div><div class="boot-note">Chargement du tableau de bord…</div></div></div>
 <script>
 (async function(){
-  try{
-    const response=await fetch('./admin-original.html?v=20260927-admin-clean-1',{cache:'no-store'});
-    if(!response.ok) throw new Error('admin_source_unavailable');
-    let html=await response.text();
-    const marker='\nsessionGate();';
-    const pos=html.lastIndexOf(marker);
-    if(pos<0) throw new Error('admin_hook_marker_missing');
+try{
+const response=await fetch('./admin-original.html?v=20260927-jerome-invoice-1',{cache:'no-store'});
+if(!response.ok) throw new Error('admin_source_unavailable');
+let html=await response.text();
+const marker='\nsessionGate();';
+const pos=html.lastIndexOf(marker);
+if(pos<0) throw new Error('admin_hook_marker_missing');
+const hook=`
 
-    const hook="\n\nasync function sendRafaConfirmationEmail(reservationId,force=false){\n  const {data,error}=await db.functions.invoke('send-confirmation',{\n    body:{reservation_id:reservationId,force}\n  });\n\n  if(error){\n    let code=error.message||'send_failed';\n    try{\n      const context=error.context;\n      if(context&&typeof context.clone==='function'){\n        const details=await context.clone().json();\n        code=(details&&details.error)||code;\n      }\n    }catch(_error){}\n    return {ok:false,code};\n  }\n\n  if(!data||data.ok!==true){\n    return {ok:false,code:(data&&data.error)||'send_failed'};\n  }\n\n  return Object.assign({ok:true},data);\n}\n\nfunction rafaConfirmationErrorText(code){\n  const messages={\n    gmail_not_configured:'Les accès Gmail ne sont pas encore disponibles dans Supabase.',\n    gmail_token_failed:'Google a refusé la connexion Gmail. Le jeton OAuth doit être renouvelé.',\n    gmail_send_failed:'Gmail a refusé l’envoi du courriel.',\n    client_email_missing:'Aucune adresse courriel client n’est enregistrée.',\n    menu_token_missing:'Le lien privé du menu n’a pas pu être généré.',\n    unauthorized:'Ta session admin a expiré. Reconnecte-toi puis réessaie.',\n    sent_but_tracking_failed:'Le courriel semble être parti, mais son statut n’a pas pu être enregistré.'\n  };\n  return messages[code]||('Le courriel n’a pas pu être envoyé ('+code+').');\n}\n\nconst sendConfirmationBtn=document.createElement('button');\nsendConfirmationBtn.id='sendConfirmationBtn';\nsendConfirmationBtn.type='button';\nsendConfirmationBtn.className='btn secondary hidden';\nsendConfirmationBtn.textContent='Envoyer le courriel';\n$('invoiceBtn').insertAdjacentElement('afterend',sendConfirmationBtn);\n\nfunction updateSendConfirmationButton(r){\n  const canRetry=!!r&&r.status==='confirmed'&&isRealEvent(r)&&!!r.email&&!r.menu_sent;\n  sendConfirmationBtn.classList.toggle('hidden',!canRetry);\n  sendConfirmationBtn.disabled=false;\n}\n\nconst originalOpenReservation=openReservation;\nopenReservation=function(r){\n  originalOpenReservation(r);\n  updateSendConfirmationButton(r);\n};\n\nconst originalOpenNew=openNew;\nopenNew=function(date=''){\n  originalOpenNew(date);\n  updateSendConfirmationButton(null);\n};\n\nsendConfirmationBtn.onclick=async()=>{\n  if(!editing) return;\n  sendConfirmationBtn.disabled=true;\n  $('formMsg').innerHTML='<div class=\"success\">Envoi du courriel au client…</div>';\n\n  const mailResult=await sendRafaConfirmationEmail(editing.id,false);\n\n  if(mailResult.ok){\n    await loadData();\n    const refreshed=reservations.find(r=>r.id===editing.id);\n    if(refreshed) editing=refreshed;\n    $('menuSent').checked=true;\n    $('formMsg').innerHTML='<div class=\"success\">Courriel de confirmation envoyé au client ✅<br>Le lien privé lui permet de choisir ses 4 pizzas.</div>';\n    updateSendConfirmationButton(editing);\n  }else{\n    $('formMsg').innerHTML='<div class=\"error\">Le courriel n’a pas été envoyé.<br>'+escapeHtml(rafaConfirmationErrorText(mailResult.code))+'</div>';\n    sendConfirmationBtn.disabled=false;\n  }\n};\n\n$('approveBtn').onclick=async()=>{\n  if(!editing||!isRealEvent(editing)) return;\n\n  const ok=confirm('Accepter cette réservation? Le client recevra automatiquement le courriel de confirmation avec le lien pour choisir ses 4 pizzas.');\n  if(!ok) return;\n\n  $('approveBtn').disabled=true;\n  $('status').value='confirmed';\n\n  const success=await saveReservation({\n    closeAfter:false,\n    forcedStatus:'confirmed'\n  });\n\n  if(!success){\n    $('approveBtn').disabled=false;\n    return;\n  }\n\n  $('formMsg').innerHTML='<div class=\"success\">Réservation confirmée ✅<br>Envoi du courriel au client…</div>';\n\n  const mailResult=await sendRafaConfirmationEmail(editing.id,false);\n\n  if(mailResult.ok){\n    await loadData();\n    const refreshed=reservations.find(r=>r.id===editing.id);\n    if(refreshed) editing=refreshed;\n    $('menuSent').checked=true;\n    $('formMsg').innerHTML='<div class=\"success\">Réservation confirmée ✅<br>Courriel de confirmation envoyé au client ✅<br>Le lien privé lui permet de choisir ses 4 pizzas.</div>';\n  }else{\n    $('formMsg').innerHTML='<div class=\"error\"><strong>Réservation confirmée ✅</strong><br>Par contre, le courriel n’a pas été envoyé.<br>'+escapeHtml(rafaConfirmationErrorText(mailResult.code))+'</div>';\n  }\n\n  $('approveBtn').classList.add('hidden');\n  $('approveBtn').disabled=false;\n  $('invoiceBtn').classList.toggle('hidden',!canGenerateInvoice(editing));\n  updateSendConfirmationButton(editing);\n};\n";
-
-    html=html.slice(0,pos)+hook+html.slice(pos);
-    document.open();
-    document.write(html);
-    document.close();
-  }catch(error){
-    console.error(error);
-    document.getElementById('boot').innerHTML='<div class="boot-card boot-error"><div class="boot-title">Rafa Pizza</div><p>Le tableau de bord n’a pas pu se charger. Recharge la page.</p></div>';
+async function sendRafaConfirmationEmail(reservationId,force=false){
+  const {data,error}=await db.functions.invoke('send-confirmation',{body:{reservation_id:reservationId,force}});
+  if(error){
+    let code=error.message||'send_failed';
+    try{const context=error.context;if(context&&typeof context.clone==='function'){const details=await context.clone().json();code=(details&&details.error)||code;}}catch(_error){}
+    return {ok:false,code};
   }
+  if(!data||data.ok!==true) return {ok:false,code:(data&&data.error)||'send_failed'};
+  return Object.assign({ok:true},data);
+}
+function rafaConfirmationErrorText(code){
+  const messages={gmail_not_configured:'Les accès Gmail ne sont pas encore disponibles dans Supabase.',gmail_token_failed:'Google a refusé la connexion Gmail. Le jeton OAuth doit être renouvelé.',gmail_send_failed:'Gmail a refusé l’envoi du courriel.',client_email_missing:'Aucune adresse courriel client n’est enregistrée.',menu_token_missing:'Le lien privé du menu n’a pas pu être généré.',unauthorized:'Ta session admin a expiré. Reconnecte-toi puis réessaie.',sent_but_tracking_failed:'Le courriel semble être parti, mais son statut n’a pas pu être enregistré.'};
+  return messages[code]||('Le courriel n’a pas pu être envoyé ('+code+').');
+}
+const sendConfirmationBtn=document.createElement('button');
+sendConfirmationBtn.id='sendConfirmationBtn';sendConfirmationBtn.type='button';sendConfirmationBtn.className='btn secondary hidden';sendConfirmationBtn.textContent='Envoyer le courriel';
+$('invoiceBtn').insertAdjacentElement('afterend',sendConfirmationBtn);
+function updateSendConfirmationButton(r){const canRetry=!!r&&r.status==='confirmed'&&isRealEvent(r)&&!!r.email&&!r.menu_sent;sendConfirmationBtn.classList.toggle('hidden',!canRetry);sendConfirmationBtn.disabled=false;}
+const originalOpenReservation=openReservation;
+openReservation=function(r){originalOpenReservation(r);updateSendConfirmationButton(r);};
+const originalOpenNew=openNew;
+openNew=function(date=''){originalOpenNew(date);updateSendConfirmationButton(null);};
+sendConfirmationBtn.onclick=async()=>{
+  if(!editing)return;sendConfirmationBtn.disabled=true;$('formMsg').innerHTML='<div class="success">Envoi du courriel au client…</div>';
+  const mailResult=await sendRafaConfirmationEmail(editing.id,false);
+  if(mailResult.ok){await loadData();const refreshed=reservations.find(r=>r.id===editing.id);if(refreshed)editing=refreshed;$('menuSent').checked=true;$('formMsg').innerHTML='<div class="success">Courriel de confirmation envoyé au client ✅<br>Le lien privé lui permet de choisir ses 4 pizzas.</div>';updateSendConfirmationButton(editing);}else{$('formMsg').innerHTML='<div class="error">Le courriel n’a pas été envoyé.<br>'+escapeHtml(rafaConfirmationErrorText(mailResult.code))+'</div>';sendConfirmationBtn.disabled=false;}
+};
+$('approveBtn').onclick=async()=>{
+  if(!editing||!isRealEvent(editing))return;
+  const ok=confirm('Accepter cette réservation? Le client recevra automatiquement le courriel de confirmation avec le lien pour choisir ses 4 pizzas.');if(!ok)return;
+  $('approveBtn').disabled=true;$('status').value='confirmed';
+  const success=await saveReservation({closeAfter:false,forcedStatus:'confirmed'});if(!success){$('approveBtn').disabled=false;return;}
+  $('formMsg').innerHTML='<div class="success">Réservation confirmée ✅<br>Envoi du courriel au client…</div>';
+  const mailResult=await sendRafaConfirmationEmail(editing.id,false);
+  if(mailResult.ok){await loadData();const refreshed=reservations.find(r=>r.id===editing.id);if(refreshed)editing=refreshed;$('menuSent').checked=true;$('formMsg').innerHTML='<div class="success">Réservation confirmée ✅<br>Courriel de confirmation envoyé au client ✅<br>Le lien privé lui permet de choisir ses 4 pizzas.</div>';}else{$('formMsg').innerHTML='<div class="error"><strong>Réservation confirmée ✅</strong><br>Par contre, le courriel n’a pas été envoyé.<br>'+escapeHtml(rafaConfirmationErrorText(mailResult.code))+'</div>';}
+  $('approveBtn').classList.add('hidden');$('approveBtn').disabled=false;$('invoiceBtn').classList.toggle('hidden',!canGenerateInvoice(editing));updateSendConfirmationButton(editing);
+};
+
+const JEROME_INVOICE_ID='407237b8-97f2-4998-91e0-94c84bd7f27e';
+const originalGenerateInvoicePDF=generateInvoicePDF;
+generateInvoicePDF=function(r){
+  if(!r||r.id!==JEROME_INVOICE_ID){return originalGenerateInvoicePDF(r);}
+  if(!window.jspdf||!window.jspdf.jsPDF){alert('Le module PDF n’est pas encore chargé. Réessaie dans quelques secondes.');return;}
+  const total=revenueForReservation(r);
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'mm',format:'letter'});
+  doc.setFillColor(91,31,42);doc.rect(0,0,216,43,'F');
+  doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(25);doc.text('RAFA',18,20);
+  doc.setFontSize(10);doc.setFont('helvetica','normal');doc.text('Pizza a domicile',18,27);
+  doc.setFontSize(20);doc.setFont('helvetica','bold');doc.text('FACTURE',198,20,{align:'right'});
+  doc.setFontSize(8.5);doc.setFont('helvetica','normal');doc.text(invoiceNumber(r),198,27,{align:'right'});
+  doc.setTextColor(43,37,36);doc.setFontSize(10);doc.setFont('helvetica','bold');doc.text('Rafa Pizza',18,58);
+  doc.setFont('helvetica','normal');doc.setTextColor(125,112,105);doc.text('lapizzaderafa@gmail.com',18,64);
+  doc.setTextColor(43,37,36);doc.setFont('helvetica','bold');doc.text('Date et heure',125,58);
+  doc.setFont('helvetica','normal');doc.text(pdfText(fmtDateLong(r.event_date)+(r.preferred_time?' - '+r.preferred_time:'')),125,64);
+  doc.setDrawColor(220,210,205);doc.line(18,74,198,74);
+  doc.setFont('helvetica','bold');doc.setFontSize(10);doc.text('FACTURE A',18,85);
+  doc.setFontSize(13);doc.text(pdfText(r.full_name||'Jérôme Architecture'),18,94);
+  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(125,112,105);doc.text('244 Crémazie Ouest',18,101);
+  let y=130;doc.setFillColor(246,240,231);doc.rect(18,y,180,10,'F');doc.setTextColor(91,31,42);doc.setFont('helvetica','bold');doc.setFontSize(9);doc.text('DESCRIPTION',22,y+6.5);doc.text('MONTANT',193,y+6.5,{align:'right'});
+  y+=20;doc.setTextColor(43,37,36);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.text('Forfait choisi',22,y);doc.text(money(total),193,y,{align:'right'});
+  y+=24;doc.setDrawColor(220,210,205);doc.line(118,y,198,y);y+=9;doc.setFont('helvetica','normal');doc.setFontSize(10);doc.text('Total',130,y);doc.setFont('helvetica','bold');doc.text(money(total),193,y,{align:'right'});
+  doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(125,112,105);doc.text('Merci d avoir choisi Rafa Pizza.',18,245);doc.text('Vous invitez votre monde. On s occupe du reste.',18,251);
+  const blob=doc.output('blob');const url=URL.createObjectURL(blob);window.open(url,'_blank');
+};
+`;
+html=html.slice(0,pos)+hook+html.slice(pos);
+document.open();document.write(html);document.close();
+}catch(error){console.error(error);document.getElementById('boot').innerHTML='<div class="boot-card boot-error"><div class="boot-title">Rafa Pizza</div><p>Le tableau de bord n’a pas pu se charger. Recharge la page.</p></div>';}
 })();
 </script>
 </body>
