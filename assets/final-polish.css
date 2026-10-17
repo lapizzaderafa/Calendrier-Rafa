@@ -64,7 +64,7 @@ h1,h2,.section-title,.editorial-quote,.final-cta h2{font-family:'Instrument Seri
 .pizza-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important;column-gap:clamp(22px,4.2vw,66px)!important;row-gap:clamp(70px,8vw,120px)!important;align-items:start}
 .pizza-card{border:0!important;border-radius:0!important;background:transparent!important;overflow:visible!important;box-shadow:none!important;cursor:pointer;transition:transform .28s cubic-bezier(.2,.7,.2,1)!important}
 .pizza-card:nth-child(3n+2){margin-top:64px}.pizza-card:hover{transform:translateY(-7px)!important;box-shadow:none!important}
-.pizza-card img{display:block;width:100%;aspect-ratio:1/1!important;object-fit:contain!important;border-radius:0!important;background:transparent!important;mix-blend-mode:multiply;filter:drop-shadow(0 20px 18px rgba(74,43,35,.10))}
+.pizza-card img{display:block;width:100%;aspect-ratio:1/1!important;object-fit:contain!important;border-radius:0!important;background:transparent!important;filter:drop-shadow(0 20px 18px rgba(74,43,35,.10))}
 .pizza-card-body{display:block!important;padding:18px 2px 0!important;text-align:center}
 .pizza-name{font:400 clamp(25px,2.5vw,36px)/1 'Instrument Serif',Georgia,serif!important;color:var(--wine)!important}.pizza-view{display:none!important}
 .menu-note{max-width:650px;margin:110px auto 0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;text-align:center;color:var(--muted)!important;font-size:12px!important;line-height:1.7!important}.menu-note strong{color:var(--wine)}
