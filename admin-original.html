@@ -949,12 +949,25 @@ const monthNames = [
   'Juillet','Août','Septembre','Octobre','Novembre','Décembre'
 ];
 
-const CLOSED_MONDAYS = new Set(["2026-10-26","2026-11-09","2026-11-23","2026-12-07","2026-12-21"]);
-function isPubliclyClosedDate(iso) {
-  if (iso < "2026-10-19" || iso > "2026-12-31") return false;
+// External reservations are confirmed separately from the website's database.
+const EXTERNAL_BOOKED_DATES = new Set(["2026-11-09","2026-11-17","2026-11-24","2026-11-25"]);
+// Personal closures in November (all other Mondays, Tuesdays and Wednesdays).
+const NOVEMBER_UNAVAILABLE_DATES = new Set(["2026-11-02","2026-11-03","2026-11-04","2026-11-10","2026-11-11","2026-11-16","2026-11-18","2026-11-23","2026-11-30"]);
+const OTHER_CLOSED_MONDAYS = new Set(["2026-10-26","2026-12-07","2026-12-21"]);
+function manualCalendarStatus(iso) {
+  if (EXTERNAL_BOOKED_DATES.has(iso)) return "booked";
+  if (NOVEMBER_UNAVAILABLE_DATES.has(iso)) return "unavailable";
+  // November: no recurring rule beyond the exact dates approved by the owner.
+  if (iso.startsWith("2026-11-")) return null;
+  if (iso < "2026-10-19" || iso > "2026-12-31") return null;
+  // Preserve already published October/December closures until separately reviewed.
   const [year, month, day] = iso.split("-").map(Number);
   const weekday = new Date(year, month - 1, day).getDay();
-  return weekday === 2 || weekday === 3 || CLOSED_MONDAYS.has(iso);
+  return weekday === 2 || weekday === 3 || OTHER_CLOSED_MONDAYS.has(iso)
+    ? "unavailable" : null;
+}
+function isPubliclyClosedDate(iso) {
+  return manualCalendarStatus(iso) !== null;
 }
 
 function escapeHtml(value){
@@ -1559,7 +1572,15 @@ function renderCalendar(){
       }
     );
 
-    if(dayEvents.length === 0 && isPubliclyClosedDate(iso)){
+    const manualStatus = manualCalendarStatus(iso);
+    const hasExistingBooking = dayEvents.some(r => isRealEvent(r));
+    if (manualStatus === 'booked' && !hasExistingBooking) {
+      const externalBooking = document.createElement('div');
+      externalBooking.className = 'event-pill confirmed';
+      externalBooking.textContent = 'Réservé (externe)';
+      externalBooking.title = 'Réservation sur une autre plateforme — non comptée dans les revenus du site';
+      cell.appendChild(externalBooking);
+    } else if(manualStatus === 'unavailable' && dayEvents.length === 0) {
       const publicBlock = document.createElement('div');
       publicBlock.className = 'event-pill unavailable';
       publicBlock.textContent = 'Indisponible (site)';
