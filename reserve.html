@@ -38,12 +38,25 @@ input,textarea{width:100%;border:1px solid var(--line);background:var(--paper);c
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL="https://jetogsbyptglaihktdel.supabase.co";const SUPABASE_KEY="sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const MONTHS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];const $=id=>document.getElementById(id);const params=new URLSearchParams(location.search);const BOOKING_START="2026-09-01";const BOOKING_END="2026-12-31";
-const CLOSED_MONDAYS = new Set(["2026-10-26","2026-11-09","2026-11-23","2026-12-07","2026-12-21"]);
-function isPubliclyClosedDate(iso) {
-  if (iso < "2026-10-19" || iso > "2026-12-31") return false;
+// External reservations are confirmed separately from the website's database.
+const EXTERNAL_BOOKED_DATES = new Set(["2026-11-09","2026-11-17","2026-11-24","2026-11-25"]);
+// Personal closures in November (all other Mondays, Tuesdays and Wednesdays).
+const NOVEMBER_UNAVAILABLE_DATES = new Set(["2026-11-02","2026-11-03","2026-11-04","2026-11-10","2026-11-11","2026-11-16","2026-11-18","2026-11-23","2026-11-30"]);
+const OTHER_CLOSED_MONDAYS = new Set(["2026-10-26","2026-12-07","2026-12-21"]);
+function manualCalendarStatus(iso) {
+  if (EXTERNAL_BOOKED_DATES.has(iso)) return "booked";
+  if (NOVEMBER_UNAVAILABLE_DATES.has(iso)) return "unavailable";
+  // November: no recurring rule beyond the exact dates approved by the owner.
+  if (iso.startsWith("2026-11-")) return null;
+  if (iso < "2026-10-19" || iso > "2026-12-31") return null;
+  // Preserve already published October/December closures until separately reviewed.
   const [year, month, day] = iso.split("-").map(Number);
   const weekday = new Date(year, month - 1, day).getDay();
-  return weekday === 2 || weekday === 3 || CLOSED_MONDAYS.has(iso);
+  return weekday === 2 || weekday === 3 || OTHER_CLOSED_MONDAYS.has(iso)
+    ? "unavailable" : null;
+}
+function isPubliclyClosedDate(iso) {
+  return manualCalendarStatus(iso) !== null;
 }
 function parseRequestedDate(){const direct=params.get("date");if(direct&&/^\d{4}-\d{2}-\d{2}$/.test(direct)){const[year,month,day]=direct.split("-").map(Number);const date=new Date(year,month-1,day);if(date.getFullYear()===year&&date.getMonth()===month-1&&date.getDate()===day)return direct}const oldDay=Number(params.get("day"));const oldMonth=Number(params.get("month"));if(Number.isInteger(oldDay)&&oldDay>0&&Number.isInteger(oldMonth)&&oldMonth>=0&&oldMonth<=11)return`2026-${String(oldMonth+1).padStart(2,"0")}-${String(oldDay).padStart(2,"0")}`;return null}
 const eventDate=parseRequestedDate();function todayKey(){const now=new Date();return`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`}function isBookableDate(iso){if(!iso)return false;const minDate=todayKey()>BOOKING_START?todayKey():BOOKING_START;return iso>=minDate&&iso<=BOOKING_END&&!isPubliclyClosedDate(iso)}function formattedDate(iso){if(!iso)return"";const[year,month,day]=iso.split("-").map(Number);return`${day} ${MONTHS[month-1]} ${year}`}function showError(text){$("errorMessage").textContent=text;$("errorMessage").className="message error"}function showUnavailable(title,message){$("reservationForm").style.display="none";$("unavailableBox").classList.add("show");const heading=$("unavailableBox").querySelector("h2");const copy=$("unavailableBox").querySelector("p");if(title)heading.textContent=title;if(message)copy.textContent=message}
