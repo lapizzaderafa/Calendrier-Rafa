@@ -4,7 +4,7 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const BOOKING_START = new Date(2026, 8, 1);
 const BOOKING_END = new Date(2026, 11, 31);
 // External reservations are confirmed separately from the website's database.
-const EXTERNAL_BOOKED_DATES = new Set(["2026-11-09","2026-11-17","2026-11-24","2026-11-25"]);
+const EXTERNAL_BOOKED_DATES = new Set(["2026-11-09","2026-11-17","2026-11-24","2026-11-25","2026-11-28"]);
 // Personal closures in November (all other Mondays, Tuesdays and Wednesdays).
 const NOVEMBER_UNAVAILABLE_DATES = new Set(["2026-11-02","2026-11-03","2026-11-04","2026-11-10","2026-11-11","2026-11-16","2026-11-18","2026-11-23","2026-11-30"]);
 const OTHER_CLOSED_MONDAYS = new Set(["2026-10-26","2026-12-07","2026-12-21"]);
