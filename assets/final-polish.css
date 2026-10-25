@@ -63,3 +63,18 @@ a:focus-visible,button:focus-visible,input:focus-visible,.pizza-card:focus-visib
 }
 @media(max-width:390px){.site-header .nav{gap:8px!important}.site-header .nav a:not(.cta){font-size:10px!important}.site-header .nav .cta{font-size:10px!important;padding-inline:14px!important}.site-header .brand img{width:72px!important}.section{padding-inline:15px!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+/* Hero photo plein cadre sur mobile : bord à bord, sans coins arrondis. */
+@media(max-width:900px){
+  .hero-media{
+    width:calc(100% + 40px);
+    margin-inline:-20px;
+  }
+  .hero-media img{border-radius:0!important}
+}
+@media(max-width:640px){
+  .hero-media{
+    width:calc(100% + 32px);
+    margin-inline:-16px;
+  }
+}
