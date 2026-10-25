@@ -4,7 +4,7 @@ const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const BOOKING_START = new Date(2026, 8, 1);
 const BOOKING_END = new Date(2026, 11, 31);
 // External reservations are confirmed separately from the website's database.
-const EXTERNAL_BOOKED_DATES = new Set(["2026-11-09","2026-11-17","2026-11-24","2026-11-25","2026-11-28"]);
+const EXTERNAL_BOOKED_DATES = new Set(["2026-11-09","2026-11-17","2026-11-24","2026-11-25","2026-11-28","2026-12-04"]);
 // Personal closures in November (all other Mondays, Tuesdays and Wednesdays).
 const NOVEMBER_UNAVAILABLE_DATES = new Set(["2026-11-02","2026-11-03","2026-11-04","2026-11-10","2026-11-11","2026-11-16","2026-11-18","2026-11-23","2026-11-30"]);
 const OTHER_CLOSED_MONDAYS = new Set(["2026-10-26","2026-12-07","2026-12-21"]);
@@ -24,12 +24,24 @@ function isPubliclyClosedDate(iso) {
   return manualCalendarStatus(iso) !== null;
 }
 const MONTHS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
-const PIZZA_NAMES = ["Margherita","’Nduja e miel","New York","Parma","Golosa","Cipolla","Quattro","Fungus","Figus","Montréal","Jardin","Mortadella"];
-const pizzaFile = name => ({"’Nduja e miel":"nduja-e-miel","New York":"new-york","Montréal":"montreal"}[name] || name.toLowerCase());
-const PIZZAS = PIZZA_NAMES.map(name => ({ name, img:`pizzas/${pizzaFile(name)}-hd.jpg?v=9` }));
+const PIZZA_GROUPS = [["Sauce rouge",[["Margherita","Sauce tomate, mozza fraîche et basilic."],["’Nduja e miel","Sauce tomate, chair de saucisse épicée, mozza fraîche, gorgonzola et miel épicé."],["New York","Sauce tomate, mozza fraîche et pepperoni."],["Parma","Sauce tomate, mozza fraîche, prosciutto, roquette, parmesan et balsamique."],["Montréal","Sauce tomate, mozza fraîche, smoked meat du Québec, cornichons et trait de crème à la moutarde."],["Jardin","Sauce tomate, tomates et aubergines grillées, ail confit, ricotta fouettée et basilic."]]],["Sauce blanche",[["Cipolla","Crème fraîche, mozza fraîche, lard fumé et confit d'oignon."],["Quattro","Crème fraîche, mozza fraîche, pecorino, gorgonzola et comté."],["Fungus","Crème fraîche, variété de champignons du moment, mozza fraîche et basilic."],["Figus","Crème fraîche, guanciale, mozza fraîche, confit de figues et romarin."],["Mortadella","Crème fraîche, mozza fraîche, mortadelle, pistaches et ricotta fouettée."]]],["Butternut",[["Zucca e Salsiccia","Crème de courge butternut, mozza fraîche, chair de saucisse italienne, sauge et parmesan."]]]];
 const $ = id => document.getElementById(id);
-function renderPizzas(){const grid=$("pizzaGrid");grid.innerHTML="";PIZZAS.forEach(pizza=>{const card=document.createElement("article");card.className="pizza-card";card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label",`Agrandir ${pizza.name}`);card.innerHTML=`<img src="${pizza.img}" alt="Pizza ${pizza.name}" loading="lazy"><div class="pizza-card-body"><span class="pizza-name">${pizza.name}</span><span class="pizza-view">Voir</span></div>`;card.addEventListener("click",()=>openViewer(pizza));card.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();openViewer(pizza)}});grid.appendChild(card)})}
-const viewer=$("imageViewer");const viewerImg=$("viewerImg");const viewerCaption=$("viewerCaption");function openViewer(pizza){viewerImg.src=pizza.img;viewerImg.alt=`Pizza ${pizza.name}`;viewerCaption.textContent=pizza.name;viewer.classList.add("open");document.body.style.overflow="hidden"}function closeViewer(){viewer.classList.remove("open");document.body.style.overflow=""}$("viewerClose").addEventListener("click",closeViewer);viewer.addEventListener("click",event=>{if(event.target===viewer)closeViewer()});document.addEventListener("keydown",event=>{if(event.key==="Escape"&&viewer.classList.contains("open"))closeViewer()});
+function renderPizzas(){
+ const grid=$("pizzaGrid"); if(!grid) return; grid.replaceChildren();let index=0;
+ for(const [category,pizzas] of PIZZA_GROUPS){
+  const group=document.createElement("section");group.className="menu-group";
+  const title=document.createElement("h3");title.className="menu-category-title";title.textContent=category;
+  const list=document.createElement("ol");list.className="menu-list";
+  for(const [name,ingredients] of pizzas){index++;
+   const row=document.createElement("li");const number=document.createElement("span");number.className="menu-number";number.setAttribute("aria-hidden","true");number.textContent=String(index).padStart(2,"0");
+   const content=document.createElement("div");content.className="menu-content";
+   const heading=document.createElement("h4");heading.className="menu-name";heading.textContent=name;
+   const description=document.createElement("p");description.className="menu-ingredients";description.textContent=ingredients;
+   content.append(heading,description);row.append(number,content);list.appendChild(row);
+  }
+  group.append(title,list);grid.appendChild(group);
+ }
+}
 function calculateEventPrice(guests){guests=Number(guests);let pricePerPerson,fixedFee;if(guests<=10){pricePerPerson=29;fixedFee=175}else if(guests<=13){pricePerPerson=27;fixedFee=200}else if(guests<=15){pricePerPerson=27;fixedFee=250}else if(guests<=20){pricePerPerson=25;fixedFee=250}else if(guests<=25){pricePerPerson=23;fixedFee=300}else if(guests<=30){pricePerPerson=22;fixedFee=350}else if(guests<=40){pricePerPerson=21;fixedFee=400}else if(guests<=50){pricePerPerson=20;fixedFee=500}else if(guests<=75){pricePerPerson=19;fixedFee=600}else{pricePerPerson=18;fixedFee=750}return{pricePerPerson,fixedFee}}
 function updateEstimator(){
   const guests=Number($("guestSlider").value);
