@@ -47,7 +47,7 @@ function updateEstimator(){
   const guests=Number($("guestSlider").value);
   const pricing=calculateEventPrice(guests);
   $("guestNumber").textContent=guests;
-  $("personPrice").textContent=`${pricing.pricePerPerson} $`;
+  $("personPrice").textContent=`${pricing.pricePerPerson} $ / personne`;
   $("eventFee").textContent=`${pricing.fixedFee} $`;
   $("estimateTotal").textContent=`${(guests*pricing.pricePerPerson+pricing.fixedFee).toLocaleString("fr-CA")} $`;
   $("largeEventNote").classList.toggle("show",guests>50);
