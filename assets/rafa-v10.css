@@ -1,0 +1,129 @@
+/* Rafa Pizza V10 — validated editorial layout update.
+   Visual styles only; booking, menu, prices and calendar remain unchanged. */
+:root{--rafa-display-size:clamp(60px,7.75vw,116px)}
+:is(.manifesto-title,.section h2,.outro h2){
+  font-family:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:var(--rafa-display-size)!important;
+  font-weight:500!important;
+  line-height:1.01!important;
+  letter-spacing:-.079em!important;
+}
+#fonctionnement .how-head{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(255px,350px);
+  gap:42px;
+  align-items:end;
+  margin-bottom:72px;
+}
+#fonctionnement .how-head>h2{margin:0!important;align-self:end}
+#fonctionnement .how-summary{max-width:350px;padding-bottom:8px;text-align:left;justify-self:end}
+#fonctionnement .how-summary strong{
+  display:block;
+  font-size:18px;
+  font-weight:500;
+  letter-spacing:-.035em;
+  line-height:1.23;
+  color:var(--ink);
+}
+#fonctionnement .how-summary p{
+  margin:7px 0 0;
+  color:var(--soft);
+  font-size:13px;
+  line-height:1.55;
+  letter-spacing:-.008em;
+}
+.moment-independent{
+  display:block;
+  position:relative;
+  padding:clamp(20px,3.3vw,52px) 0 clamp(104px,11.7vw,182px);
+}
+.moment-independent .moment-independent-photo{
+  display:block;
+  margin:0 0 0 auto;
+  padding:0;
+  width:min(61%,720px);
+  max-width:none;
+  height:auto;
+  overflow:hidden;
+}
+.moment-independent .moment-independent-photo img{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:auto;
+  object-fit:contain;
+  object-position:center;
+}
+#prix.price-standalone{
+  padding-top:0!important;
+  padding-bottom:clamp(110px,11vw,170px)!important;
+}
+#prix.price-standalone .price-inner{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(360px,.86fr);
+  gap:clamp(72px,10vw,180px);
+  align-items:start;
+}
+#prix.price-standalone .price-heading h2{
+  margin:0!important;
+  text-align:left!important;
+  font-size:var(--rafa-display-size)!important;
+}
+#prix.price-standalone .price-estimator{
+  min-width:0;
+  width:100%;
+  align-self:start;
+  padding-top:10px;
+}
+#prix.price-standalone .estimator{margin:0;padding:0;width:100%}
+#prix.price-standalone .estimate-total{margin-top:30px;align-items:baseline;gap:18px}
+#prix.price-standalone .estimate-total span{
+  font-size:12px!important;
+  font-weight:400!important;
+  color:var(--soft)!important;
+}
+#prix.price-standalone .estimate-total strong{
+  font-size:21px!important;
+  line-height:1.25!important;
+  letter-spacing:-.026em!important;
+  font-weight:500!important;
+  color:#38342f!important;
+}
+@media(max-width:760px){
+ :root{--rafa-display-size:clamp(48px,12.6vw,66px)}
+ #fonctionnement .how-head{display:block;margin-bottom:44px}
+ #fonctionnement .how-summary{
+   width:100%;
+   max-width:none;
+   margin:21px 0 0;
+   padding-bottom:0;
+   text-align:left;
+ }
+ #fonctionnement .how-summary strong{font-size:17px}
+ #fonctionnement .how-summary p{font-size:13px;margin-top:5px}
+ .moment-independent{padding:19px 0 103px}
+ .moment-independent .moment-independent-photo{
+   width:83%;
+   max-width:none;
+   margin-left:auto;
+   margin-right:0;
+   height:auto;
+ }
+ .moment-independent .moment-independent-photo img{
+   width:100%;
+   height:auto;
+   aspect-ratio:auto;
+   object-fit:contain;
+ }
+ #prix.price-standalone{padding-top:0!important;padding-bottom:107px!important}
+ #prix.price-standalone .price-inner{display:block}
+ #prix.price-standalone .price-heading h2{
+   margin:0!important;
+   font-size:var(--rafa-display-size)!important;
+   line-height:1.01!important;
+ }
+ #prix.price-standalone .price-estimator{padding-top:0;margin-top:45px}
+ #prix.price-standalone .estimator{margin:0;padding:0}
+ #prix.price-standalone .estimate-total{margin-top:27px}
+ #prix.price-standalone .estimate-total strong{font-size:19px!important}
+}
