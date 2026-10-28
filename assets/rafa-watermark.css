@@ -8,7 +8,7 @@
 .hero .rafa-watermark {
   position: absolute;
   left: 50%;
-  top: 12px;
+  top: 32px;
   width: min(78vw, 1050px);
   aspect-ratio: 573 / 291;
   background: url("./rafa-watermark-vectoriel.svg") center / contain no-repeat;
@@ -29,6 +29,6 @@
   .hero .rafa-watermark {
     width: 470px;
     left: 52%;
-    top: 0;
+    top: 34px;
   }
 }
