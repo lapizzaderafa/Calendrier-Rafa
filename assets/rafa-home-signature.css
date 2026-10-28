@@ -270,3 +270,6 @@ body.rafa-menu-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .rafa-nav-links a, .rafa-intro .hero .text-cta { transition: none; }
 }
+
+/* Ancien decalage d'ancrage pour une barre sticky desormais supprimee. */
+html { scroll-behavior: auto; scroll-padding-top: 0; }
