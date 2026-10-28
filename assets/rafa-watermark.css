@@ -1,0 +1,34 @@
+/* Rafa Pizza — signature editoriale. Scoped to the homepage hero only. */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-top: clamp(40px, 5.2vw, 78px);
+}
+.hero .rafa-watermark {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  width: min(78vw, 1050px);
+  aspect-ratio: 573 / 291;
+  background: url("./rafa-watermark-vectoriel.svg") center / contain no-repeat;
+  opacity: .09;
+  transform: translateX(-50%) rotate(-2deg);
+  pointer-events: none;
+  user-select: none;
+  z-index: -1;
+}
+.hero > .kicker,
+.hero > h1,
+.hero > .hero-bottom {
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 760px) {
+  .hero { padding-top: 38px; }
+  .hero .rafa-watermark {
+    width: 470px;
+    left: 52%;
+    top: 0;
+  }
+}
