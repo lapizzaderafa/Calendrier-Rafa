@@ -213,25 +213,27 @@ body.rafa-menu-open { overflow: hidden; }
 .rafa-intro .hero .text-cta {
   margin: 0;
   display: inline-flex;
+  align-items: center;
   justify-content: center;
-  min-height: 64px;
-  padding: 17px 39px;
-  border: 1.5px solid var(--rafa-ivory);
+  min-height: 56px;
+  padding: 14px 33px;
+  border: 1px solid rgba(255,255,255,.88);
   border-radius: 100px;
   color: #fff;
   background: transparent;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: .035em;
+  letter-spacing: .055em;
   line-height: 1.35;
   text-transform: uppercase;
   white-space: normal;
   text-align: center;
-  transition: background .18s ease, color .18s ease;
+  transition: background .18s ease, border-color .18s ease;
 }
 .rafa-intro .hero .text-cta:hover {
-  background: var(--rafa-ivory);
-  color: var(--rafa-original-red);
+  background: rgba(255,255,255,.08);
+  border-color: #fff;
+  color: #fff;
 }
 .rafa-intro .hero .text-cta:focus-visible { outline: 2px solid #fff; outline-offset: 5px; }
 
@@ -258,9 +260,9 @@ body.rafa-menu-open { overflow: hidden; }
   .rafa-intro .hero-line { font-size: 16px; line-height: 1.4; }
   .rafa-intro .hero .text-cta {
     margin: 0;
-    min-height: 59px;
-    padding: 16px 30px;
-    font-size: 12px;
+    min-height: 52px;
+    padding: 13px 26px;
+    font-size: 11px;
   }
 }
 @media (max-width: 360px) {
