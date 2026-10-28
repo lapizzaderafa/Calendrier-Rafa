@@ -1,0 +1,272 @@
+/* Rafa Pizza — accueil signature (2026-10-28).
+   Refonte volontairement limitee au bandeau, a la navigation et a la premiere photo.
+   Les sections, medias suivants, tarifs et reservations conservent leurs styles existants. */
+:root { --rafa-original-red: #771717; --rafa-ivory: #fff5e8; }
+
+.site-header {
+  position: relative !important; /* site.js appliquait un sticky concu pour l'ancien bandeau de 55px */
+  top: auto !important;
+  z-index: 90 !important;
+  height: 188px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--rafa-original-red);
+  border-bottom: 1px solid rgba(255,245,232,.9);
+}
+.rafa-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(280px, 59vw);
+  height: 152px;
+  text-decoration: none;
+}
+.rafa-brand img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+.rafa-menu-toggle {
+  position: absolute;
+  top: 50%;
+  left: max(26px, calc((100vw - 1480px)/2 + 48px));
+  transform: translateY(-50%);
+  display: flex;
+  width: 52px;
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  border: 0;
+  padding: 10px 5px;
+  background: transparent;
+  color: var(--rafa-ivory);
+  cursor: pointer;
+}
+.rafa-menu-toggle span {
+  display: block;
+  height: 1.5px;
+  width: 33px;
+  background: currentColor;
+  border-radius: 2px;
+}
+.rafa-menu-toggle:hover { opacity: .7; }
+.rafa-menu-toggle:focus-visible,
+.rafa-menu-close:focus-visible,
+.rafa-nav-links a:focus-visible,
+.rafa-brand:focus-visible { outline: 2px solid var(--rafa-ivory); outline-offset: 6px; }
+
+/* Menu couvrant tout l'ecran, avec le rouge exact de l'identite Rafa. */
+.rafa-nav-panel[hidden] { display: none !important; }
+.rafa-nav-panel:not([hidden]) {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: var(--rafa-original-red);
+  color: var(--rafa-ivory);
+  -webkit-overflow-scrolling: touch;
+}
+body.rafa-menu-open { overflow: hidden; }
+.rafa-nav-top {
+  position: relative;
+  flex: 0 0 158px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.rafa-nav-top img {
+  width: 183px;
+  height: 106px;
+  display: block;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+.rafa-menu-close {
+  position: absolute;
+  top: 50%;
+  left: max(26px, calc((100vw - 1480px)/2 + 48px));
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--rafa-ivory);
+  font-size: 45px;
+  font-weight: 300;
+  line-height: 1;
+}
+.rafa-nav-links {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(17px, 3.8vh, 31px);
+  padding: 28px 22px 65px;
+  min-height: 390px;
+}
+.rafa-nav-links a {
+  font-size: clamp(38px, 6vw, 72px);
+  font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: -.055em;
+  text-align: center;
+  color: var(--rafa-ivory);
+  transition: opacity .18s ease;
+}
+.rafa-nav-links a:hover { opacity: .62; }
+.rafa-nav-foot {
+  padding: 0 20px 40px;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-align: center;
+  color: rgba(255,245,232,.72);
+}
+
+/* Photo originale, seul le traitement de la toute premiere image change. */
+.rafa-intro {
+  position: relative;
+  min-height: clamp(620px, 79svh, 875px);
+  isolation: isolate;
+  overflow: hidden;
+  background: #2a2929;
+  color: #fff;
+}
+.rafa-intro .hero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+.rafa-intro .hero-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: 50% 43%;
+  filter: grayscale(1) contrast(1.08) brightness(.74);
+}
+.rafa-intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,.13) 0%, rgba(0,0,0,.25) 48%, rgba(0,0,0,.42) 100%);
+}
+.rafa-intro .hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: inherit;
+  width: 100%;
+  max-width: 1480px;
+  margin-inline: auto;
+  padding: 68px clamp(20px,4.8vw,78px) 86px;
+  text-align: center;
+  color: #fff;
+  overflow: visible;
+  isolation: auto;
+}
+.rafa-intro .kicker {
+  display: block;
+  color: var(--rafa-ivory);
+  font-size: 11px;
+  letter-spacing: .19em;
+  font-weight: 500;
+}
+.rafa-intro .hero h1 {
+  color: #fff;
+  font-size: clamp(84px, 10.1vw, 150px);
+  line-height: .95;
+  letter-spacing: -.078em;
+  font-weight: 400;
+  margin: 31px 0 29px;
+}
+.rafa-intro .hero-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  max-width: none;
+}
+.rafa-intro .hero-line {
+  color: rgba(255,255,255,.94);
+  max-width: none;
+  font-size: clamp(17px, 1.7vw, 23px);
+  line-height: 1.38;
+  letter-spacing: -.025em;
+  text-align: center;
+}
+.rafa-intro .hero .text-cta {
+  margin: 0;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 64px;
+  padding: 17px 39px;
+  border: 1.5px solid var(--rafa-ivory);
+  border-radius: 100px;
+  color: #fff;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .035em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  white-space: normal;
+  text-align: center;
+  transition: background .18s ease, color .18s ease;
+}
+.rafa-intro .hero .text-cta:hover {
+  background: var(--rafa-ivory);
+  color: var(--rafa-original-red);
+}
+.rafa-intro .hero .text-cta:focus-visible { outline: 2px solid #fff; outline-offset: 5px; }
+
+@media (max-width: 760px) {
+  .site-header { height: 172px; }
+  .rafa-brand { width: 214px; height: 128px; }
+  .rafa-menu-toggle, .rafa-menu-close { left: 22px; width: 48px; height: 48px; }
+  .rafa-menu-toggle span { width: 28px; }
+  .rafa-nav-top { flex-basis: 155px; }
+  .rafa-nav-top img { width: 152px; height: 92px; }
+  .rafa-nav-links { gap: 29px; padding: 25px 18px 75px; }
+  .rafa-nav-links a { font-size: clamp(38px, 9.7vw, 48px); }
+  .rafa-intro { min-height: clamp(540px, 80svh, 720px); }
+  .rafa-intro .hero-photo img { object-position: 54% 45%; }
+  .rafa-intro .hero { padding: 56px 23px 65px; min-height: inherit; }
+  .rafa-intro .kicker { font-size: 10px; letter-spacing: .16em; }
+  .rafa-intro .hero h1 {
+    font-size: clamp(57px, 14vw, 80px);
+    line-height: .99;
+    margin: 28px 0 30px;
+    letter-spacing: -.075em;
+  }
+  .rafa-intro .hero-bottom { gap: 31px; }
+  .rafa-intro .hero-line { font-size: 16px; line-height: 1.4; }
+  .rafa-intro .hero .text-cta {
+    margin: 0;
+    min-height: 59px;
+    padding: 16px 30px;
+    font-size: 12px;
+  }
+}
+@media (max-width: 360px) {
+  .rafa-brand { width: 190px; }
+  .rafa-intro .hero h1 { font-size: 53px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rafa-nav-links a, .rafa-intro .hero .text-cta { transition: none; }
+}
