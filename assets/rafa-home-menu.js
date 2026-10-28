@@ -31,3 +31,25 @@
     }
   });
 })();
+
+/* Acces direct au calendrier depuis le bouton de l'accueil.
+   Evite le long defilement anime qui passe devant l'estimation des prix. */
+(() => {
+  const button = document.querySelector('.rafa-intro .text-cta[href="#calendrier"]');
+  if (!button) return;
+  button.addEventListener('click', (event) => {
+    const calendar = document.getElementById('calendrier');
+    if (!calendar) return; // lien HTML utilisable meme sans JavaScript
+    event.preventDefault();
+    const root = document.documentElement;
+    const originalBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    try {
+      const y = window.scrollY + calendar.getBoundingClientRect().top - 16;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'auto' });
+    } finally {
+      root.style.scrollBehavior = originalBehavior;
+    }
+    window.history.replaceState(null, '', '#calendrier');
+  });
+})();
