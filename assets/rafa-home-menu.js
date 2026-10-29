@@ -25,13 +25,17 @@
     else if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
   }
 
+  // Aligner les titres de sections a 24 px du haut de l'ecran.
+  // Le bandeau Rafa n'est pas fixe : aucune compensation de son hauteur.
   function destinationFor(hash) {
+    if (hash === '#accueil') return document.getElementById('accueil');
     if (hash === '#disponibilites' || hash === '#calendrier') {
       return document.getElementById('dateTitle') || document.getElementById('disponibilites');
     }
     if (!/^#[A-Za-z][\w-]*$/.test(hash)) return null;
     const section = document.getElementById(hash.slice(1));
-    return section?.querySelector('h2') || section;
+    if (!section) return null;
+    return section.matches('h1, h2') ? section : (section.querySelector('h1, h2') || section);
   }
 
   function jumpTo(hash, recordHistory = true) {
@@ -40,11 +44,26 @@
     const root = document.documentElement;
     const previous = root.style.scrollBehavior;
     root.style.scrollBehavior = 'auto';
-    const offset = hash === '#accueil' ? 0 : 24;
-    const y = window.scrollY + target.getBoundingClientRect().top - offset;
+    const y = hash === '#accueil' ? 0 :
+      window.scrollY + target.getBoundingClientRect().top - 24;
     window.scrollTo(0, Math.max(0, Math.round(y)));
     root.style.scrollBehavior = previous;
     if (recordHistory && location.hash !== hash) history.pushState(null, '', hash);
+  }
+
+  // Corriger les petits deplacements consecutifs a la fermeture du menu
+  // et au chargement de la typographie sur ordinateur et mobile.
+  function alignTo(hash, recordHistory = true) {
+    if (!destinationFor(hash)) return;
+    requestAnimationFrame(() => {
+      jumpTo(hash, recordHistory);
+      requestAnimationFrame(() => jumpTo(hash, false));
+    });
+    if (document.fonts && document.fonts.status !== 'loaded') {
+      document.fonts.ready.then(() => {
+        if (location.hash === hash) requestAnimationFrame(() => jumpTo(hash, false));
+      });
+    }
   }
 
   menuButton.addEventListener('click', () => menuIsOpen() ? closeMenu() : openMenu());
@@ -57,10 +76,7 @@
     if (!destinationFor(hash)) return;
     event.preventDefault();
     if (menuIsOpen()) closeMenu(false);
-    requestAnimationFrame(() => {
-      jumpTo(hash);
-      requestAnimationFrame(() => jumpTo(hash, false));
-    });
+    alignTo(hash);
   });
 
   document.addEventListener('keydown', event => {
@@ -78,9 +94,10 @@
   });
 
   addEventListener('popstate', () => {
-    if (location.hash) requestAnimationFrame(() => jumpTo(location.hash, false));
+    if (location.hash) alignTo(location.hash, false);
+    else window.scrollTo(0, 0);
   });
   addEventListener('load', () => {
-    if (location.hash) requestAnimationFrame(() => jumpTo(location.hash, false));
+    if (location.hash) alignTo(location.hash, false);
   });
 })();
