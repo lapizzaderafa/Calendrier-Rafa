@@ -65,7 +65,7 @@
 .calendar-legend span{display:inline-flex;gap:6px;align-items:center}.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#aaa09a}
 .legend-dot.available{background:var(--ink)}.legend-dot.booked{background:var(--wine)}.legend-dot.unavailable{background:#AAA09A}
 .calendar-error{display:none;color:var(--wine);padding:15px 0;font-size:12px;line-height:1.5}.calendar-error.show{display:block}
-.outro{padding:clamp(100px,10vw,154px) var(--edge) clamp(100px,9vw,150px)}
+.outro{padding:clamp(100px,10vw,154px) var(--edge) 12px}
 .outro h2{font-size:clamp(68px,9vw,145px);font-weight:500;letter-spacing:-.08em;line-height:.96;margin:0 0 36px}
 .footer{display:flex;justify-content:space-between;gap:20px;padding:25px var(--edge) 35px;color:var(--soft);font-size:10px;letter-spacing:.04em}
 /* Preserve functional contact form while presenting its trigger as editorial text. */
@@ -96,7 +96,7 @@ html{scroll-padding-top:62px}.site-header,.nav{height:55px}.nav{gap:23px}.nav a{
 .calendar-section{padding-top:78px}.calendar-section .grid2{display:block}.calendar-card{margin-top:40px}
 .calendar-toolbar h3{font-size:21px}.day{min-height:43px}.day .num{font-size:12px}.day .status{font-size:6.3px}
 .weekdays,.calendar-grid{gap:4px}.calendar-legend{gap:13px;line-height:1.5}
-.outro{padding:103px 23px 90px}.outro h2{font-size:clamp(55px,13vw,74px);margin:0 0 26px}
+.outro{padding:103px 23px 6px}.outro h2{font-size:clamp(55px,13vw,74px);margin:0 0 26px}
 .footer{padding:27px 23px 35px;font-size:9px}
 .rafa-contact-wrap{padding:0 23px 24px!important}
 }
