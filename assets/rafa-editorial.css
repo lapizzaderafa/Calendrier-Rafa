@@ -102,3 +102,9 @@ html{scroll-padding-top:62px}.site-header,.nav{height:55px}.nav{gap:23px}.nav a{
 }
 @media(max-width:360px){.nav{gap:16px}.nav a{font-size:10px}.day .status{font-size:5.4px}.calendar-grid,.weekdays{gap:2px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Footer actions: identical link font size at every screen width. */
+.outro .text-cta, .rafa-contact-wrap .rafa-contact-open { font-size:14px!important; }
+@media (max-width:760px) {
+  .outro .text-cta, .rafa-contact-wrap .rafa-contact-open { font-size:13px!important; }
+}
