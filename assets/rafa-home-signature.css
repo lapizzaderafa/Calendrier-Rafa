@@ -275,3 +275,83 @@ body.rafa-menu-open { overflow: hidden; }
 
 /* Ancien decalage d'ancrage pour une barre sticky desormais supprimee. */
 html { scroll-behavior: auto; scroll-padding-top: 0; }
+/* Accueil Rafa — photo couleur immersive (2026-10-29).
+   Modifications volontairement limitées au premier écran et à son en-tête.
+   Menu ouvert, autres sections, polices, liens et système de réservation inchangés. */
+.site-header {
+  position: absolute !important; /* neutralise le sticky injecté par site.js */
+  top: 0 !important;
+  left: 0;
+  right: 0;
+  height: 94px;
+  justify-content: flex-end;
+  padding: 0 max(23px, calc((100vw - 1480px)/2 + 78px));
+  background: transparent;
+  border: 0;
+}
+.rafa-brand {
+  width: 101px;
+  height: 62px;
+}
+.rafa-brand img {
+  filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,.32));
+}
+.rafa-menu-toggle {
+  left: max(23px, calc((100vw - 1480px)/2 + 78px));
+  width: 45px;
+  height: 45px;
+  gap: 8px;
+}
+.rafa-menu-toggle span { width: 29px; }
+.rafa-intro {
+  min-height: max(720px, 100svh);
+}
+.rafa-intro .hero-photo img {
+  object-position: 50% 46%;
+  filter: none;
+}
+.rafa-intro::before {
+  background: linear-gradient(180deg,
+    rgba(12,10,9,.43) 0%,
+    rgba(12,10,9,.12) 23%,
+    rgba(12,10,9,.37) 47%,
+    rgba(12,10,9,.51) 73%,
+    rgba(12,10,9,.47) 100%);
+}
+.rafa-intro .hero {
+  padding: 118px clamp(20px,4.8vw,78px) 87px;
+}
+.rafa-intro .hero h1 {
+  font-size: clamp(76px, 9.4vw, 132px);
+  line-height: .98;
+  letter-spacing: -.078em;
+  margin: 27px 0 29px;
+}
+.rafa-intro .hero-bottom { gap: 29px; }
+.rafa-intro .hero .text-cta {
+  min-height: 54px;
+  padding: 13px 31px;
+  border-color: rgba(255,255,255,.93);
+}
+@media (max-width: 760px) {
+  .site-header {
+    height: 88px;
+    padding: 0 23px;
+  }
+  .rafa-brand { width: 94px; height: 58px; }
+  .rafa-menu-toggle { left: 23px; width: 44px; height: 44px; }
+  .rafa-menu-toggle span { width: 27px; }
+  .rafa-intro { min-height: max(690px, 100svh); }
+  .rafa-intro .hero-photo img { object-position: 53% 45%; }
+  .rafa-intro .hero { padding: 112px 23px 80px; }
+  .rafa-intro .hero h1 {
+    font-size: clamp(56px, 13.9vw, 78px);
+    line-height: 1;
+    margin: 26px 0 28px;
+  }
+  .rafa-intro .hero-bottom { gap: 27px; }
+  .rafa-intro .hero .text-cta { min-height: 52px; padding: 13px 27px; }
+}
+@media (max-width: 360px) {
+  .rafa-intro .hero h1 { font-size: clamp(52px, 13.7vw, 57px); }
+}
