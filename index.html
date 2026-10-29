@@ -62,6 +62,29 @@
 }
 @media(prefers-reduced-motion:reduce){ .rafa-reviews-carousel { scroll-behavior:auto; } }
 </style>
+
+<style>
+/* Six liens dans le menu Rafa : même fonte, proportions et centrage soignés. */
+.rafa-nav-links {
+  gap:clamp(14px,2.2svh,24px);
+  padding-top:clamp(18px,2.5svh,28px);
+  padding-bottom:clamp(30px,5svh,55px);
+  min-height:0;
+}
+.rafa-nav-links a {
+  display:block;
+  max-width:calc(100vw - 38px);
+  margin-inline:auto;
+  font-size:clamp(37px,min(5.5vw,7.4svh),66px);
+  line-height:1.11;
+  text-align:center;
+}
+@media(max-width:760px) {
+  .rafa-nav-top { flex-basis:clamp(112px,17svh,145px); }
+  .rafa-nav-links { gap:clamp(12px,2.2svh,20px); padding:20px 18px clamp(26px,5svh,45px); }
+  .rafa-nav-links a { font-size:clamp(35px,9vw,45px); line-height:1.08; }
+}
+</style>
 </head>
 <body>
 <main class="site">
@@ -78,6 +101,7 @@
 <a href="#pizzas">Nos pizzas</a>
 <a href="#prix">Prix</a>
 <a href="#disponibilites">Réserver</a>
+<a href="./corporatif.html">Corporatif</a>
 <a href="#contact" id="rafaContactOpen">Nous contacter</a>
 </nav>
 <div class="rafa-nav-foot">PIZZA À DOMICILE · QUÉBEC</div>
