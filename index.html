@@ -21,6 +21,47 @@
 <link rel="stylesheet" href="./assets/rafa-v10.css?v=1">
 <link rel="stylesheet" href="./assets/rafa-home-signature.css?v=5">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FoodEstablishment","name":"Rafa Pizza","url":"https://rafapizza.ca/","image":"https://rafapizza.ca/assets/01-preparation-signature.jpeg","description":"Service de pizzas préparées et cuites sur place pour des événements privés à Québec.","servesCuisine":"Pizza","areaServed":"Québec, QC"}</script>
+
+<style>
+/* Rafa — avis clients. Styles isolés; la police Instrument Sans existante est héritée. */
+.rafa-reviews { padding-top:clamp(90px,9vw,145px); padding-bottom:clamp(82px,8vw,125px); }
+.rafa-reviews-head { display:flex; justify-content:space-between; align-items:flex-end; gap:26px; margin-bottom:32px; }
+.rafa-reviews-head h2 { margin:0!important; }
+.rafa-reviews-rating { flex-shrink:0; text-align:right; padding-bottom:5px; }
+.rafa-reviews-score { font-size:28px; font-weight:500; letter-spacing:-.06em; line-height:1.1; }
+.rafa-reviews-score span { font-size:15px; font-weight:400; letter-spacing:0; color:var(--soft); }
+.rafa-reviews-stars,.rafa-review-stars { color:#353330; letter-spacing:.14em; white-space:nowrap; }
+.rafa-reviews-stars { font-size:14px; margin-top:8px; }
+.rafa-reviews-count { font-size:11px; color:var(--soft); margin-top:6px; }
+.rafa-reviews-line { border-top:1px solid var(--hair); margin-bottom:23px; }
+.rafa-reviews-carousel { display:flex; align-items:stretch; gap:14px; overflow-x:auto; overscroll-behavior-inline:contain; scroll-snap-type:x mandatory; scroll-padding-inline:1px; scrollbar-width:none; }
+.rafa-reviews-carousel::-webkit-scrollbar { display:none; }
+.rafa-review-card { flex:0 0 calc((100% - 14px)/2); min-width:0; min-height:264px; padding:clamp(22px,2.8vw,31px); display:flex; flex-direction:column; background:#fff; border:1px solid var(--hair); border-radius:3px; scroll-snap-align:start; }
+.rafa-review-stars { font-size:15px; line-height:1.1; margin-bottom:20px; }
+.rafa-review-text { margin:0; font-size:14px; font-weight:400; line-height:1.72; color:#403d39; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:5; overflow:hidden; }
+.rafa-review-card.is-expanded .rafa-review-text { display:block; overflow:visible; }
+.rafa-review-more { align-self:flex-start; padding:0 0 3px; margin-top:12px; border:0; border-bottom:1px solid #a9a19a; background:transparent; color:var(--soft); font-size:11px; font-weight:500; cursor:pointer; }
+.rafa-review-more:hover { color:var(--ink); }
+.rafa-review-author { margin-top:auto; padding-top:26px; font-size:12px; font-weight:600; color:var(--ink); }
+.rafa-reviews-controls { display:flex; justify-content:space-between; align-items:center; gap:16px; padding-top:19px; }
+.rafa-reviews-position { font-size:11px; color:var(--soft); letter-spacing:.09em; font-variant-numeric:tabular-nums; }
+.rafa-reviews-buttons { display:flex; gap:8px; }
+.rafa-review-nav { width:38px; height:38px; display:grid; place-items:center; border:1px solid #d9d5cf; border-radius:50%; background:transparent; color:var(--ink); font-size:23px; font-weight:400; line-height:1; }
+.rafa-review-nav:hover:not(:disabled) { border-color:var(--ink); }
+.rafa-review-nav:disabled { opacity:.28; cursor:default; }
+@media(max-width:760px){
+  .rafa-reviews { padding-top:90px; padding-bottom:75px; }
+  .rafa-reviews-head { align-items:flex-start; flex-direction:column; gap:18px; margin-bottom:23px; }
+  .rafa-reviews-rating { display:flex; flex-wrap:wrap; align-items:center; gap:11px; text-align:left; padding-bottom:0; }
+  .rafa-reviews-score { font-size:23px; }
+  .rafa-reviews-stars,.rafa-reviews-count { margin:0; }
+  .rafa-reviews-stars { font-size:13px; }
+  .rafa-reviews-line { margin-bottom:19px; }
+  .rafa-review-card { flex-basis:85%; min-height:250px; }
+  .rafa-review-text { font-size:14px; }
+}
+@media(prefers-reduced-motion:reduce){ .rafa-reviews-carousel { scroll-behavior:auto; } }
+</style>
 </head>
 <body>
 <main class="site">
@@ -109,10 +150,115 @@
 </div>
 </div>
 </section>
+
+<!-- Avis clients : section de bas de page, typographie du site conservée. -->
+<section id="avis" class="section wrap rafa-reviews" aria-labelledby="rafaReviewsTitle">
+  <div class="rafa-reviews-head">
+    <h2 id="rafaReviewsTitle">Les avis</h2>
+    <div class="rafa-reviews-rating" aria-label="Note moyenne de 5 sur 5, basée sur 6 avis clients">
+      <div class="rafa-reviews-score">5,0 <span>/ 5</span></div>
+      <div class="rafa-reviews-stars" aria-hidden="true">★★★★★</div>
+      <div class="rafa-reviews-count">6 avis clients</div>
+    </div>
+  </div>
+  <div class="rafa-reviews-line" aria-hidden="true"></div>
+  <div class="rafa-reviews-carousel" id="rafa-avis-carousel" tabindex="0" aria-label="Six avis clients, faites défiler pour lire les suivants">
+<article class="rafa-review-card">
+<div class="rafa-review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+<p class="rafa-review-text">Rafa et sa pizza, une soirée en toute simplicité avec des plats raffinés! Du grand bonheur à la maison! Merci pour tout!</p>
+<div class="rafa-review-author">Marie L.</div>
+</article>
+<article class="rafa-review-card">
+<div class="rafa-review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+<p class="rafa-review-text">J’ai récemment fait venir Rafa à la maison pour une fête et quelle belle expérience! Avec son collègue, ils nous ont préparé des pizzas d’une qualité exceptionnelle. Elles étaient toutes succulentes. Nous étions 19 personnes et tout le monde a adoré. Une expérience qui a dépassé nos attentes! Merci beaucoup Rafa pour cette magnifique soirée! Je vous recommande sans aucune hésitation. 👌🍕</p>
+<button class="rafa-review-more" type="button" aria-expanded="false">Lire l'avis complet</button>
+<div class="rafa-review-author">Denis F.</div>
+</article>
+<article class="rafa-review-card">
+<div class="rafa-review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+<p class="rafa-review-text">Superbe soirée d'anniversaire grâce à Rafa et son concept vraiment original! Que de bons mots pour cette première expérience: pizzas savoureuses, ingrédients de qualité, pizzaiolo des plus sympathiques et souriants, service à la clientèle impeccable! À recommander, sans aucune hésitation !</p>
+<button class="rafa-review-more" type="button" aria-expanded="false">Lire l'avis complet</button>
+<div class="rafa-review-author">Émilie L.</div>
+</article>
+<article class="rafa-review-card">
+<div class="rafa-review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+<p class="rafa-review-text">Nous avons fait appel à La Pizza de RAFA pour une soirée à la maison avec environ 45 personnes et quelle belle découverte! Les pizzas étaient absolument délicieuses, fraîchement préparées sur place avec leur four à pizza. Tout le monde a très bien mangé et les choix de pizzas ont vraiment plu à nos invités. Malgré le nombre de personnes, le service a été rapide, efficace et impeccable. L’équipe était super sympathique et professionnelle, et tout s’est déroulé à merveille du début à la fin. C’est vraiment une formule parfaite pour recevoir sans avoir à se casser la tête avec le repas. Nos invités ont adoré… et nous aussi! 😍 Je recommande La Pizza de RAFA sans hésitation! 🍕🔥</p>
+<button class="rafa-review-more" type="button" aria-expanded="false">Lire l'avis complet</button>
+<div class="rafa-review-author">Fannie D.</div>
+</article>
+<article class="rafa-review-card">
+<div class="rafa-review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+<p class="rafa-review-text">Soirée parfaite. Merci Raphaël 🫶🏽</p>
+<div class="rafa-review-author">Juliette B.</div>
+</article>
+<article class="rafa-review-card">
+<div class="rafa-review-stars" aria-label="5 étoiles sur 5">★★★★★</div>
+<p class="rafa-review-text">Rafa et son équipe avait une expertise notable. Très professionnels. Service A1 et pizzas succulentes. Merci pour ce beau party!</p>
+<div class="rafa-review-author">Annie C.</div>
+</article>
+  </div>
+  <div class="rafa-reviews-controls">
+    <span class="rafa-reviews-position" id="rafa-avis-position" aria-live="polite">01 — 06</span>
+    <div class="rafa-reviews-buttons">
+      <button type="button" class="rafa-review-nav" id="rafa-avis-prev" aria-label="Avis précédent">‹</button>
+      <button type="button" class="rafa-review-nav" id="rafa-avis-next" aria-label="Avis suivant">›</button>
+    </div>
+  </div>
+</section>
 <footer class="footer"><span>Rafa Pizza · Québec</span><span>Pizza à domicile pour vos événements</span></footer>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./assets/site.js?v=16"></script>
 <script src="./assets/rafa-home-menu.js?v=4" defer></script>
+
+<script>
+/* Carrousel d'avis autonome; n'interfère pas avec le calendrier et les réservations. */
+(function(){
+  const track=document.getElementById('rafa-avis-carousel');
+  if(!track) return;
+  const cards=Array.from(track.querySelectorAll('.rafa-review-card'));
+  const prev=document.getElementById('rafa-avis-prev');
+  const next=document.getElementById('rafa-avis-next');
+  const position=document.getElementById('rafa-avis-position');
+  function currentIndex(){
+    const start=cards[0].offsetLeft;
+    let best=0, distance=Infinity;
+    cards.forEach((card,i)=>{
+      const d=Math.abs((card.offsetLeft-start)-track.scrollLeft);
+      if(d<distance){distance=d;best=i;}
+    });
+    return best;
+  }
+  function update(){
+    const i=currentIndex();
+    position.textContent=String(i+1).padStart(2,'0')+' — '+String(cards.length).padStart(2,'0');
+    prev.disabled=track.scrollLeft<=2;
+    next.disabled=track.scrollLeft+track.clientWidth>=track.scrollWidth-2;
+  }
+  function move(direction){
+    const amount=cards[0].getBoundingClientRect().width+14;
+    track.scrollBy({left:direction*amount,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  }
+  prev.addEventListener('click',()=>move(-1));
+  next.addEventListener('click',()=>move(1));
+  track.addEventListener('scroll',update,{passive:true});
+  track.addEventListener('keydown',event=>{
+    if(event.key==='ArrowRight'||event.key==='ArrowLeft'){
+      event.preventDefault();
+      move(event.key==='ArrowRight'?1:-1);
+    }
+  });
+  track.querySelectorAll('.rafa-review-more').forEach(button=>{
+    button.addEventListener('click',()=>{
+      const card=button.closest('.rafa-review-card');
+      const expanded=card.classList.toggle('is-expanded');
+      button.setAttribute('aria-expanded',String(expanded));
+      button.textContent=expanded?'Réduire':"Lire l'avis complet";
+    });
+  });
+  window.addEventListener('resize',update,{passive:true});
+  update();
+})();
+</script>
 </body>
 </html>
