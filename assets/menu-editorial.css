@@ -100,3 +100,9 @@ body{background:var(--cream);color:var(--ink);font-family:'Instrument Sans',-app
 .pizza-menu-feedback{margin-left:0}
 .save{border-radius:100px}
 @media(max-width:760px){.pizza-menu-category{margin-left:0;margin-bottom:21px}.pizza-row{padding:13px 0 19px;gap:9px}.pizza-add{font-size:11px;padding:8px 10px;min-height:33px}}
+
+/* Présentation identique à la carte publique : deux colonnes sur ordinateur. */
+.pizza-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(36px,7vw,108px)}
+.pizza-menu-list{display:block}
+.pizza-menu-group+.pizza-menu-group{margin-top:0}
+@media(max-width:760px){.pizza-grid{grid-template-columns:minmax(0,1fr);gap:42px}}
