@@ -29,7 +29,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Pesca Rossa",
-        "Mozza fraîche, pêches grillées, chèvre, amandes effilées torréfiées, basilic, balsamique"
+        "Mozza fraîche, pêches grillées, chèvre, amandes effilées, basilic, balsamique"
       ],
       [
         "Montréal",
@@ -50,7 +50,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Patata",
-        "Crème fraîche, mozza fraîche, pommes de terre dorées, pecorino, romarin"
+        "Crème fraîche, mozza fraîche, pommes de terre, pecorino, romarin"
       ],
       [
         "Cipolla",
@@ -62,11 +62,11 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Bosco",
-        "Mozza fraîche, chanterelles, capocollo, ricotta fouettée, pesto de basilic, roquette"
+        "Crème fraîche, mozza fraîche, chanterelles, capocollo, ricotta fouettée, pesto de basilic, roquette"
       ],
       [
         "Acciuga",
-        "Mozza fraîche, tomates cerises confites, anchois, ricotta citronnée, basilic"
+        "Crème fraîche, mozza fraîche, tomates cerises confites, anchois, ricotta citronnée, basilic"
       ],
       [
         "Mortadella",
