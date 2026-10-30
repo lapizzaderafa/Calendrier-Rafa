@@ -43,3 +43,7 @@
  .rafa-carte-list p{font-size:13.3px}
 }
 @media(prefers-reduced-motion:reduce){.rafa-carte-button{transition:none}}
+
+/* Bouton de disponibilité : directement sous « Le prix. » */
+#prix.price-standalone .price-heading .rafa-carte-button{margin-top:clamp(30px,3.8vw,54px)}
+@media(max-width:700px){#prix.price-standalone .price-heading .rafa-carte-button{margin-top:30px}}
