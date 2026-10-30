@@ -29,7 +29,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Pesca Rossa",
-        "Mozza fraîche, pêches grillées, chèvre, amandes effilées, basilic, balsamique"
+        "Pêches grillées, chèvre, amandes effilées, basilic, balsamique"
       ],
       [
         "Montréal",
