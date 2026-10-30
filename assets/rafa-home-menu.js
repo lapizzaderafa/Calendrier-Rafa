@@ -1,13 +1,15 @@
-/* Rafa Pizza — navigation unifiee des liens internes. */
+/* Rafa Pizza — navigation interne, alignement stable de chaque destination. */
 (() => {
   const menuButton = document.querySelector('.rafa-menu-toggle');
   const menuPanel = document.getElementById('rafa-nav-panel');
   const menuClose = menuPanel?.querySelector('.rafa-menu-close');
   if (!menuButton || !menuPanel || !menuClose) return;
 
-  document.body.appendChild(menuPanel); // Hors de .site (overflow: clip).
+  document.body.appendChild(menuPanel); // Évite le découpage causé par .site (overflow: clip).
   let lastFocus = menuButton;
+  let navigationToken = 0;
   const menuIsOpen = () => !menuPanel.hidden;
+  const OFFSET = 24; // Aligner le haut du titre à 24 px du haut de la fenêtre.
 
   function openMenu() {
     lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : menuButton;
@@ -25,15 +27,22 @@
     else if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
   }
 
-  // Aligner les titres de sections a 24 px du haut de l'ecran.
-  // Le bandeau Rafa n'est pas fixe : aucune compensation de son hauteur.
+  // Cibler les vrais titres et non le début d'une section (avec ses espaces).
   function destinationFor(hash) {
-    if (hash === '#accueil') return document.getElementById('accueil');
-    if (hash === '#disponibilites' || hash === '#calendrier') {
-      return document.getElementById('dateTitle') || document.getElementById('disponibilites');
-    }
     if (!/^#[A-Za-z][\w-]*$/.test(hash)) return null;
-    const section = document.getElementById(hash.slice(1));
+    const id = hash.slice(1);
+    const titles = {
+      accueil: 'accueil',
+      fonctionnement: 'functionTitle',
+      pizzas: 'pizzasTitle',
+      prix: 'prixTitle',
+      disponibilites: 'dateTitle',
+      calendrier: 'dateTitle',
+      avis: 'rafaReviewsTitle'
+    };
+    const explicit = document.getElementById(titles[id] || '');
+    if (explicit) return explicit;
+    const section = document.getElementById(id);
     if (!section) return null;
     return section.matches('h1, h2') ? section : (section.querySelector('h1, h2') || section);
   }
@@ -45,38 +54,53 @@
     const previous = root.style.scrollBehavior;
     root.style.scrollBehavior = 'auto';
     const y = hash === '#accueil' ? 0 :
-      window.scrollY + target.getBoundingClientRect().top - 24;
+      window.scrollY + target.getBoundingClientRect().top - OFFSET;
     window.scrollTo({top: Math.max(0, Math.round(y)), behavior});
     root.style.scrollBehavior = previous;
     if (recordHistory && location.hash !== hash) history.pushState(null, '', hash);
   }
 
-  // Corriger les petits deplacements consecutifs a la fermeture du menu
-  // et au chargement de la typographie sur ordinateur et mobile.
   function alignTo(hash, recordHistory = true, animated = false) {
-    if (!destinationFor(hash)) return;
+    const target = destinationFor(hash);
+    if (!target) return;
+    const token = ++navigationToken;
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Le bouton de réservation arrive en douceur sur « Votre date. ».
-    // Pour les liens entrants et l'historique, on privilégie un alignement immédiat.
+    // Défilement doux uniquement pour la réservation; correction de fin au pixel.
     if (animated && !reduceMotion) {
-      requestAnimationFrame(() => jumpTo(hash, recordHistory, 'smooth'));
+      requestAnimationFrame(() => {
+        jumpTo(hash, recordHistory, 'smooth');
+        const settle = () => {
+          if (token !== navigationToken || location.hash !== hash) return;
+          const delta = target.getBoundingClientRect().top - OFFSET;
+          // Ne pas ramener la page si la personne a volontairement défilé ailleurs.
+          if (Math.abs(delta) > 2 && Math.abs(delta) < 140) jumpTo(hash, false);
+        };
+        if ('onscrollend' in window) window.addEventListener('scrollend', settle, {once: true});
+        setTimeout(settle, 1000); // Repli pour Safari et versions sans scrollend.
+      });
       return;
     }
 
+    // Après fermeture du menu, polices chargées ou restauration de page, viser le même titre.
     requestAnimationFrame(() => {
+      if (token !== navigationToken) return;
       jumpTo(hash, recordHistory);
-      requestAnimationFrame(() => jumpTo(hash, false));
-    });
-    if (document.fonts && document.fonts.status !== 'loaded') {
-      document.fonts.ready.then(() => {
-        if (location.hash === hash) requestAnimationFrame(() => jumpTo(hash, false));
+      requestAnimationFrame(() => {
+        if (token === navigationToken) jumpTo(hash, false);
       });
-    }
+    });
+    if (document.fonts) document.fonts.ready.then(() => {
+      if (token === navigationToken && location.hash === hash)
+        requestAnimationFrame(() => jumpTo(hash, false));
+    });
   }
 
   menuButton.addEventListener('click', () => menuIsOpen() ? closeMenu() : openMenu());
   menuClose.addEventListener('click', () => closeMenu());
+  menuPanel.addEventListener('click', event => {
+    if (event.target === menuPanel) closeMenu();
+  });
 
   document.addEventListener('click', event => {
     const anchor = event.target instanceof Element ? event.target.closest('a[href^="#"]') : null;
@@ -103,8 +127,15 @@
   });
 
   addEventListener('popstate', () => {
+    if (menuIsOpen()) closeMenu(false);
     if (location.hash) alignTo(location.hash, false);
-    else window.scrollTo(0, 0);
+    else { ++navigationToken; window.scrollTo(0, 0); }
+  });
+  addEventListener('hashchange', () => {
+    if (location.hash) alignTo(location.hash, false);
+  });
+  addEventListener('pageshow', () => {
+    if (location.hash) alignTo(location.hash, false);
   });
   addEventListener('load', () => {
     if (location.hash) alignTo(location.hash, false);
