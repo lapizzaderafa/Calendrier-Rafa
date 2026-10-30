@@ -142,53 +142,103 @@ const form=document.getElementById('corporatifForm');
 const send=document.getElementById('corp-send');
 const status=document.getElementById('corp-result');
 const endpoint='https://jetogsbyptglaihktdel.supabase.co/functions/v1/contact';
+const publishableKey='sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja';
+const fallbackEndpoint='https://formsubmit.co/ajax/lapizzaderafa@gmail.com';
 if(!form||!send||!status)return;
-form.addEventListener('submit',async function(event){
- event.preventDefault();
- if(!form.reportValidity())return;
- send.disabled=true;
- send.textContent='Envoi…';
- status.className='corp-result';
- status.textContent='';
- const fields=new FormData(form);
- const get=(name)=>String(fields.get(name)||'').trim();
- const message=[
- 'DEMANDE DE SOUMISSION CORPORATIVE — RAFA PIZZA',
- '',
- 'Entreprise : '+get('company'),
- 'Personne-ressource : '+get('name'),
- 'Courriel : '+get('email'),
- 'Téléphone : '+(get('phone')||'Non précisé'),
- '',
- 'Événement : '+get('type'),
- 'Nombre d’invités : '+get('guests'),
- 'Date : '+get('date'),
- 'Heure de service : '+get('time'),
- 'Adresse / lieu : '+get('location'),
- 'Prise électrique accessible : '+get('electric'),
- '',
- 'Précisions : '+(get('notes')||'Aucune'),
- '',
- 'Source : page Corporatif — rafapizza.ca/corporatif.html'
- ].join('\n');
- try{
+async function sendToRafa(payload){
   const response=await fetch(endpoint,{
-   method:'POST',
-   headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({name:get('name'),email:get('email'),message,website:get('website')})
+    method:'POST',
+    headers:{'Content-Type':'application/json','apikey':publishableKey},
+    body:JSON.stringify(payload)
   });
-  if(!response.ok)throw new Error('Service indisponible');
-  form.reset();
-  status.className='corp-result visible';
-  status.textContent='Votre demande a bien été envoyée. Nous vous répondrons dès que possible.';
-  send.textContent='Envoyé';
- }catch(_){
-  status.className='corp-result visible error';
-  status.textContent='Impossible d’envoyer votre demande pour le moment. Réessayez ou écrivez-nous à lapizzaderafa@gmail.com.';
-  send.textContent='Envoyer ma demande';
- }finally{
-  send.disabled=false;
- }
+  if(!response.ok)throw new Error('Service principal : HTTP '+response.status);
+  const data=await response.json().catch(()=>null);
+  if(data&&(data.ok===false||data.success===false||data.success==='false')){
+    throw new Error('Service principal : envoi refusé');
+  }
+}
+async function sendBackup(name,email,company,message){
+  const response=await fetch(fallbackEndpoint,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({
+      _subject:'Nouvelle demande de soumission corporative — Rafa Pizza',
+      _template:'table',
+      name,
+      email,
+      entreprise:company,
+      message
+    })
+  });
+  const data=await response.json().catch(()=>null);
+  // FormSubmit peut retourner HTTP 200 même quand l'envoi est refusé.
+  if(!response.ok||!data||(data.success!==true&&data.success!=='true')){
+    throw new Error('Service de secours : envoi non confirmé');
+  }
+}
+form.addEventListener('submit',async function(event){
+  event.preventDefault();
+  if(!form.reportValidity())return;
+  send.disabled=true;
+  send.textContent='Envoi…';
+  status.className='corp-result';
+  status.replaceChildren();
+  const fields=new FormData(form);
+  const get=name=>String(fields.get(name)||'').trim();
+  const message=[
+    'DEMANDE DE SOUMISSION CORPORATIVE — RAFA PIZZA',
+    '',
+    'Entreprise : '+get('company'),
+    'Personne-ressource : '+get('name'),
+    'Courriel : '+get('email'),
+    'Téléphone : '+(get('phone')||'Non précisé'),
+    '',
+    'Événement : '+get('type'),
+    'Nombre d’invités : '+get('guests'),
+    'Date : '+get('date'),
+    'Heure de service : '+get('time'),
+    'Adresse / lieu : '+get('location'),
+    'Prise électrique accessible : '+get('electric'),
+    '',
+    'Précisions : '+(get('notes')||'Aucune'),
+    '',
+    'Source : page Corporatif — rafapizza.ca/corporatif.html'
+  ].join('\n');
+  try{
+    // Ne jamais transférer un formulaire rempli par un robot.
+    if(get('website'))throw new Error('Vérification anti-spam');
+    let delivered=false;
+    try{
+      await sendToRafa({name:get('name'),email:get('email'),message,website:''});
+      delivered=true;
+    }catch(primaryError){
+      console.warn('Envoi corporatif principal indisponible :',primaryError.message);
+      try{
+        await sendBackup(get('name'),get('email'),get('company'),message);
+        delivered=true;
+      }catch(backupError){
+        console.warn('Envoi corporatif de secours indisponible :',backupError.message);
+      }
+    }
+    if(!delivered)throw new Error('Aucun service disponible');
+    form.reset();
+    status.className='corp-result visible';
+    status.textContent='Votre demande a bien été envoyée. Nous vous répondrons dès que possible.';
+    send.textContent='Envoyé';
+  }catch(error){
+    console.warn('La demande corporative n’a pas été confirmée :',error.message);
+    status.className='corp-result visible error';
+    status.append(document.createTextNode('L’envoi automatique ne fonctionne pas pour le moment. Votre demande n’a pas été confirmée. Vous pouvez nous l’envoyer directement par courriel : '));
+    const link=document.createElement('a');
+    link.href='mailto:lapizzaderafa@gmail.com?subject='+encodeURIComponent('Demande de soumission corporative — '+get('company'))+'&body='+encodeURIComponent(message);
+    link.textContent='Ouvrir mon courriel';
+    link.style.textDecoration='underline';
+    link.style.textUnderlineOffset='3px';
+    status.append(link);
+    send.textContent='Réessayer';
+  }finally{
+    send.disabled=false;
+  }
 });
 })();
 </script>
