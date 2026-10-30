@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Les pizzas — Rafa Pizza</title>
+<meta name="description" content="La carte Rafa Pizza : 17 pizzas, des classiques à notre façon. Découvrez les pizzas rouges et blanches pour votre événement à Québec.">
+<meta name="theme-color" content="#FAF9F6">
+<link rel="canonical" href="https://rafapizza.ca/carte.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="./assets/rafa-editorial.css?v=5">
+<link rel="stylesheet" href="./assets/rafa-carte.css?v=1">
+</head>
+<body class="rafa-carte-page">
+<header class="rafa-carte-top">
+<a class="rafa-carte-brand" href="./index.html" aria-label="Rafa Pizza, accueil">RAFA PIZZA</a>
+<nav class="rafa-carte-navigation" aria-label="Navigation de la carte">
+<a href="./index.html">Accueil</a>
+<a href="./index.html#disponibilites">Réserver</a>
+</nav>
+</header>
+<main class="rafa-carte-main">
+<p class="rafa-carte-eyebrow">Pizza à domicile · Québec</p>
+<h1 class="rafa-carte-title">Les pizzas</h1>
+<p class="rafa-carte-subtitle">À notre façon.</p>
+<p class="rafa-carte-count">17 créations · Rouges et blanches</p>
+<div class="rafa-carte-columns" id="rafaCarte" aria-label="Les 17 pizzas Rafa classées par base"></div>
+<div class="rafa-carte-bottom"><a href="./index.html#disponibilites" class="rafa-carte-button">Voir les disponibilités</a></div>
+</main>
+<footer class="rafa-carte-footer"><span>Rafa Pizza · Québec</span><span>La pizza, chez vous.</span></footer>
+<script src="./assets/rafa-pizzas.js?v=1"></script>
+<script>
+(function(){
+  const root=document.getElementById('rafaCarte');
+  for(const [category,items] of window.RAFA_PIZZA_GROUPS){
+    const section=document.createElement('section');
+    section.className='rafa-carte-group';
+    const h2=document.createElement('h2');h2.textContent=category;
+    const list=document.createElement('ul');list.className='rafa-carte-list';
+    for(const [name,description] of items){
+      const li=document.createElement('li');
+      const h3=document.createElement('h3');h3.textContent=name;
+      const p=document.createElement('p');p.textContent=description;
+      li.append(h3,p);list.append(li);
+    }
+    section.append(h2,list);root.append(section);
+  }
+})();
+</script>
+</body>
+</html>
