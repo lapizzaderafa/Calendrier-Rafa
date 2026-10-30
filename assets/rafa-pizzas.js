@@ -25,7 +25,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Jardin",
-        "Tomates et aubergines grillées, ail confit, ricotta citronnée, basilic"
+        "Tomates et aubergines grillées, ail confit, ricotta, basilic"
       ],
       [
         "Pesca Rossa",
@@ -62,7 +62,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Bosco",
-        "mozza fraîche, chanterelles, capocollo, ricotta citronnée, pesto de basilic, roquette"
+        "mozza fraîche, chanterelles, capocollo, ricotta, pesto de basilic, roquette"
       ],
       [
         "Acciuga",
