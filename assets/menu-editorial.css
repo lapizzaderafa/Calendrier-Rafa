@@ -86,3 +86,17 @@ body{background:var(--cream);color:var(--ink);font-family:'Instrument Sans',-app
  .choice-copy h2{font-size:43px}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Carte client V2 — même typographie et descriptions que la carte publique. */
+.pizza-menu-category{margin-left:0;margin-bottom:34px}
+.pizza-menu-list{column-gap:8%}
+.pizza-row{display:flex;align-items:flex-start;justify-content:space-between;gap:13px;min-width:0;padding:16px 0 20px}
+.pizza-row .pizza-menu-text{min-width:0;flex:1}
+.pizza-add{font:500 11px/1.3 'Instrument Sans',sans-serif;white-space:nowrap;border:1px solid #CFC8C0;border-radius:100px;background:transparent;color:#302B27;min-height:34px;padding:8px 11px;flex:0 0 auto;cursor:pointer;transition:background .15s,border-color .15s}
+.pizza-add:hover:not(:disabled){border-color:#5B1F2A;background:#F1EBE6}
+.pizza-add.selected{color:#5B1F2A;border-color:#5B1F2A}
+.pizza-add:disabled{opacity:.35;cursor:not-allowed}
+.pizza-add:focus-visible{outline:2px solid #5B1F2A;outline-offset:3px}
+.pizza-menu-feedback{margin-left:0}
+.save{border-radius:100px}
+@media(max-width:760px){.pizza-menu-category{margin-left:0;margin-bottom:21px}.pizza-row{padding:13px 0 19px;gap:9px}.pizza-add{font-size:11px;padding:8px 10px;min-height:33px}}
