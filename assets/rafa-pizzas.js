@@ -33,7 +33,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Montréal",
-        "Mozza fraîche, smoked meat du Québec, cornichons, crème à la moutarde, aneth frais"
+        "Mozza fraîche, smoked meat du Québec, cornichons, crème à la moutarde, aneth"
       ]
     ]
   ],
@@ -42,23 +42,23 @@ window.RAFA_PIZZA_GROUPS = [
     [
       [
         "Quattro",
-        "Crème fraîche, mozza, pecorino, gorgonzola, comté, poivre noir"
+        "Crème fraîche, mozza fraîche, pecorino, gorgonzola, comté, poivre noir"
       ],
       [
         "Fungus",
-        "Crème fraîche, mozza, champignons du moment, ciboulette fraîche"
+        "Crème fraîche, mozza fraîche, champignons du moment, ciboulette"
       ],
       [
         "Patata",
-        "Crème fraîche, mozza, pommes de terre dorées, pecorino, romarin"
+        "Crème fraîche, mozza fraîche, pommes de terre dorées, pecorino, romarin"
       ],
       [
         "Cipolla",
-        "Crème fraîche, mozza, lard fumé, confit d'oignon, thym frais"
+        "Crème fraîche, mozza fraîche, lard fumé, confit d'oignon, thym"
       ],
       [
         "Figus",
-        "Crème fraîche, mozza, guanciale, confit de figues, romarin"
+        "Crème fraîche, mozza fraîche, guanciale, confit de figues, romarin"
       ],
       [
         "Bosco",
@@ -70,7 +70,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Mortadella",
-        "Crème fraîche, mozza, mortadelle, pistaches, ricotta citronnée"
+        "Crème fraîche, mozza fraîche, mortadelle, pistaches, ricotta citronnée"
       ],
       [
         "Zucca e Salsiccia",
