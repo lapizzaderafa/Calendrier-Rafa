@@ -1,0 +1,45 @@
+/* Rafa Pizza — accueil « Les pizzas » et carte publique.
+   Tous les sélecteurs sont préfixés pour ne rien modifier ailleurs sur le site. */
+.rafa-carte-teaser {max-width:990px;padding:18px 0 25px}
+.section .rafa-carte-teaser h2{margin:0 0 24px;font-size:clamp(70px,8.2vw,128px);letter-spacing:-.082em;line-height:.96;font-weight:500}
+.rafa-carte-teaser .rafa-carte-tagline{margin:0 0 59px;font-size:clamp(24px,2.8vw,39px);line-height:1.15;letter-spacing:-.045em;font-weight:400;color:#625D58}
+.rafa-carte-button{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:14px 33px;border:1px solid #302B27;border-radius:100px;text-decoration:none;background:transparent;color:#302B27;font-size:12px;font-weight:500;letter-spacing:.055em;line-height:1.35;text-transform:uppercase;text-align:center;transition:background .18s,border-color .18s,color .18s}
+.rafa-carte-button:hover{background:#302B27;color:#FAF9F6}
+.rafa-carte-button:focus-visible{outline:2px solid #5B1F2A;outline-offset:4px}
+.rafa-carte-page{font-family:'Instrument Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#FAF9F6;color:#242321}
+.rafa-carte-page *{box-sizing:border-box}
+.rafa-carte-top{max-width:1480px;margin:0 auto;min-height:74px;padding:20px clamp(23px,5vw,78px);display:flex;align-items:center;justify-content:space-between;gap:18px}
+.rafa-carte-brand{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:#242321}
+.rafa-carte-navigation{display:flex;gap:clamp(14px,3.3vw,38px);align-items:center}
+.rafa-carte-navigation a{font-size:12px;text-decoration:none;color:#6C665F}
+.rafa-carte-navigation a:hover{color:#5B1F2A}
+.rafa-carte-main{max-width:1480px;margin:0 auto;padding:clamp(61px,7.8vw,124px) clamp(23px,5vw,78px) clamp(86px,10vw,156px)}
+.rafa-carte-eyebrow{font-size:10px;color:#867D75;letter-spacing:.15em;font-weight:500;text-transform:uppercase;margin:0 0 28px}
+.rafa-carte-title{font-size:clamp(68px,8.5vw,135px);font-weight:500;line-height:.94;letter-spacing:-.085em;margin:0}
+.rafa-carte-subtitle{font-size:clamp(20px,2.5vw,34px);font-weight:400;letter-spacing:-.045em;color:#625D58;margin:23px 0 0}
+.rafa-carte-count{font-size:12px;color:#877E76;margin:16px 0 0}
+.rafa-carte-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(40px,8vw,124px);margin-top:clamp(65px,9vw,123px)}
+.rafa-carte-group{min-width:0}
+.rafa-carte-group h2{font-size:16px;letter-spacing:-.02em;font-weight:500;color:#716A63;margin:0 0 39px}
+.rafa-carte-list{list-style:none;margin:0;padding:0}
+.rafa-carte-list li{margin:0 0 35px;min-width:0}
+.rafa-carte-list h3{font-size:clamp(23px,2.3vw,32px);font-weight:500;letter-spacing:-.05em;line-height:1.15;color:#292522;margin:0 0 8px}
+.rafa-carte-list p{font-size:13.8px;line-height:1.58;letter-spacing:-.01em;color:#706860;margin:0;max-width:490px}
+.rafa-carte-bottom{margin-top:clamp(54px,8vw,104px)}
+.rafa-carte-footer{max-width:1480px;margin:0 auto;padding:28px clamp(23px,5vw,78px) 38px;display:flex;justify-content:space-between;gap:20px;border-top:1px solid #E8E3DD;color:#8F867E;font-size:11px}
+@media(max-width:700px){
+ .rafa-carte-teaser{padding:10px 0 22px}
+ .section .rafa-carte-teaser h2{font-size:clamp(62px,13vw,88px);margin-bottom:23px}
+ .rafa-carte-teaser .rafa-carte-tagline{font-size:27px;margin-bottom:46px}
+ .rafa-carte-button{min-height:52px;padding:13px 27px}
+ .rafa-carte-top{min-height:65px}
+ .rafa-carte-main{padding-top:69px;padding-bottom:86px}
+ .rafa-carte-title{font-size:clamp(60px,13vw,80px)}
+ .rafa-carte-subtitle{font-size:25px}
+ .rafa-carte-columns{grid-template-columns:1fr;gap:45px;margin-top:67px}
+ .rafa-carte-group h2{margin-bottom:28px}
+ .rafa-carte-list li{margin-bottom:28px}
+ .rafa-carte-list h3{font-size:27px}
+ .rafa-carte-list p{font-size:13.3px}
+}
+@media(prefers-reduced-motion:reduce){.rafa-carte-button{transition:none}}
