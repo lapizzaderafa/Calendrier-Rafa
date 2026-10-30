@@ -62,11 +62,11 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Bosco",
-        "mozza fraîche, chanterelles, capocollo, pesto de basilic, roquette"
+        "Pesto de basilic, mozza fraîche, chanterelles, capocollo, stracciatella, roquette"
       ],
       [
         "Acciuga",
-        "mozza fraîche, tomates cerises confites, anchois, ricotta citronnée, basilic"
+        "mozza fraîche, tomates cerises confites, anchois, stracciatella, basilic"
       ],
       [
         "Mortadella",
