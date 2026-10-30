@@ -28,7 +28,7 @@
 <body>
 <main class="site"><header class="top"><a class="brand-text" href="./index.html" aria-label="Rafa Pizza, accueil">Rafa Pizza</a><div class="top-note">Menu d’un événement confirmé</div></header><section class="main">
 <div id="loading" class="state show"><div class="loader"></div><p>Chargement de votre réservation…</p></div><div id="errorState" class="state"><h1>Lien non disponible.</h1><p>Ce lien n’est pas valide ou la réservation n’est plus active.</p></div><div id="closedState" class="state"><h1>Votre menu est fermé.</h1><p>L’événement est déjà passé.</p></div>
-<div id="menuPage" class="inner" hidden><p class="eyebrow">Votre événement Rafa</p><h1>Choisissez vos pizzas.</h1><p class="lead">Découvrez nos 17 créations et ajoutez les quatre pizzas de votre événement.</p><div class="event-card"><div class="event-detail"><span>Client</span><strong id="clientName">—</strong></div><div class="event-detail"><span>Date</span><strong id="eventDate">—</strong></div><div class="event-detail"><span>Invités</span><strong id="guestCount">—</strong></div></div><div id="savedBanner" class="saved-banner">Votre menu est déjà enregistré. Vous pouvez le modifier ci-dessous, puis enregistrer de nouveau.</div><div class="choice-head"><div class="choice-copy"><h2>Les pizzas</h2><p>À notre façon.</p></div><div id="counter" class="counter" role="status" aria-live="polite" aria-label="Pizzas sélectionnées">0 / 4</div></div><div id="pizzaGrid" class="pizza-grid" aria-label="Choix de pizzas rouges et blanches"></div><p id="pizzaFeedback" class="pizza-menu-feedback" role="status" aria-live="polite"></p><div class="summary"><h2>Vos quatre pizzas</h2><div id="selectedList" class="selected-list"><span class="empty-choice">Aucune pizza sélectionnée.</span></div><label class="notes-label" for="menuNotes">Une précision pour Rafa? <span style="font-weight:500;color:var(--muted)">(facultatif)</span></label><textarea id="menuNotes" class="notes" maxlength="600" placeholder="Allergie à rappeler, préférence particulière…"></textarea><button id="saveBtn" class="save" type="button" disabled>Confirmer mes 4 pizzas</button><p class="helper">Vos quatre choix sont transmis par courriel à Rafa. Ils sont aussi enregistrés dans votre réservation lorsque le service est disponible.</p><div id="message" class="msg"></div></div></div></section></main>
+<div id="menuPage" class="inner" hidden><p class="eyebrow">Votre événement Rafa</p><h1>Choisissez vos pizzas.</h1><p class="lead">Découvrez nos 17 créations et ajoutez les quatre pizzas de votre événement.</p><div class="event-card"><div class="event-detail"><span>Client</span><strong id="clientName">—</strong></div><div class="event-detail"><span>Date</span><strong id="eventDate">—</strong></div><div class="event-detail"><span>Invités</span><strong id="guestCount">—</strong></div></div><div class="choice-head"><div class="choice-copy"><h2>Les pizzas</h2><p>À notre façon.</p></div><div id="counter" class="counter" role="status" aria-live="polite" aria-label="Pizzas sélectionnées">0 / 4</div></div><div id="pizzaGrid" class="pizza-grid" aria-label="Choix de pizzas rouges et blanches"></div><p id="pizzaFeedback" class="pizza-menu-feedback" role="status" aria-live="polite"></p><div class="summary"><h2>Vos quatre pizzas</h2><div id="selectedList" class="selected-list"><span class="empty-choice">Aucune pizza sélectionnée.</span></div><label class="notes-label" for="menuNotes">Une précision pour Rafa? <span style="font-weight:500;color:var(--muted)">(facultatif)</span></label><textarea id="menuNotes" class="notes" maxlength="600" placeholder="Allergie à rappeler, préférence particulière…"></textarea><button id="saveBtn" class="save" type="button" disabled>Confirmer mes 4 pizzas</button><p class="helper">Vos quatre choix sont envoyés directement à Rafa par courriel.</p><div id="message" class="msg"></div></div></div></section></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./assets/rafa-pizzas.js?v=2"></script>
 <script>
@@ -60,94 +60,84 @@ function renderPizzas(){
  }
 }
 function renderSelection(){const n=selected.length;$('counter').textContent=`${n} / 4`;$('counter').classList.toggle('complete',n===4);$('saveBtn').disabled=n!==4;$('selectedList').innerHTML=n?selected.map(x=>`<span class="choice-pill">${escapeHtml(x)}</span>`).join(''):'<span class="empty-choice">Aucune pizza sélectionnée.</span>'}function showMessage(t,type){const el=$('message');el.textContent=t;el.className=`msg show ${type}`}
-async function loadMenu(){if(!token){showOnly('errorState');return}try{const{data,error}=await db.rpc('get_menu_by_token',{p_token:token});if(error)throw error;if(!data?.ok){showOnly('errorState');return}menuData=data;$('clientName').textContent=data.full_name||'Votre événement';$('eventDate').textContent=formatDate(data.event_date);$('guestCount').textContent=data.guest_count?`${data.guest_count} personnes`:'—';selected=Array.isArray(data.menu_choices)?data.menu_choices.filter(x=>PIZZA_NAMES.includes(x)).slice(0,4):[];$('menuNotes').value=data.menu_notes||'';$('savedBanner').classList.toggle('show',!!data.menu_submitted_at);if(data.editable===false){showOnly('closedState');return}renderPizzas();renderSelection();showMenu();if(Array.isArray(data.menu_choices)&&data.menu_choices.includes('Golosa'))showMessage('La Golosa a été remplacée au menu. Choisissez une autre pizza avant de confirmer votre sélection.','error')}catch(e){console.error(e);showOnly('errorState')}}
+async function loadMenu(){
+ if(!token){showOnly('errorState');return}
+ try{
+  const{data,error}=await db.rpc('get_menu_by_token',{p_token:token});
+  if(error)throw error;
+  if(!data?.ok){showOnly('errorState');return}
+  menuData=data;
+  $('clientName').textContent=data.full_name||'Votre événement';
+  $('eventDate').textContent=formatDate(data.event_date);
+  $('guestCount').textContent=data.guest_count?data.guest_count+' personnes':'—';
+  if(data.editable===false){showOnly('closedState');return}
+  selected=[];
+  $('menuNotes').value='';
+  renderPizzas();
+  renderSelection();
+  showMenu();
+ }catch(error){console.error('Impossible de charger la réservation',error);showOnly('errorState')}
+}
 let lastEmailedSignature=null;
 function selectedSignature(){return JSON.stringify({choices:selected,notes:$('menuNotes').value.trim()})}
 function mailtoFallback(){
-  const subject='Choix de pizzas Rafa — '+(menuData?.full_name||'Client')+' — '+formatDate(menuData?.event_date);
-  const body=[
-    'Bonjour Rafa,','',
-    'Voici mes quatre choix de pizzas :','',
-    ...selected.map((name,i)=>(i+1)+'. '+name),
-    '','Client : '+(menuData?.full_name||'—'),
-    'Date : '+formatDate(menuData?.event_date),
-    'Invités : '+(menuData?.guest_count||'—'),
-    'Précisions : '+($('menuNotes').value.trim()||'Aucune'),
-    '','Merci !'
-  ].join('\n');
-  return 'mailto:lapizzaderafa@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+ const subject='Choix de pizzas Rafa — '+(menuData?.full_name||'Client')+' — '+formatDate(menuData?.event_date);
+ const body=[
+  'Bonjour Rafa,','','Voici mes quatre choix de pizzas :','',
+  ...selected.map((name,i)=>(i+1)+'. '+name),
+  '','Client : '+(menuData?.full_name||'—'),
+  'Date : '+formatDate(menuData?.event_date),
+  'Invités : '+(menuData?.guest_count||'—'),
+  'Précisions : '+($('menuNotes').value.trim()||'Aucune'),'','Merci !'
+ ].join('\n');
+ return 'mailto:lapizzaderafa@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
 }
-function offerManualEmail(savedInReservation=false){
-  const el=$('message');
-  el.className='msg show '+(savedInReservation?'notice':'error');
-  el.replaceChildren();
-  const p=document.createElement('span');
-  p.textContent=savedInReservation
-    ?'Vos choix sont enregistrés dans votre réservation, mais l’envoi du courriel à Rafa n’a pas été confirmé. Pour les envoyer aussi par courriel : '
-    :'L’envoi automatique n’a pas été confirmé. Votre sélection n’a pas été enregistrée. Pour transmettre vos quatre choix à Rafa : ';
-  const a=document.createElement('a');
-  a.href=mailtoFallback();a.textContent='Envoyer mes choix par courriel';
-  a.style.color='#5B1F2A';a.style.fontWeight='600';a.style.textDecoration='underline';a.style.textUnderlineOffset='3px';
-  el.append(p,a);
+function offerManualEmail(){
+ const el=$('message');el.className='msg show error';el.replaceChildren();
+ const p=document.createElement('span');
+ p.textContent='L’envoi automatique n’a pas pu être confirmé. Vous pouvez envoyer vos quatre choix avec votre application courriel : ';
+ const a=document.createElement('a');
+ a.href=mailtoFallback();a.textContent='Envoyer mes choix par courriel';
+ a.style.color='#5B1F2A';a.style.fontWeight='600';
+ a.style.textDecoration='underline';a.style.textUnderlineOffset='3px';
+ el.append(p,a);
 }
 async function emailChoices(){
-  const signature=selectedSignature();
-  if(lastEmailedSignature===signature)return true; // éviter les courriels en double
-  const response=await fetch('https://formsubmit.co/ajax/lapizzaderafa@gmail.com',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({
-      _subject:'🍕 Menu choisi — '+(menuData?.full_name||'Événement Rafa'),
-      _template:'table',
-      Client:menuData?.full_name||'Client',
-      Date:formatDate(menuData?.event_date),
-      Invites:menuData?.guest_count||'Non précisé',
-      Pizzas:selected.map((name,i)=>(i+1)+'. '+name).join('\n'),
-      Notes:$('menuNotes').value.trim()||'Aucune note',
-      Source:'Sélection depuis le lien privé Rafa'
-    })
-  });
-  const data=await response.json().catch(()=>null);
-  if(!response.ok||!data||(data.success!==true&&data.success!=='true')){
-    console.warn('Le service de courriel n’a pas confirmé l’envoi.',response.status);
-    return false;
-  }
-  lastEmailedSignature=signature;
-  return true;
-}
-async function saveChoicesToReservation(){
-  try{
-    const{data,error}=await db.rpc('save_menu_selection',{
-      p_token:token,p_choices:selected,p_notes:$('menuNotes').value.trim()||null
-    });
-    if(error){console.warn('Sauvegarde Supabase indisponible :',error);return false}
-    if(!data?.ok){console.warn('Sauvegarde Supabase refusée :',data?.code||'code inconnu');return false}
-    return true;
-  }catch(error){
-    console.warn('Erreur de sauvegarde Supabase :',error);
-    return false;
-  }
+ const signature=selectedSignature();
+ if(lastEmailedSignature===signature)return true; // Éviter les doublons lors d’un deuxième clic.
+ const response=await fetch('https://formsubmit.co/ajax/lapizzaderafa@gmail.com',{
+  method:'POST',
+  headers:{'Content-Type':'application/json','Accept':'application/json'},
+  body:JSON.stringify({
+   _subject:'🍕 Menu choisi — '+(menuData?.full_name||'Événement Rafa'),
+   _template:'table',
+   Client:menuData?.full_name||'Client',
+   Date:formatDate(menuData?.event_date),
+   Invites:menuData?.guest_count||'Non précisé',
+   Pizzas:selected.map((name,i)=>(i+1)+'. '+name).join('\n'),
+   Notes:$('menuNotes').value.trim()||'Aucune note'
+  })
+ });
+ const data=await response.json().catch(()=>null);
+ if(!response.ok||!data||(data.success!==true&&data.success!=='true')){
+  console.warn('FormSubmit : envoi non confirmé',response.status,data);
+  return false;
+ }
+ lastEmailedSignature=signature;
+ return true;
 }
 $('saveBtn').onclick=async()=>{
-  if(selected.length!==4)return;
-  const btn=$('saveBtn');
-  btn.disabled=true;btn.textContent='Envoi…';
-  $('message').className='msg';$('message').textContent='';
-  // Le courriel ne dépend jamais du résultat de la sauvegarde Supabase.
-  const [emailResult,dbResult]=await Promise.allSettled([emailChoices(),saveChoicesToReservation()]);
-  const emailed=emailResult.status==='fulfilled'&&emailResult.value===true;
-  const saved=dbResult.status==='fulfilled'&&dbResult.value===true;
-  if(emailResult.status==='rejected')console.warn('Courriel indisponible :',emailResult.reason);
-  if(dbResult.status==='rejected')console.warn('Sauvegarde indisponible :',dbResult.reason);
-  if(saved)$('savedBanner').classList.add('show');
-  if(emailed&&saved){
-    showMessage('Vos quatre pizzas ont été envoyées par courriel à Rafa et enregistrées dans votre réservation.','success');
-  }else if(emailed){
-    showMessage('Vos quatre pizzas ont été envoyées au service de courriel de Rafa. L’enregistrement dans votre réservation n’a pas fonctionné; Rafa vérifiera vos choix.','notice');
-  }else{
-    offerManualEmail(saved);
-  }
-  btn.textContent='Confirmer mes 4 pizzas';btn.disabled=false;
+ if(selected.length!==4)return;
+ const btn=$('saveBtn');btn.disabled=true;btn.textContent='Envoi…';
+ $('message').className='msg';$('message').replaceChildren();
+ try{
+  if(await emailChoices())showMessage('Vos quatre pizzas ont été transmises par courriel à Rafa. Merci !','success');
+  else offerManualEmail();
+ }catch(error){console.warn('Envoi du choix de pizzas indisponible',error);offerManualEmail()}
+ finally{
+  btn.textContent='Confirmer mes 4 pizzas';
+  btn.disabled=false;
   $('message').scrollIntoView({block:'nearest',behavior:'smooth'});
+ }
 };loadMenu();
 </script></body></html>
