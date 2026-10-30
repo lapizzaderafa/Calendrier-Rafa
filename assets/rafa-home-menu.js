@@ -38,7 +38,7 @@
     return section.matches('h1, h2') ? section : (section.querySelector('h1, h2') || section);
   }
 
-  function jumpTo(hash, recordHistory = true) {
+  function jumpTo(hash, recordHistory = true, behavior = 'auto') {
     const target = destinationFor(hash);
     if (!target) return;
     const root = document.documentElement;
@@ -46,15 +46,24 @@
     root.style.scrollBehavior = 'auto';
     const y = hash === '#accueil' ? 0 :
       window.scrollY + target.getBoundingClientRect().top - 24;
-    window.scrollTo(0, Math.max(0, Math.round(y)));
+    window.scrollTo({top: Math.max(0, Math.round(y)), behavior});
     root.style.scrollBehavior = previous;
     if (recordHistory && location.hash !== hash) history.pushState(null, '', hash);
   }
 
   // Corriger les petits deplacements consecutifs a la fermeture du menu
   // et au chargement de la typographie sur ordinateur et mobile.
-  function alignTo(hash, recordHistory = true) {
+  function alignTo(hash, recordHistory = true, animated = false) {
     if (!destinationFor(hash)) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Le bouton de réservation arrive en douceur sur « Votre date. ».
+    // Pour les liens entrants et l'historique, on privilégie un alignement immédiat.
+    if (animated && !reduceMotion) {
+      requestAnimationFrame(() => jumpTo(hash, recordHistory, 'smooth'));
+      return;
+    }
+
     requestAnimationFrame(() => {
       jumpTo(hash, recordHistory);
       requestAnimationFrame(() => jumpTo(hash, false));
@@ -76,7 +85,7 @@
     if (!destinationFor(hash)) return;
     event.preventDefault();
     if (menuIsOpen()) closeMenu(false);
-    alignTo(hash);
+    alignTo(hash, true, hash === '#disponibilites' || hash === '#calendrier');
   });
 
   document.addEventListener('keydown', event => {
