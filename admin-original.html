@@ -672,7 +672,7 @@ body{
 
     <div class="stat money-stat">
       <div id="monthRevenueStat" class="n">0 $</div>
-      <div class="t">CA du mois</div>
+      <div id="monthRevenueLabel" class="t">CA du mois</div>
     </div>
 
     <div class="stat money-stat">
@@ -943,6 +943,7 @@ let editing = null;
 
 let viewDate = new Date();
 viewDate.setDate(1);
+let displayedRevenueMonth = '';
 
 const monthNames = [
   'Janvier','Février','Mars','Avril','Mai','Juin',
@@ -1426,6 +1427,11 @@ function renderStats(){
     String(now.getMonth()+1)
       .padStart(2,'0');
 
+  const monthLabel = new Intl.DateTimeFormat('fr-CA', {
+    month:'long',
+    year:'numeric'
+  }).format(now);
+
   const billable =
     reservations.filter(
       r =>
@@ -1456,11 +1462,16 @@ function renderStats(){
   $('monthRevenueStat').textContent =
     money(monthRevenue);
 
+  $('monthRevenueLabel').textContent =
+    'CA · ' + monthLabel;
+
+  displayedRevenueMonth = monthPrefix;
+
   $('totalRevenueStat').textContent =
     money(totalRevenue);
 
   $('financeNote').textContent =
-    'Le chiffre d’affaires comprend uniquement les vraies réservations confirmées.';
+    'Le CA du mois additionne les événements confirmés prévus en ' + monthLabel + '. Il repart à 0 $ chaque nouveau mois, sans effacer les mois précédents.';
 
 }
 
@@ -3081,6 +3092,19 @@ $('invoiceBtn').onclick =
   }
 
 };
+
+function refreshRevenueMonthIfNeeded(){
+  const now = new Date();
+  const currentMonth = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+  if(currentMonth !== displayedRevenueMonth && !$('app').classList.contains('hidden')){
+    renderStats();
+  }
+}
+
+// Actualiser automatiquement le montant lorsque le mois change, même si l’onglet reste ouvert.
+setInterval(refreshRevenueMonthIfNeeded,60*1000);
+window.addEventListener('focus',refreshRevenueMonthIfNeeded);
+document.addEventListener('visibilitychange',refreshRevenueMonthIfNeeded);
 
 sessionGate();
 
