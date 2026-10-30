@@ -106,3 +106,6 @@ body{background:var(--cream);color:var(--ink);font-family:'Instrument Sans',-app
 .pizza-menu-list{display:block}
 .pizza-menu-group+.pizza-menu-group{margin-top:0}
 @media(max-width:760px){.pizza-grid{grid-template-columns:minmax(0,1fr);gap:42px}}
+
+/* Réception par courriel uniquement : état distinct d'un menu enregistré. */
+.msg.notice{display:block;background:#FBF7F0;border:1px solid #D9CBB9;color:#68513A;padding:12px 14px}
