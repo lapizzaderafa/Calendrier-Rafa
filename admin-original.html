@@ -951,7 +951,9 @@ const monthNames = [
 ];
 
 // External reservations are confirmed separately from the website's database.
-const EXTERNAL_BOOKED_DATES = new Set(["2026-11-09","2026-11-17","2026-11-24","2026-11-25","2027-06-23"]);
+const EXTERNAL_BOOKED_DATES = new Set(["2026-11-09","2026-11-17","2026-11-24","2026-11-25","2026-11-28","2027-06-23"]);
+// Noms des réservations externes (visibles seulement dans le tableau de bord administrateur).
+const EXTERNAL_BOOKING_NAMES = Object.freeze({"2026-11-28":"Luca"});
 // Personal closures in November (all other Mondays, Tuesdays and Wednesdays).
 const NOVEMBER_UNAVAILABLE_DATES = new Set(["2026-11-02","2026-11-03","2026-11-04","2026-11-10","2026-11-11","2026-11-16","2026-11-18","2026-11-23","2026-11-30"]);
 const OTHER_CLOSED_MONDAYS = new Set(["2026-10-26","2026-12-07","2026-12-21"]);
@@ -1588,8 +1590,8 @@ function renderCalendar(){
     if (manualStatus === 'booked' && !hasExistingBooking) {
       const externalBooking = document.createElement('div');
       externalBooking.className = 'event-pill confirmed';
-      externalBooking.textContent = 'Réservé (externe)';
-      externalBooking.title = 'Réservation sur une autre plateforme — non comptée dans les revenus du site';
+      externalBooking.textContent = EXTERNAL_BOOKING_NAMES[iso] ? EXTERNAL_BOOKING_NAMES[iso] + ' · Réservé' : 'Réservé (externe)';
+      externalBooking.title = (EXTERNAL_BOOKING_NAMES[iso] ? 'Client : ' + EXTERNAL_BOOKING_NAMES[iso] + ' — ' : '') + 'Réservation externe — non comptée dans les revenus du site';
       cell.appendChild(externalBooking);
     } else if(manualStatus === 'unavailable' && dayEvents.length === 0) {
       const publicBlock = document.createElement('div');
