@@ -25,7 +25,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Jardin",
-        "Tomates et aubergines grillées, ail confit, stracciatella, basilic"
+        "Tomates et aubergines grillées, ail confit, stracciatella, pesto de basilic"
       ],
       [
         "Pesca Rossa",
