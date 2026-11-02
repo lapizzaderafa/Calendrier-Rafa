@@ -74,7 +74,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Zucca e Salsiccia",
-        "Crème de courge butternut, mozza fraîche, saucisse italienne, sauge croustillante au beurre noisette, parmesan"
+        "Crème de courge butternut, mozza fraîche, saucisse italienne, sauge, parmesan"
       ]
     ]
   ]
