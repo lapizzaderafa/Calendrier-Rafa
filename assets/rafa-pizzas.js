@@ -13,7 +13,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Sicilia",
-        "Mozza fraîche, olives Kalamata, artichauts grillés, ricotta citronnée, origan"
+        "Mozza fraîche, jambon à l’os, olives Kalamata, artichauts grillés, ricotta citronnée, origan"
       ],
       [
         "’Nduja e miel",
