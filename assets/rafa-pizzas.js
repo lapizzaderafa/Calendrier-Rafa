@@ -9,7 +9,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "New York",
-        "Mozza fraîche, pepperoni, parmesan, origan"
+        "Mozza fraîche, pepperoni, parmesan"
       ],
       [
         "Sicilia",
@@ -34,6 +34,10 @@ window.RAFA_PIZZA_GROUPS = [
       [
         "Montréal",
         "Mozza fraîche, smoked meat du Québec, cornichons, crème à la moutarde, aneth"
+      ],
+      [
+        "Bosco",
+        "Pesto de basilic, mozza fraîche, chanterelles, capocollo, stracciatella, roquette"
       ]
     ]
   ],
@@ -59,10 +63,6 @@ window.RAFA_PIZZA_GROUPS = [
       [
         "Figus",
         "Mozza fraîche, guanciale, confit de figues, romarin"
-      ],
-      [
-        "Bosco",
-        "Pesto de basilic, mozza fraîche, chanterelles, capocollo, stracciatella, roquette"
       ],
       [
         "Acciuga",
