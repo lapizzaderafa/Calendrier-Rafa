@@ -50,7 +50,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Patata",
-        "Mozza fraîche, pommes de terre, pecorino, romarin"
+        "Mozza fraîche, pommes de terre dorées, pecorino, romarin"
       ],
       [
         "Cipolla",
