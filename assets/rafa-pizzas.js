@@ -42,23 +42,23 @@ window.RAFA_PIZZA_GROUPS = [
     [
       [
         "Quattro",
-        "mozza fraîche, pecorino, gorgonzola, comté, poivre noir"
+        "Mozza fraîche, pecorino, gorgonzola, comté, poivre noir"
       ],
       [
         "Fungus",
-        "mozza fraîche, champignons du moment, stracciatella, ciboulette"
+        "Champignons du moment, stracciatella, ciboulette"
       ],
       [
         "Patata",
-        "mozza fraîche, pommes de terre, pecorino, romarin"
+        "Mozza fraîche, pommes de terre, pecorino, romarin"
       ],
       [
         "Cipolla",
-        "mozza fraîche, lard fumé, confit d'oignon, thym"
+        "Mozza fraîche, lard fumé, confit d'oignon, thym"
       ],
       [
         "Figus",
-        "mozza fraîche, guanciale, confit de figues, romarin"
+        "Mozza fraîche, guanciale, confit de figues, romarin"
       ],
       [
         "Bosco",
@@ -66,11 +66,11 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Acciuga",
-        "mozza fraîche, tomates cerises confites, anchois, stracciatella, basilic"
+        "Mozza fraîche, tomates cerises confites, anchois, stracciatella, basilic"
       ],
       [
         "Mortadella",
-        "mozza fraîche, mortadelle, pistaches, ricotta citronnée"
+        "Mozza fraîche, mortadelle, pistaches, ricotta citronnée"
       ],
       [
         "Zucca e Salsiccia",
