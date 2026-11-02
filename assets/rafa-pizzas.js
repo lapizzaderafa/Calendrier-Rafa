@@ -58,7 +58,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Cipolla",
-        "Mozza fraîche, lard fumé, confit d'oignon, thym"
+        "Mozza fraîche, bacon fumé, confit d'oignon, thym"
       ],
       [
         "Figus",
