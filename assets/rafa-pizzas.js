@@ -17,7 +17,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "’Nduja e miel",
-        "Mozza fraîche, chair de saucisse épicée, gorgonzola, miel épicé"
+        "Mozza fraîche, saucisson épicé de Calabre, gorgonzola, miel épicé"
       ],
       [
         "Parma",
