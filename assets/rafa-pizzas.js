@@ -9,7 +9,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "New York",
-        "Mozza fraîche, pepperoni, parmesan"
+        "Mozza fraîche, pepperoni finement tranché"
       ],
       [
         "Sicilia",
@@ -37,7 +37,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Bosco",
-        "Pesto de basilic, mozza fraîche, chanterelles, capocollo, stracciatella, roquette"
+        "Pesto de basilic, mozza fraîche, chanterelles, capocollo, stracciatella"
       ]
     ]
   ],
@@ -74,7 +74,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Zucca e Salsiccia",
-        "Crème de courge butternut, mozza fraîche, saucisse italienne, sauge, parmesan"
+        "Crème de courge butternut, mozza fraîche, saucisse italienne, sauge"
       ]
     ]
   ]
