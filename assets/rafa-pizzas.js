@@ -78,7 +78,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Speck",
-        "Crème de parmesan, mozza fraîche, speck et huile d'olive"
+        "Crème de parmesan, mozza fraîche, speck, noisettes concassées et huile d'olive"
       ]
     ]
   ]
