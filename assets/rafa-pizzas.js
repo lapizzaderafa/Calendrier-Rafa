@@ -75,6 +75,10 @@ window.RAFA_PIZZA_GROUPS = [
       [
         "Zucca e Salsiccia",
         "Crème de courge butternut, mozza fraîche, saucisse italienne, sauge"
+      ],
+      [
+        "Speck",
+        "Crème de parmesan, mozza fraîche, speck et huile d'olive"
       ]
     ]
   ]
