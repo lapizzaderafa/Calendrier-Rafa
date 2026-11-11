@@ -37,7 +37,7 @@ window.RAFA_PIZZA_GROUPS = [
       ],
       [
         "Bosco",
-        "Pesto de basilic, mozza fraîche, chanterelles, capocollo, stracciatella"
+        "Pesto de basilic, chanterelles, capocollo, stracciatella"
       ]
     ]
   ],
