@@ -14,10 +14,12 @@ function card(o){
  const plans=(o.pickups||[]).map(p=>J.niceTime(p.time)+" ("+p.qty+")").join(" · ");
  el.innerHTML='<div class="order-top"><div><strong>'+safe(plans||"Aucun créneau")+'</strong><div class="muted">'+safe(o.name)+' · '+safe(o.id)+'</div></div><span class="pill">'+safe(statusLabels[o.status]||o.status)+'</span></div>'+
  '<div class="order-info">'+o.items.map(i=>safe(i.qty+" × "+i.pizza)).join("<br>")+'</div>'+
- '<div class="muted section-spacer">'+(J.amount(o.items)*C.unitPrice)+' $ · '+(o.payment==="cash"?"Comptant":"Interac")+' · '+(o.paid?"Payé":"Non payé")+'</div>'+
- '<div class="order-actions"><button type="button" data-action="advance">Étape suivante</button><button type="button" data-action="paid">'+(o.paid?"Annuler payé":"Marquer payé")+'</button><button type="button" data-action="cancel">'+(o.status==="cancelled"?"Rétablir":"Annuler commande")+'</button></div>';
+ '<div class="order-info"><strong>Contact client</strong><br>Tél. : '+safe(o.phone||"Non fourni")+'<br>Courriel : '+safe(o.email||"Non fourni")+'</div>'+
+ '<div class="muted section-spacer">'+(J.amount(o.items)*C.unitPrice)+' $ · '+(o.payment==="cash"?"Comptant":"Interac")+' · '+(o.paid?"Payé":"Non payé")+' · '+(o.arrived?"Client arrivé":"Arrivée non signalée")+'</div>'+
+ '<div class="order-actions"><button type="button" data-action="advance">Étape suivante</button><button type="button" data-action="arrival">'+(o.arrived?"Client non arrivé":"Client arrivé au stationnement arrière")+'</button><button type="button" data-action="paid">'+(o.paid?"Annuler payé":"Marquer payé")+'</button><button type="button" data-action="cancel">'+(o.status==="cancelled"?"Rétablir":"Annuler commande")+'</button></div>';
  el.querySelector('[data-action="advance"]').disabled=["delivered","cancelled"].includes(o.status);
  el.querySelector('[data-action="advance"]').onclick=()=>{const next={pending:"preparing",preparing:"ready",ready:"delivered"}[o.status];if(next)update(o.id,{status:next})};
+ el.querySelector('[data-action="arrival"]').onclick=()=>update(o.id,{arrived:!o.arrived});
  el.querySelector('[data-action="paid"]').onclick=()=>update(o.id,{paid:!o.paid});
  el.querySelector('[data-action="cancel"]').onclick=()=>update(o.id,{status:o.status==="cancelled"?"pending":"cancelled"});
  return el;
@@ -30,7 +32,7 @@ function orderView(){
 }
 function serviceView(){
  const list=available().filter(o=>o.status!=="delivered").sort((a,b)=>(a.pickups?.[0]?.time||"").localeCompare(b.pickups?.[0]?.time||""));
- $("view").innerHTML='<h2>Service en direct</h2><p class="muted">Ordre de sortie et boutons de progression. Les remises en plusieurs fois restent regroupées par commande.</p>';
+ $("view").innerHTML='<h2>Service au volant en direct</h2><p class="muted">Les clients se stationnent à l’arrière et restent dans leur auto. Une fois les boîtes chaudes prêtes, tu vas les leur remettre. Tu peux noter manuellement leur arrivée et suivre les états de chaque commande. Les remises en plusieurs fois restent regroupées par commande.</p>';
  if(!list.length){$("view").innerHTML+='<div class="empty">Aucune commande active à préparer.</div>';return;}
  list.forEach(o=>$("view").appendChild(card(o)));
 }
