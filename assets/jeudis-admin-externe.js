@@ -190,7 +190,7 @@ function render(){
  $("adminDate").value=date;
  const list=current(),qty=sum(list);
  $("targetDate").textContent=J.formatDate(date)+" · base de test partagée entre appareils";
- $("statPizzas").textContent=qty+" / 30";
+ $("statPizzas").textContent=qty+" / 25";
  $("statOrders").textContent=list.length;
  $("statSales").textContent=list.reduce((n,o)=>n+cost(o),0)+" $";
  for(const b of document.querySelectorAll("[data-view]")){
