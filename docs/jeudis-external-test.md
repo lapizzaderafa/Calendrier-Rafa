@@ -51,3 +51,10 @@ Le démonstrateur courant utilise `localStorage`. Il n'est **pas** synchronisé 
 L'intégration Supabase est **préparée dans le dépôt**, mais elle n'a pas été appliquée au projet distant : accès/connexion Supabase et validation de la migration nécessaires. Les pages `jeudis.html` et `jeudis-admin.html` restent des démonstrateurs locaux tant que l'activation réelle n'est pas faite.
 
 **Ne pas fusionner cette branche sur `main` pour ouvrir les commandes réelles avant les tests ci-dessus.**
+
+## Photographie à choisir avant la publication
+- La rubrique **Les Jeudis Rafa** doit conserver l'esthétique **album architectural** du vrai accueil, avec **une seule vraie photo Rafa** et aucune image créée artificiellement.
+- Le choix de la photo doit se faire **avec Rafa avant publication**; ne pas substituer automatiquement une image de banque.
+- Photos déjà dans le dépôt public susceptibles de convenir : `assets/03-mortadella-pistache-dessus.jpeg`, `assets/05-mortadella-ambiance.jpeg`, `assets/06-decoupe-pizza.jpeg`, `assets/editorial-rafa-pizza.jpeg`.
+- Variante éventuelle à photographier : pizza sortie du four, dans sa boîte ouverte, mains de Rafa au premier plan. Photo naturelle avec texture de croûte bien visible, pas d'apparence IA.
+- Conserver la composition épurée: une photographie et quelques lignes de texte avec l'interface de commande à proximité. Aucune multiplication de blocs décoratifs.
