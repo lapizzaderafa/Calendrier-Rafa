@@ -8,13 +8,16 @@
  */
 (function(global){
 "use strict";
-const URL="https://jetogsbyptglaihktdel.supabase.co";
-const PUBLISHABLE_KEY="sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
 let client;
 function db(){
  if(!client){
+  const config=global.RafaJeudisBackend;
+  if(!config?.enabled||!config.url||!config.publishableKey)
+   throw new Error("Le serveur de réservation n'est pas encore activé pour ce test.");
+  if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(config.url))
+   throw new Error("Adresse du serveur de test invalide.");
   if(!global.supabase?.createClient)throw new Error("Librairie de réservations indisponible.");
-  client=global.supabase.createClient(URL,PUBLISHABLE_KEY);
+  client=global.supabase.createClient(config.url,config.publishableKey);
  }
  return client;
 }
@@ -53,6 +56,10 @@ async function reserve({date,pickups,items,name,email,phone,payment,requestId}){
  }));
  return {orderId,requestId:id};
 }
+async function confirmation(requestId){
+ const rows=await result(db().rpc("rafa_jeudis_confirmation",{p_request_id:requestId}));
+ return rows?.[0]||null;
+}
 async function adminOrders(date){
  await currentUser();
  return result(db().from("rafa_jeudis_orders")
@@ -68,15 +75,15 @@ async function adminAction(orderId,action){
 async function adminSettings(date){
  await currentUser();
  const rows=await result(db().from("rafa_jeudis_settings")
-  .select("pickup_date,paused,closed_slots").eq("pickup_date",date));
- return rows?.[0]||{pickup_date:date,paused:false,closed_slots:[]};
+  .select("pickup_date,paused,closed_slots,pickup_address,pickup_instructions").eq("pickup_date",date));
+ return rows?.[0]||{pickup_date:date,paused:false,closed_slots:[],pickup_address:"",pickup_instructions:""};
 }
-async function adminSaveSettings(date,{paused=false,closedSlots=[]}){
+async function adminSaveSettings(date,{paused=false,closedSlots=[],pickupAddress="",pickupInstructions=""}){
  await currentUser();
  return result(db().from("rafa_jeudis_settings")
-  .upsert({pickup_date:date,paused,closed_slots:closedSlots},{onConflict:"pickup_date"}));
+  .upsert({pickup_date:date,paused,closed_slots:closedSlots,pickup_address:pickupAddress,pickup_instructions:pickupInstructions},{onConflict:"pickup_date"}));
 }
 global.RafaJeudisApi=Object.freeze({
- menu,availability,reserve,adminOrders,adminAction,adminSettings,adminSaveSettings,currentUser,uuid
+ menu,availability,reserve,confirmation,adminOrders,adminAction,adminSettings,adminSaveSettings,currentUser,uuid
 });
 })(window);
