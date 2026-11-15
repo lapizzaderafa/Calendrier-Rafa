@@ -101,7 +101,7 @@ on conflict (pizza) do nothing;
 -- Les commandes ANNULÉES sont exclues. Les suppressions les effacent entièrement.
 create or replace function public.rafa_jeudis_capacity_ok(p_date date)
 returns boolean
-language plpgsql stable security definer
+language plpgsql volatile security definer
 set search_path = ''
 as $$
 declare
