@@ -6,7 +6,7 @@ const J=window.RafaJeudis,API=window.RafaJeudisApi,$=id=>document.getElementById
 const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const plan=J.scheduleFor(),today=plan.today;
 let date=J.weekday(today)===4?today:plan.target;
-let view="prep",orders=[],settings=null,currentId=null,showArchived=false,busy=false;
+let view="prep",orders=[],settings=null,currentId=null,showArchived=false,busy=false,isAuthenticated=false;
 const current=()=>orders.filter(o=>o.status!=="cancelled");
 const pending=()=>current().filter(o=>o.status!=="delivered").sort(compare);
 const compare=(a,b)=>String(a.pickups?.[0]?.time||"").localeCompare(b.pickups?.[0]?.time||"")||
@@ -19,7 +19,7 @@ const pizzaRows=o=>(o.items||[]).map(i=>'<div class="summary-line"><span>'+safe(
 function setBusy(yes){busy=yes}
 function showError(err){$("view").innerHTML='<div class="error">'+safe(err.message||err)+'</div>'}
 async function reload(){
- if(busy)return;
+ if(busy||!isAuthenticated)return;
  try{
   orders=await API.adminOrders(date);
   settings=await API.adminSettings(date);
@@ -186,6 +186,7 @@ function settingsView(){
  };area.appendChild(btn);
 }
 function render(){
+ if(!isAuthenticated)return;
  $("adminDate").value=date;
  const list=current(),qty=sum(list);
  $("targetDate").textContent=J.formatDate(date)+" · base de test partagée entre appareils";
@@ -199,17 +200,40 @@ function render(){
  ({prep:prepView,service:serviceView,orders:orderView,groceries:groceriesView,report:reportView,settings:settingsView}[view])();
 }
 $("adminDate").onchange=e=>{date=e.target.value;currentId=null;reload()};
-document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{view=b.dataset.view;currentId=null;render()});
+document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{if(!isAuthenticated)return;view=b.dataset.view;currentId=null;render()});
+function showLogin(message){
+ $("view").innerHTML='<section class="order"><span class="kicker">Administration Rafa — TEST</span>'+
+  '<h2>Connexion de test</h2><p class="muted">Cette base est différente de ton vrai site. Crée un nouveau mot de passe réservé à cet environnement.</p>'+
+  '<p class="muted"><strong>Compte :</strong> raphael.frenette@gmail.com</p>'+
+  '<label class="field">Mot de passe de test <input type="password" id="testPass" minlength="8" autocomplete="current-password" placeholder="Au moins 8 caractères"></label>'+
+  '<button class="button" type="button" id="testLogin">Me connecter</button>'+
+  '<button class="button secondary" type="button" id="testRegister">Créer mon accès de test (une seule fois)</button>'+
+  '<div id="loginFeedback" class="muted section-spacer" aria-live="polite">'+safe(message||"")+'</div></section>';
+ const pass=$("testPass");
+ function say(msg){$("loginFeedback").textContent=msg}
+ $("testLogin").onclick=async()=>{
+  if(!pass.value){say("Entre ton mot de passe de test.");return}
+  say("Connexion...");
+  try{await API.loginAdmin(pass.value);await init()}catch(e){say("Connexion refusée : "+e.message)}
+ };
+ $("testRegister").onclick=async()=>{
+  if(pass.value.length<8){say("Choisis au moins huit caractères.");return}
+  say("Création du compte de test...");
+  try{
+   const data=await API.createAdminAccess(pass.value);
+   if(data?.session){await init();return}
+   say("Compte créé. Vérifie ta boîte courriel pour confirmer ton adresse, puis reviens ici pour te connecter avec le même mot de passe.");
+  }catch(e){say("Création impossible : "+e.message)}
+ };
+}
 async function init(){
  $("view").innerHTML='<p class="muted">Connexion au serveur Supabase de test...</p>';
  try{
   const user=await API.currentUser();
   if((user.email||"").toLowerCase()!=="raphael.frenette@gmail.com")throw Error("Accès administrateur réservé à Rafa.");
+  isAuthenticated=true;
   await reload();
- }catch(e){
-  $("view").innerHTML='<div class="error">Accès non disponible : '+safe(e.message)+'</div>'+
-   '<p><a href="./admin.html">Connecte-toi au back-office Rafa</a>, puis reviens sur cette page. Si la branche Supabase de test n’est pas activée, la connexion est impossible.</p>';
- }
+ }catch(e){isAuthenticated=false;showLogin(e.message)}
 }
 setInterval(()=>{if(!document.hidden&&!busy&&view!=="settings")reload()},20000);
 init();
