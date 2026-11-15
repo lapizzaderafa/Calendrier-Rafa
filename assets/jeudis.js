@@ -65,10 +65,10 @@ function showSchedule(){
  }else{
   $("selectedHours").textContent=!schedule.ok
    ?"Une incohérence a été détectée dans la simulation. Aucune place supplémentaire n'est proposée."
-   :desired>C.slotCapacity*C.maxAutomaticPickups
-   ?"Pour plus de "+(C.slotCapacity*C.maxAutomaticPickups)+" pizzas, contacte Rafa afin d'organiser une commande spéciale."
+   :desired>C.maxSinglePickup
+   ?"Pour plus de "+(C.maxSinglePickup)+" pizzas, contacte Rafa afin d'organiser une commande spéciale."
    :left<desired?"Il ne reste pas assez de capacité pour cette quantité."
-   :"Choisis une heure disponible pour "+desired+" pizza(s). Certaines quantités nécessitent plusieurs remises.";
+   :"Choisis une heure disponible pour "+desired+" pizza(s). Toutes les pizzas sont remises ensemble.";
  }
  $("confirmBtn").disabled=!plan.open||settings.paused||!offer||chosen()!==desired;
 }
@@ -76,7 +76,7 @@ function render(){
  const amount=chosen();
  $("desiredQty").textContent=desired;
  $("desiredMinus").disabled=desired<=1;
- $("desiredPlus").disabled=desired>=C.dailyCapacity;
+ $("desiredPlus").disabled=desired>=C.maxSinglePickup;
  $("chosenProgress").textContent=amount===desired
   ?"Toutes tes pizzas sont choisies. Tu peux sélectionner ton heure."
   :"Choisis encore "+(desired-amount)+" pizza(s). Les heures pour "+desired+" pizza(s) sont déjà calculées.";
@@ -98,7 +98,7 @@ $("desiredMinus").addEventListener("click",()=>{
  }
  selected=null;render();
 });
-$("desiredPlus").addEventListener("click",()=>{if(desired<C.dailyCapacity){desired++;selected=null;render()}});
+$("desiredPlus").addEventListener("click",()=>{if(desired<C.maxSinglePickup){desired++;selected=null;render()}});
 $("orderForm").addEventListener("submit",e=>{
  e.preventDefault();$("notice").innerHTML="";
  const current=J.scheduleFor(),settings=J.loadSettings(date);
