@@ -33,7 +33,9 @@ function render(){
  J.formatDate(J.plusDays(date,-1)).replace(/^mercredi /,"")+" à 12 h pour commander.";
  $("desiredQty").textContent=desired;
  $("desiredMinus").disabled=desired<=1||sending;
- $("desiredPlus").disabled=desired>=J.CONFIG.maxSinglePickup||sending;
+ $("desiredPlus").disabled=desired>=Math.min(J.CONFIG.dailyCapacity,Number(available[0]?.day_left??J.CONFIG.dailyCapacity))||sending;
+ const remaining=available.length?Math.max(0,Number(available[0]?.day_left)):J.CONFIG.dailyCapacity;
+ $("remainingPizzas").textContent=remaining===0?"Complet pour ce jeudi — les nouvelles commandes sont fermées.":remaining+" pizza(s) encore disponibles pour ce jeudi (25 maximum).";
  $("chosenProgress").textContent=count()===desired
   ?"Toutes tes pizzas sont choisies.":"Choisis encore "+(desired-count())+" pizza(s).";
  document.querySelectorAll(".pizza").forEach((d,i)=>{
@@ -57,7 +59,7 @@ function render(){
   $("hours").appendChild(btn);
  }
  $("selectedHours").textContent=selected
-  ?"Toutes tes pizzas seront prêtes ensemble le "+J.formatDate(date)+" à "+J.niceTime(selected)+"."
+  ?(desired>6?"Pour cette grande commande, la plage réservée commence le ":"Cueillette prévue le ")+J.formatDate(date)+" à "+J.niceTime(selected)+(desired>6?". Rafa confirmera le déroulement de la remise.":".")
   :fetching?"Chargement des heures disponibles...":"Choisis une heure de cueillette pour "+desired+" pizza(s).";
  const yes=plan.open&&selected&&count()===desired&&!sending&&menu.length;
  $("confirmBtn").disabled=!yes;
@@ -93,7 +95,7 @@ $("desiredMinus").onclick=()=>{
  while(count()>desired){const last=[...cart.keys()].at(-1),n=cart.get(last)-1;if(n)cart.set(last,n);else cart.delete(last)}
  selected=null;render();
 };
-$("desiredPlus").onclick=()=>{if(desired<J.CONFIG.maxSinglePickup&&!sending){desired++;selected=null;render()}};
+$("desiredPlus").onclick=()=>{const left=available.length?Number(available[0].day_left):J.CONFIG.dailyCapacity;if(desired<Math.min(J.CONFIG.dailyCapacity,left)&&!sending){desired++;selected=null;render()}};
 $("orderForm").addEventListener("submit",async e=>{
  e.preventDefault();
  if(sending||finished||!selected||count()!==desired)return;
