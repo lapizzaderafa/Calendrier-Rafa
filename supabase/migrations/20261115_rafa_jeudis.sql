@@ -333,7 +333,7 @@ begin
    v_index:=((split_part(v_time,':',1)::integer-17)*60+split_part(v_time,':',2)::integer)/20;
    if v_last_index>=0 and v_index<>v_last_index+1 then raise exception 'pickups_not_consecutive';end if;
    v_last_index:=v_index;
-   if coalesce(v_part->>'qty','') !~ '^[1-6] then raise exception 'invalid_pickup_quantity';end if;
+   if coalesce(v_part->>'qty','') !~ '^[1-6]$' then raise exception 'invalid_pickup_quantity';end if;
    v_pick_qty:=v_pick_qty+(v_part->>'qty')::integer;
    v_pick_count:=v_pick_count+1;
    if v_time=any(coalesce(v_settings.closed_slots,'{}'::text[])) then raise exception 'slot_closed';end if;
