@@ -84,6 +84,10 @@ drop policy if exists rafa_jeudis_menu_public_read on public.rafa_jeudis_menu;
 create policy rafa_jeudis_menu_public_read on public.rafa_jeudis_menu
   for select to anon,authenticated using (active);
 
+drop policy if exists rafa_jeudis_menu_admin_read on public.rafa_jeudis_menu;
+create policy rafa_jeudis_menu_admin_read on public.rafa_jeudis_menu
+  for select to authenticated using (public.rafa_jeudis_is_admin());
+
 drop policy if exists rafa_jeudis_menu_admin_write on public.rafa_jeudis_menu;
 create policy rafa_jeudis_menu_admin_write on public.rafa_jeudis_menu
   for all to authenticated
