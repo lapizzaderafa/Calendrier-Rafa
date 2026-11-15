@@ -372,93 +372,15 @@ returns table (
 )
 language sql stable security definer
 set search_path = ''
-as $
+as $$
  select o.id,o.pickup_date,o.pickups,o.items,o.total_cents,o.status,
         s.pickup_address,s.pickup_instructions
  from public.rafa_jeudis_orders o
  left join public.rafa_jeudis_settings s on s.pickup_date=o.pickup_date
  where o.request_id=p_request_id;
-$;
+$$;
 revoke all on function public.rafa_jeudis_confirmation(uuid) from public;
 grant execute on function public.rafa_jeudis_confirmation(uuid) to anon,authenticated;
-
--- Actions de gestion : annulation conservée, suppression irréversible,
--- remise, paiement, rétablissement sous verrou et contrôle de capacité.
-create or replace function public.rafa_jeudis_admin_action(
- p_id uuid, p_action text
-)
-returns boolean
-language plpgsql volatile security definer
-set search_path = ''
-as $$
-declare
-  v_date date;
-  v_status text;
-begin
- if not public.rafa_jeudis_is_admin() then raise exception 'admin_only';end if;
- select pickup_date,status into v_date,v_status from public.rafa_jeudis_orders where id=p_id;
- if not found then return false;end if;
- perform pg_advisory_xact_lock(hashtextextended('rafa-jeudis:'||v_date::text,0));
- select status into v_status from public.rafa_jeudis_orders where id=p_id for update;
- if p_action='cancel' then
-  if v_status='delivered' then raise exception 'already_delivered';end if;
-  update public.rafa_jeudis_orders
-  set status='cancelled',cancelled_at=now() where id=p_id;
- elsif p_action='restore' then
-  if v_status<>'cancelled' then raise exception 'not_cancelled';end if;
-  update public.rafa_jeudis_orders
-  set status='pending',cancelled_at=null where id=p_id;
-  if not public.rafa_jeudis_capacity_ok(v_date) then raise exception 'restore_would_overbook';end if;
- elsif p_action='delete' then
-  delete from public.rafa_jeudis_orders where id=p_id;
- elsif p_action='delivered' then
-  if v_status='cancelled' then raise exception 'cancelled_order';end if;
-  update public.rafa_jeudis_orders
-  set status='delivered',delivered_at=now() where id=p_id;
- elsif p_action='preparing' then
-  if v_status='cancelled' then raise exception 'cancelled_order';end if;
-  update public.rafa_jeudis_orders set status='preparing' where id=p_id;
- elsif p_action='ready' then
-  if v_status='cancelled' then raise exception 'cancelled_order';end if;
-  update public.rafa_jeudis_orders set status='ready' where id=p_id;
- elsif p_action='paid' then
-  update public.rafa_jeudis_orders set paid=true where id=p_id;
- elsif p_action='unpaid' then
-  update public.rafa_jeudis_orders set paid=false where id=p_id;
- else
-  raise exception 'invalid_admin_action';
- end if;
- return true;
-end;
-$$;
-
-revoke all on function public.rafa_jeudis_admin_action(uuid,text) from public;
-grant execute on function public.rafa_jeudis_admin_action(uuid,text) to authenticated;
-
-comment on table public.rafa_jeudis_orders is 'Les Jeudis Rafa: utiliser uniquement les fonctions RPC pour les écritures; tester avant production.';
- then raise exception 'invalid_pickup_quantity';end if;
-   v_pick_qty:=v_pick_qty+(v_part->>'qty')::integer;
-   v_pick_count:=v_pick_count+1;
-   if v_time=any(coalesce(v_settings.closed_slots,'{}'::text[])) then raise exception 'slot_closed';end if;
- end loop;
- if v_pick_qty<>v_qty or (v_qty<=3 and v_pick_count<>1) then
-   raise exception 'allocation_mismatch';
- end if;
-
- insert into public.rafa_jeudis_orders
-  (request_id,pickup_date,pickups,items,pizza_qty,customer_name,customer_email,customer_phone,payment_method,total_cents)
- values
-  (p_request_id,p_date,p_pickups,p_items,v_qty,trim(p_name),lower(trim(p_email)),trim(p_phone),p_payment,v_qty*2700)
- returning id into v_new;
- if not public.rafa_jeudis_capacity_ok(p_date) then
-  raise exception 'slot_no_longer_available';
- end if;
- return v_new;
-end;
-$$;
-
-revoke all on function public.rafa_jeudis_reserve(date,jsonb,jsonb,text,text,text,text,uuid) from public;
-grant execute on function public.rafa_jeudis_reserve(date,jsonb,jsonb,text,text,text,text,uuid) to anon,authenticated;
 
 -- Actions de gestion : annulation conservée, suppression irréversible,
 -- remise, paiement, rétablissement sous verrou et contrôle de capacité.
