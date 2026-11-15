@@ -1,9 +1,14 @@
+## Décision actuelle : 25 pizzas par jeudi et commandes de gros volume
+La première phase fixe **25 pizzas maximum toutes commandes confondues, chaque jeudi de 17 h à 21 h**. Ce plafond est **actif en base de test**, sans limite commerciale arbitraire de 5 ou 6 pizzas par commande. Une réservation de 20 pizzas à 17 h neutralise les créneaux de production suivants selon le débit provisoire de 3 pizzas par 20 minutes. Les annulations et suppressions libèrent de nouveau la capacité. Le rendu doit reprendre **exactement** la direction éditoriale de rafapizza.ca (fond `#FAF9F6`, Instrument Sans et lignes fines). L'heure réservée pour un gros volume ne doit pas être présentée comme une garantie que toutes les pizzas sont prêtes simultanément; la cadence de remise doit être validée.
+
+---
+
 # Les Jeudis Rafa — prototype de développement
 
 ## Paramètres approuvés
 - Équipe : Rafa seul avec Ooni Volt 2, Gozney Tread et Gozney Arc 12.
 - Prix initial : 27 $ par pizza.
-- Capacité de départ, à mesurer en service : 3 pizzas par 20 minutes et 30 pizzas maximum par jeudi.
+- Capacité de départ, à mesurer en service : 3 pizzas par 20 minutes et 25 pizzas maximum par jeudi.
 - Retraits : chaque jeudi de 17 h à 21 h, derniers départs de créneau à 20 h 40.
 - Modes de paiement à prévoir : Interac à validation manuelle ou comptant.
 
@@ -27,7 +32,7 @@
 - Pour plus de 3 pizzas, possibilité de plusieurs retraits sur des créneaux successifs, quantité indiquée à chaque créneau.
 - Exemple : si 17 h a déjà 2 pizzas, il reste 1 place. Une commande de 1 pizza peut viser 17 h, une commande de 2 pizzas ne peut pas viser 17 h; elle peut viser 17 h 20 si au moins 2 places sont libres.
 - Si une commande de 4 pizzas arrive pour 17 h avec 1 place libre à 17 h et 3 à 17 h 20, on peut proposer 1 pizza à 17 h puis 3 pizzas à 17 h 20.
-- Plafond total de 30 pizzas par jeudi. Le système final devra prendre en compte la capacité physique réelle et les temps de montage, cuisson, finition, emballage et remise.
+- Plafond total de 25 pizzas par jeudi. Le système final devra prendre en compte la capacité physique réelle et les temps de montage, cuisson, finition, emballage et remise.
 
 ## Contenu de la branche de test
 - jeudis.html, assets/jeudis.js et assets/jeudis.css : page de commande client fictive.
@@ -95,11 +100,11 @@ Le prototype actuel répartit encore automatiquement les commandes de plus de 3 
 
 
 ## Décisions les plus récentes (remplacent les règles provisoires ci-dessus)
-- **Une commande = une heure de cueillette** pour les commandes automatisées de **1 à 6 pizzas**. Pas de multiples remises imposées à un client.
+- **Une commande = une heure de cueillette** pour les commandes automatisées de **1 à 25 pizzas (dans la limite des places restantes)**. Pas de multiples remises imposées à un client.
 - Le calcul sépare les tranches de production de 20 minutes et les heures de remise. Une commande de 5 pizzas pour 17 h peut utiliser les tranches de 16 h 20 et 16 h 40 si elles sont libres.
-- Les 6 pizzas max par commande, 2 voitures max par créneau, 3 pizzas de production par 20 minutes et 30 pizzas maximum par jeudi sont des **hypothèses prudentes de test**, à confirmer avec les 3 fours et Rafa seul.
-- Pour une demande de plus de 6 pizzas, le client est orienté vers un arrangement spécial avant que la capacité réelle soit connue.
+- Les 2 voitures maximum par créneau, 3 pizzas produites par 20 minutes et 25 pizzas maximum par jeudi sont des **hypothèses prudentes de test**, à confirmer avec les 3 fours et Rafa seul.
+- Pour une commande importante, le calendrier bloque les créneaux de production à partir de l'heure sélectionnée et Rafa doit valider l'organisation exacte de la remise.
 - Les annulations libèrent la capacité et retirent les pizzas du décompte et de l'épicerie; elles restent visibles dans l'historique.
 - La suppression définitive demande de retaper l'identifiant. Une commande payée déclenche un avertissement de remboursement manuel.
-- Le moteur côté navigateur compte **18 tests de non-régression réussis**; la migration SQL et les pages multi-appareils sont en attente d'un essai réel sur branche de base séparée.
+- Le moteur côté navigateur compte **23 tests de non-régression réussis** et le projet Supabase de test séparé fonctionne avec un plafond de 25 pizzas par jeudi. La mise en service réelle reste soumise à un test de cadence.
 - Les pages d'essai externe restent désactivées jusqu'à mise en place et approbation de la base de test, et aucune donnée de production n'a été modifiée.
