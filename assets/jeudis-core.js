@@ -4,7 +4,7 @@
    Important: la confirmation atomique devra se faire sur serveur avant lancement reel. */
 (function(global){
 "use strict";
-const CONFIG=Object.freeze({unitPrice:27,slotCapacity:3,dailyCapacity:30,startHour:17,endHour:21,slotMinutes:20,maxCarsPerSlot:2,maxAutomaticPickups:1,maxSinglePickup:6,prepMinutesPerPizza:4.5,handoffMinutesPerCar:2,bufferMinutes:2,timezone:"America/Toronto",demoStorageKey:"rafa-jeudis-demo-v1"});
+const CONFIG=Object.freeze({unitPrice:27,slotCapacity:3,dailyCapacity:25,startHour:17,endHour:21,slotMinutes:20,maxCarsPerSlot:2,maxAutomaticPickups:1,maxSinglePickup:25,prepMinutesPerPizza:4.5,handoffMinutesPerCar:2,bufferMinutes:2,timezone:"America/Toronto",demoStorageKey:"rafa-jeudis-demo-v1"});
 function parts(now){
   const f=new Intl.DateTimeFormat("en-CA",{timeZone:CONFIG.timezone,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
   const v=Object.fromEntries(f.formatToParts(now).filter(x=>x.type!=="literal").map(x=>[x.type,x.value]));
@@ -67,50 +67,47 @@ function productionKey(index){
 }
 function scheduleCheck(orders,date){
  const current=activeOrders(orders,date),used=occupancy(current,date),cars=carCounts(current,date);
- const errors=[],list=slots(),valid=new Set(list.map(s=>s.key));
- const jobs=[],production={};let total=0;
+ const errors=[],s=slots(),valid=new Set(s.map(x=>x.key)),jobs=[],production={};
+ let total=0;
  for(const o of current){
-  const qty=amount(o.items);total+=qty;let allocated=0,previous=-1;
-  if(!Number.isInteger(qty)||qty<1)errors.push("Commande "+(o.id||"?")+" sans quantite valide");
-  for(const p of o.pickups||[]){
-   const n=Number(p.qty),index=list.findIndex(s=>s.key===p.time);
-   if(!valid.has(p.time)||!Number.isInteger(n)||n<=0){errors.push("Retrait invalide : "+(o.id||"?"));continue;}
-   if(previous>=0&&index!==previous+1)errors.push("Retraits non consecutifs : "+(o.id||"?"));
-   if(n>CONFIG.maxSinglePickup)errors.push("Trop de pizzas dans un retrait : "+(o.id||"?"));
-   previous=index;allocated+=n;
-   jobs.push({index,qty:n,id:o.id||"?"});
+  const qty=amount(o.items);
+  total+=qty;
+  const ps=o.pickups||[];
+  if(!Number.isInteger(qty)||qty<1||ps.length!==1){
+   errors.push("Commande invalide : "+(o.id||"?"));continue;
   }
-  if(allocated!==qty)errors.push("Pizzas non attribuees : "+(o.id||"?"));
+  const p=ps[0],n=Number(p.qty),index=s.findIndex(x=>x.key===p.time);
+  if(!valid.has(p.time)||!Number.isInteger(n)||n!==qty){
+   errors.push("Cueillette invalide : "+(o.id||"?"));continue;
+  }
+  jobs.push({index,qty:n,id:o.id||"?"});
  }
- if(total>CONFIG.dailyCapacity)errors.push("Capacite du jeudi depassee");
- for(const s of list){
-  if(used[s.key]>CONFIG.maxSinglePickup)errors.push("Trop de pizzas a remettre a "+s.key);
-  if(cars[s.key]>CONFIG.maxCarsPerSlot)errors.push("Trop de vehicules a "+s.key);
+ if(total>CONFIG.dailyCapacity)errors.push("Maximum de 25 pizzas par jeudi atteint");
+ for(const slot of s){
+  if(cars[slot.key]>CONFIG.maxCarsPerSlot)
+   errors.push("Trop de voitures a "+slot.key);
  }
- // Modèle de capacité de travail, distinct de l'heure de remise:
- // au maximum 3 pizzas produites par tranche de 20 minutes;
- // chaque remise peut utiliser les 40 minutes précédentes.
- // Les plages -2 et -1 correspondent à 16:20 et 16:40 pour la remise de 17 h.
- // Les tâches à l'échéance la plus rapprochée sont placées en premier, tôt dans
- // leur fenêtre, afin de ne pas bloquer les commandes plus tardives.
+ // Une commande choisit un début de plage. Les périodes de production
+ // nécessaires sont consommées à partir de ce début (3 pizzas/20 min).
+ // Les commandes importantes neutralisent ainsi les heures qui suivent.
  jobs.sort((a,b)=>a.index-b.index);
  for(const job of jobs){
   let left=job.qty;
-  for(let i=job.index-2;i<=job.index-1&&left>0;i++){
-   const key=productionKey(i),free=Math.max(0,CONFIG.slotCapacity-(production[key]||0));
-   const take=Math.min(left,free);production[key]=(production[key]||0)+take;left-=take;
+  for(let i=job.index;i<s.length&&left>0;i++){
+   const key=s[i].key,free=Math.max(0,CONFIG.slotCapacity-(production[key]||0));
+   const take=Math.min(left,free);
+   production[key]=(production[key]||0)+take;left-=take;
   }
-  if(left>0)errors.push("Temps de production insuffisant pour "+list[job.index].key);
+  if(left>0)errors.push("Temps de production insuffisant pour "+s[job.index]?.key);
  }
  return {ok:errors.length===0,errors,total,used,cars,production};
 }
 function allocation(qty,startTime,orders,date,opts){
- if(!Number.isInteger(Number(qty))||Number(qty)<1||Number(qty)>CONFIG.maxSinglePickup)return null;
  qty=Number(qty);
- const valid=slots().some(s=>s.key===startTime);
- if(!valid)return null;
+ if(!Number.isInteger(qty)||qty<1||qty>CONFIG.dailyCapacity)return null;
+ if(!slots().some(s=>s.key===startTime))return null;
  const settings=opts||loadSettings(date);
- if(settings.paused||new Set(settings.closedSlots||[]).has(startTime))return null;
+ if(settings.paused||(settings.closedSlots||[]).includes(startTime))return null;
  const present=activeOrders(orders,date),check=scheduleCheck(present,date);
  if(!check.ok||check.total+qty>CONFIG.dailyCapacity)return null;
  const pickups=[{time:startTime,qty}];
@@ -124,10 +121,10 @@ function productionPlan(orders,date){
  const report=scheduleCheck(orders,date);
  return slots().map(slot=>{
   const i=slots().findIndex(s=>s.key===slot.key);
-  const earlier=productionKey(i-2),previous=productionKey(i-1);
-  return {pickup:slot.key,productionWindows:[earlier,previous],
+  return {pickup:slot.key,
+   productionWindows:slots().slice(i).filter(s=>(report.production[s.key]||0)>0).map(s=>s.key),
    pizzaCount:report.used[slot.key],cars:report.cars[slot.key],
-   estimatedPrepPizzas:(report.production[earlier]||0)+(report.production[previous]||0),
+   estimatedPrepPizzas:report.production[slot.key]||0,
    overbooked:!report.ok};
  });
 }
