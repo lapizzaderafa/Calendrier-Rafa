@@ -39,10 +39,11 @@ test("Jeudi minuit: date bascule la semaine suivante",()=>{
  const p=J.scheduleFor(new Date("2026-11-19T05:00:00Z"));
  assert.equal(p.target,"2026-11-26");assert.equal(p.open,true);
 });
-test("Deux pizzas à 17 h déjà prises: 1 passe, 2 refusées",()=>{
+test("Deux pizzas déjà réservées à 17 h: 3 de plus passent si la production le permet",()=>{
  const existing=[order("a","17:00",2)];
  assert.ok(J.allocation(1,"17:00",existing,date,noBooking()));
- assert.equal(J.allocation(2,"17:00",existing,date,noBooking()),null);
+ assert.ok(J.allocation(3,"17:00",existing,date,noBooking()));
+ assert.equal(J.allocation(5,"17:00",existing,date,noBooking()),null);
  assert.ok(J.allocation(2,"17:20",existing,date,noBooking()));
 });
 test("3 pizzas à 17 h sur calendrier vide",()=>{
@@ -60,7 +61,7 @@ test("Aucune commande si 30 pizzas déjà réservées",()=>{
  assert.equal(J.allocation(1,"20:40",existing,date,noBooking()),null);
 });
 test("Annulation libère l'horaire et les quantités",()=>{
- const list=[order("a","17:00",2)];
+ const list=[order("a","17:00",5)];
  assert.equal(J.allocation(2,"17:00",list,date,noBooking()),null);
  list[0].status="cancelled";
  assert.ok(J.allocation(2,"17:00",list,date,noBooking()));
@@ -68,18 +69,18 @@ test("Annulation libère l'horaire et les quantités",()=>{
  assert.equal(J.scheduleCheck(list,date).total,0);
 });
 test("Suppression définitive ne laisse aucune capacité bloquée",()=>{
- let list=[order("a","17:00",3)];
+ let list=[order("a","17:00",6)];
  list=list.filter(o=>o.id!=="a");
  assert.equal(J.scheduleCheck(list,date).total,0);
  assert.equal(J.allocation(3,"17:00",list,date,noBooking())?.[0].qty,3);
 });
 test("Une commande terminée garde son créneau réservé",()=>{
- const list=[order("a","17:00",3,"delivered")];
+ const list=[order("a","17:00",6,"delivered")];
  assert.equal(J.allocation(1,"17:00",list,date,noBooking()),null);
 });
 test("Restaurer une commande annulée doit refaire la validation de capacité",()=>{
- const old=order("a","17:00",3,"cancelled");
- const fresh=order("b","17:00",3);
+ const old=order("a","17:00",6,"cancelled");
+ const fresh=order("b","17:00",6);
  assert.equal(J.scheduleCheck([old,fresh],date).ok,true);
  const restore={...old,status:"pending"};
  assert.equal(J.scheduleCheck([restore,fresh],date).ok,false);
@@ -97,8 +98,29 @@ test("Attribution des recettes correcte sur plusieurs lots de démo",()=>{
  ]);
 });
 test("Moteur refuse un calendrier incohérent",()=>{
- const invalid=[order("a","17:00",3),order("b","17:00",3)];
+ const invalid=[order("a","17:00",5),order("b","17:00",5)];
  assert.equal(J.scheduleCheck(invalid,date).ok,false);
  assert.equal(J.allocation(1,"17:20",invalid,date,noBooking()),null);
+});
+
+test("Cinq pizzas : une seule cueillette à 17 h",()=>{
+ const pickups=J.allocation(5,"17:00",[],date,noBooking());
+ assert.equal(pickups.length,1);
+ assert.equal(pickups[0].qty,5);
+ const report=J.scheduleCheck([order("five","17:00",5)],date);
+ assert.equal(report.ok,true);
+ assert.equal(report.production["16:20"]+report.production["16:40"],5);
+});
+test("Six pizzas dans une seule commande ; sept : arrangement spécial",()=>{
+ assert.equal(J.allocation(6,"17:00",[],date,noBooking())?.length,1);
+ assert.equal(J.allocation(7,"17:00",[],date,noBooking()),null);
+});
+test("La production peut être avancée pour préserver la prochaine cueillette",()=>{
+ const a=order("a","17:00",3),b=order("b","17:20",6);
+ assert.equal(J.scheduleCheck([a,b],date).ok,true);
+});
+test("Deux grosses commandes rapprochées ne dépassent pas la production",()=>{
+ const a=order("a","17:00",6),b=order("b","17:20",6);
+ assert.equal(J.scheduleCheck([a,b],date).ok,false);
 });
 console.log("\n"+passed+" tests réussis.");
