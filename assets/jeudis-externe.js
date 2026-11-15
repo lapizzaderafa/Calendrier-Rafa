@@ -11,7 +11,7 @@ const items=()=>[...cart].filter(([,n])=>n>0).map(([pizza,qty])=>({pizza,qty}));
 const checkSlot=slot=>!!slot&&plan.open&&!slot.blocked&&Number(slot.pizzas_left)>=desired&&Number(slot.cars_used)<2&&Number(slot.day_left)>=desired;
 function errorText(message){$("notice").innerHTML='<div class="error">'+safe(message)+'</div>'}
 function renderMenu(){
- const target=$("pizzas");target.innerHTML="";
+ const target=$("jeudisPizzaChoices")||$("pizzas");target.innerHTML="";
  for(const p of menu){
   const div=document.createElement("div");div.className="pizza";
   div.innerHTML='<div><strong>'+safe(p.pizza)+'</strong></div><small>'+safe(p.description)+'</small><div class="counter">'+
