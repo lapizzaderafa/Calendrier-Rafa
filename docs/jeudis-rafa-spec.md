@@ -50,3 +50,22 @@
 - Association des pizzas individuelles à chaque créneau pour les grandes commandes.
 - Recettes détaillées avec grammages, stock et liste d'épicerie.
 - Tests de cadence, sécurité, réglementation, migration puis fusion sur main avec accord explicite.
+
+
+## Concept et expérience de cueillette
+- Nom de l'expérience : **Service au volant chez Rafa**, sous la bannière **Les Jeudis Rafa**.
+- Le client ne reçoit **aucune adresse de rue** avant d'avoir terminé la commande et d'avoir reçu une confirmation valide.
+- La page avant commande affiche uniquement « Cap-Rouge, Québec », sans numéro civique, point GPS, lien de carte ni photo qui révèle une propriété.
+- Formulaire **obligatoire** : nom complet, téléphone, adresse courriel, plus choix du mode de paiement et consentement au suivi de commande. En production, valider les coordonnées (p. ex. confirmation de téléphone/courriel selon le mode de paiement, quotas anti-spam); une simple saisie ne prouve pas l'identité.
+- Après confirmation, le client voit l'adresse exacte et les consignes : se présenter à l'arrière, utiliser l'espace de stationnement prévu, rester dans son véhicule et attendre la remise en main propre des pizzas chaudes en boîtes.
+- Dans la version commerciale, **l'adresse exacte est configurée côté serveur seulement**. Il ne faut pas la placer dans HTML, JS, CSS, JSON public, source maps, dépôts GitHub ou attributs cachés : masquer visuellement une adresse ne protège pas sa confidentialité.
+- La page de confirmation doit demander les instructions privées au serveur après vérification d'un accès lié à une commande réelle; ne jamais les inclure dans la réponse publique de vérification des créneaux. Les liens de confirmation devraient être non devinables et limités au besoin.
+- Dans le back-office : coordonnées du client, étapes de préparation, statut arrivée au stationnement et remise dans l'auto, ainsi que suivi des paiements. Sécuriser accès admin et conserver les données clients selon les obligations applicables.
+- Attention : l'expression « service au volant » décrit ici une **remise à la voiture sur rendez-vous**, pas une file de voitures ou un commerce sans réservation. Vérifier l'autorisation municipale et MAPAQ avant lancement.
+
+## Comportement actuel du prototype
+- Affichage « Service au volant chez Rafa » et consignes générales sans révéler une adresse.
+- Coordonnées obligatoires, cases de consentement et écran de confirmation fictive avec instructions de stationnement et emplacement de l'adresse future.
+- L'adresse réelle n'est ni connue ni présente dans le code du prototype.
+- Suivi du nom, du téléphone, du courriel et de l'arrivée dans l'écran de gestion fictif.
+- Ne pas tester avec de vraies données personnelles : la démo enregistre ses informations dans le navigateur de test uniquement.
