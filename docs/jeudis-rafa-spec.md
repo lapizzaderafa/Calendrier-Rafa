@@ -69,3 +69,26 @@
 - L'adresse réelle n'est ni connue ni présente dans le code du prototype.
 - Suivi du nom, du téléphone, du courriel et de l'arrivée dans l'écran de gestion fictif.
 - Ne pas tester avec de vraies données personnelles : la démo enregistre ses informations dans le navigateur de test uniquement.
+
+
+## Organisation du back-office : deux modes séparés
+### Avant jeudi — Préparer mon jeudi
+- Vue complète des commandes réservées triées par heure et nom.
+- Totaux par pizza (ex. 2 Speck, 2 Mortadella, 1 New York) et total de pâtons et de boîtes.
+- Vue des créneaux et des clients pour pouvoir préparer en amont.
+- Liste d'épicerie automatique : ingrédients regroupés par recette et cases à cocher, avec quantités précises à calculer seulement après validation des grammages des fiches recettes.
+- Pas d'ordre imposé pour étirer, garnir ou cuire les pizzas : Rafa gère librement sa production.
+
+### Pendant jeudi — Mode service, le plus simple possible
+- Affichage d'une commande active à la fois avec l'heure, le nom, le téléphone, les variétés et leurs quantités.
+- Toutes les autres commandes demeurent accessibles et classées chronologiquement; clic possible pour ouvrir une autre commande.
+- Gros bouton « Commande remise — suivante » : classe la commande comme terminée et affiche automatiquement la prochaine commande en attente.
+- Les commandes terminées disparaissent seulement du mode service, pas de l'historique, des ventes ou de la comptabilité.
+- Suivi de paiement séparé de la remise : « Marquer payé » ne termine pas la commande.
+- Toute annulation/restauration doit préserver les capacités déjà réservées et les règles du moteur.
+- Pour les grosses commandes réparties sur plusieurs remises dans le prototype, avertir avant de cliquer « terminée » : ne la masquer que lorsque tout a été remis.
+
+### Limitation importante à lever avant publication
+Le prototype actuel répartit encore automatiquement les commandes de plus de 3 pizzas sur plusieurs périodes. L'objectif métier retenu est une **heure de remise unique par commande chaque fois que la capacité réelle le permet**, en permettant de préparer avant l'heure prévue et sans imposer un ordre de cuisson. La possibilité d'accepter 5 pizzas prêtes à 17 h ne peut pas être garantie sans essai chronométré de production et vérification de la fraîcheur des premières pizzas. Ce point nécessite une révision du calculateur avant d'accepter de vrais clients.
+
+**Statut** : branche de test seulement, commandes fictives locales; aucune publication du site public, aucune modification Supabase.
