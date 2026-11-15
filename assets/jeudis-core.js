@@ -47,6 +47,11 @@ function allocation(qty,startTime,orders,date){
   const total=activeOrders(orders,date).reduce((sum,o)=>sum+amount(o.items),0);
   if(total+qty>CONFIG.dailyCapacity)return null;
   const used=occupancy(orders,date);
+  // Pour 1 a 3 pizzas, une commande doit pouvoir etre retiree en une fois.
+  // Les quantites plus grandes peuvent se repartir sur des creneaux consecutifs.
+  if(qty<=CONFIG.slotCapacity){
+    return (CONFIG.slotCapacity-used[list[start].key])>=qty ? [{time:list[start].key,qty}] : null;
+  }
   let left=qty;const pickups=[];
   for(let i=start;i<list.length&&left>0;i++){
     const free=Math.max(0,CONFIG.slotCapacity-used[list[i].key]);
