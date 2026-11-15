@@ -8,7 +8,7 @@ function all(){return J.loadDemo()}
 function update(id,patch){const list=all(),i=list.findIndex(o=>o.id===id);if(i<0)return;list[i]={...list[i],...patch};J.saveDemo(list);render()}
 function orders(){return all().filter(o=>o.date===focusDate);}
 function removePermanently(order){
- const answer=prompt("Suppression définitive de la commande "+order.id+" ("+order.name+").\nCette opération est irréversible.\nPour confirmer, saisis exactement le numéro de commande : "+order.id);
+ const answer=prompt("Suppression définitive de la commande "+order.id+" ("+order.name+").\nCette opération est irréversible."+(order.paid?"\nATTENTION : commande marquée payée — vérifier le remboursement séparément.":"")+"\nPour confirmer, saisis exactement le numéro de commande : "+order.id);
  if(answer===null)return;
  if(answer.trim()!==order.id){alert("Numéro incorrect. Aucune commande supprimée.");return;}
  const list=all(),updated=list.filter(o=>o.id!==order.id);
@@ -38,7 +38,7 @@ function card(o){
    if(!check.ok){alert("Impossible de rétablir la réservation : "+check.errors.join(" · "));return}
    J.saveDemo(proposal);render();return;
   }
-  if(!confirm("Annuler cette commande fictive et libérer sa capacité ?"))return;
+  if(!confirm("Annuler cette commande fictive et libérer sa capacité ?"+(o.paid?"\nCommande déjà marquée payée : le remboursement devra être vérifié.":"")))return;
   update(o.id,{status:"cancelled",cancelledAt:new Date().toISOString()});
  };
  el.querySelector('[data-action="delete"]').onclick=()=>removePermanently(o);
@@ -102,7 +102,7 @@ function serviceView(){
  card.insertAdjacentHTML("beforeend",'<button class="button secondary" id="cancelCurrent" type="button">Annuler cette réservation</button>');
  area.appendChild(card);
  $("cancelCurrent").onclick=()=>{
-  if(!confirm("Annuler la réservation de "+o.name+" et libérer ses places ?"))return;
+  if(!confirm("Annuler la réservation de "+o.name+" et libérer ses places ?"+(o.paid?"\nCommande payée : vérifier le remboursement séparément.":"")))return;
   update(o.id,{status:"cancelled",cancelledAt:new Date().toISOString()});
   window.rafaCurrentServiceId=null;render();
  };
