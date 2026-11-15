@@ -22,7 +22,7 @@ Le démonstrateur courant utilise `localStorage`. Il n'est **pas** synchronisé 
 - Le même administrateur Supabase que le back-office actuel est prévu; les commandes clients ne sont pas lisibles publiquement.
 - La sélection initiale de **4 pizzas** dans la migration est provisoire (Margherita, New York, Mortadella, Speck); elle doit être approuvée et rendue modifiable.
 - Les contraintes de capacité initiales (`3 pizzas/20 min`, `2 voitures/20 min`, `30 pizzas/jeudi`, `4,5 min de travail/pizza`) sont des hypothèses. Il faudra mesurer le service réel avant publication.
-- Les grosses commandes de plus de 3 pizzas sont encore divisées en retraits successifs : **pas conforme à l'objectif final d'une heure de remise unique si possible**. Ne pas mettre en vente sans validation de ce parcours.
+- Le moteur de développement et la migration proposée sont maintenant alignés sur **une seule heure de remise pour 1 à 6 pizzas**, avec production dans les 40 minutes qui précèdent. Il faut toujours confirmer les cadences réelles avant publication.
 - Aucun courriel automatique, aucun virement Interac automatique, aucun remboursement automatique et aucune adresse exacte installée dans le prototype.
 
 ## Test externe à réaliser **après** connexion et validation de la base
@@ -44,11 +44,11 @@ Le démonstrateur courant utilise `localStorage`. Il n'est **pas** synchronisé 
 
 ## Tests automatisés inclus
 
-`tests/jeudis-core.test.js` vérifie 14 cas : calcul du jeudi, fermeture mercredi midi, nombre de pizzas, capacité voitures, plafond du jeudi, annulation, suppression, restauration, créneaux fermés, répartition des recettes et détection de surcapacité.
+`tests/jeudis-core.test.js` vérifie 18 cas : calcul du jeudi, fermeture mercredi midi, nombre de pizzas, capacité voitures, plafond du jeudi, annulation, suppression, restauration, créneaux fermés, répartition des recettes et détection de surcapacité.
 
 ## Point de blocage actuel
 
-L'intégration Supabase est **préparée dans le dépôt**, mais elle n'a pas été appliquée au projet distant : accès/connexion Supabase et validation de la migration nécessaires. Les pages `jeudis.html` et `jeudis-admin.html` restent des démonstrateurs locaux tant que l'activation réelle n'est pas faite.
+L'intégration Supabase est **préparée dans le dépôt**, mais elle n'a pas été appliquée au projet distant : accès/connexion Supabase et validation de la migration nécessaires. Les pages `jeudis.html` et `jeudis-admin.html` restent des démonstrateurs locaux. Deux pages de test externes distinctes (`jeudis-externe.html` et `jeudis-admin-externe.html`) sont maintenant préparées : elles attendent une base Supabase de test, la migration et l'activation explicite de `assets/jeudis-test-config.js`.
 
 **Ne pas fusionner cette branche sur `main` pour ouvrir les commandes réelles avant les tests ci-dessus.**
 
@@ -58,3 +58,15 @@ L'intégration Supabase est **préparée dans le dépôt**, mais elle n'a pas é
 - Photos déjà dans le dépôt public susceptibles de convenir : `assets/03-mortadella-pistache-dessus.jpeg`, `assets/05-mortadella-ambiance.jpeg`, `assets/06-decoupe-pizza.jpeg`, `assets/editorial-rafa-pizza.jpeg`.
 - Variante éventuelle à photographier : pizza sortie du four, dans sa boîte ouverte, mains de Rafa au premier plan. Photo naturelle avec texture de croûte bien visible, pas d'apparence IA.
 - Conserver la composition épurée: une photographie et quelques lignes de texte avec l'interface de commande à proximité. Aucune multiplication de blocs décoratifs.
+
+
+## Tests externes : état de la préparation technique
+
+- `jeudis-externe.html` : page de réservation avec un menu restreint aux pizzas actives, capacité calculée par RPC, une heure de cueillette, formulaire nom/téléphone/courriel, paiement manuel et confirmation.
+- `jeudis-admin-externe.html` : interface de préparation et service, annulation qui libère les créneaux, rétablissement sous validation, suppression irréversible après confirmation, suivi des paiements et réglages de cueillette.
+- Le serveur de test pourra calculer exactement la quantité restante pour chaque heure grâce à la fonction SQL `rafa_jeudis_capacity_candidate`. Toute réservation sera quand même revalidée sous verrou atomique.
+- La confirmation de réservation possède une clé opaque générée sur le navigateur et affiche l'adresse de cueillette après enregistrement, si celle-ci est saisie dans l'interface admin.
+- Le fichier `assets/jeudis-test-config.js` contient `enabled:false`. **Le test externe n'est donc pas encore activé.**
+- La branche de développement Supabase serait facturée **0,01344 $ US par heure** selon le devis reçu. Sa création attend l'accord explicite du propriétaire. Le projet Supabase de production `jetogsbyptglaihktdel` demeure inchangé.
+- La migration SQL n'a pas encore été exécutée sur une base de test : ses fonctions doivent être vérifiées en situation réelle avant d'être considérées comme prêtes.
+- Aucun changement sur la branche `main` du site GitHub.
