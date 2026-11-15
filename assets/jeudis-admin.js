@@ -1,12 +1,21 @@
 (function(){
 "use strict";
 const J=window.RafaJeudis,$=id=>document.getElementById(id),C=J.CONFIG;
-let view="prep",focusDate=J.scheduleFor().target;
+let view="prep",focusDate=J.scheduleFor().target,showArchived=false;
 const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const statusLabels={pending:"À préparer",preparing:"En préparation",ready:"Prête",delivered:"Remise",cancelled:"Annulée"};
 function all(){return J.loadDemo()}
 function update(id,patch){const list=all(),i=list.findIndex(o=>o.id===id);if(i<0)return;list[i]={...list[i],...patch};J.saveDemo(list);render()}
 function orders(){return all().filter(o=>o.date===focusDate);}
+function removePermanently(order){
+ const answer=prompt("Suppression définitive de la commande "+order.id+" ("+order.name+").\nCette opération est irréversible.\nPour confirmer, saisis exactement le numéro de commande : "+order.id);
+ if(answer===null)return;
+ if(answer.trim()!==order.id){alert("Numéro incorrect. Aucune commande supprimée.");return;}
+ const list=all(),updated=list.filter(o=>o.id!==order.id);
+ if(updated.length===list.length){alert("Cette commande n'existe plus.");render();return;}
+ try{J.saveDemo(updated);if(window.rafaCurrentServiceId===order.id)window.rafaCurrentServiceId=null;render();}
+ catch(e){alert("Échec de la suppression locale.")}
+}
 function available(){return J.activeOrders(orders(),focusDate);}
 function total(oo){return oo.reduce((n,o)=>n+J.amount(o.items),0)}
 function card(o){
@@ -16,7 +25,7 @@ function card(o){
  '<div class="order-info">'+o.items.map(i=>safe(i.qty+" × "+i.pizza)).join("<br>")+'</div>'+
  '<div class="order-info"><strong>Contact client</strong><br>Tél. : '+safe(o.phone||"Non fourni")+'<br>Courriel : '+safe(o.email||"Non fourni")+'</div>'+
  '<div class="muted section-spacer">'+(J.amount(o.items)*C.unitPrice)+' $ · '+(o.payment==="cash"?"Comptant":"Interac")+' · '+(o.paid?"Payé":"Non payé")+' · '+(o.arrived?"Client arrivé":"Arrivée non signalée")+'</div>'+
- '<div class="order-actions"><button type="button" data-action="advance">Étape suivante</button><button type="button" data-action="arrival">'+(o.arrived?"Client non arrivé":"Client arrivé au stationnement arrière")+'</button><button type="button" data-action="paid">'+(o.paid?"Annuler payé":"Marquer payé")+'</button><button type="button" data-action="cancel">'+(o.status==="cancelled"?"Rétablir":"Annuler commande")+'</button></div>';
+ '<div class="order-actions"><button type="button" data-action="advance">Étape suivante</button><button type="button" data-action="arrival">'+(o.arrived?"Client non arrivé":"Client arrivé au stationnement arrière")+'</button><button type="button" data-action="paid">'+(o.paid?"Annuler payé":"Marquer payé")+'</button><button type="button" data-action="cancel">'+(o.status==="cancelled"?"Rétablir":"Annuler commande")+'</button><button type="button" data-action="delete" class="danger-action">Supprimer définitivement</button></div>';
  el.querySelector('[data-action="advance"]').disabled=["delivered","cancelled"].includes(o.status);
  el.querySelector('[data-action="advance"]').onclick=()=>{const next={pending:"preparing",preparing:"ready",ready:"delivered"}[o.status];if(next)update(o.id,{status:next})};
  el.querySelector('[data-action="arrival"]').onclick=()=>update(o.id,{arrived:!o.arrived});
@@ -30,14 +39,20 @@ function card(o){
    J.saveDemo(proposal);render();return;
   }
   if(!confirm("Annuler cette commande fictive et libérer sa capacité ?"))return;
-  update(o.id,{status:"cancelled"});
+  update(o.id,{status:"cancelled",cancelledAt:new Date().toISOString()});
  };
+ el.querySelector('[data-action="delete"]').onclick=()=>removePermanently(o);
  return el;
 }
 function orderView(){
- const list=orders().sort((a,b)=>(a.pickups?.[0]?.time||"").localeCompare(b.pickups?.[0]?.time||""));
- $("view").innerHTML='<h2>Commandes fictives</h2><p class="muted">Tu peux cliquer sur chaque statut. Les commandes restent uniquement dans ton navigateur.</p>';
- if(!list.length){$("view").innerHTML+='<div class="empty">Aucune commande fictive pour ce jeudi. Passe d’abord par la démo client.</div>';return;}
+ const list=orders().filter(o=>showArchived||!["cancelled","delivered"].includes(o.status)).sort((a,b)=>(a.pickups?.[0]?.time||"").localeCompare(b.pickups?.[0]?.time||""));
+ $("view").innerHTML='<h2>Commandes</h2><p class="muted">Annuler libère les créneaux et retire les pizzas de l’épicerie. Supprimer efface définitivement la commande de cette démonstration. Les commandes terminées et annulées sont archivées.</p>';
+ const toggle=document.createElement("label");toggle.className="checkrow";
+ const box=document.createElement("input");box.type="checkbox";box.checked=showArchived;
+ box.onchange=()=>{showArchived=box.checked;render()};
+ toggle.append(box,document.createTextNode(" Afficher aussi les commandes annulées et terminées"));
+ $("view").appendChild(toggle);
+ if(!list.length){const empty=document.createElement("div");empty.className="empty";empty.textContent="Aucune commande dans cette vue."; $("view").appendChild(empty);return;}
  list.forEach(o=>$("view").appendChild(card(o)));
 }
 function prepView(){
@@ -84,7 +99,13 @@ function serviceView(){
   ((o.pickups||[]).length>1?'<p class="alert">Attention : cette commande comporte plusieurs heures de remise dans le prototype. Marque-la terminée seulement lorsque toutes les pizzas ont été remises.</p>':'')+
   '<button class="button" id="finishCurrent" type="button">✓ Commande remise — suivante</button>'+
   '<button class="button secondary" id="paidCurrent" type="button">'+(o.paid?"Paiement reçu ✓":"Marquer payé")+'</button>';
+ card.insertAdjacentHTML("beforeend",'<button class="button secondary" id="cancelCurrent" type="button">Annuler cette réservation</button>');
  area.appendChild(card);
+ $("cancelCurrent").onclick=()=>{
+  if(!confirm("Annuler la réservation de "+o.name+" et libérer ses places ?"))return;
+  update(o.id,{status:"cancelled",cancelledAt:new Date().toISOString()});
+  window.rafaCurrentServiceId=null;render();
+ };
  $("finishCurrent").onclick=()=>{
   const list=all(),index=list.findIndex(x=>x.id===o.id);
   if(index<0)return;
