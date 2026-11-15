@@ -1,3 +1,24 @@
+# Environnement de test gratuit Rafa Jeudis — ACTIF
+
+**Projet Supabase isolé** : `Rafa Jeudis – Tests` (`bkvosdrtexbkrkmwalbg`), région Canada. Tarif de création confirmé `0 $ US/mois`, dans les limites du forfait gratuit. La base du site officiel reste inchangée.
+
+**Test client** : `https://raw.githack.com/lapizzaderafa/Calendrier-Rafa/jeudis-rafa-test/jeudis-externe.html`
+**Test admin** : `https://raw.githack.com/lapizzaderafa/Calendrier-Rafa/jeudis-rafa-test/jeudis-admin-externe.html`
+
+Ces liens utilisent un hébergement de prévisualisation externe gratuit (raw.githack.com) qui peut afficher une page de confirmation de navigation. Ne jamais utiliser un mot de passe existant sur ce service; créer un mot de passe **uniquement pour le projet de test**. Ne jamais utiliser de vraies coordonnées client durant les essais.
+
+**Première utilisation de l'admin** : ouvrir la page admin ci-dessus, saisir un nouveau mot de passe (au moins 8 caractères), cliquer « Créer mon accès de test ». Un courriel de vérification peut être nécessaire (Supabase Auth). Après confirmation, se reconnecter sur la page admin avec ce nouveau mot de passe. L'identité autorisée par la base de test est `raphael.frenette@gmail.com`.
+
+**Test client** : sélectionner les pizzas et une heure du jeudi, remplir de faux renseignements (ex. Jean Test, jean.test@example.com, 555-0100), confirmer. L'adresse affichée est fictive et indique **de ne pas se déplacer**.
+
+**Annulation** : admin > « Commandes » > « Annuler ». La réservation passe dans l'historique et le calendrier libère immédiatement son espace. « Supprimer définitivement » demande de recopier l'identifiant; cela retire toute trace de la base de test. Si une commande est marquée payée, le système affiche un avertissement de remboursement manuel.
+
+**Limitations** : Aucun paiement automatique, aucun courriel automatique de confirmation client, aucun SMS, aucune adresse réelle. 1 à 6 pizzas par commande avec une seule heure de cueillette. Jusqu'à 30 pizzas par jeudi, 2 voitures maximum et une production hypothétique de 3 pizzas par 20 minutes, à confirmer avec les fours. Le nouveau code n'est pas encore fusionné sur la branche `main` du site.
+
+**Vérifications serveur déjà réussies** : migration SQL appliquée, 3 tables avec RLS, fonction de réservation atomique, faux client capable de réserver sous rôle `anon`, annulation libérant la capacité, suppression de commande et droits d'administration non publics. 18 tests JS du moteur ont réussi avant la création du projet. Le parcours complet dans un vrai navigateur, l'inscription du compte admin et une simulation de deux clients simultanés restent à essayer.
+
+---
+
 # Les Jeudis Rafa — plan de test externe avant publication
 
 **État : développement sur `feature/jeudis-rafa-precommandes-v1`, sans publication sur `main`.**
