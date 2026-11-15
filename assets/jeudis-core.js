@@ -95,6 +95,7 @@ function scheduleCheck(orders,date){
   let left=job.qty;
   for(let i=job.index;i<s.length&&left>0;i++){
    const key=s[i].key,free=Math.max(0,CONFIG.slotCapacity-(production[key]||0));
+   if(i===job.index&&free===0){errors.push("Début de cueillette occupé à "+key);break;}
    const take=Math.min(left,free);
    production[key]=(production[key]||0)+take;left-=take;
   }
