@@ -1,3 +1,15 @@
+## Architecture du site — décision validée le 15 novembre 2026
+
+La réservation **ne fait plus partie du défilement de la page d'accueil**. Sur `index.html`, la section « Les Jeudis Rafa » située immédiatement avant les avis est uniquement une **vitrine éditoriale** : titre, deux phrases courtes et un bouton « Commander pour emporter ». Aucun calendrier, formulaire, choix de pizzas, ni donnée de commande ne doit apparaître lorsqu'on parcourt simplement l'accueil.
+
+La commande constitue désormais une page distincte `jeudis-externe.html`, avec l'esthétique authentique de rafapizza.ca (fond #FAF9F6, Instrument Sans, mêmes séparateurs fins). La page de commande montre d'emblée « Les Jeudis Rafa », la prochaine cueillette, les recettes, les heures et le formulaire — **pas de second bouton ni page intermédiaire**.
+
+Les deux boutons « Commander pour emporter » (l'un sur la grande photo de l'accueil et l'autre dans la section de présentation) vont directement à `./jeudis-externe.html`. L'option « Les Jeudis Rafa » dans le menu dirige vers la section explicative de la page d'accueil. « Réserver un événement » continue à conduire au calendrier événementiel existant.
+
+La séparation est appliquée **uniquement sur `jeudis-rafa-test`**. Le site de production demeure inchangé. Les textes éditoriaux restent à approuver **bloc par bloc** avec Rafa.
+
+---
+
 ## Décision actuelle : 25 pizzas par jeudi et commandes de gros volume
 La première phase fixe **25 pizzas maximum toutes commandes confondues, chaque jeudi de 17 h à 21 h**. Ce plafond est **actif en base de test**, sans limite commerciale arbitraire de 5 ou 6 pizzas par commande. Une réservation de 20 pizzas à 17 h neutralise les créneaux de production suivants selon le débit provisoire de 3 pizzas par 20 minutes. Les annulations et suppressions libèrent de nouveau la capacité. Le rendu doit reprendre **exactement** la direction éditoriale de rafapizza.ca (fond `#FAF9F6`, Instrument Sans et lignes fines). L'heure réservée pour un gros volume ne doit pas être présentée comme une garantie que toutes les pizzas sont prêtes simultanément; la cadence de remise doit être validée.
 
