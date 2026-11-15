@@ -32,8 +32,8 @@ function showSchedule(){
  const settings=J.loadSettings(date),all=orders();
  const schedule=J.scheduleCheck(all,date);
  const left=Math.max(0,C.dailyCapacity-schedule.total);
- $("targetTitle").textContent="Pour le "+J.formatDate(date);
- $("deadline").textContent="Un seul jeudi réservable · limite mercredi "+J.formatDate(J.plusDays(date,-1)).replace(/^mercredi /,"")+" à 12 h · "+left+" pizza(s) encore disponibles";
+ $("targetTitle").textContent=J.formatDate(date);
+ $("deadline").textContent="Cueillette de 17 h à 21 h à Cap-Rouge. Vous avez jusqu’au mercredi "+J.formatDate(J.plusDays(date,-1)).replace(/^mercredi /,"")+" à 12 h pour commander · "+left+" pizza(s) encore disponibles.";
  $("closedMessage").classList.toggle("hidden",plan.open&&!settings.paused);
  $("closedMessage").textContent=!plan.open
   ?"Les commandes du jeudi de demain ont fermé mercredi à midi. La prochaine vente ouvrira jeudi."
@@ -120,7 +120,7 @@ $("orderForm").addEventListener("submit",e=>{
  if(!J.scheduleCheck(updated,date).ok){$("notice").innerHTML='<div class="error">Capacité modifiée. Réessaie.</div>';selected=null;render();return;}
  try{J.saveDemo(updated)}catch{$("notice").innerHTML='<div class="error">Stockage de démonstration indisponible.</div>';return;}
  $("notice").innerHTML='<div class="success"><span class="kicker">Confirmation de démonstration</span>'+
-  '<h3 style="margin-top:9px">Commande fictive '+safe(id)+'</h3><p>'+qty+' pizza(s) · '+qty*C.unitPrice+' $</p>'+
+  '<h3 style="margin-top:9px">Commande fictive '+safe(id)+'</h3><p><strong>Cueillette : '+safe(J.formatDate(date))+'</strong> · '+qty+' pizza(s) · '+qty*C.unitPrice+' $</p>'+
   '<p><strong>Retraits :</strong> '+segments.map(p=>safe(J.niceTime(p.time))+" ("+p.qty+") : "+p.pizzas.map(i=>safe(i.qty+" × "+i.pizza)).join(", ")).join(" · ")+'</p>'+
   '<h3>Service au volant</h3><p><strong>Lieu :</strong> Cap-Rouge, Québec. Adresse exacte non renseignée dans cette démo.</p>'+
   '<p>À ton arrivée, stationne-toi à l’arrière dans l’emplacement indiqué. Reste dans ton auto : Rafa viendra te remettre les pizzas chaudes dans leurs boîtes.</p>'+
