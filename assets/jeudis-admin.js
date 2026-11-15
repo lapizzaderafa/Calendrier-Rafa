@@ -21,7 +21,17 @@ function card(o){
  el.querySelector('[data-action="advance"]').onclick=()=>{const next={pending:"preparing",preparing:"ready",ready:"delivered"}[o.status];if(next)update(o.id,{status:next})};
  el.querySelector('[data-action="arrival"]').onclick=()=>update(o.id,{arrived:!o.arrived});
  el.querySelector('[data-action="paid"]').onclick=()=>update(o.id,{paid:!o.paid});
- el.querySelector('[data-action="cancel"]').onclick=()=>update(o.id,{status:o.status==="cancelled"?"pending":"cancelled"});
+ el.querySelector('[data-action="cancel"]').onclick=()=>{
+  if(o.status==="delivered"){alert("Cette commande est déjà remise. Aucun retour en arrière automatique.");return}
+  if(o.status==="cancelled"){
+   const proposal=all().map(x=>x.id===o.id?{...x,status:"pending"}:x);
+   const check=J.scheduleCheck(proposal,focusDate);
+   if(!check.ok){alert("Impossible de rétablir la réservation : "+check.errors.join(" · "));return}
+   J.saveDemo(proposal);render();return;
+  }
+  if(!confirm("Annuler cette commande fictive et libérer sa capacité ?"))return;
+  update(o.id,{status:"cancelled"});
+ };
  return el;
 }
 function orderView(){
@@ -140,7 +150,7 @@ function settingsView(){
  if(!check.ok){const warning=document.createElement("div");warning.className="error";warning.textContent=check.errors.join(" · ");$("view").appendChild(warning)}
 }
 function render(){
- const choices=[...new Set([J.scheduleFor().target,focusDate,...all().map(o=>o.date).filter(Boolean)])].sort().reverse();
+ const choices=[...new Set([J.scheduleFor().target,focusDate,...J.loadDemo().map(o=>o.date).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d))])].sort().reverse();
  $("adminDate").innerHTML=choices.map(d=>'<option value="'+d+'">'+safe(J.formatDate(d))+'</option>').join("");
  $("adminDate").value=focusDate;
  const oo=available(),qty=total(oo);
