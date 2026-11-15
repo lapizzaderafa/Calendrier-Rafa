@@ -108,3 +108,26 @@
  #jeudis-rafa .slots{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media(max-width:355px){#jeudis-rafa .pizza strong{font-size:21px}#jeudis-rafa .rj-pickup-header #targetTitle{font-size:30px}}
+
+/* Accueil progressif : l'explication demeure visible, les étapes
+   de commande ne s'affichent qu'après un choix explicite. */
+#jeudis-rafa .rj-heading{margin-bottom:0}
+#jeudis-rafa.rj-open .rj-heading{margin-bottom:clamp(62px,8vw,114px)}
+#jeudis-rafa .rj-open-order{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:54px;margin-top:31px;padding:17px 28px;
+  border:1px solid var(--rj-ink);border-radius:2px;
+  background:var(--rj-ink);color:#fff;
+  font-family:inherit;font-size:11px;font-weight:500;
+  letter-spacing:.07em;text-transform:uppercase;line-height:1.4;
+  cursor:pointer;transition:background .2s ease,border-color .2s ease;
+}
+#jeudis-rafa .rj-open-order:hover{background:var(--rj-wine);border-color:var(--rj-wine)}
+#jeudis-rafa .rj-open-order:focus-visible{outline:2px solid var(--rj-wine);outline-offset:4px}
+#jeudis-rafa #jeudisOrderFlow[hidden],#jeudis-rafa #jeudisOpenOrder[hidden]{display:none!important}
+#jeudis-rafa .rj-demo-note{margin-top:13px}
+#jeudis-rafa .rj-order-flow{scroll-margin-top:24px}
+@media(max-width:760px){
+  #jeudis-rafa .rj-open-order{width:100%;min-height:53px;margin-top:29px}
+  #jeudis-rafa.rj-open .rj-heading{margin-bottom:64px}
+}
