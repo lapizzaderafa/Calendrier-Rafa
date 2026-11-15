@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="./assets/rafa-v10.css?v=1">
 <link rel="stylesheet" href="./assets/rafa-home-signature.css?v=5">
 <link rel="stylesheet" href="./assets/rafa-carte.css?v=2">
+<link rel="stylesheet" href="./assets/rafa-jeudis-inline.css?v=20261115-2">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FoodEstablishment","name":"Rafa Pizza","url":"https://rafapizza.ca/","image":"https://rafapizza.ca/assets/01-preparation-signature.jpeg","description":"Service de pizzas préparées et cuites sur place pour des événements privés à Québec.","servesCuisine":"Pizza","areaServed":"Québec, QC"}</script>
 
 <style>
@@ -100,7 +101,7 @@
 <nav class="rafa-nav-links" aria-label="Navigation principale">
 <a href="#accueil">Accueil</a>
 <a href="./carte.html">Nos pizzas</a>
-<a href="./jeudis.html">Les Jeudis Rafa</a>
+<a href="#jeudis-rafa">Les Jeudis Rafa</a>
 <a href="#prix">Prix</a>
 <a href="#disponibilites">Réserver</a>
 <a href="mailto:lapizzaderafa@gmail.com?subject=Contact%20Rafa%20Pizza" id="rafaContactOpen">Nous contacter</a>
@@ -115,7 +116,10 @@
 <h1 id="mainTitle">La pizza,<br>chez vous.</h1>
 <div class="hero-bottom">
 <p class="hero-line">Vous invitez votre monde.<br>On s'occupe du reste.</p>
-<a class="text-cta" href="#disponibilites">Voir les disponibilités</a>
+<div class="rafa-hero-choices">
+<a class="text-cta" href="#disponibilites">Réserver un événement</a>
+<a class="text-cta" href="#jeudis-rafa">Commander pour emporter</a>
+</div>
 </div>
 </section>
 </div>
@@ -175,6 +179,99 @@
 <div id="calendarError" class="calendar-error" role="alert">Impossible de charger le calendrier. Veuillez réessayer dans quelques instants.</div>
 </div>
 </div>
+</section>
+
+
+<!-- Les Jeudis Rafa — section native de l'accueil, au-dessus des avis. -->
+<section id="jeudis-rafa" class="section wrap rafa-jeudis" aria-labelledby="rafaJeudisTitle">
+  <div class="rj-heading">
+    <div>
+      <span class="kicker">PIZZA À EMPORTER · CAP-ROUGE</span>
+      <h2 id="rafaJeudisTitle">Les Jeudis Rafa.</h2>
+    </div>
+    <div>
+      <p class="rj-lede">De bonnes pizz. Un jeudi. À emporter.</p>
+      <p class="rj-secondary">Réserve tes pizzas napolitaines, passe les chercher à Cap-Rouge et reste dans ton auto. On t'apporte ta commande.</p>
+      <p class="rj-demo-note">VERSION D'ESSAI — Aucune pizza préparée, aucun paiement prélevé. Utilise des coordonnées fictives.</p>
+    </div>
+  </div>
+
+  <div class="rj-pickup-header">
+    <span class="kicker">PROCHAINE CUEILLETTE</span>
+    <h3 id="targetTitle">Jeudi — prochain service</h3>
+    <p id="deadline">De 17 h à 21 h · Cap-Rouge</p>
+    <p id="remainingPizzas" aria-live="polite">25 pizzas disponibles pour le jeudi.</p>
+  </div>
+
+  <div class="rj-columns">
+    <div class="rj-left">
+      <div>
+        <p class="rj-step">01 / LA QUANTITÉ</p>
+        <h3 class="rj-subtitle">Combien de pizzas?</h3>
+        <div class="rj-quantity">
+          <button class="stepper" id="desiredMinus" type="button" aria-label="Une pizza de moins">−</button>
+          <output id="desiredQty">1</output>
+          <button class="stepper" id="desiredPlus" type="button" aria-label="Une pizza de plus">+</button>
+        </div>
+        <p class="rj-progress" id="chosenProgress" aria-live="polite">Choisis tes pizzas.</p>
+        <p class="rj-price-note"><strong>27 $ / pizza</strong> · 25 pizzas maximum pour la soirée, toutes commandes confondues.</p>
+      </div>
+
+      <div class="rj-recipes">
+        <p class="rj-step">02 / LES RECETTES</p>
+        <h3 class="rj-subtitle">Compose ta commande.</h3>
+        <div id="pizzas" class="pizza-grid" aria-label="Quatre pizzas à découvrir chaque jeudi"></div>
+      </div>
+    </div>
+
+    <div class="rj-right">
+      <div class="rj-checkout-block">
+        <p class="rj-step">03 / LA CUEILLETTE</p>
+        <h3 class="rj-subtitle-small">Choisis ton heure.</h3>
+        <p class="rj-muted">Les heures se mettent à jour selon le nombre de pizzas et les commandes déjà reçues. Les grosses commandes occupent plusieurs plages de production.</p>
+        <div id="hours" class="slots" aria-label="Heures de cueillette"></div>
+        <p id="selectedHours" aria-live="polite">Sélectionne une heure parmi celles disponibles.</p>
+        <p id="closedMessage" class="alert hidden"></p>
+      </div>
+
+      <div class="rj-checkout-block">
+        <p class="rj-step">04 / LE RÉCAPITULATIF</p>
+        <h3 class="rj-subtitle-small">Ta commande.</h3>
+        <div id="cart"><p class="rj-muted">Les pizzas choisies apparaîtront ici.</p></div>
+        <div class="total"><span>Total</span><span id="total">27 $</span></div>
+      </div>
+
+      <div class="rj-checkout-block">
+        <p class="rj-step">05 / LA CONFIRMATION</p>
+        <h3 class="rj-subtitle-small">C'est presque prêt.</h3>
+        <form id="orderForm">
+          <p class="rj-muted">Tes coordonnées servent uniquement à confirmer et à suivre ta commande. Pour cet essai, utilise des renseignements fictifs.</p>
+          <label class="field">Prénom et nom
+            <input id="customerName" maxlength="120" autocomplete="name" placeholder="Nom de test" required>
+          </label>
+          <label class="field">Courriel
+            <input type="email" id="customerEmail" maxlength="180" autocomplete="email" placeholder="test@example.com" required>
+          </label>
+          <label class="field">Téléphone
+            <input type="tel" id="customerPhone" maxlength="35" autocomplete="tel" placeholder="555-0100" required>
+          </label>
+          <label class="field">Mode de paiement
+            <select id="payment" required>
+              <option value="interac">Virement Interac (essai)</option>
+              <option value="cash">Comptant à la cueillette</option>
+            </select>
+          </label>
+          <label class="field rj-consent">
+            <input id="contactConsent" type="checkbox" required>
+            <span>J'accepte que Rafa me contacte au sujet de cette commande.</span>
+          </label>
+          <button class="button" id="confirmBtn" type="submit" disabled>Choisis ton heure</button>
+        </form>
+        <section id="notice" role="status" aria-live="polite"></section>
+        <p class="rj-demo-note-bottom">Essai seulement : l'adresse de confirmation est fictive. Aucun déplacement réel n'est demandé.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- Avis clients : section de bas de page, typographie du site conservée. -->
@@ -291,5 +388,10 @@
   update();
 })();
 </script>
+<script src="./assets/jeudis-test-config.js?v=2"></script>
+<script src="./assets/rafa-pizzas.js?v=2"></script>
+<script src="./assets/jeudis-core.js?v=20261115-3"></script>
+<script src="./assets/jeudis-supabase-api.js?v=2"></script>
+<script src="./assets/jeudis-externe.js?v=20261115-3"></script>
 </body>
 </html>
