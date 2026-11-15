@@ -175,7 +175,7 @@ function render(){
  $("adminDate").innerHTML=choices.map(d=>'<option value="'+d+'">'+safe(J.formatDate(d))+'</option>').join("");
  $("adminDate").value=focusDate;
  const oo=available(),qty=total(oo);
- $("targetDate").textContent="Jeudi de démonstration : "+J.formatDate(focusDate)+" · 3 pizzas / 20 min · plafond 30";
+ $("targetDate").textContent="Jeudi de démonstration : "+J.formatDate(focusDate)+" · 3 pizzas / 20 min de production · 6 max par cueillette · 30 max par jeudi";
  $("statPizzas").textContent=qty+" / 30";$("statOrders").textContent=oo.length;$("statSales").textContent=(qty*C.unitPrice)+" $";
  for(const b of document.querySelectorAll("[data-view]")){b.classList.toggle("active",b.dataset.view===view);b.setAttribute("aria-selected",String(b.dataset.view===view))}
  ({prep:prepView,orders:orderView,service:serviceView,groceries:groceriesView,report:reportView,settings:settingsView}[view])();
