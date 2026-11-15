@@ -1,8 +1,9 @@
 -- Les Jeudis Rafa — MIGRATION À VALIDER EN ENVIRONNEMENT DE TEST
 -- IMPORTANT: ne pas exécuter sur la production sans sauvegarde et approbation.
--- Fonctionnement v1 du moteur serveur : maximum 3 pizzas / 20 minutes,
--- 2 véhicules / créneau, 30 pizzas / jeudi; commandes >3 pizzas
--- réparties sur plusieurs remises consécutives en attendant les tests de cadence.
+-- Modèle de production test : 3 pizzas / 20 minutes de travail,
+-- une heure de retrait unique pour 1 à 6 pizzas ; chaque commande peut
+-- utiliser les 40 minutes précédentes. 2 véhicules / heure de retrait,
+-- 30 pizzas maximum par jeudi. Ces limites doivent être validées au four.
 -- Les horaires sont validés par le serveur dans une transaction verrouillée.
 
 create table if not exists public.rafa_jeudis_menu (
@@ -33,7 +34,7 @@ create table if not exists public.rafa_jeudis_orders (
   pickup_date date not null,
   pickups jsonb not null check (jsonb_typeof(pickups) = 'array'),
   items jsonb not null check (jsonb_typeof(items) = 'array'),
-  pizza_qty integer not null check (pizza_qty between 1 and 9),
+  pizza_qty integer not null check (pizza_qty between 1 and 6),
   customer_name text not null,
   customer_email text not null,
   customer_phone text not null,
@@ -110,13 +111,20 @@ declare
   v_slot text;
   v_qty integer;
   v_cars integer;
-  v_previous_cars integer := 0;
+  v_windows integer[] := array_fill(0, ARRAY[14], ARRAY[-2]);
+  v_job record;
+  v_left integer;
+  v_win integer;
+  v_free integer;
+  v_take integer;
 begin
  select coalesce(sum(o.pizza_qty),0) into v_total
  from public.rafa_jeudis_orders o
  where o.pickup_date = p_date and o.status <> 'cancelled';
  if v_total > 30 then return false; end if;
 
+ -- Les cueilletes peuvent contenir plus de 3 pizzas grâce à la
+ -- préparation AVANT l'heure prévue. Deux voitures par créneau maximum.
  for v_i in 0..11 loop
    v_slot := to_char((time '17:00' + v_i * interval '20 minutes')::time,'HH24:MI');
    select coalesce(sum((p.value->>'qty')::integer),0)::integer,
@@ -126,9 +134,32 @@ begin
    cross join lateral jsonb_array_elements(o.pickups) p(value)
    where o.pickup_date=p_date and o.status<>'cancelled'
       and p.value->>'time'=v_slot;
-   if v_qty > 3 or v_cars > 2 then return false; end if;
-   if (v_qty * 4.5 + v_previous_cars * 2 + 2) > 20 then return false; end if;
-   v_previous_cars := v_cars;
+   if v_qty > 6 or v_cars > 2 then return false; end if;
+ end loop;
+
+ -- Production de 3 pizzas par tranche de 20 min, y compris
+ -- les créneaux de préparation 16:20 et 16:40 avant le service.
+ -- Chaque groupe est réparti dans les deux plages PRÉCÉDANT sa remise,
+ -- en commençant par les échéances les plus proches et les créneaux précoces.
+ for v_job in
+   select (((split_part(p.value->>'time',':',1))::integer-17)*60
+             +(split_part(p.value->>'time',':',2))::integer)/20 as idx,
+          (p.value->>'qty')::integer as qty
+   from public.rafa_jeudis_orders o
+   cross join lateral jsonb_array_elements(o.pickups) p(value)
+   where o.pickup_date=p_date and o.status<>'cancelled'
+   order by idx
+ loop
+   if v_job.idx not between 0 and 11 or v_job.qty not between 1 and 6 then return false; end if;
+   v_left:=v_job.qty;
+   for v_win in (v_job.idx-2)..(v_job.idx-1) loop
+     v_free:=greatest(0,3-coalesce(v_windows[v_win],0));
+     v_take:=least(v_left,v_free);
+     v_windows[v_win]:=coalesce(v_windows[v_win],0)+v_take;
+     v_left:=v_left-v_take;
+     exit when v_left=0;
+   end loop;
+   if v_left>0 then return false; end if;
  end loop;
  return true;
 end;
@@ -165,7 +196,7 @@ begin
   select v_slot,
     coalesce(sum((p.value->>'qty')::integer),0)::integer,
     count(distinct o.id)::integer,
-    greatest(0,3-coalesce(sum((p.value->>'qty')::integer),0))::integer,
+    greatest(0,6-coalesce(sum((p.value->>'qty')::integer),0))::integer,
     greatest(0,30-v_total)::integer,
     coalesce(v_settings.paused,false) or v_slot=any(coalesce(v_settings.closed_slots,'{}'::text[]))
   from public.rafa_jeudis_orders o
@@ -237,7 +268,7 @@ begin
  select * into v_settings from public.rafa_jeudis_settings where pickup_date=p_date;
  if coalesce(v_settings.paused,false) then raise exception 'bookings_paused';end if;
 
- if jsonb_typeof(p_items)<>'array' or jsonb_array_length(p_items) not between 1 and 9 then
+ if jsonb_typeof(p_items)<>'array' or jsonb_array_length(p_items) not between 1 and 6 then
   raise exception 'invalid_items';end if;
  for v_item in select value from jsonb_array_elements(p_items) loop
   if jsonb_typeof(v_item)<>'object' then raise exception 'invalid_item';end if;
@@ -249,9 +280,9 @@ begin
   v_n:=(v_item->>'qty')::integer;
   v_qty:=v_qty+v_n;
  end loop;
- if v_qty<1 or v_qty>9 then raise exception 'order_too_large';end if;
+ if v_qty<1 or v_qty>6 then raise exception 'order_too_large';end if;
 
- if jsonb_typeof(p_pickups)<>'array' or jsonb_array_length(p_pickups) not between 1 and 3 then
+ if jsonb_typeof(p_pickups)<>'array' or jsonb_array_length(p_pickups) <> 1 then
   raise exception 'invalid_pickups';end if;
  for v_part in select value from jsonb_array_elements(p_pickups) loop
    v_time:=v_part->>'time';
@@ -261,7 +292,85 @@ begin
    v_index:=((split_part(v_time,':',1)::integer-17)*60+split_part(v_time,':',2)::integer)/20;
    if v_last_index>=0 and v_index<>v_last_index+1 then raise exception 'pickups_not_consecutive';end if;
    v_last_index:=v_index;
-   if coalesce(v_part->>'qty','') !~ '^[1-3]$' then raise exception 'invalid_pickup_quantity';end if;
+   if coalesce(v_part->>'qty','') !~ '^[1-6] then raise exception 'invalid_pickup_quantity';end if;
+   v_pick_qty:=v_pick_qty+(v_part->>'qty')::integer;
+   v_pick_count:=v_pick_count+1;
+   if v_time=any(coalesce(v_settings.closed_slots,'{}'::text[])) then raise exception 'slot_closed';end if;
+ end loop;
+ if v_pick_qty<>v_qty or v_pick_count<>1 then
+   raise exception 'allocation_mismatch';
+ end if;
+
+ insert into public.rafa_jeudis_orders
+  (request_id,pickup_date,pickups,items,pizza_qty,customer_name,customer_email,customer_phone,payment_method,total_cents)
+ values
+  (p_request_id,p_date,p_pickups,p_items,v_qty,trim(p_name),lower(trim(p_email)),trim(p_phone),p_payment,v_qty*2700)
+ returning id into v_new;
+ if not public.rafa_jeudis_capacity_ok(p_date) then
+  raise exception 'slot_no_longer_available';
+ end if;
+ return v_new;
+end;
+$$;
+
+revoke all on function public.rafa_jeudis_reserve(date,jsonb,jsonb,text,text,text,text,uuid) from public;
+grant execute on function public.rafa_jeudis_reserve(date,jsonb,jsonb,text,text,text,text,uuid) to anon,authenticated;
+
+-- Actions de gestion : annulation conservée, suppression irréversible,
+-- remise, paiement, rétablissement sous verrou et contrôle de capacité.
+create or replace function public.rafa_jeudis_admin_action(
+ p_id uuid, p_action text
+)
+returns boolean
+language plpgsql volatile security definer
+set search_path = ''
+as $$
+declare
+  v_date date;
+  v_status text;
+begin
+ if not public.rafa_jeudis_is_admin() then raise exception 'admin_only';end if;
+ select pickup_date,status into v_date,v_status from public.rafa_jeudis_orders where id=p_id;
+ if not found then return false;end if;
+ perform pg_advisory_xact_lock(hashtextextended('rafa-jeudis:'||v_date::text,0));
+ select status into v_status from public.rafa_jeudis_orders where id=p_id for update;
+ if p_action='cancel' then
+  if v_status='delivered' then raise exception 'already_delivered';end if;
+  update public.rafa_jeudis_orders
+  set status='cancelled',cancelled_at=now() where id=p_id;
+ elsif p_action='restore' then
+  if v_status<>'cancelled' then raise exception 'not_cancelled';end if;
+  update public.rafa_jeudis_orders
+  set status='pending',cancelled_at=null where id=p_id;
+  if not public.rafa_jeudis_capacity_ok(v_date) then raise exception 'restore_would_overbook';end if;
+ elsif p_action='delete' then
+  delete from public.rafa_jeudis_orders where id=p_id;
+ elsif p_action='delivered' then
+  if v_status='cancelled' then raise exception 'cancelled_order';end if;
+  update public.rafa_jeudis_orders
+  set status='delivered',delivered_at=now() where id=p_id;
+ elsif p_action='preparing' then
+  if v_status='cancelled' then raise exception 'cancelled_order';end if;
+  update public.rafa_jeudis_orders set status='preparing' where id=p_id;
+ elsif p_action='ready' then
+  if v_status='cancelled' then raise exception 'cancelled_order';end if;
+  update public.rafa_jeudis_orders set status='ready' where id=p_id;
+ elsif p_action='paid' then
+  update public.rafa_jeudis_orders set paid=true where id=p_id;
+ elsif p_action='unpaid' then
+  update public.rafa_jeudis_orders set paid=false where id=p_id;
+ else
+  raise exception 'invalid_admin_action';
+ end if;
+ return true;
+end;
+$$;
+
+revoke all on function public.rafa_jeudis_admin_action(uuid,text) from public;
+grant execute on function public.rafa_jeudis_admin_action(uuid,text) to authenticated;
+
+comment on table public.rafa_jeudis_orders is 'Les Jeudis Rafa: utiliser uniquement les fonctions RPC pour les écritures; tester avant production.';
+ then raise exception 'invalid_pickup_quantity';end if;
    v_pick_qty:=v_pick_qty+(v_part->>'qty')::integer;
    v_pick_count:=v_pick_count+1;
    if v_time=any(coalesce(v_settings.closed_slots,'{}'::text[])) then raise exception 'slot_closed';end if;
