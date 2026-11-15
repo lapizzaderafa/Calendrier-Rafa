@@ -21,7 +21,9 @@ grant insert, update, delete on public.rafa_jeudis_menu to authenticated;
 create table if not exists public.rafa_jeudis_settings (
   pickup_date date primary key,
   paused boolean not null default false,
-  closed_slots text[] not null default '{}'::text[]
+  closed_slots text[] not null default '{}'::text[],
+  pickup_address text,
+  pickup_instructions text
 );
 
 alter table public.rafa_jeudis_settings enable row level security;
@@ -354,6 +356,31 @@ $$;
 
 revoke all on function public.rafa_jeudis_reserve(date,jsonb,jsonb,text,text,text,text,uuid) from public;
 grant execute on function public.rafa_jeudis_reserve(date,jsonb,jsonb,text,text,text,text,uuid) to anon,authenticated;
+
+-- Retrouver sa confirmation à partir de la clé unique connue du client.
+-- Ne retourne pas les coordonnées personnelles; adresse seulement après réservation.
+create or replace function public.rafa_jeudis_confirmation(p_request_id uuid)
+returns table (
+  order_id uuid,
+  pickup_date date,
+  pickups jsonb,
+  items jsonb,
+  total_cents integer,
+  status text,
+  pickup_address text,
+  pickup_instructions text
+)
+language sql stable security definer
+set search_path = ''
+as $
+ select o.id,o.pickup_date,o.pickups,o.items,o.total_cents,o.status,
+        s.pickup_address,s.pickup_instructions
+ from public.rafa_jeudis_orders o
+ left join public.rafa_jeudis_settings s on s.pickup_date=o.pickup_date
+ where o.request_id=p_request_id;
+$;
+revoke all on function public.rafa_jeudis_confirmation(uuid) from public;
+grant execute on function public.rafa_jeudis_confirmation(uuid) to anon,authenticated;
 
 -- Actions de gestion : annulation conservée, suppression irréversible,
 -- remise, paiement, rétablissement sous verrou et contrôle de capacité.
