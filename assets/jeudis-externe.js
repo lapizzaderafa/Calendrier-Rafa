@@ -5,19 +5,37 @@ const J=window.RafaJeudis,API=window.RafaJeudisApi,$=id=>document.getElementById
 const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const introButton=$("jeudisOpenOrder");
 const orderFlow=$("jeudisOrderFlow");
-if(introButton&&orderFlow){
- introButton.addEventListener("click",()=>{
-  if(!orderFlow.hidden)return;
+function revealOrder(scrollIntoView=false){
+ if(!orderFlow||!introButton)return;
+ if(orderFlow.hidden){
   orderFlow.hidden=false;
   introButton.setAttribute("aria-expanded","true");
   introButton.hidden=true;
   $("jeudis-rafa")?.classList.add("rj-open");
+ }
+ if(scrollIntoView){
   window.requestAnimationFrame(()=>{
-   orderFlow.scrollIntoView({
+   $("jeudis-commande")?.scrollIntoView({
     behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",
     block:"start"
    });
   });
+ }
+}
+if(introButton&&orderFlow){
+ introButton.addEventListener("click",()=>revealOrder(true));
+ // Ouvrir le formulaire avant le script de navigation du site principal.
+ document.addEventListener("click",event=>{
+  const a=event.target instanceof Element?event.target.closest('a[href="#jeudis-commande"]'):null;
+  if(a)revealOrder(false);
+ },true);
+ // Lien direct, rechargement et navigation arrière.
+ if(location.hash==="#jeudis-commande")revealOrder(false);
+ window.addEventListener("hashchange",()=>{
+  if(location.hash==="#jeudis-commande")revealOrder(false);
+ });
+ window.addEventListener("popstate",()=>{
+  if(location.hash==="#jeudis-commande")revealOrder(false);
  });
 }
 const cart=new Map();
