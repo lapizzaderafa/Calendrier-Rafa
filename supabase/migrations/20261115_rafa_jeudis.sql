@@ -104,7 +104,13 @@ on conflict (pizza) do nothing;
 
 -- Capacité : inclut les commandes remises car elles ont réellement occupé le créneau.
 -- Les commandes ANNULÉES sont exclues. Les suppressions les effacent entièrement.
-create or replace function public.rafa_jeudis_capacity_ok(p_date date)
+-- Vérification de capacité avec ou sans une réservation hypothétique.
+-- Cette fonction est interne : les rôles publics ne peuvent pas l'appeler directement.
+create or replace function public.rafa_jeudis_capacity_candidate(
+ p_date date,
+ p_time text default null,
+ p_qty integer default 0
+)
 returns boolean
 language plpgsql volatile security definer
 set search_path = ''
@@ -122,36 +128,46 @@ declare
   v_free integer;
   v_take integer;
 begin
- select coalesce(sum(o.pizza_qty),0) into v_total
- from public.rafa_jeudis_orders o
- where o.pickup_date = p_date and o.status <> 'cancelled';
- if v_total > 30 then return false; end if;
+ if p_time is not null
+   and (p_time !~ '^(17|18|19|20):(00|20|40)$' or p_qty not between 1 and 6)
+ then return false; end if;
 
- -- Les cueilletes peuvent contenir plus de 3 pizzas grâce à la
- -- préparation AVANT l'heure prévue. Deux voitures par créneau maximum.
+ select coalesce(sum(o.pizza_qty),0) + p_qty into v_total
+ from public.rafa_jeudis_orders o
+ where o.pickup_date=p_date and o.status<>'cancelled';
+ if v_total>30 then return false;end if;
+
  for v_i in 0..11 loop
-   v_slot := to_char((time '17:00' + v_i * interval '20 minutes')::time,'HH24:MI');
-   select coalesce(sum((p.value->>'qty')::integer),0)::integer,
-          count(distinct o.id)::integer
-     into v_qty,v_cars
-   from public.rafa_jeudis_orders o
-   cross join lateral jsonb_array_elements(o.pickups) p(value)
-   where o.pickup_date=p_date and o.status<>'cancelled'
-      and p.value->>'time'=v_slot;
-   if v_qty > 6 or v_cars > 2 then return false; end if;
+  v_slot:=to_char((time '17:00'+v_i*interval '20 minutes')::time,'HH24:MI');
+  select coalesce(sum((p.value->>'qty')::integer),0)::integer,
+         count(distinct o.id)::integer
+    into v_qty,v_cars
+  from public.rafa_jeudis_orders o
+  cross join lateral jsonb_array_elements(o.pickups) p(value)
+  where o.pickup_date=p_date and o.status<>'cancelled'
+    and p.value->>'time'=v_slot;
+  if p_time=v_slot then
+    v_qty:=v_qty+p_qty;
+    v_cars:=v_cars+1;
+  end if;
+  if v_qty>6 or v_cars>2 then return false; end if;
  end loop;
 
- -- Production de 3 pizzas par tranche de 20 min, y compris
- -- les créneaux de préparation 16:20 et 16:40 avant le service.
- -- Chaque groupe est réparti dans les deux plages PRÉCÉDANT sa remise,
- -- en commençant par les échéances les plus proches et les créneaux précoces.
+ -- Affecter des tâches aux 2 tranches de 20 minutes AVANT la cueillette.
+ -- Le tri par heure limite le risque de vendre une plage déjà nécessaire
+ -- à une remise antérieure.
  for v_job in
-   select (((split_part(p.value->>'time',':',1))::integer-17)*60
-             +(split_part(p.value->>'time',':',2))::integer)/20 as idx,
+   select ((((split_part(p.value->>'time',':',1))::integer-17)*60
+               +(split_part(p.value->>'time',':',2))::integer)/20) as idx,
           (p.value->>'qty')::integer as qty
    from public.rafa_jeudis_orders o
    cross join lateral jsonb_array_elements(o.pickups) p(value)
    where o.pickup_date=p_date and o.status<>'cancelled'
+   union all
+   select (((split_part(p_time,':',1)::integer-17)*60
+             +split_part(p_time,':',2)::integer)/20) as idx,
+          p_qty as qty
+   where p_time is not null and p_qty>0
    order by idx
  loop
    if v_job.idx not between 0 and 11 or v_job.qty not between 1 and 6 then return false; end if;
@@ -168,7 +184,15 @@ begin
  return true;
 end;
 $$;
+revoke all on function public.rafa_jeudis_capacity_candidate(date,text,integer) from public;
 
+create or replace function public.rafa_jeudis_capacity_ok(p_date date)
+returns boolean
+language sql volatile security definer
+set search_path = ''
+as $$
+ select public.rafa_jeudis_capacity_candidate(p_date,null,0);
+$$;
 revoke all on function public.rafa_jeudis_capacity_ok(date) from public;
 
 -- Cette fonction est publique, mais ne renvoie AUCUN nom, téléphone ni courriel.
@@ -181,31 +205,42 @@ returns table (
   day_left integer,
   blocked boolean
 )
-language plpgsql stable security definer
+language plpgsql volatile security definer
 set search_path = ''
 as $$
 declare
-  v_day integer;
   v_settings public.rafa_jeudis_settings%rowtype;
   v_slot text;
   v_i integer;
   v_total integer;
+  v_max integer;
+  v_n integer;
+  v_paused boolean;
 begin
  select coalesce(sum(o.pizza_qty),0)::integer into v_total
  from public.rafa_jeudis_orders o where o.pickup_date=p_date and o.status<>'cancelled';
  select * into v_settings from public.rafa_jeudis_settings s where s.pickup_date=p_date;
  for v_i in 0..11 loop
   v_slot:=to_char((time '17:00'+v_i*interval '20 minutes')::time,'HH24:MI');
+  v_paused:=coalesce(v_settings.paused,false) or v_slot=any(coalesce(v_settings.closed_slots,'{}'::text[]));
+  v_max:=0;
+  if not v_paused then
+   for v_n in reverse 6..1 loop
+    if public.rafa_jeudis_capacity_candidate(p_date,v_slot,v_n) then
+     v_max:=v_n;exit;
+    end if;
+   end loop;
+  end if;
   return query
-  select v_slot,
-    coalesce(sum((p.value->>'qty')::integer),0)::integer,
-    count(distinct o.id)::integer,
-    greatest(0,6-coalesce(sum((p.value->>'qty')::integer),0))::integer,
-    greatest(0,30-v_total)::integer,
-    coalesce(v_settings.paused,false) or v_slot=any(coalesce(v_settings.closed_slots,'{}'::text[]))
-  from public.rafa_jeudis_orders o
-  cross join lateral jsonb_array_elements(o.pickups) p(value)
-  where o.pickup_date=p_date and o.status<>'cancelled' and p.value->>'time'=v_slot;
+   select v_slot,
+     coalesce(sum((p.value->>'qty')::integer),0)::integer,
+     count(distinct o.id)::integer,
+     v_max,
+     greatest(0,30-v_total)::integer,
+     v_paused
+   from public.rafa_jeudis_orders o
+   cross join lateral jsonb_array_elements(o.pickups) p(value)
+   where o.pickup_date=p_date and o.status<>'cancelled' and p.value->>'time'=v_slot;
  end loop;
 end;
 $$;
