@@ -3,6 +3,23 @@
 "use strict";
 const J=window.RafaJeudis,API=window.RafaJeudisApi,$=id=>document.getElementById(id);
 const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const introButton=$("jeudisOpenOrder");
+const orderFlow=$("jeudisOrderFlow");
+if(introButton&&orderFlow){
+ introButton.addEventListener("click",()=>{
+  if(!orderFlow.hidden)return;
+  orderFlow.hidden=false;
+  introButton.setAttribute("aria-expanded","true");
+  introButton.hidden=true;
+  $("jeudis-rafa")?.classList.add("rj-open");
+  window.requestAnimationFrame(()=>{
+   orderFlow.scrollIntoView({
+    behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",
+    block:"start"
+   });
+  });
+ });
+}
 const cart=new Map();
 let date=J.scheduleFor().target,plan=J.scheduleFor(),desired=1,selected=null;
 let menu=[],available=[],fetching=false,sending=false,finished=false,requestId=null;
