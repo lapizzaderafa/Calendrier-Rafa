@@ -31,6 +31,18 @@ function uuid(){
  if(!global.crypto?.randomUUID)throw new Error("La réservation sécurisée exige une connexion HTTPS.");
  return global.crypto.randomUUID();
 }
+const ADMIN_EMAIL="raphael.frenette@gmail.com";
+async function loginAdmin(password){
+ const {data,error}=await db().auth.signInWithPassword({email:ADMIN_EMAIL,password});
+ if(error)throw new Error(error.message||"Connexion refusée.");
+ return data;
+}
+async function createAdminAccess(password){
+ const {data,error}=await db().auth.signUp({email:ADMIN_EMAIL,password});
+ if(error)throw new Error(error.message||"Inscription impossible.");
+ return data;
+}
+async function logoutAdmin(){const {error}=await db().auth.signOut();if(error)throw new Error(error.message)}
 async function currentUser(){
  const {data,error}=await db().auth.getUser();
  if(error||!data?.user)throw new Error("Connecte-toi dans le back-office Rafa.");
@@ -84,6 +96,6 @@ async function adminSaveSettings(date,{paused=false,closedSlots=[],pickupAddress
   .upsert({pickup_date:date,paused,closed_slots:closedSlots,pickup_address:pickupAddress,pickup_instructions:pickupInstructions},{onConflict:"pickup_date"}));
 }
 global.RafaJeudisApi=Object.freeze({
- menu,availability,reserve,confirmation,adminOrders,adminAction,adminSettings,adminSaveSettings,currentUser,uuid
+ menu,availability,reserve,confirmation,adminOrders,adminAction,adminSettings,adminSaveSettings,currentUser,loginAdmin,createAdminAccess,logoutAdmin,uuid
 });
 })(window);
