@@ -4,7 +4,7 @@
    Important: la confirmation atomique devra se faire sur serveur avant lancement reel. */
 (function(global){
 "use strict";
-const CONFIG=Object.freeze({unitPrice:27,slotCapacity:3,dailyCapacity:30,startHour:17,endHour:21,slotMinutes:20,timezone:"America/Toronto",demoStorageKey:"rafa-jeudis-demo-v1"});
+const CONFIG=Object.freeze({unitPrice:27,slotCapacity:3,dailyCapacity:30,startHour:17,endHour:21,slotMinutes:20,maxCarsPerSlot:2,maxAutomaticPickups:3,prepMinutesPerPizza:4.5,handoffMinutesPerCar:2,bufferMinutes:2,timezone:"America/Toronto",demoStorageKey:"rafa-jeudis-demo-v1"});
 function parts(now){
   const f=new Intl.DateTimeFormat("en-CA",{timeZone:CONFIG.timezone,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
   const v=Object.fromEntries(f.formatToParts(now).filter(x=>x.type!=="literal").map(x=>[x.type,x.value]));
@@ -39,32 +39,106 @@ function occupancy(orders,date){
   for(const o of activeOrders(orders,date))for(const a of (o.pickups||[]))if(used[a.time]!==undefined)used[a.time]+=Number(a.qty)||0;
   return used;
 }
-function allocation(qty,startTime,orders,date){
-  qty=Math.floor(Number(qty)||0);
-  if(qty<1||qty>CONFIG.dailyCapacity)return null;
-  const list=slots(),start=list.findIndex(x=>x.key===startTime);
-  if(start<0)return null;
-  const total=activeOrders(orders,date).reduce((sum,o)=>sum+amount(o.items),0);
-  if(total+qty>CONFIG.dailyCapacity)return null;
-  const used=occupancy(orders,date);
-  // Pour 1 a 3 pizzas, une commande doit pouvoir etre retiree en une fois.
-  // Les quantites plus grandes peuvent se repartir sur des creneaux consecutifs.
-  if(qty<=CONFIG.slotCapacity){
-    return (CONFIG.slotCapacity-used[list[start].key])>=qty ? [{time:list[start].key,qty}] : null;
-  }
-  let left=qty;const pickups=[];
-  for(let i=start;i<list.length&&left>0;i++){
-    const free=Math.max(0,CONFIG.slotCapacity-used[list[i].key]);
-    // on n'offre pas un retrait saute dans le temps: tous les creneaux de la commande se suivent
-    if(free===0)return null;
-    const take=Math.min(free,left);
-    pickups.push({time:list[i].key,qty:take});
-    left-=take;
-  }
-  return left===0?pickups:null;
+function settingsKey(date){return "rafa-jeudis-settings-"+date;}
+function loadSettings(date){
+ try{
+  const raw=JSON.parse(localStorage.getItem(settingsKey(date))||"{}");
+  return {paused:raw.paused===true,closedSlots:Array.isArray(raw.closedSlots)?raw.closedSlots.filter(x=>slots().some(s=>s.key===x)):[]};
+ }catch{return {paused:false,closedSlots:[]};}
 }
-function allOptions(qty,orders,date){
-  return slots().map(s=>({...s,pickups:allocation(qty,s.key,orders,date)}));
+function saveSettings(date,settings){
+ const data={paused:!!settings.paused,closedSlots:[...new Set(settings.closedSlots||[])].filter(x=>slots().some(s=>s.key===x))};
+ localStorage.setItem(settingsKey(date),JSON.stringify(data));
+}
+function carCounts(orders,date){
+ const cars=Object.fromEntries(slots().map(s=>[s.key,0]));
+ for(const o of activeOrders(orders,date)){
+  const seen=new Set();
+  for(const p of o.pickups||[]){
+   // Une commande est un vehicule par heure de retrait, meme avec plusieurs types de pizza.
+   if(Object.hasOwn(cars,p.time)&&!seen.has(p.time)){cars[p.time]++;seen.add(p.time);}
+  }
+ }
+ return cars;
+}
+function scheduleCheck(orders,date){
+ const current=activeOrders(orders,date),used=occupancy(current,date),cars=carCounts(current,date);
+ const errors=[],valid=new Set(slots().map(s=>s.key));
+ let total=0;
+ for(const o of current){
+  const qty=amount(o.items);total+=qty;let allocated=0,previous=-1;
+  if(!Number.isInteger(qty)||qty<1)errors.push("Commande "+(o.id||"?")+" sans quantite valide");
+  for(const p of o.pickups||[]){
+   if(!valid.has(p.time)||!Number.isInteger(p.qty)||p.qty<=0){errors.push("Retrait invalide : "+(o.id||"?"));continue;}
+   const index=slots().findIndex(s=>s.key===p.time);
+   if(previous>=0&&index!==previous+1)errors.push("Retraits non consecutifs : "+(o.id||"?"));
+   previous=index;allocated+=p.qty;
+  }
+  if(allocated!==qty)errors.push("Pizzas non attribuees : "+(o.id||"?"));
+ }
+ if(total>CONFIG.dailyCapacity)errors.push("Capacite du jeudi depassee");
+ for(const s of slots()){
+  if(used[s.key]>CONFIG.slotCapacity)errors.push("Trop de pizzas a "+s.key);
+  if(cars[s.key]>CONFIG.maxCarsPerSlot)errors.push("Trop de vehicules a "+s.key);
+ }
+ // Charge de travail en minutes : la production du prochain groupe + les remises du groupe precedent.
+ // Ces chiffres sont des hypotheses conservatrices a valider avec Rafa, pas des temps garantis.
+ for(let i=0;i<slots().length;i++){
+  const key=slots()[i].key,prev=i>0?slots()[i-1].key:null;
+  const load=(used[key]*CONFIG.prepMinutesPerPizza)+(prev?cars[prev]*CONFIG.handoffMinutesPerCar:0)+CONFIG.bufferMinutes;
+  if(load>CONFIG.slotMinutes+1e-8)errors.push("Charge operateur trop elevee avant "+key);
+ }
+ return {ok:errors.length===0,errors,total,used,cars};
+}
+function allocation(qty,startTime,orders,date,opts){
+ if(!Number.isInteger(Number(qty))||Number(qty)<1||Number(qty)>CONFIG.dailyCapacity)return null;
+ qty=Number(qty);
+ const list=slots(),start=list.findIndex(x=>x.key===startTime);
+ if(start<0)return null;
+ const settings=opts||loadSettings(date);
+ if(settings.paused)return null;
+ const closed=new Set(settings.closedSlots||[]);
+ const present=activeOrders(orders,date),check=scheduleCheck(present,date);
+ if(!check.ok)return null; // Ne pas vendre de nouvelles places sur un calendrier deja incoherent.
+ if(check.total+qty>CONFIG.dailyCapacity)return null;
+ const used=check.used,cars=check.cars;
+ let left=qty;const pickups=[];
+ const max=qty<=CONFIG.slotCapacity?1:CONFIG.maxAutomaticPickups;
+ for(let i=start;i<list.length&&left>0;i++){
+  const key=list[i].key,free=CONFIG.slotCapacity-used[key];
+  if(closed.has(key)||free<=0||cars[key]>=CONFIG.maxCarsPerSlot)return null;
+  if(qty<=CONFIG.slotCapacity&&free<qty)return null; // Une seule visite pour 1-3 pizzas.
+  if(pickups.length>=max)return null; // Les tres grosses commandes passent en demande speciale.
+  const take=Math.min(free,left);
+  pickups.push({time:key,qty:take});left-=take;
+ }
+ if(left>0)return null;
+ const proposed=[...present,{date,status:"pending",items:[{qty}],pickups}];
+ return scheduleCheck(proposed,date).ok?pickups:null;
+}
+function allOptions(qty,orders,date,opts){
+ return slots().map(s=>({...s,pickups:allocation(qty,s.key,orders,date,opts)}));
+}
+function productionPlan(orders,date){
+ const check=scheduleCheck(orders,date),list=slots(),toMinutes=key=>{const [h,m]=key.split(":").map(Number);return h*60+m;};
+ const nice=m=>String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
+ return list.map((slot,i)=>{
+  const previous=i>0?list[i-1].key:null;
+  const workload=check.used[slot.key]*CONFIG.prepMinutesPerPizza+(previous?check.cars[previous]*CONFIG.handoffMinutesPerCar:0)+CONFIG.bufferMinutes;
+  return {pickup:slot.key,prepareFrom:nice(toMinutes(slot.key)-CONFIG.slotMinutes),pizzaCount:check.used[slot.key],cars:check.cars[slot.key],estimatedOperatorMinutes:Math.round(workload*10)/10,remainingOperatorMinutes:Math.round((CONFIG.slotMinutes-workload)*10)/10,overload:workload>CONFIG.slotMinutes};
+ });
+}
+function assignPizzas(items,pickups){
+ const remaining=(items||[]).map(i=>({pizza:i.pizza,qty:Math.floor(Number(i.qty)||0)})).filter(x=>x.qty>0);
+ return (pickups||[]).map(p=>{
+  let toAssign=p.qty;const pizzas=[];
+  for(const item of remaining){
+   if(toAssign<=0)break;
+   const take=Math.min(toAssign,item.qty);
+   if(take>0){pizzas.push({pizza:item.pizza,qty:take});item.qty-=take;toAssign-=take;}
+  }
+  return {...p,pizzas,complete:toAssign===0};
+ });
 }
 function loadDemo(){
  try{const v=JSON.parse(localStorage.getItem(CONFIG.demoStorageKey)||"[]");return Array.isArray(v)?v:[];}catch{return [];}
@@ -75,5 +149,5 @@ function formatDate(ymd){
  return new Intl.DateTimeFormat("fr-CA",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(Date.UTC(y,m-1,d,12)));
 }
 function niceTime(key){const [h,m]=key.split(":").map(Number);return h+" h"+(m?" "+String(m).padStart(2,"0"):"");}
-global.RafaJeudis={CONFIG,parts,plusDays,weekday,scheduleFor,slots,amount,activeOrders,occupancy,allocation,allOptions,loadDemo,saveDemo,formatDate,niceTime};
+global.RafaJeudis={CONFIG,parts,plusDays,weekday,scheduleFor,slots,amount,activeOrders,occupancy,carCounts,settingsKey,loadSettings,saveSettings,scheduleCheck,allocation,allOptions,productionPlan,assignPizzas,loadDemo,saveDemo,formatDate,niceTime};
 })(window);
