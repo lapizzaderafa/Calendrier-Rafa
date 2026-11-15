@@ -190,12 +190,14 @@
       <h2 id="rafaJeudisTitle">Les Jeudis Rafa.</h2>
     </div>
     <div>
-      <p class="rj-lede">De bonnes pizz. Un jeudi. À emporter.</p>
-      <p class="rj-secondary">Réserve tes pizzas napolitaines, passe les chercher à Cap-Rouge et reste dans ton auto. On t'apporte ta commande.</p>
-      <p class="rj-demo-note">VERSION D'ESSAI — Aucune pizza préparée, aucun paiement prélevé. Utilise des coordonnées fictives.</p>
+      <p class="rj-lede">Tes pizzas Rafa, à emporter chaque jeudi à Cap-Rouge.</p>
+      <p class="rj-secondary">Commande à l'avance, puis récupère tes pizzas sans sortir de ton auto.</p>
+      <button class="rj-open-order" id="jeudisOpenOrder" type="button" aria-expanded="false" aria-controls="jeudisOrderFlow">Commander pour emporter</button>
+      <p class="rj-demo-note">Prévisualisation · Aucune commande réelle.</p>
     </div>
   </div>
 
+  <div id="jeudisOrderFlow" class="rj-order-flow" hidden>
   <div class="rj-pickup-header">
     <span class="kicker">PROCHAINE CUEILLETTE</span>
     <h3 id="targetTitle">Jeudi — prochain service</h3>
@@ -272,6 +274,7 @@
       </div>
     </div>
   </div>
+  </div><!-- / formulaire Les Jeudis Rafa -->
 </section>
 
 <!-- Avis clients : section de bas de page, typographie du site conservée. -->
