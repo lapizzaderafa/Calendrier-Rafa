@@ -1,3 +1,13 @@
+## Mise à jour actuelle : quota de 25 pizzas par jeudi (novembre 2026)
+- La limite de **25 pizzas pour toute la soirée** est active sur le projet Supabase de test. Les commandes annulées et supprimées libèrent la capacité.
+- Une demande de **20 pizzas à 17 h** neutralise les plages occupées par sa production; **5 pizzas** restent réservable si une plage de production ultérieure est libre.
+- Le formulaire de test affiche le solde de pizzas et désactive le bouton « + » au plafond quotidien ou lorsque le quota est épuisé.
+- L'interface de test est désormais alignée sur rafapizza.ca : blanc cassé `#FAF9F6`, Instrument Sans, grands titres, fines séparations et aucun bloc coloré superflu.
+- **23 tests JS** sur le moteur actuel et tests SQL avec rollback ont été exécutés. La production actuelle et son site ne sont pas modifiés.
+- Attention : pour une commande importante, le créneau sélectionné correspond au **début de la plage de production**; il ne faut pas promettre que les 20 pizzas seront toutes prêtes à l'instant choisi. La logistique de la remise reste à tester avant publication.
+
+---
+
 # Environnement de test gratuit Rafa Jeudis — ACTIF
 
 **Projet Supabase isolé** : `Rafa Jeudis – Tests` (`bkvosdrtexbkrkmwalbg`), région Canada. Tarif de création confirmé `0 $ US/mois`, dans les limites du forfait gratuit. La base du site officiel reste inchangée.
@@ -13,9 +23,9 @@ Ces liens utilisent un hébergement de prévisualisation externe gratuit (raw.gi
 
 **Annulation** : admin > « Commandes » > « Annuler ». La réservation passe dans l'historique et le calendrier libère immédiatement son espace. « Supprimer définitivement » demande de recopier l'identifiant; cela retire toute trace de la base de test. Si une commande est marquée payée, le système affiche un avertissement de remboursement manuel.
 
-**Limitations** : Aucun paiement automatique, aucun courriel automatique de confirmation client, aucun SMS, aucune adresse réelle. 1 à 6 pizzas par commande avec une seule heure de cueillette. Jusqu'à 30 pizzas par jeudi, 2 voitures maximum et une production hypothétique de 3 pizzas par 20 minutes, à confirmer avec les fours. Le nouveau code n'est pas encore fusionné sur la branche `main` du site.
+**Limitations** : Aucun paiement automatique, courriel client automatique ou SMS. Le plafond de lancement est de **25 pizzas au total par jeudi**, toutes commandes confondues; pas de plafond arbitraire de 5 ou 6 pizzas par client. Les disponibilités tiennent compte des périodes de production, de 3 pizzas par 20 minutes à titre provisoire. Une commande de 20 pizzas à 17 h bloque les plages suivantes occupées par sa préparation. La fenêtre de remise d'une grosse commande doit être convenue avec Rafa avant le lancement réel. L'adresse affichée est fictive; aucune commande réelle. Branche `main` inchangée.
 
-**Vérifications serveur déjà réussies** : migration SQL appliquée, 3 tables avec RLS, fonction de réservation atomique, faux client capable de réserver sous rôle `anon`, annulation libérant la capacité, suppression de commande et droits d'administration non publics. 18 tests JS du moteur ont réussi avant la création du projet. Le parcours complet dans un vrai navigateur, l'inscription du compte admin et une simulation de deux clients simultanés restent à essayer.
+**Vérifications serveur déjà réussies** : migration SQL appliquée, 3 tables avec RLS, fonction de réservation atomique, faux client capable de réserver sous rôle `anon`, annulation libérant la capacité, suppression de commande et droits d'administration non publics. 23 tests JS du moteur ont réussi avant la création du projet. Le parcours complet dans un vrai navigateur, l'inscription du compte admin et une simulation de deux clients simultanés restent à essayer.
 
 ---
 
@@ -42,8 +52,8 @@ Le démonstrateur courant utilise `localStorage`. Il n'est **pas** synchronisé 
 - Les anciens tableaux du site et les réservations événementielles ne sont pas modifiés.
 - Le même administrateur Supabase que le back-office actuel est prévu; les commandes clients ne sont pas lisibles publiquement.
 - La sélection initiale de **4 pizzas** dans la migration est provisoire (Margherita, New York, Mortadella, Speck); elle doit être approuvée et rendue modifiable.
-- Les contraintes de capacité initiales (`3 pizzas/20 min`, `2 voitures/20 min`, `30 pizzas/jeudi`, `4,5 min de travail/pizza`) sont des hypothèses. Il faudra mesurer le service réel avant publication.
-- Le moteur de développement et la migration proposée sont maintenant alignés sur **une seule heure de remise pour 1 à 6 pizzas**, avec production dans les 40 minutes qui précèdent. Il faut toujours confirmer les cadences réelles avant publication.
+- Les contraintes de capacité initiales (`3 pizzas/20 min`, `2 voitures/20 min`, `25 pizzas/jeudi`, `4,5 min de travail/pizza`) sont des hypothèses. Il faudra mesurer le service réel avant publication.
+- Le moteur et la base de test autorisent jusqu'aux **25 pizzas restant disponibles pour le jeudi** dans une commande, et réservent les créneaux de production nécessaires **à compter de l'heure choisie**. Pour une très grosse commande, cette heure est le début de la plage réservée; la coordination de la remise doit encore être validée.
 - Aucun courriel automatique, aucun virement Interac automatique, aucun remboursement automatique et aucune adresse exacte installée dans le prototype.
 
 ## Test externe à réaliser **après** connexion et validation de la base
@@ -65,7 +75,7 @@ Le démonstrateur courant utilise `localStorage`. Il n'est **pas** synchronisé 
 
 ## Tests automatisés inclus
 
-`tests/jeudis-core.test.js` vérifie 18 cas : calcul du jeudi, fermeture mercredi midi, nombre de pizzas, capacité voitures, plafond du jeudi, annulation, suppression, restauration, créneaux fermés, répartition des recettes et détection de surcapacité.
+`tests/jeudis-core.test.js` vérifie 23 cas : calcul du jeudi, fermeture mercredi midi, nombre de pizzas, capacité voitures, plafond du jeudi, annulation, suppression, restauration, créneaux fermés, répartition des recettes et détection de surcapacité.
 
 ## Point de blocage actuel
 
