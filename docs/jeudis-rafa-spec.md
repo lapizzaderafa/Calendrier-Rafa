@@ -92,3 +92,14 @@
 Le prototype actuel répartit encore automatiquement les commandes de plus de 3 pizzas sur plusieurs périodes. L'objectif métier retenu est une **heure de remise unique par commande chaque fois que la capacité réelle le permet**, en permettant de préparer avant l'heure prévue et sans imposer un ordre de cuisson. La possibilité d'accepter 5 pizzas prêtes à 17 h ne peut pas être garantie sans essai chronométré de production et vérification de la fraîcheur des premières pizzas. Ce point nécessite une révision du calculateur avant d'accepter de vrais clients.
 
 **Statut** : branche de test seulement, commandes fictives locales; aucune publication du site public, aucune modification Supabase.
+
+
+## Décisions les plus récentes (remplacent les règles provisoires ci-dessus)
+- **Une commande = une heure de cueillette** pour les commandes automatisées de **1 à 6 pizzas**. Pas de multiples remises imposées à un client.
+- Le calcul sépare les tranches de production de 20 minutes et les heures de remise. Une commande de 5 pizzas pour 17 h peut utiliser les tranches de 16 h 20 et 16 h 40 si elles sont libres.
+- Les 6 pizzas max par commande, 2 voitures max par créneau, 3 pizzas de production par 20 minutes et 30 pizzas maximum par jeudi sont des **hypothèses prudentes de test**, à confirmer avec les 3 fours et Rafa seul.
+- Pour une demande de plus de 6 pizzas, le client est orienté vers un arrangement spécial avant que la capacité réelle soit connue.
+- Les annulations libèrent la capacité et retirent les pizzas du décompte et de l'épicerie; elles restent visibles dans l'historique.
+- La suppression définitive demande de retaper l'identifiant. Une commande payée déclenche un avertissement de remboursement manuel.
+- Le moteur côté navigateur compte **18 tests de non-régression réussis**; la migration SQL et les pages multi-appareils sont en attente d'un essai réel sur branche de base séparée.
+- Les pages d'essai externe restent désactivées jusqu'à mise en place et approbation de la base de test, et aucune donnée de production n'a été modifiée.
