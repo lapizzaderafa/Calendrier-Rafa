@@ -81,7 +81,7 @@ create policy rafa_jeudis_settings_admin on public.rafa_jeudis_settings
 
 drop policy if exists rafa_jeudis_menu_public_read on public.rafa_jeudis_menu;
 create policy rafa_jeudis_menu_public_read on public.rafa_jeudis_menu
-  for select to anon,authenticated using (active or public.rafa_jeudis_is_admin());
+  for select to anon,authenticated using (active);
 
 drop policy if exists rafa_jeudis_menu_admin_write on public.rafa_jeudis_menu;
 create policy rafa_jeudis_menu_admin_write on public.rafa_jeudis_menu
