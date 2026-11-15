@@ -123,14 +123,34 @@ function reportView(){
  if(!pairs.length){$("view").innerHTML+='<p class="muted">Aucune donnée pour ce jeudi.</p>';return;}
  pairs.forEach(([name,q])=>$("view").innerHTML+='<div class="summary-line"><span>'+safe(name)+'</span><b>'+q+'</b></div>');
 }
+function settingsView(){
+ const settings=J.loadSettings(focusDate),check=J.scheduleCheck(available(),focusDate);
+ $("view").innerHTML='<h2>Réglages des nouvelles commandes</h2><p class="muted">La fermeture d’une heure ne supprime pas les commandes déjà acceptées. Ces réglages restent locaux à la démonstration.</p>';
+ const label=document.createElement("label");label.className="checkrow";label.textContent="Suspendre les nouvelles commandes ";
+ const pause=document.createElement("input");pause.type="checkbox";pause.checked=settings.paused;
+ pause.onchange=()=>{J.saveSettings(focusDate,{...J.loadSettings(focusDate),paused:pause.checked});render()};
+ label.prepend(pause);$("view").appendChild(label);
+ const h=document.createElement("h3");h.className="section-spacer";h.textContent="Fermer un créneau pour de nouvelles commandes";$("view").appendChild(h);
+ for(const slot of J.slots()){
+  const row=document.createElement("label");row.className="checkrow";
+  const checkbox=document.createElement("input");checkbox.type="checkbox";checkbox.checked=settings.closedSlots.includes(slot.key);
+  checkbox.onchange=()=>{const current=J.loadSettings(focusDate),set=new Set(current.closedSlots);if(checkbox.checked)set.add(slot.key);else set.delete(slot.key);J.saveSettings(focusDate,{...current,closedSlots:[...set]});render()};
+  row.append(checkbox,document.createTextNode(" "+slot.label));$("view").appendChild(row);
+ }
+ if(!check.ok){const warning=document.createElement("div");warning.className="error";warning.textContent=check.errors.join(" · ");$("view").appendChild(warning)}
+}
 function render(){
+ const choices=[...new Set([J.scheduleFor().target,focusDate,...all().map(o=>o.date).filter(Boolean)])].sort().reverse();
+ $("adminDate").innerHTML=choices.map(d=>'<option value="'+d+'">'+safe(J.formatDate(d))+'</option>').join("");
+ $("adminDate").value=focusDate;
  const oo=available(),qty=total(oo);
  $("targetDate").textContent="Jeudi de démonstration : "+J.formatDate(focusDate)+" · 3 pizzas / 20 min · plafond 30";
  $("statPizzas").textContent=qty+" / 30";$("statOrders").textContent=oo.length;$("statSales").textContent=(qty*C.unitPrice)+" $";
  for(const b of document.querySelectorAll("[data-view]")){b.classList.toggle("active",b.dataset.view===view);b.setAttribute("aria-selected",String(b.dataset.view===view))}
  ({prep:prepView,orders:orderView,service:serviceView,groceries:groceriesView,report:reportView,settings:settingsView}[view])();
 }
-document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>{view=b.dataset.view;render()}));
+$("adminDate").onchange=e=>{focusDate=e.target.value;window.rafaCurrentServiceId=null;render()};
+document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>{view=b.dataset.view;window.rafaCurrentServiceId=null;render()}));
 $("clearDemo").onclick=()=>{if(confirm("Effacer toutes les commandes fictives enregistrées dans CE navigateur ?")){J.saveDemo([]);render()}};
 window.addEventListener("storage",render);
 render();
