@@ -53,7 +53,7 @@
 
 
 ## Concept et expérience de cueillette
-- Nom de l'expérience : **Service au volant chez Rafa**, sous la bannière **Les Jeudis Rafa**.
+- Nom de l'expérience : **Service au volant**, sous la bannière **Les Jeudis Rafa**; slogan : « Les meilleures pizz, directement dans ton auto. ».
 - Le client ne reçoit **aucune adresse de rue** avant d'avoir terminé la commande et d'avoir reçu une confirmation valide.
 - La page avant commande affiche uniquement « Cap-Rouge, Québec », sans numéro civique, point GPS, lien de carte ni photo qui révèle une propriété.
 - Formulaire **obligatoire** : nom complet, téléphone, adresse courriel, plus choix du mode de paiement et consentement au suivi de commande. En production, valider les coordonnées (p. ex. confirmation de téléphone/courriel selon le mode de paiement, quotas anti-spam); une simple saisie ne prouve pas l'identité.
@@ -64,7 +64,7 @@
 - Attention : l'expression « service au volant » décrit ici une **remise à la voiture sur rendez-vous**, pas une file de voitures ou un commerce sans réservation. Vérifier l'autorisation municipale et MAPAQ avant lancement.
 
 ## Comportement actuel du prototype
-- Affichage « Service au volant chez Rafa » et consignes générales sans révéler une adresse.
+- Affichage « Service au volant » et consignes générales sans révéler une adresse.
 - Coordonnées obligatoires, cases de consentement et écran de confirmation fictive avec instructions de stationnement et emplacement de l'adresse future.
 - L'adresse réelle n'est ni connue ni présente dans le code du prototype.
 - Suivi du nom, du téléphone, du courriel et de l'arrivée dans l'écran de gestion fictif.
