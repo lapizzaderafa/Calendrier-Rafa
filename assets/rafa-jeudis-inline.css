@@ -1,0 +1,110 @@
+/* RAFA / LES JEUDIS — extension éditoriale de l'accueil existant
+   Même grille, mêmes couleurs, mêmes caractères que les sections de rafapizza.ca.
+   Entièrement isolée : ne modifie ni le calendrier événementiel ni les avis. */
+.rafa-intro .hero .rafa-hero-choices{
+  display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:13px;
+  width:min(100%,315px);margin:0 auto;
+}
+.rafa-intro .hero .rafa-hero-choices .text-cta{
+  width:100%;min-height:54px;padding:14px 20px;margin:0;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.055);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.89);
+  text-align:center;font-weight:500;letter-spacing:.045em;
+}
+.rafa-intro .hero .rafa-hero-choices .text-cta:hover{
+  background:rgba(255,255,255,.14);
+}
+#jeudis-rafa{
+  --rj-ink:var(--ink,#242321);
+  --rj-soft:var(--soft,#68635F);
+  --rj-hair:var(--hair,#E7E3DE);
+  --rj-wine:var(--wine,#5B1F2A);
+  background:transparent;color:var(--rj-ink);
+  padding-top:clamp(105px,11.5vw,180px);
+  padding-bottom:clamp(90px,11.5vw,178px);
+}
+#jeudis-rafa,#jeudis-rafa *{box-sizing:border-box}
+#jeudis-rafa .rj-heading{display:grid;grid-template-columns:1fr minmax(240px,340px);align-items:end;column-gap:clamp(40px,7vw,130px);margin-bottom:clamp(74px,9vw,125px)}
+#jeudis-rafa .rj-heading h2{margin:16px 0 0!important;font-weight:500!important;color:var(--rj-ink)!important}
+#jeudis-rafa .rj-lede{font-size:17px;line-height:1.53;letter-spacing:-.035em;margin:0 0 7px;color:var(--rj-ink)}
+#jeudis-rafa .rj-secondary{margin:0;font-size:13px;line-height:1.72;color:var(--rj-soft)}
+#jeudis-rafa .rj-demo-note{margin:18px 0 0;font-size:11px;line-height:1.5;color:var(--rj-soft)}
+#jeudis-rafa .rj-pickup-header{border-top:1px solid var(--rj-hair);border-bottom:1px solid var(--rj-hair);padding:clamp(27px,4.1vw,61px) 0 clamp(33px,4.7vw,70px);margin-bottom:clamp(69px,8vw,120px)}
+#jeudis-rafa .rj-pickup-header .kicker{font-size:10px;color:var(--rj-soft);font-weight:500;letter-spacing:.13em}
+#jeudis-rafa #targetTitle{font-size:clamp(31px,4.2vw,65px);line-height:1.05;letter-spacing:-.065em;font-weight:500;margin:18px 0 22px;text-transform:none}
+#jeudis-rafa #deadline{font-size:14px;line-height:1.65;margin:0 0 5px;color:var(--rj-soft)}
+#jeudis-rafa #remainingPizzas{font-size:12px;line-height:1.55;color:var(--rj-soft);margin:0}
+#jeudis-rafa .rj-columns{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(290px,.85fr);align-items:start;column-gap:clamp(62px,9vw,160px)}
+#jeudis-rafa .rj-left,#jeudis-rafa .rj-right{min-width:0}
+#jeudis-rafa .rj-step{font-size:11px;letter-spacing:.08em;color:#87817b;font-weight:400;margin:0 0 16px}
+#jeudis-rafa .rj-subtitle{font-size:clamp(25px,2.6vw,41px);line-height:1.1;letter-spacing:-.055em;font-weight:500;margin:0 0 28px}
+#jeudis-rafa .rj-subtitle-small{font-size:clamp(23px,2.1vw,32px);line-height:1.16;letter-spacing:-.05em;font-weight:500;margin:0 0 24px}
+#jeudis-rafa .rj-price-note{font-size:12px;color:var(--rj-soft);margin:18px 0 0}
+#jeudis-rafa .rj-price-note strong{font-weight:500;color:var(--rj-ink)}
+#jeudis-rafa .rj-quantity{display:flex;align-items:center;gap:19px;margin:17px 0 15px}
+#jeudis-rafa .stepper{width:39px;height:39px;flex-shrink:0;border-radius:50%;border:1px solid #B8B3AE;background:transparent;color:var(--rj-ink);font-size:22px;line-height:1;display:grid;place-items:center;font-weight:400}
+#jeudis-rafa .stepper:disabled{opacity:.3;cursor:not-allowed}
+#jeudis-rafa #desiredQty{font-size:30px;font-weight:500;letter-spacing:-.07em;min-width:42px;text-align:center;font-variant-numeric:tabular-nums}
+#jeudis-rafa .rj-progress{font-size:12px;color:var(--rj-soft);line-height:1.6;min-height:20px;margin:0}
+#jeudis-rafa .rj-recipes{margin-top:clamp(58px,7vw,105px)}
+#jeudis-rafa .pizza-grid{display:block;border-top:1px solid var(--rj-hair)}
+#jeudis-rafa .pizza{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 17px;min-height:0;padding:26px 0;border-bottom:1px solid var(--rj-hair);background:transparent;border-radius:0}
+#jeudis-rafa .pizza strong{font-size:clamp(23px,2.35vw,33px);line-height:1.13;letter-spacing:-.058em;font-weight:500}
+#jeudis-rafa .pizza small{font-size:13px;line-height:1.5;color:var(--rj-soft);grid-column:1;grid-row:2}
+#jeudis-rafa .pizza .counter{grid-column:2;grid-row:1/span 2;display:flex;align-items:center;gap:10px}
+#jeudis-rafa .pizza .qty{font-size:15px;min-width:16px;text-align:center;display:inline-block;font-weight:500}
+#jeudis-rafa .pizza .stepper{width:31px;height:31px;font-size:18px;border-color:var(--rj-hair)}
+#jeudis-rafa .rj-right .rj-checkout-block{border-top:1px solid var(--rj-hair);padding-top:29px;margin-bottom:clamp(46px,5vw,73px)}
+#jeudis-rafa .rj-right .rj-checkout-block:first-child{border-top:0;padding-top:0}
+#jeudis-rafa .rj-muted{font-size:12px;line-height:1.65;color:var(--rj-soft);margin:0 0 18px}
+#jeudis-rafa .slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-left:1px solid var(--rj-hair);border-top:1px solid var(--rj-hair);gap:0}
+#jeudis-rafa .slot{background:transparent;border:0;border-right:1px solid var(--rj-hair);border-bottom:1px solid var(--rj-hair);border-radius:0;min-height:73px;padding:14px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--rj-ink);font-size:15px;font-weight:500}
+#jeudis-rafa .slot span{font-size:10px;font-weight:400;color:var(--rj-soft)}
+#jeudis-rafa .slot:disabled{color:#aaa5a0;background:transparent;cursor:not-allowed}
+#jeudis-rafa .slot:disabled span{color:#b0aaa4}
+#jeudis-rafa .slot.selected{background:var(--rj-ink);color:#fff}
+#jeudis-rafa .slot.selected span{color:#ddd}
+#jeudis-rafa #selectedHours{margin:17px 0 0;font-size:12px;color:var(--rj-soft);line-height:1.65}
+#jeudis-rafa .summary-line{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:11px 0;border-bottom:1px solid var(--rj-hair);font-size:13px}
+#jeudis-rafa .total{display:flex;align-items:baseline;justify-content:space-between;padding:25px 0;border-top:1px solid var(--rj-ink);font-size:14px;font-weight:500}
+#jeudis-rafa .total span:last-child{font-size:27px;letter-spacing:-.055em}
+#jeudis-rafa .field{display:flex;flex-direction:column;gap:5px;margin:25px 0;font-size:12px;font-weight:500;color:var(--rj-ink)}
+#jeudis-rafa .field input,#jeudis-rafa .field select{width:100%;background:transparent;border:0;border-bottom:1px solid #B5AFA9;border-radius:0;padding:13px 1px 12px;font-size:15px;font-weight:400;color:var(--rj-ink)}
+#jeudis-rafa .field input:focus,#jeudis-rafa .field select:focus{border-bottom-color:var(--rj-wine);outline:none}
+#jeudis-rafa .rj-consent{display:flex;flex-direction:row;align-items:flex-start;gap:12px;font-size:11px;color:var(--rj-soft);font-weight:400;line-height:1.55}
+#jeudis-rafa .rj-consent input{width:auto;flex:0 0 auto;margin:3px 0 0;accent-color:var(--rj-ink)}
+#jeudis-rafa .button{width:100%;display:block;text-align:center;min-height:55px;padding:16px 24px;margin-top:24px;border:1px solid var(--rj-ink);border-radius:1px;background:var(--rj-ink);color:#fff;font-size:12px;letter-spacing:.05em;font-weight:500;cursor:pointer}
+#jeudis-rafa .button:disabled{opacity:.4;cursor:not-allowed}
+#jeudis-rafa .button:hover:not(:disabled){background:var(--rj-wine);border-color:var(--rj-wine)}
+#jeudis-rafa .error,#jeudis-rafa .success,#jeudis-rafa .alert{margin:19px 0 0;padding:15px 0;border-top:1px solid var(--rj-hair);border-bottom:1px solid var(--rj-hair);background:transparent;border-radius:0;color:var(--rj-ink);font-size:13px;line-height:1.65}
+#jeudis-rafa .error{border-color:#ab5963;color:#82343d}
+#jeudis-rafa .rj-demo-note-bottom{font-size:11px;line-height:1.5;color:var(--rj-soft);margin-top:20px}
+#jeudis-rafa .hidden{display:none!important}
+@media(max-width:900px){
+ #jeudis-rafa .rj-heading{grid-template-columns:1fr;gap:26px}
+ #jeudis-rafa .rj-columns{grid-template-columns:1fr;row-gap:75px}
+ #jeudis-rafa .rj-recipes{margin-top:70px}
+ #jeudis-rafa .rj-checkout-block:first-child{border-top:1px solid var(--rj-hair);padding-top:26px}
+}
+@media(max-width:760px){
+ .rafa-intro .hero .rafa-hero-choices{width:min(100%,310px);gap:12px}
+ .rafa-intro .hero .rafa-hero-choices .text-cta{min-height:52px;padding:12px 15px;font-size:11px}
+ #jeudis-rafa{padding-top:101px;padding-bottom:103px}
+ #jeudis-rafa .rj-heading{margin-bottom:73px;gap:25px}
+ #jeudis-rafa .rj-lede{font-size:16px}
+ #jeudis-rafa .rj-pickup-header{margin-bottom:77px;padding:26px 0 33px}
+ #jeudis-rafa #targetTitle{font-size:clamp(31px,8.8vw,45px);margin:14px 0 16px}
+ #jeudis-rafa .rj-columns{row-gap:85px}
+ #jeudis-rafa .rj-recipes{margin-top:63px}
+ #jeudis-rafa .rj-subtitle{font-size:28px}
+ #jeudis-rafa .rj-subtitle-small{font-size:26px}
+ #jeudis-rafa .pizza{padding:22px 0}
+ #jeudis-rafa .pizza strong{font-size:25px}
+ #jeudis-rafa .pizza small{font-size:12px}
+ #jeudis-rafa .pizza .counter{gap:8px}
+ #jeudis-rafa .pizza .stepper{width:29px;height:29px}
+ #jeudis-rafa .slots{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:355px){#jeudis-rafa .pizza strong{font-size:21px}#jeudis-rafa .rj-pickup-header #targetTitle{font-size:30px}}
