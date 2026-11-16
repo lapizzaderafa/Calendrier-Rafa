@@ -110,18 +110,31 @@ async function refresh(){
 }
 function showConfirmation(info,id){
  finished=true;$("orderForm").classList.add("hidden");
- const a=info?.pickup_address||"Adresse à configurer dans le back-office de test";
+ const address=info?.pickup_address||"Adresse à configurer dans le back-office de test";
  const instructions=info?.pickup_instructions||"Stationne-toi à l'arrière et reste dans ton auto. Rafa viendra te remettre les pizzas chaudes.";
  const hour=info?.pickups?.[0]?.time||selected;
  const dateValue=info?.pickup_date||date;
- $("notice").innerHTML='<div class="success"><span class="kicker">Confirmation de test</span>'+
- '<h3>Réservation enregistrée — '+safe(id)+'</h3>'+
- '<p><strong>'+safe(J.formatDate(dateValue))+' à '+safe(J.niceTime(hour))+'</strong></p>'+
- '<p>'+safe(count())+' pizza(s) · '+(count()*27)+' $</p>'+
- '<h3>Service au volant à Cap-Rouge</h3>'+
- '<p><strong>Adresse :</strong> '+safe(a)+'</p><p>'+safe(instructions)+'</p>'+
- '<p>Environnement de test : aucun paiement débité et aucun courriel envoyé. Tu peux retrouver cette commande dans le back-office de test.</p></div>';
+ const pizzas=items().map(x=>'<div class="rj-receipt-line"><span>'+safe(x.pizza)+' × '+x.qty+'</span></div>').join("");
+ $("notice").innerHTML=
+  '<div class="success rj-receipt">'+
+   '<span class="kicker">Commande confirmée</span>'+
+   '<h3>Merci pour ta commande!</h3>'+
+   '<p class="rj-receipt-lede">Tes pizz seront prêtes pour la cueillette.</p>'+
+   '<p class="rj-receipt-date">'+safe(J.formatDate(dateValue))+' · '+safe(J.niceTime(hour))+'</p>'+
+   '<p class="rj-receipt-id">Numéro de commande : '+safe(id)+'</p>'+
+   '<div class="rj-receipt-detail"><h4>Ta commande</h4>'+
+    pizzas+
+    '<div class="rj-receipt-total"><span>Total</span><strong>'+(count()*27)+' $</strong></div>'+
+   '</div>'+
+   '<div class="rj-receipt-detail"><h4>Cueillette à Cap-Rouge</h4>'+
+    '<p><strong>Adresse :</strong> '+safe(address)+'</p>'+
+    '<p>'+safe(instructions)+'</p>'+
+   '</div>'+
+   '<p class="rj-receipt-demo">Environnement de test : aucun paiement débité et aucun courriel envoyé.</p>'+
+  '</div>';
+ $("notice").scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
 }
+
 $("desiredMinus").onclick=()=>{
  if(desired<=1||sending)return;desired--;
  while(count()>desired){const last=[...cart.keys()].at(-1),n=cart.get(last)-1;if(n)cart.set(last,n);else cart.delete(last)}
