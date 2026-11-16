@@ -29,7 +29,11 @@
 }
 #jeudis-rafa .rj-order-lead p{font-size:15px;line-height:1.6;color:var(--soft);margin:0;max-width:630px}
 #jeudis-rafa .rj-pickup-header{margin-top:0}
-#jeudis-rafa .rj-price-note{margin-bottom:0}
+#jeudis-rafa .rj-recipes{margin-top:0}
+#jeudis-rafa .rj-price-note{margin:0 0 25px}
+#jeudis-rafa #hours[hidden]{display:none!important}
+#jeudis-rafa #selectedHours{margin-top:16px}
+
 #jeudis-rafa .rj-receipt{border-bottom:0;padding-top:29px}
 #jeudis-rafa .rj-receipt h3{
  font-size:clamp(31px,4vw,53px);font-weight:500;
@@ -76,42 +80,32 @@
 
   <div class="rj-columns">
     <div class="rj-left">
-      <div>
-        <p class="rj-step">01 / LA QUANTITÉ</p>
-        <h3 class="rj-subtitle">Combien de pizzas?</h3>
-        <div class="rj-quantity">
-          <button class="stepper" id="desiredMinus" type="button" aria-label="Une pizza de moins">−</button>
-          <output id="desiredQty">1</output>
-          <button class="stepper" id="desiredPlus" type="button" aria-label="Une pizza de plus">+</button>
-        </div>
-        <p class="rj-price-note"><strong>27 $ / pizza</strong></p>
-      </div>
-
       <div class="rj-recipes">
-        <p class="rj-step">02 / LES RECETTES</p>
+        <p class="rj-step">01 / LES RECETTES</p>
         <h3 class="rj-subtitle">Choisis tes pizz.</h3>
-        <div id="jeudisPizzaChoices" class="pizza-grid" aria-label="Quatre pizzas à découvrir chaque jeudi"></div>
+        <p class="rj-price-note"><strong>27 $ / pizza</strong></p>
+        <div id="jeudisPizzaChoices" class="pizza-grid" aria-label="Pizzas disponibles pour emporter"></div>
       </div>
     </div>
 
     <div class="rj-right">
       <div class="rj-checkout-block">
-        <p class="rj-step">03 / LA CUEILLETTE</p>
+        <p class="rj-step">02 / LA CUEILLETTE</p>
         <h3 class="rj-subtitle-small">Choisis ton heure.</h3>
         <div id="hours" class="slots" aria-label="Heures de cueillette"></div>
-        <p id="selectedHours" aria-live="polite">Sélectionne une heure parmi celles disponibles.</p>
+        <p id="selectedHours" aria-live="polite">Ajoute tes pizz pour voir les heures disponibles.</p>
         <p id="closedMessage" class="alert hidden"></p>
       </div>
 
       <div class="rj-checkout-block">
-        <p class="rj-step">04 / LE RÉCAPITULATIF</p>
+        <p class="rj-step">03 / LE RÉCAPITULATIF</p>
         <h3 class="rj-subtitle-small">Ta commande.</h3>
         <div id="cart"></div>
-        <div class="total"><span>Total</span><span id="total">27 $</span></div>
+        <div class="total"><span>Total</span><span id="total">0 $</span></div>
       </div>
 
       <div class="rj-checkout-block">
-        <p class="rj-step">05 / LA CONFIRMATION</p>
+        <p class="rj-step">04 / LA CONFIRMATION</p>
         <h3 class="rj-subtitle-small">C'est presque prêt.</h3>
         <form id="orderForm">
           <label class="field">Prénom et nom
@@ -148,6 +142,6 @@
 <script src="./assets/rafa-pizzas.js?v=2"></script>
 <script src="./assets/jeudis-core.js?v=20261115-3"></script>
 <script src="./assets/jeudis-supabase-api.js?v=2"></script>
-<script src="./assets/jeudis-externe.js?v=20261115-4"></script>
+<script src="./assets/jeudis-externe.js?v=20261116-cart"></script>
 </body>
 </html>
