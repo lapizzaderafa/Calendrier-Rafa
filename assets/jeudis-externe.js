@@ -64,8 +64,7 @@ function renderMenu(){
 function render(){
  if(finished)return;
  $("targetTitle").textContent=J.formatDate(date);
- $("deadline").textContent="De 17 h à 21 h · Vous avez jusqu'au mercredi "+
- J.formatDate(J.plusDays(date,-1)).replace(/^mercredi /,"")+" à 12 h pour commander.";
+ $("deadline").textContent="De 17 h à 21 h · Cap-Rouge · Commande avant mercredi midi.";
  $("desiredQty").textContent=desired;
  $("desiredMinus").disabled=desired<=1||sending;
  $("desiredPlus").disabled=desired>=Math.min(J.CONFIG.dailyCapacity,Number(available[0]?.day_left??J.CONFIG.dailyCapacity))||sending;
