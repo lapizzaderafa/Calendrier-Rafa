@@ -70,8 +70,6 @@ function render(){
  $("desiredPlus").disabled=desired>=Math.min(J.CONFIG.dailyCapacity,Number(available[0]?.day_left??J.CONFIG.dailyCapacity))||sending;
  const remaining=available.length?Math.max(0,Number(available[0]?.day_left)):J.CONFIG.dailyCapacity;
  $("remainingPizzas").textContent=remaining===0?"Complet pour ce jeudi — les nouvelles commandes sont fermées.":"";
- $("chosenProgress").textContent=count()===desired
-  ?"Toutes tes pizzas sont choisies.":"Choisis encore "+(desired-count())+" pizza(s).";
  document.querySelectorAll(".pizza").forEach((d,i)=>{
   d.querySelector(".qty").textContent=cart.get(menu[i].pizza)||0;
   d.querySelector('[data-dir="1"]').disabled=sending||count()>=desired;
