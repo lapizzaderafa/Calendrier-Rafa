@@ -75,7 +75,7 @@ function render(){
   d.querySelector('[data-dir="1"]').disabled=sending||count()>=desired;
   d.querySelector('[data-dir="-1"]').disabled=sending||!(cart.get(menu[i].pizza)||0);
  });
- $("cart").innerHTML=items().map(x=>'<div class="summary-line"><span>'+safe(x.pizza)+' × '+x.qty+'</span><strong>'+(x.qty*27)+' $</strong></div>').join("")||'<p class="muted">Choisis les recettes souhaitées.</p>';
+ $("cart").innerHTML=items().map(x=>'<div class="summary-line"><span>'+safe(x.pizza)+' × '+x.qty+'</span><strong>'+(x.qty*27)+' $</strong></div>').join("");
  $("total").textContent=desired*27+" $";
  $("closedMessage").classList.toggle("hidden",plan.open);
  $("closedMessage").textContent="Commandes fermées depuis mercredi midi. La prochaine vente ouvre jeudi.";
