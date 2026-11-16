@@ -96,7 +96,7 @@ function render(){
  const yes=plan.open&&selected&&count()===desired&&!sending&&menu.length;
  $("confirmBtn").disabled=!yes;
  $("confirmBtn").textContent=sending?"Confirmation en cours...":
-  selected?"Confirmer pour le "+J.formatDate(date)+" à "+J.niceTime(selected):"Choisis ton heure";
+  selected?"Confirmer ma commande":"Choisis ton heure";
 }
 async function refresh(){
  if(finished)return;
