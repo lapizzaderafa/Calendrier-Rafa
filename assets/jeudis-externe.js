@@ -39,11 +39,17 @@ if(introButton&&orderFlow){
  });
 }
 const cart=new Map();
-let date=J.scheduleFor().target,plan=J.scheduleFor(),desired=1,selected=null;
+let date=J.scheduleFor().target,plan=J.scheduleFor(),selected=null;
 let menu=[],available=[],fetching=false,sending=false,finished=false,requestId=null;
 const count=()=>[...cart.values()].reduce((n,v)=>n+v,0);
 const items=()=>[...cart].filter(([,n])=>n>0).map(([pizza,qty])=>({pizza,qty}));
-const checkSlot=slot=>!!slot&&plan.open&&!slot.blocked&&Number(slot.pizzas_left)>=desired&&Number(slot.cars_used)<2&&Number(slot.day_left)>=desired;
+const dayLimit=()=>Math.max(0,Math.min(J.CONFIG.dailyCapacity,Number(available[0]?.day_left??0)));
+const checkSlot=slot=>{
+ const qty=count();
+ return qty>0&&qty<=dayLimit()&&!!slot&&plan.open&&!slot.blocked
+  &&Number(slot.pizzas_left)>=qty&&Number(slot.cars_used)<2
+  &&Number(slot.day_left)>=qty;
+};
 function errorText(message){$("notice").innerHTML='<div class="error">'+safe(message)+'</div>'}
 function renderMenu(){
  const target=$("jeudisPizzaChoices")||$("pizzas");target.innerHTML="";
@@ -53,9 +59,11 @@ function renderMenu(){
    '<button type="button" class="stepper" data-dir="-1" aria-label="Retirer">−</button>'+
    '<span class="qty">0</span><button type="button" class="stepper" data-dir="1" aria-label="Ajouter">+</button></div>';
   div.querySelectorAll("[data-dir]").forEach(b=>b.onclick=()=>{
-   const d=Number(b.dataset.dir);if(d>0&&count()>=desired)return;
+   const d=Number(b.dataset.dir);if(sending||finished||(d>0&&count()>=dayLimit()))return;
    const n=Math.max(0,(cart.get(p.pizza)||0)+d);
    if(n)cart.set(p.pizza,n);else cart.delete(p.pizza);
+   requestId=null;
+   $("notice").innerHTML="";
    render();
   });
   target.appendChild(div);
@@ -65,35 +73,38 @@ function render(){
  if(finished)return;
  $("targetTitle").textContent=J.formatDate(date);
  $("deadline").textContent="De 17 h à 21 h · Cap-Rouge · Commande avant mercredi midi.";
- $("desiredQty").textContent=desired;
- $("desiredMinus").disabled=desired<=1||sending;
- $("desiredPlus").disabled=desired>=Math.min(J.CONFIG.dailyCapacity,Number(available[0]?.day_left??J.CONFIG.dailyCapacity))||sending;
+ const qty=count();
  const remaining=available.length?Math.max(0,Number(available[0]?.day_left)):J.CONFIG.dailyCapacity;
  $("remainingPizzas").textContent=remaining===0?"Complet pour ce jeudi — les nouvelles commandes sont fermées.":"";
  document.querySelectorAll(".pizza").forEach((d,i)=>{
   d.querySelector(".qty").textContent=cart.get(menu[i].pizza)||0;
-  d.querySelector('[data-dir="1"]').disabled=sending||count()>=desired;
-  d.querySelector('[data-dir="-1"]').disabled=sending||!(cart.get(menu[i].pizza)||0);
+  d.querySelector('[data-dir="1"]').disabled=sending||finished||qty>=dayLimit();
+  d.querySelector('[data-dir="-1"]').disabled=sending||finished||!(cart.get(menu[i].pizza)||0);
  });
  $("cart").innerHTML=items().map(x=>'<div class="summary-line"><span>'+safe(x.pizza)+' × '+x.qty+'</span><strong>'+(x.qty*27)+' $</strong></div>').join("");
- $("total").textContent=desired*27+" $";
+ $("total").textContent=qty*J.CONFIG.unitPrice+" $";
  $("closedMessage").classList.toggle("hidden",plan.open);
  $("closedMessage").textContent="Commandes fermées depuis mercredi midi. La prochaine vente ouvre jeudi.";
  $("orderForm").classList.toggle("hidden",!plan.open);
  const current=available.find(r=>r.pickup_time===selected);
  if(!checkSlot(current))selected=null;
  $("hours").innerHTML="";
- for(const slot of available){
+ $("hours").hidden=qty===0;
+ for(const slot of qty>0?available:[]){
   const btn=document.createElement("button");btn.type="button";btn.className="slot"+(slot.pickup_time===selected?" selected":"");
   btn.disabled=sending||!checkSlot(slot);btn.setAttribute("aria-pressed",String(slot.pickup_time===selected));
   btn.innerHTML=safe(J.niceTime(slot.pickup_time))+"<span>"+(btn.disabled?"Indisponible":"Disponible")+"</span>";
   btn.onclick=()=>{selected=slot.pickup_time;render()};
   $("hours").appendChild(btn);
  }
- $("selectedHours").textContent=selected
-  ?(desired>6?"Pour cette grande commande, la plage réservée commence le ":"Cueillette prévue le ")+J.formatDate(date)+" à "+J.niceTime(selected)+(desired>6?". Rafa confirmera le déroulement de la remise.":".")
-  :fetching?"Chargement des heures disponibles...":"Choisis une heure de cueillette pour "+desired+" pizza(s).";
- const yes=plan.open&&selected&&count()===desired&&!sending&&menu.length;
+ $("selectedHours").textContent=qty===0
+  ?"Ajoute tes pizz pour voir les heures disponibles."
+  :selected
+   ?(qty>6?"La plage de préparation de ta commande commence le ":"Cueillette prévue le ")+J.formatDate(date)+" à "+J.niceTime(selected)+(qty>6?". Rafa confirmera l'heure exacte de remise.":".")
+   :fetching?"Chargement des heures disponibles..."
+   :available.some(checkSlot)?"Choisis une heure de cueillette."
+   :"Aucune heure disponible pour cette quantité de pizz. Réduis ta commande.";
+ const yes=plan.open&&!!selected&&qty>0&&checkSlot(available.find(r=>r.pickup_time===selected))&&!sending&&menu.length;
  $("confirmBtn").disabled=!yes;
  $("confirmBtn").textContent=sending?"Confirmation en cours...":
   selected?"Confirmer ma commande":"Choisis ton heure";
@@ -135,15 +146,9 @@ function showConfirmation(info,id){
  $("notice").scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
 }
 
-$("desiredMinus").onclick=()=>{
- if(desired<=1||sending)return;desired--;
- while(count()>desired){const last=[...cart.keys()].at(-1),n=cart.get(last)-1;if(n)cart.set(last,n);else cart.delete(last)}
- selected=null;render();
-};
-$("desiredPlus").onclick=()=>{const left=available.length?Number(available[0].day_left):J.CONFIG.dailyCapacity;if(desired<Math.min(J.CONFIG.dailyCapacity,left)&&!sending){desired++;selected=null;render()}};
 $("orderForm").addEventListener("submit",async e=>{
  e.preventDefault();
- if(sending||finished||!selected||count()!==desired)return;
+ if(sending||finished||!selected||count()<1||count()>dayLimit())return;
  const current=J.scheduleFor();
  if(!current.open||current.target!==date){errorText("Le calendrier a changé. Actualise la page.");return}
  const slot=available.find(r=>r.pickup_time===selected);
@@ -153,7 +158,7 @@ $("orderForm").addEventListener("submit",async e=>{
  sending=true;render();
  try{
   if(!requestId)requestId=API.uuid();
-  const result=await API.reserve({date,pickups:[{time:selected,qty:desired}],items:items(),name,email,phone,payment:pay,requestId});
+  const result=await API.reserve({date,pickups:[{time:selected,qty:count()}],items:items(),name,email,phone,payment:pay,requestId});
   let receipt=null;
   try{receipt=await API.confirmation(requestId)}catch{}
   showConfirmation(receipt,result.orderId);
