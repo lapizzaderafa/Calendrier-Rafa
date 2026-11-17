@@ -3,6 +3,7 @@
 "use strict";
 const J=window.RafaJeudis,API=window.RafaJeudisApi,$=id=>document.getElementById(id);
 const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const shortOrderId=id=>String(id||"").replace(/-/g,"").slice(-6).toUpperCase();
 const introButton=$("jeudisOpenOrder");
 const orderFlow=$("jeudisOrderFlow");
 function revealOrder(scrollIntoView=false){
@@ -160,7 +161,7 @@ function showConfirmation(info,id){
    '<h3>Merci pour ta commande!</h3>'+
    '<p class="rj-receipt-lede">Tes pizzas seront prêtes pour la cueillette.</p>'+
    '<p class="rj-receipt-date">'+safe(J.formatDate(dateValue))+' · '+safe(J.niceTime(hour))+'</p>'+
-   '<p class="rj-receipt-id">Numéro de commande : '+safe(id)+'</p>'+
+   '<p class="rj-receipt-id">Commande #'+safe(shortOrderId(id))+'</p>'+
    '<div class="rj-receipt-detail"><h4>Ta commande</h4>'+
     pizzas+
     (discount?'<p class="rj-receipt-line">4e pizza offerte</p>':"")+
