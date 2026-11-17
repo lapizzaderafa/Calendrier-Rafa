@@ -84,8 +84,23 @@ function render(){
   d.querySelector('[data-dir="1"]').disabled=sending||finished||qty>=dayLimit();
   d.querySelector('[data-dir="-1"]').disabled=sending||finished||!(cart.get(menu[i].pizza)||0);
  });
- $("cart").innerHTML=items().map(x=>'<div class="summary-line"><span>'+safe(x.pizza)+' × '+x.qty+'</span><strong>'+(x.qty*27)+' $</strong></div>').join("");
- $("total").textContent=qty*J.CONFIG.unitPrice+" $";
+ const pricing=J.priceFor(qty);
+ $("cart").innerHTML=items().map(x=>'<div class="summary-line"><span>'+safe(x.pizza)+' × '+x.qty+'</span><strong>'+(x.qty*J.CONFIG.unitPrice)+' $</strong></div>').join("")+
+   (pricing.savings?'<div class="summary-line rj-discount"><span>Forfait 4 pizz × '+pricing.bundles+'</span><strong>−'+pricing.savings+' $</strong></div>':"");
+ $("total").textContent=pricing.total+" $";
+ const nudge=$("bundleNudge"),nudgeText=$("bundleText");
+ const hasBundleCapacity=dayLimit()>=J.CONFIG.bundleSize&&available.some(s=>!s.blocked&&Number(s.pizzas_left)>=J.CONFIG.bundleSize&&Number(s.cars_used)<2);
+ const shouldNudge=qty>0&&plan.open&&(qty>=J.CONFIG.bundleSize||hasBundleCapacity);
+ nudge.hidden=!shouldNudge;
+ if(shouldNudge){
+  $("bundleProgress").innerHTML=Array.from({length:J.CONFIG.bundleSize},(_,i)=>'<i class="'+(i<Math.min(qty,J.CONFIG.bundleSize)?"filled":"")+'"></i>').join("");
+  nudgeText.textContent=pricing.savings
+   ? (pricing.bundles===1?"Forfait 4 pizz appliqué":"Forfaits de 4 pizz appliqués")+" · "+pricing.savings+" $ économisés"
+   : "Encore "+(J.CONFIG.bundleSize-qty)+" pizz pour le forfait 4 pour 99 $";
+ }else{
+  $("bundleProgress").innerHTML="";
+  nudgeText.textContent="";
+ }
  $("closedMessage").classList.toggle("hidden",plan.open);
  $("closedMessage").textContent="Commandes fermées depuis mercredi midi. La prochaine vente ouvre jeudi.";
  $("orderForm").classList.toggle("hidden",!plan.open);
@@ -134,6 +149,8 @@ function showConfirmation(info,id){
  const hour=info?.pickups?.[0]?.time||selected;
  const dateValue=info?.pickup_date||date;
  const pizzas=items().map(x=>'<div class="rj-receipt-line"><span>'+safe(x.pizza)+' × '+x.qty+'</span></div>').join("");
+ const confirmedTotal=Number.isInteger(info?.total_cents)?info.total_cents/100:J.priceFor(count()).total;
+ const discount=J.priceFor(count()).savings;
  $("notice").innerHTML=
   '<div class="success rj-receipt">'+
    '<span class="kicker">Commande confirmée</span>'+
@@ -143,7 +160,8 @@ function showConfirmation(info,id){
    '<p class="rj-receipt-id">Numéro de commande : '+safe(id)+'</p>'+
    '<div class="rj-receipt-detail"><h4>Ta commande</h4>'+
     pizzas+
-    '<div class="rj-receipt-total"><span>Total</span><strong>'+(count()*27)+' $</strong></div>'+
+    (discount?'<p class="rj-receipt-line">Forfait 4 pizz · '+discount+' $ économisés</p>':"")+
+    '<div class="rj-receipt-total"><span>Total</span><strong>'+confirmedTotal+' $</strong></div>'+
    '</div>'+
    '<div class="rj-receipt-detail"><h4>Cueillette à Cap-Rouge</h4>'+
     '<p><strong>Adresse :</strong> '+safe(address)+'</p>'+
