@@ -54,8 +54,9 @@ function errorText(message){$("notice").innerHTML='<div class="error">'+safe(mes
 function renderMenu(){
  const target=$("jeudisPizzaChoices")||$("pizzas");target.innerHTML="";
  for(const p of menu){
-  const div=document.createElement("div");div.className="pizza";
-  div.innerHTML='<div><strong>'+safe(p.pizza)+'</strong></div><small>'+safe(p.description)+'</small><div class="counter">'+
+  const div=document.createElement("div");div.className="pizza"+(p.is_weekly?" rj-weekly":"");
+  div.innerHTML='<div>'+(p.is_weekly?'<span class="rj-weekly-tag">Pizza de la semaine</span>':'')+
+    '<strong>'+safe(p.pizza)+'</strong></div><small>'+safe(p.description)+'</small><div class="counter">'+
    '<button type="button" class="stepper" data-dir="-1" aria-label="Retirer">−</button>'+
    '<span class="qty">0</span><button type="button" class="stepper" data-dir="1" aria-label="Ajouter">+</button></div>';
   div.querySelectorAll("[data-dir]").forEach(b=>b.onclick=()=>{
@@ -179,14 +180,16 @@ $("orderForm").addEventListener("submit",async e=>{
 async function init(){
  $("notice").innerHTML="";
  try{
-  menu=await API.menu();
+  menu=await API.menu(date);
   if(!menu.length)throw Error("Aucune pizza n'est encore activée sur la carte de test.");
   renderMenu();await refresh();
  }catch(e){errorText("Test non disponible : "+e.message);render()}
 }
-setInterval(()=>{if(finished)return;const p=J.scheduleFor();if(p.target!==date||p.open!==plan.open){
- plan=p;date=p.target;selected=null;requestId=null;refresh();
- }},30000);
+setInterval(()=>{if(finished)return;const p=J.scheduleFor();if(p.target!==date){
+ plan=p;date=p.target;selected=null;requestId=null;cart.clear();available=[];menu=[];
+ $("jeudisPizzaChoices").innerHTML="";init();
+ }else if(p.open!==plan.open){plan=p;selected=null;requestId=null;refresh()}
+},30000);
 setInterval(()=>{if(!sending&&!document.hidden&&plan.open&&!finished)refresh()},20000);
 render();init();
 })();
