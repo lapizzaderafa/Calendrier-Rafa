@@ -1,5 +1,4 @@
 -- Les Jeudis Rafa: permanent menu and weekly pizza by Thursday. TEST ONLY.
-begin;
 insert into public.rafa_jeudis_menu(pizza,description,position,active)
 values
   ('Margherita','Mozza fraîche, basilic, parmesan',101,false),
@@ -143,4 +142,3 @@ begin
 end;
 $function$
 
-commit;
