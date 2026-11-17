@@ -64,7 +64,6 @@
   font-size:10px;line-height:1.35;font-weight:500;
   letter-spacing:.13em;text-transform:uppercase;color:var(--soft)
 }
-#jeudis-rafa .rj-date-meta span:last-child{letter-spacing:.025em;text-transform:none;font-size:12px;font-weight:400}
 #jeudis-rafa #targetTitle{
   display:inline-block;max-width:100%;
   margin:0 0 21px;padding:14px 27px 17px;
@@ -89,14 +88,9 @@
   font-size:clamp(27px,3vw,38px);font-weight:500;line-height:1.1;
   letter-spacing:-.06em;margin:0
 }
+#jeudis-rafa .rj-menu-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;text-align:right}
 #jeudis-rafa .rj-price-note{margin:0;color:var(--soft);font-size:13px}
-/* Une note de menu, pas une bannière publicitaire. */
-#jeudis-rafa .rj-launch-offer{
-  margin:1px 0 29px;padding:0;max-width:720px;
-  color:var(--soft);font-size:12px;line-height:1.55;
-  letter-spacing:-.01em
-}
-#jeudis-rafa .rj-launch-offer strong{color:var(--ink);font-weight:500}
+#jeudis-rafa .rj-launch-offer{margin:0;color:var(--soft);font-size:11px;line-height:1.35;letter-spacing:-.01em;font-weight:400}
 #jeudis-rafa .pizza-grid{border:0;display:grid;gap:0}
 #jeudis-rafa .rj-bundle{
   margin-top:25px;display:flex;align-items:center;flex-wrap:wrap;
@@ -278,7 +272,7 @@
 
   <div id="jeudisOrderFlow" class="rj-order-flow">
     <div class="rj-pickup-header">
-      <div class="rj-date-meta"><span>Prochaine cueillette</span><span>Une nouvelle date chaque semaine</span></div>
+      <div class="rj-date-meta"><span>Prochaine cueillette</span></div>
       <h2 id="targetTitle">Jeudi — prochain service</h2>
       <p id="deadline">17 h à 21 h · Commande avant mercredi midi.</p>
       <p class="rj-pickup-location">Cueillette chez Rafa, à Cap-Rouge. Adresse exacte après confirmation.</p>
@@ -292,10 +286,10 @@
         <div class="rj-recipes">
           <div class="rj-section-heading">
             <h3 class="rj-subtitle">Choisis tes pizz.</h3>
-            <span class="rj-price-note">27 $ / pizza</span>
-          </div>
-          <div id="launchOffer" class="rj-launch-offer" hidden>
-            Ce jeudi, pour 3 pizz achetées, <strong>la 4e est offerte.</strong>
+            <div class="rj-menu-meta">
+              <span class="rj-price-note">27 $ / pizza</span>
+              <span id="launchOffer" class="rj-launch-offer" hidden>4e offerte dès 3 pizz</span>
+            </div>
           </div>
           <div id="jeudisPizzaChoices" class="pizza-grid" aria-label="Pizzas disponibles pour emporter"></div>
           <div id="bundleNudge" class="rj-bundle" role="status" aria-live="polite" hidden>
