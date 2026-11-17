@@ -4,7 +4,7 @@
    Important: la confirmation atomique devra se faire sur serveur avant lancement reel. */
 (function(global){
 "use strict";
-const CONFIG=Object.freeze({unitPrice:27,slotCapacity:3,dailyCapacity:25,startHour:17,endHour:21,slotMinutes:20,maxCarsPerSlot:2,maxAutomaticPickups:1,maxSinglePickup:25,prepMinutesPerPizza:4.5,handoffMinutesPerCar:2,bufferMinutes:2,timezone:"America/Toronto",demoStorageKey:"rafa-jeudis-demo-v1"});
+const CONFIG=Object.freeze({unitPrice:27,bundleSize:4,bundlePrice:99,slotCapacity:3,dailyCapacity:25,startHour:17,endHour:21,slotMinutes:20,maxCarsPerSlot:2,maxAutomaticPickups:1,maxSinglePickup:25,prepMinutesPerPizza:4.5,handoffMinutesPerCar:2,bufferMinutes:2,timezone:"America/Toronto",demoStorageKey:"rafa-jeudis-demo-v1"});
 function parts(now){
   const f=new Intl.DateTimeFormat("en-CA",{timeZone:CONFIG.timezone,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
   const v=Object.fromEntries(f.formatToParts(now).filter(x=>x.type!=="literal").map(x=>[x.type,x.value]));
@@ -31,6 +31,12 @@ function slots(){
   }return a;
 }
 function amount(items){return (items||[]).reduce((n,i)=>n+Math.max(0,Math.floor(Number(i.qty)||0)),0);}
+function priceFor(qty){
+ qty=Math.max(0,Math.floor(Number(qty)||0));
+ const regular=qty*CONFIG.unitPrice,bundles=Math.floor(qty/CONFIG.bundleSize);
+ const savings=bundles*(CONFIG.bundleSize*CONFIG.unitPrice-CONFIG.bundlePrice);
+ return {regular,total:regular-savings,savings,bundles};
+}
 function activeOrders(orders,date){
   return (orders||[]).filter(o=>o&&o.date===date&&!["cancelled","expired"].includes(o.status));
 }
@@ -151,5 +157,5 @@ function formatDate(ymd){
  return label.charAt(0).toLocaleUpperCase("fr-CA")+label.slice(1);
 }
 function niceTime(key){const [h,m]=key.split(":").map(Number);return h+" h"+(m?" "+String(m).padStart(2,"0"):"");}
-global.RafaJeudis={CONFIG,parts,plusDays,weekday,scheduleFor,slots,amount,activeOrders,occupancy,carCounts,settingsKey,loadSettings,saveSettings,scheduleCheck,allocation,allOptions,productionPlan,assignPizzas,loadDemo,saveDemo,formatDate,niceTime};
+global.RafaJeudis={CONFIG,parts,plusDays,weekday,scheduleFor,slots,amount,priceFor,activeOrders,occupancy,carCounts,settingsKey,loadSettings,saveSettings,scheduleCheck,allocation,allOptions,productionPlan,assignPizzas,loadDemo,saveDemo,formatDate,niceTime};
 })(window);
