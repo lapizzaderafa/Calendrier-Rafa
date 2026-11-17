@@ -44,7 +44,7 @@ values ('2026-11-19','Quattro')
 on conflict(pickup_date) do update set pizza=excluded.pizza,updated_at=now();
 
 create or replace function public.rafa_jeudis_menu_for_date(p_date date)
-returns table(pizza text,description text,position integer,is_weekly boolean)
+returns table(pizza text,description text,"position" integer,is_weekly boolean)
 language sql stable security definer set search_path=''
 as $$
  select m.pizza,m.description,
