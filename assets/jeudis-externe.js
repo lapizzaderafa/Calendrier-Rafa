@@ -72,7 +72,7 @@ function renderMenu(){
 function render(){
  if(finished)return;
  $("targetTitle").textContent=J.formatDate(date);
- $("deadline").textContent="De 17 h à 21 h · Cap-Rouge · Commande avant mercredi midi.";
+ $("deadline").textContent="17 h à 21 h · Commande avant mercredi midi.";
  const qty=count();
  const remaining=available.length?Math.max(0,Number(available[0]?.day_left)):J.CONFIG.dailyCapacity;
  $("remainingPizzas").textContent=remaining===0?"Complet pour ce jeudi — les nouvelles commandes sont fermées.":"";
@@ -88,22 +88,27 @@ function render(){
  $("orderForm").classList.toggle("hidden",!plan.open);
  const current=available.find(r=>r.pickup_time===selected);
  if(!checkSlot(current))selected=null;
+ $("rjTimeStep").hidden=qty===0||!plan.open;
+ $("rjDetailsStep").hidden=!selected||!plan.open;
  $("hours").innerHTML="";
  $("hours").hidden=qty===0;
- for(const slot of qty>0?available:[]){
+ for(const slot of qty>0?available.filter(checkSlot):[]){
   const btn=document.createElement("button");btn.type="button";btn.className="slot"+(slot.pickup_time===selected?" selected":"");
-  btn.disabled=sending||!checkSlot(slot);btn.setAttribute("aria-pressed",String(slot.pickup_time===selected));
-  btn.innerHTML=safe(J.niceTime(slot.pickup_time))+"<span>"+(btn.disabled?"Indisponible":"Disponible")+"</span>";
+  btn.disabled=sending;
+  btn.setAttribute("aria-pressed",String(slot.pickup_time===selected));
+  btn.setAttribute("aria-label","Choisir "+J.niceTime(slot.pickup_time)+" pour "+qty+" pizz");
+  btn.textContent=J.niceTime(slot.pickup_time);
   btn.onclick=()=>{selected=slot.pickup_time;render()};
   $("hours").appendChild(btn);
  }
- $("selectedHours").textContent=qty===0
-  ?"Ajoute tes pizz pour voir les heures disponibles."
+ $("selectedHours").textContent=qty===0?""
   :selected
-   ?(qty>6?"La plage de préparation de ta commande commence le ":"Cueillette prévue le ")+J.formatDate(date)+" à "+J.niceTime(selected)+(qty>6?". Rafa confirmera l'heure exacte de remise.":".")
-   :fetching?"Chargement des heures disponibles..."
-   :available.some(checkSlot)?"Choisis une heure de cueillette."
-   :"Aucune heure disponible pour cette quantité de pizz. Réduis ta commande.";
+   ?(qty>3
+     ?"Créneau choisi : "+J.niceTime(selected)+". Rafa confirmera l'heure exacte de cueillette."
+     :"Créneau choisi : "+J.niceTime(selected)+".")
+   :fetching?"Chargement des heures..."
+   :available.some(checkSlot)?""
+   :"Plus d'heures disponibles pour cette quantité. Essaie avec moins de pizz.";
  const yes=plan.open&&!!selected&&qty>0&&checkSlot(available.find(r=>r.pickup_time===selected))&&!sending&&menu.length;
  $("confirmBtn").disabled=!yes;
  $("confirmBtn").textContent=sending?"Confirmation en cours...":
@@ -120,7 +125,7 @@ async function refresh(){
  finally{fetching=false;render()}
 }
 function showConfirmation(info,id){
- finished=true;$("orderForm").classList.add("hidden");
+ finished=true;$("orderForm").classList.add("hidden");$("orderColumns").hidden=true;
  const address=info?.pickup_address||"Adresse à configurer dans le back-office de test";
  const instructions=info?.pickup_instructions||"Stationne-toi à l'arrière et reste dans ton auto. Rafa viendra te remettre les pizzas chaudes.";
  const hour=info?.pickups?.[0]?.time||selected;
@@ -170,7 +175,7 @@ $("orderForm").addEventListener("submit",async e=>{
  }finally{sending=false;render()}
 });
 async function init(){
- $("notice").innerHTML='<p class="muted">Connexion au serveur de test...</p>';
+ $("notice").innerHTML="";
  try{
   menu=await API.menu();
   if(!menu.length)throw Error("Aucune pizza n'est encore activée sur la carte de test.");
