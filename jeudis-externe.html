@@ -90,6 +90,21 @@
   letter-spacing:-.06em;margin:0
 }
 #jeudis-rafa .rj-price-note{margin:0;color:var(--soft);font-size:13px}
+/* Offre de lancement: présentation éditoriale, sans carte, sans décor superflu. */
+#jeudis-rafa .rj-launch-offer{margin:23px 0 32px;padding:0;max-width:720px}
+#jeudis-rafa .rj-launch-kicker{
+  display:block;color:var(--soft);font-size:10px;font-weight:500;
+  line-height:1.35;letter-spacing:.14em;text-transform:uppercase;margin:0 0 9px
+}
+#jeudis-rafa .rj-launch-title{
+  font-size:clamp(24px,3vw,37px);line-height:1.14;letter-spacing:-.055em;
+  font-weight:500;margin:0;color:var(--ink)
+}
+#jeudis-rafa .rj-launch-small{
+  display:block;margin:10px 0 0;color:var(--soft);
+  font-size:12px;line-height:1.5
+}
+#jeudis-rafa .rj-launch-title strong{font-weight:500}
 #jeudis-rafa .pizza-grid{border:0;display:grid;gap:0}
 #jeudis-rafa .rj-bundle{
   margin-top:25px;display:flex;align-items:center;flex-wrap:wrap;
@@ -226,6 +241,9 @@
   #jeudis-rafa #targetTitle{font-size:clamp(24px,6.5vw,31px);padding:13px 18px 15px;margin-bottom:18px}
   #jeudis-rafa .rj-date-meta{margin-bottom:12px}
   #jeudis-rafa .rj-bundle{gap:10px;font-size:12px;margin-top:20px}
+  #jeudis-rafa .rj-launch-offer{margin:23px 0 29px}
+  #jeudis-rafa .rj-launch-title{font-size:clamp(23px,6.5vw,31px)}
+  #jeudis-rafa .rj-launch-small{font-size:11px}
   #jeudis-rafa #deadline,#jeudis-rafa .rj-pickup-location{font-size:13px}
   #jeudis-rafa .rj-section-heading{margin-bottom:18px}
   #jeudis-rafa .rj-subtitle,#jeudis-rafa .rj-subtitle-small{font-size:30px}
@@ -278,6 +296,11 @@
           <div class="rj-section-heading">
             <h3 class="rj-subtitle">Choisis tes pizz.</h3>
             <span class="rj-price-note">27 $ / pizza</span>
+          </div>
+          <div id="launchOffer" class="rj-launch-offer" hidden>
+            <span class="rj-launch-kicker">Offre de lancement · 19 novembre seulement</span>
+            <p class="rj-launch-title">3 pizz achetées. <strong>La 4e offerte.</strong></p>
+            <span class="rj-launch-small">27 $ d’économie · Une pizza offerte par commande.</span>
           </div>
           <div id="jeudisPizzaChoices" class="pizza-grid" aria-label="Pizzas disponibles pour emporter"></div>
           <div id="bundleNudge" class="rj-bundle" role="status" aria-live="polite" hidden>
