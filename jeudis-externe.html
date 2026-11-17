@@ -25,23 +25,24 @@
   padding-bottom:clamp(75px,8vw,145px);
 }
 #jeudis-rafa .rj-order-lead{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,425px);
-  gap:clamp(25px,5.5vw,92px);align-items:center;
-  margin:0 0 clamp(56px,7vw,105px);padding:0;
+  display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+  gap:clamp(44px,6.5vw,120px);align-items:end;
+  margin:0 0 clamp(66px,7vw,112px);padding:0;
 }
-#jeudis-rafa .rj-order-copy{max-width:780px}
+#jeudis-rafa .rj-order-copy{max-width:760px;padding-bottom:clamp(4px,2vw,34px)}
 #jeudis-rafa .rj-order-lead h1{
-  margin:0 0 clamp(24px,3vw,46px);font-size:clamp(63px,8vw,124px);
-  line-height:1;letter-spacing:-.06em;word-spacing:.14em;font-weight:500;color:var(--ink)
+  margin:0 0 clamp(31px,3.3vw,49px);font-size:clamp(65px,7.25vw,116px);
+  line-height:1.005;letter-spacing:-.067em;word-spacing:.14em;font-weight:500;color:var(--ink)
 }
+#jeudis-rafa .rj-order-lead h1 span{display:block;white-space:nowrap}
 #jeudis-rafa .rj-order-lead p{margin:0;max-width:610px}
 #jeudis-rafa .rj-order-lead .rj-lead-primary{
-  font-size:clamp(19px,2vw,27px);letter-spacing:-.035em;
-  line-height:1.34;color:var(--ink)
+  font-size:clamp(20px,2.05vw,29px);letter-spacing:-.035em;
+  line-height:1.35;color:var(--ink)
 }
 #jeudis-rafa .rj-order-lead .rj-lead-secondary{
-  font-size:clamp(14px,1.25vw,17px);line-height:1.65;color:var(--soft);
-  margin-top:14px;
+  font-size:clamp(14px,1.18vw,16px);line-height:1.58;color:var(--soft);
+  margin-top:17px;
 }
 #jeudis-rafa .rj-order-photo{
   margin:0;padding:0;min-width:0;width:100%;
@@ -50,12 +51,12 @@
 #jeudis-rafa .rj-order-photo img{
   display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%
 }
-#jeudis-rafa .rj-order-flow{max-width:750px;margin:0 auto}
+#jeudis-rafa .rj-order-flow{max-width:830px;margin:0}
 #jeudis-rafa .rj-pickup-header{
-  border:0;padding:0;margin:0 0 clamp(48px,6vw,85px)
+  border:0;padding:0;margin:0 0 clamp(46px,5.1vw,70px)
 }
 #jeudis-rafa #targetTitle{
-  margin:0 0 12px;font-size:clamp(29px,3.6vw,49px);
+  margin:0 0 15px;font-size:clamp(32px,3.25vw,48px);
   font-weight:500;line-height:1.08;letter-spacing:-.062em;
 }
 #jeudis-rafa #deadline,#jeudis-rafa .rj-pickup-location{
@@ -64,10 +65,10 @@
 #jeudis-rafa .rj-pickup-location{margin-top:7px}
 #jeudis-rafa #remainingPizzas:not(:empty){margin:14px 0 0;color:var(--ink)}
 #jeudis-rafa .rj-columns{display:block}
-#jeudis-rafa .rj-recipes{margin:0 0 clamp(48px,6vw,78px)}
+#jeudis-rafa .rj-recipes{margin:0 0 clamp(54px,6.3vw,86px)}
 #jeudis-rafa .rj-section-heading{
   display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;
-  gap:12px;margin-bottom:25px
+  gap:12px;margin-bottom:24px
 }
 #jeudis-rafa .rj-subtitle,#jeudis-rafa .rj-subtitle-small{
   font-size:clamp(27px,3vw,38px);font-weight:500;line-height:1.1;
@@ -77,7 +78,7 @@
 #jeudis-rafa .pizza-grid{border:0;display:grid;gap:0}
 #jeudis-rafa .pizza{
   display:grid;grid-template-columns:minmax(0,1fr) auto;
-  gap:6px 20px;padding:15px 0;min-height:84px;
+  gap:7px 20px;padding:19px 0;min-height:94px;
   border:0!important;background:transparent;border-radius:0
 }
 #jeudis-rafa .pizza strong{
@@ -88,10 +89,14 @@
 }
 #jeudis-rafa .pizza .counter{grid-column:2;grid-row:1/span 2;gap:10px}
 #jeudis-rafa .pizza .stepper{
-  width:38px;height:38px;border:0;border-radius:50%;
-  background:rgba(36,35,33,.055);font-size:20px;color:var(--ink)
+  width:39px;height:39px;border:1px solid rgba(36,35,33,.18);border-radius:50%;
+  background:transparent;font-size:21px;color:var(--ink);
+  transition:background .18s ease,border-color .18s ease
 }
-#jeudis-rafa .pizza .stepper:hover:not(:disabled){background:rgba(36,35,33,.12)}
+#jeudis-rafa .pizza .stepper:hover:not(:disabled){background:rgba(36,35,33,.06);border-color:rgba(36,35,33,.48)}
+#jeudis-rafa .pizza.is-empty .stepper[data-dir="-1"],
+#jeudis-rafa .pizza.is-empty .qty{display:none}
+#jeudis-rafa .pizza.is-empty .counter{gap:0}
 #jeudis-rafa .pizza .qty{min-width:18px;font-size:16px;font-variant-numeric:tabular-nums}
 #jeudis-rafa .rj-right .rj-checkout-block{
   border:0!important;margin:0 0 clamp(45px,6vw,75px);padding:0!important
@@ -104,7 +109,7 @@
 }
 #jeudis-rafa .slot{
   display:grid;place-items:center;min-height:56px;padding:10px;
-  background:rgba(36,35,33,.052);border:0!important;border-radius:4px;
+  background:rgba(36,35,33,.047);border:0!important;border-radius:2px;
   font-size:14px;font-weight:500;color:var(--ink);transition:background .18s ease
 }
 #jeudis-rafa .slot:hover:not(:disabled):not(.selected){background:rgba(36,35,33,.12)}
@@ -125,7 +130,7 @@
 #jeudis-rafa .total span:last-child{font-size:33px;letter-spacing:-.06em}
 #jeudis-rafa .field{font-size:13px;margin:18px 0;gap:7px;font-weight:500}
 #jeudis-rafa .field input,#jeudis-rafa .field select{
-  border:0;border-radius:4px;padding:16px 15px;
+  border:0;border-radius:2px;padding:16px 15px;
   background:rgba(36,35,33,.045);font-size:15px;min-height:52px;
 }
 #jeudis-rafa .field input:focus,#jeudis-rafa .field select:focus{
@@ -164,9 +169,11 @@
 @media(max-width:760px){
   .rj-order-header{min-height:65px;padding-top:18px;padding-bottom:15px}
   #jeudis-rafa.rj-order-page{padding-top:30px}
-  #jeudis-rafa .rj-order-lead{grid-template-columns:1fr;gap:29px;margin-bottom:51px}
+  #jeudis-rafa .rj-order-lead{grid-template-columns:1fr;gap:30px;margin-bottom:54px;align-items:start}
+  #jeudis-rafa .rj-order-copy{padding-bottom:0}
   #jeudis-rafa .rj-order-lead h1{
-    font-size:clamp(55px,12.5vw,82px);margin-bottom:21px;max-width:740px
+    font-size:clamp(47px,13.4vw,77px);margin-bottom:24px;max-width:740px;
+    line-height:1.02
   }
   #jeudis-rafa .rj-order-lead .rj-lead-primary{font-size:20px}
   #jeudis-rafa .rj-order-lead .rj-lead-secondary{font-size:14px;line-height:1.6;margin-top:11px}
@@ -174,21 +181,21 @@
     width:100%;height:auto;aspect-ratio:3/2
   }
   #jeudis-rafa .rj-order-photo img{object-position:50% 55%}
-  #jeudis-rafa .rj-pickup-header{margin-bottom:49px}
+  #jeudis-rafa .rj-pickup-header{margin-bottom:43px}
   #jeudis-rafa #targetTitle{font-size:32px}
   #jeudis-rafa #deadline,#jeudis-rafa .rj-pickup-location{font-size:13px}
   #jeudis-rafa .rj-section-heading{margin-bottom:18px}
   #jeudis-rafa .rj-subtitle,#jeudis-rafa .rj-subtitle-small{font-size:30px}
-  #jeudis-rafa .pizza{padding:13px 0;min-height:78px;gap:5px 13px}
+  #jeudis-rafa .pizza{padding:16px 0;min-height:88px;gap:5px 13px}
   #jeudis-rafa .pizza strong{font-size:24px}
   #jeudis-rafa .pizza small{font-size:12px}
   #jeudis-rafa .pizza .counter{gap:5px}
-  #jeudis-rafa .pizza .stepper{width:36px;height:36px}
+  #jeudis-rafa .pizza .stepper{width:38px;height:38px}
   #jeudis-rafa .slots{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
   #jeudis-rafa .slot{min-height:54px}
 }
 @media(max-width:355px){
-  #jeudis-rafa .rj-order-lead h1{font-size:52px}
+  #jeudis-rafa .rj-order-lead h1{font-size:46px}
   #jeudis-rafa .pizza strong{font-size:21px}
 }
 </style>
@@ -202,12 +209,12 @@
 <section id="jeudis-rafa" class="section wrap rafa-jeudis rj-order-page" aria-labelledby="rjOrderTitle">
   <div class="rj-order-lead">
     <div class="rj-order-copy">
-      <h1 id="rjOrderTitle">Les Jeudis Rafa.</h1>
+      <h1 id="rjOrderTitle"><span>Les Jeudis</span> <span>Rafa.</span></h1>
       <p class="rj-lead-primary">Des pizz à emporter chaque jeudi à Cap-Rouge.</p>
       <p class="rj-lead-secondary">Commande à l’avance. Passe en voiture et reste au volant. On t’apporte tes boîtes bien chaudes!</p>
     </div>
     <figure class="rj-order-photo">
-      <img src="./assets/rafa-jeudis-mortadella.avif" width="700" height="467" loading="eager" decoding="async" alt="Pizza Rafa à la mortadelle, à la ricotta et aux pistaches, sur une planche de bois">
+      <img src="./assets/rafa-jeudis-mortadella-editorial.webp" width="1536" height="1024" loading="eager" decoding="async" alt="Pizza Rafa à la mortadelle, à la ricotta et aux pistaches, sur une planche de bois">
     </figure>
   </div>
 

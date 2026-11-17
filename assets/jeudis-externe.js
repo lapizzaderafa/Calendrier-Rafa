@@ -77,7 +77,9 @@ function render(){
  const remaining=available.length?Math.max(0,Number(available[0]?.day_left)):J.CONFIG.dailyCapacity;
  $("remainingPizzas").textContent=remaining===0?"Complet pour ce jeudi — les nouvelles commandes sont fermées.":"";
  document.querySelectorAll(".pizza").forEach((d,i)=>{
-  d.querySelector(".qty").textContent=cart.get(menu[i].pizza)||0;
+  const n=cart.get(menu[i].pizza)||0;
+  d.classList.toggle("is-empty",n===0);
+  d.querySelector(".qty").textContent=n;
   d.querySelector('[data-dir="1"]').disabled=sending||finished||qty>=dayLimit();
   d.querySelector('[data-dir="-1"]').disabled=sending||finished||!(cart.get(menu[i].pizza)||0);
  });
