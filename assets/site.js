@@ -25,7 +25,7 @@ function isPubliclyClosedDate(iso) {
 }
 const MONTHS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
 const $ = id => document.getElementById(id);
-function calculateEventPrice(guests){guests=Number(guests);let pricePerPerson,fixedFee;if(guests<=10){pricePerPerson=29;fixedFee=175}else if(guests<=13){pricePerPerson=27;fixedFee=200}else if(guests<=15){pricePerPerson=27;fixedFee=250}else if(guests<=20){pricePerPerson=25;fixedFee=250}else if(guests<=25){pricePerPerson=23;fixedFee=300}else if(guests<=30){pricePerPerson=22;fixedFee=350}else if(guests<=40){pricePerPerson=21;fixedFee=400}else if(guests<=50){pricePerPerson=20;fixedFee=500}else if(guests<=75){pricePerPerson=19;fixedFee=600}else{pricePerPerson=18;fixedFee=750}return{pricePerPerson,fixedFee}}
+function calculateEventPrice(guests){guests=Number(guests);let pricePerPerson,fixedFee;if(guests<=19){pricePerPerson=35;fixedFee=300}else if(guests<=39){pricePerPerson=30;fixedFee=400}else{pricePerPerson=25;fixedFee=700}fixedFee=Math.max(fixedFee,650-guests*pricePerPerson);return{pricePerPerson,fixedFee}}
 function updateEstimator(){
   const guests=Number($("guestSlider").value);
   const pricing=calculateEventPrice(guests);
