@@ -48,8 +48,10 @@ async function currentUser(){
  if(error||!data?.user)throw new Error("Connecte-toi dans le back-office Rafa.");
  return data.user;
 }
-async function menu(){
- return result(db().from("rafa_jeudis_menu").select("pizza,description,position").eq("active",true).order("position"));
+async function menu(date){
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(String(date||"")))throw Error("Date de carte invalide.");
+ const rows=await result(db().rpc("rafa_jeudis_menu_for_date",{p_date:date}));
+ return (rows||[]).sort((a,b)=>Number(b.is_weekly)-Number(a.is_weekly)||a.position-b.position||a.pizza.localeCompare(b.pizza,"fr"));
 }
 async function availability(date){
  return result(db().rpc("rafa_jeudis_availability",{p_date:date}));
@@ -71,6 +73,21 @@ async function reserve({date,pickups,items,name,email,phone,payment,requestId}){
 async function confirmation(requestId){
  const rows=await result(db().rpc("rafa_jeudis_confirmation",{p_request_id:requestId}));
  return rows?.[0]||null;
+}
+async function adminFeatured(date){
+ await currentUser();
+ const rows=await result(db().from("rafa_jeudis_weekly").select("pizza").eq("pickup_date",date).limit(1));
+ return rows?.[0]?.pizza||"";
+}
+async function adminSaveFeatured(date,pizza){
+ await currentUser();
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(String(date||"")))throw Error("Date de jeudi invalide.");
+ if(pizza){
+  const rows=await result(db().from("rafa_jeudis_menu").select("pizza").eq("pizza",pizza).limit(1));
+  if(!rows?.length)throw Error("Cette recette n'existe pas dans la carte Rafa.");
+  return result(db().from("rafa_jeudis_weekly").upsert({pickup_date:date,pizza,updated_at:new Date().toISOString()},{onConflict:"pickup_date"}));
+ }
+ return result(db().from("rafa_jeudis_weekly").delete().eq("pickup_date",date));
 }
 async function adminOrders(date){
  await currentUser();
@@ -96,6 +113,6 @@ async function adminSaveSettings(date,{paused=false,closedSlots=[],pickupAddress
   .upsert({pickup_date:date,paused,closed_slots:closedSlots,pickup_address:pickupAddress,pickup_instructions:pickupInstructions},{onConflict:"pickup_date"}));
 }
 global.RafaJeudisApi=Object.freeze({
- menu,availability,reserve,confirmation,adminOrders,adminAction,adminSettings,adminSaveSettings,currentUser,loginAdmin,createAdminAccess,logoutAdmin,uuid
+ menu,availability,reserve,confirmation,adminOrders,adminAction,adminSettings,adminSaveSettings,adminFeatured,adminSaveFeatured,currentUser,loginAdmin,createAdminAccess,logoutAdmin,uuid
 });
 })(window);
