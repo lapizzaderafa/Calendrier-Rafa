@@ -4,7 +4,7 @@
    Important: la confirmation atomique devra se faire sur serveur avant lancement reel. */
 (function(global){
 "use strict";
-const CONFIG=Object.freeze({unitPrice:27,bundleSize:4,bundlePrice:99,slotCapacity:3,dailyCapacity:25,startHour:17,endHour:21,slotMinutes:20,maxCarsPerSlot:2,maxAutomaticPickups:1,maxSinglePickup:25,prepMinutesPerPizza:4.5,handoffMinutesPerCar:2,bufferMinutes:2,timezone:"America/Toronto",demoStorageKey:"rafa-jeudis-demo-v1"});
+const CONFIG=Object.freeze({unitPrice:27,promoDate:"2026-11-19",promoQty:4,promoSaving:27,slotCapacity:3,dailyCapacity:25,startHour:17,endHour:21,slotMinutes:20,maxCarsPerSlot:2,maxAutomaticPickups:1,maxSinglePickup:25,prepMinutesPerPizza:4.5,handoffMinutesPerCar:2,bufferMinutes:2,timezone:"America/Toronto",demoStorageKey:"rafa-jeudis-demo-v1"});
 function parts(now){
   const f=new Intl.DateTimeFormat("en-CA",{timeZone:CONFIG.timezone,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
   const v=Object.fromEntries(f.formatToParts(now).filter(x=>x.type!=="literal").map(x=>[x.type,x.value]));
@@ -31,11 +31,12 @@ function slots(){
   }return a;
 }
 function amount(items){return (items||[]).reduce((n,i)=>n+Math.max(0,Math.floor(Number(i.qty)||0)),0);}
-function priceFor(qty){
+function priceFor(qty,ymd){
  qty=Math.max(0,Math.floor(Number(qty)||0));
- const regular=qty*CONFIG.unitPrice,bundles=Math.floor(qty/CONFIG.bundleSize);
- const savings=bundles*(CONFIG.bundleSize*CONFIG.unitPrice-CONFIG.bundlePrice);
- return {regular,total:regular-savings,savings,bundles};
+ const regular=qty*CONFIG.unitPrice;
+ const promoActive=ymd===CONFIG.promoDate;
+ const savings=promoActive&&qty>=CONFIG.promoQty?CONFIG.promoSaving:0;
+ return {regular,total:regular-savings,savings,promoActive,freePizzas:savings?1:0};
 }
 function activeOrders(orders,date){
   return (orders||[]).filter(o=>o&&o.date===date&&!["cancelled","expired"].includes(o.status));
