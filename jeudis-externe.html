@@ -29,6 +29,19 @@
 }
 #jeudis-rafa .rj-order-lead p{font-size:15px;line-height:1.6;color:var(--soft);margin:0;max-width:630px}
 #jeudis-rafa .rj-pickup-header{margin-top:0}
+#jeudis-rafa .rj-order-photo{
+ width:min(100%,500px);
+ margin:clamp(34px,5.5vw,68px) 0 0;
+ padding:0;
+}
+#jeudis-rafa .rj-order-photo img{
+ display:block;width:100%;height:auto;
+}
+#jeudis-rafa .rj-pickup-location{
+ font-size:13px;line-height:1.65;color:var(--ink);
+ margin:15px 0 0;max-width:560px;
+}
+
 #jeudis-rafa .rj-recipes{margin-top:0}
 #jeudis-rafa .rj-price-note{margin:0 0 25px}
 #jeudis-rafa #hours[hidden]{display:none!important}
@@ -69,12 +82,14 @@
     <span class="kicker">COMMANDE POUR EMPORTER · CAP-ROUGE</span>
     <h1 id="rjOrderTitle">Les Jeudis Rafa.</h1>
     <p>Choisis tes pizz et ton heure de cueillette. On s'occupe du reste.</p>
+    <figure class="rj-order-photo"><img src="./assets/rafa-jeudis-pizza-commandes.avif" width="620" height="827" loading="lazy" decoding="async" alt="Pizza Rafa garnie de prosciutto, roquette et fromage, présentée sur un plateau"></figure>
   </div>
   <div id="jeudisOrderFlow" class="rj-order-flow">
   <div class="rj-pickup-header">
     <span class="kicker">PROCHAINE CUEILLETTE</span>
     <h3 id="targetTitle">Jeudi — prochain service</h3>
     <p id="deadline">De 17 h à 21 h · Cap-Rouge</p>
+    <p class="rj-pickup-location">Cueillette à Cap-Rouge. L’adresse exacte sera affichée après la confirmation de ta commande.</p>
     <p id="remainingPizzas" class="rj-muted" aria-live="polite"></p>
   </div>
 
