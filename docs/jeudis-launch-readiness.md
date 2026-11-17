@@ -1,3 +1,12 @@
+## Maquette promotionnelle — À VALIDER (16 novembre 2026)
+- La date de cueillette apparaît dans une capsule à contour fin avec une micro-mention « Prochaine cueillette » et « Une nouvelle date chaque semaine ». **Ce n'est pas un bouton de sélection** : la date est générée automatiquement d'après le prochain jeudi.
+- À partir d'une pizza dans le panier, un indicateur à quatre points rappelle progressivement le forfait, uniquement si la capacité restante permet encore d'atteindre quatre pizzas. Aucun encadré promotionnel permanent.
+- Offre *expérimentale et non approuvée pour la vente réelle* : **4 pizz pour 99 $**, prix individuel **27 $**, économie **9 $** par groupe de quatre. Le rabais se répète pour chaque groupe de quatre dans une commande (8 = 198 $); les autres pizzas restent à 27 $.
+- Le serveur de test calcule et sauvegarde lui-même le total en centimes dans l'enregistrement atomique : `total_cents = pizza_qty*2700 - (pizza_qty/4)*900` (division entière PostgreSQL). Le navigateur affiche le même calcul et la confirmation privilégie le total du serveur.
+- Vérifications transactionnelles avec rollback : 1 pizz = 27 $, 3 = 81 $, 4 = 99 $, 5 = 126 $, 8 = 198 $. Aucun faux achat conservé.
+- **Avant lancement** : confirmer que la marge sur 4 pizzas permet 9 $ de rabais (ingrédients, pâtons, boîtes, énergie, temps), valider les règles de taxes/prix affichés, ainsi que la cadence réelle pour 4+ pizzas. La maquette continue de pointer vers le Supabase de test.
+- La maquette garde la photo d'origine; la prise de commandes réelles n'est toujours PAS activée.
+
 # Jeudis Rafa — état de lancement (2026-11-16, branche test)
 
 ## Validé sur le projet de test
