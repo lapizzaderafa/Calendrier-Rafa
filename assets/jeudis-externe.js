@@ -96,7 +96,9 @@ function render(){
   $("bundleProgress").innerHTML=Array.from({length:J.CONFIG.bundleSize},(_,i)=>'<i class="'+(i<Math.min(qty,J.CONFIG.bundleSize)?"filled":"")+'"></i>').join("");
   nudgeText.textContent=pricing.savings
    ? (pricing.bundles===1?"Forfait 4 pizz appliqué":"Forfaits de 4 pizz appliqués")+" · "+pricing.savings+" $ économisés"
-   : "Encore "+(J.CONFIG.bundleSize-qty)+" pizz pour le forfait 4 pour 99 $";
+   : qty===J.CONFIG.bundleSize-1
+    ? "Plus qu’une pizz et tu économises 9 $"
+    : "Plus que "+(J.CONFIG.bundleSize-qty)+" pizz pour le forfait de 4 à 99 $";
  }else{
   $("bundleProgress").innerHTML="";
   nudgeText.textContent="";
