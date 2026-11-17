@@ -218,7 +218,15 @@
 #jeudis-rafa .rj-receipt-detail h4{font-size:17px;font-weight:500;margin:0 0 12px}
 #jeudis-rafa .rj-receipt-detail p{line-height:1.55;margin:6px 0}
 #jeudis-rafa .rj-receipt-line{padding:4px 0}
-#jeudis-rafa .rj-receipt-total{border:0;margin-top:13px}
+#jeudis-rafa .rj-receipt-total{
+  display:flex;align-items:baseline;justify-content:space-between;
+  width:100%;gap:20px;border:0;margin-top:22px;padding-top:13px;
+}
+#jeudis-rafa .rj-receipt-total span{font-size:14px;font-weight:400}
+#jeudis-rafa .rj-receipt-total strong{
+  margin-left:auto;font-size:25px;line-height:1.2;
+  font-weight:500;letter-spacing:-.055em;white-space:nowrap;
+}
 #jeudis-rafa [hidden]{display:none!important}
 @media(max-width:760px){
   .rj-order-header{min-height:65px;padding-top:18px;padding-bottom:15px}
