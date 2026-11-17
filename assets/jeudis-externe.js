@@ -84,21 +84,22 @@ function render(){
   d.querySelector('[data-dir="1"]').disabled=sending||finished||qty>=dayLimit();
   d.querySelector('[data-dir="-1"]').disabled=sending||finished||!(cart.get(menu[i].pizza)||0);
  });
- const pricing=J.priceFor(qty);
+ const pricing=J.priceFor(qty,date);
+ $("launchOffer").hidden=!pricing.promoActive;
  $("cart").innerHTML=items().map(x=>'<div class="summary-line"><span>'+safe(x.pizza)+' × '+x.qty+'</span><strong>'+(x.qty*J.CONFIG.unitPrice)+' $</strong></div>').join("")+
-   (pricing.savings?'<div class="summary-line rj-discount"><span>Forfait 4 pizz × '+pricing.bundles+'</span><strong>−'+pricing.savings+' $</strong></div>':"");
+   (pricing.savings?'<div class="summary-line rj-discount"><span>4e pizza offerte</span><strong>−'+pricing.savings+' $</strong></div>':"");
  $("total").textContent=pricing.total+" $";
  const nudge=$("bundleNudge"),nudgeText=$("bundleText");
- const hasBundleCapacity=dayLimit()>=J.CONFIG.bundleSize&&available.some(s=>!s.blocked&&Number(s.pizzas_left)>=J.CONFIG.bundleSize&&Number(s.cars_used)<2);
- const shouldNudge=qty>0&&plan.open&&(qty>=J.CONFIG.bundleSize||hasBundleCapacity);
+ const hasBundleCapacity=dayLimit()>=J.CONFIG.promoQty&&available.some(s=>!s.blocked&&Number(s.pizzas_left)>=J.CONFIG.promoQty&&Number(s.cars_used)<2);
+ const shouldNudge=pricing.promoActive&&qty>0&&plan.open&&(qty>=J.CONFIG.promoQty||hasBundleCapacity);
  nudge.hidden=!shouldNudge;
  if(shouldNudge){
-  $("bundleProgress").innerHTML=Array.from({length:J.CONFIG.bundleSize},(_,i)=>'<i class="'+(i<Math.min(qty,J.CONFIG.bundleSize)?"filled":"")+'"></i>').join("");
+  $("bundleProgress").innerHTML=Array.from({length:J.CONFIG.promoQty},(_,i)=>'<i class="'+(i<Math.min(qty,J.CONFIG.promoQty)?"filled":"")+'"></i>').join("");
   nudgeText.textContent=pricing.savings
-   ? (pricing.bundles===1?"Forfait 4 pizz appliqué":"Forfaits de 4 pizz appliqués")+" · "+pricing.savings+" $ économisés"
-   : qty===J.CONFIG.bundleSize-1
-    ? "Plus qu’une pizz et tu économises 9 $"
-    : "Plus que "+(J.CONFIG.bundleSize-qty)+" pizz pour le forfait de 4 à 99 $";
+   ? "La 4e pizz est offerte · 27 $ économisés"
+   : qty===J.CONFIG.promoQty-1
+    ? "Plus qu’une pizz et la prochaine est offerte"
+    : "Encore "+(J.CONFIG.promoQty-qty)+" pizz pour en avoir une offerte";
  }else{
   $("bundleProgress").innerHTML="";
   nudgeText.textContent="";
@@ -151,8 +152,8 @@ function showConfirmation(info,id){
  const hour=info?.pickups?.[0]?.time||selected;
  const dateValue=info?.pickup_date||date;
  const pizzas=items().map(x=>'<div class="rj-receipt-line"><span>'+safe(x.pizza)+' × '+x.qty+'</span></div>').join("");
- const confirmedTotal=Number.isInteger(info?.total_cents)?info.total_cents/100:J.priceFor(count()).total;
- const discount=J.priceFor(count()).savings;
+ const confirmedTotal=Number.isInteger(info?.total_cents)?info.total_cents/100:J.priceFor(count(),dateValue).total;
+ const discount=J.priceFor(count(),dateValue).savings;
  $("notice").innerHTML=
   '<div class="success rj-receipt">'+
    '<span class="kicker">Commande confirmée</span>'+
@@ -162,7 +163,7 @@ function showConfirmation(info,id){
    '<p class="rj-receipt-id">Numéro de commande : '+safe(id)+'</p>'+
    '<div class="rj-receipt-detail"><h4>Ta commande</h4>'+
     pizzas+
-    (discount?'<p class="rj-receipt-line">Forfait 4 pizz · '+discount+' $ économisés</p>':"")+
+    (discount?'<p class="rj-receipt-line">4e pizza offerte · '+discount+' $ économisés</p>':"")+
     '<div class="rj-receipt-total"><span>Total</span><strong>'+confirmedTotal+' $</strong></div>'+
    '</div>'+
    '<div class="rj-receipt-detail"><h4>Cueillette à Cap-Rouge</h4>'+
