@@ -98,10 +98,8 @@ function render(){
  if(shouldNudge){
   $("bundleProgress").innerHTML=Array.from({length:J.CONFIG.promoQty},(_,i)=>'<i class="'+(i<Math.min(qty,J.CONFIG.promoQty)?"filled":"")+'"></i>').join("");
   nudgeText.textContent=pricing.savings
-   ? "La 4e pizz est offerte"
-   : qty===J.CONFIG.promoQty-1
-    ? "La 4e pizz est gratuite"
-    : "La 4e pizz est offerte dès 3 achetées";
+   ? "La 4e pizz est gratuite"
+   : "Encore "+(J.CONFIG.promoQty-qty)+" pizz pour en avoir une gratuite";
  }else{
   $("bundleProgress").innerHTML="";
   nudgeText.textContent="";
