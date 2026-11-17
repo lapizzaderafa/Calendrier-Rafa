@@ -8,66 +8,188 @@
 <title>Les Jeudis Rafa | Commander pour emporter — Rafa Pizza</title>
 <meta name="description" content="Commande tes pizzas Rafa pour emporter le jeudi à Cap-Rouge.">
 <link rel="stylesheet" href="./assets/rafa-editorial.css?v=6">
-<link rel="stylesheet" href="./assets/rafa-jeudis-inline.css?v=20261115-4">
+<link rel="stylesheet" href="./assets/rafa-jeudis-inline.css?v=20261116-8">
 <style>
+/* Page de commande Rafa : une lecture continue, pas de cartes ni de séparateurs. */
 .rj-order-header{
-  max-width:1480px;margin:0 auto;padding:23px var(--edge);
-  display:flex;justify-content:space-between;align-items:center;gap:22px;
-  border-bottom:1px solid var(--hair);min-height:84px
+  max-width:1480px;margin:0 auto;
+  padding:22px var(--edge);
+  display:flex;justify-content:space-between;align-items:center;gap:24px;
+  min-height:77px;border:0
 }
-.rj-order-header a:first-child{
-  font-family:inherit;font-size:16px;font-weight:500;letter-spacing:-.06em
+.rj-order-header a:first-child{font-size:16px;font-weight:500;letter-spacing:-.06em}
+.rj-order-header a:last-child{font-size:12px;color:var(--soft)}
+.rj-order-header a:hover{opacity:.6}
+#jeudis-rafa.rj-order-page{
+  padding-top:clamp(45px,6vw,95px);
+  padding-bottom:clamp(75px,8vw,145px);
 }
-.rj-order-header a:last-child{font-family:inherit;font-size:12px;color:var(--soft)}
-.rj-order-header a:hover{text-decoration:underline;text-underline-offset:5px}
-#jeudis-rafa.rj-order-page{padding-top:clamp(55px,7vw,120px);padding-bottom:clamp(100px,10vw,164px)}
-#jeudis-rafa .rj-order-lead{padding:0 0 clamp(58px,7vw,105px)}
+#jeudis-rafa .rj-order-lead{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,425px);
+  gap:clamp(25px,5.5vw,92px);align-items:center;
+  margin:0 0 clamp(56px,7vw,105px);padding:0;
+}
+#jeudis-rafa .rj-order-copy{max-width:780px}
 #jeudis-rafa .rj-order-lead h1{
-  font-family:inherit;font-size:clamp(58px,9vw,132px);
-  line-height:.96;letter-spacing:-.077em;font-weight:500;
-  margin:18px 0 19px;color:var(--ink)
+  margin:0 0 clamp(24px,3vw,46px);font-size:clamp(63px,8vw,124px);
+  line-height:.94;letter-spacing:-.078em;font-weight:500;color:var(--ink)
 }
-#jeudis-rafa .rj-order-lead p{font-size:15px;line-height:1.6;color:var(--soft);margin:0;max-width:630px}
-#jeudis-rafa .rj-pickup-header{margin-top:0}
+#jeudis-rafa .rj-order-lead p{margin:0;max-width:610px}
+#jeudis-rafa .rj-order-lead .rj-lead-primary{
+  font-size:clamp(19px,2vw,27px);letter-spacing:-.035em;
+  line-height:1.34;color:var(--ink)
+}
+#jeudis-rafa .rj-order-lead .rj-lead-secondary{
+  font-size:clamp(14px,1.25vw,17px);line-height:1.65;color:var(--soft);
+  margin-top:14px;
+}
 #jeudis-rafa .rj-order-photo{
- width:min(100%,500px);
- margin:clamp(34px,5.5vw,68px) 0 0;
- padding:0;
+  margin:0;padding:0;min-width:0;width:100%;
+  aspect-ratio:4/5;overflow:hidden
 }
 #jeudis-rafa .rj-order-photo img{
- display:block;width:100%;height:auto;
+  display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%
 }
-#jeudis-rafa .rj-pickup-location{
- font-size:13px;line-height:1.65;color:var(--ink);
- margin:15px 0 0;max-width:560px;
+#jeudis-rafa .rj-order-flow{max-width:750px;margin:0 auto}
+#jeudis-rafa .rj-pickup-header{
+  border:0;padding:0;margin:0 0 clamp(48px,6vw,85px)
 }
-
-#jeudis-rafa .rj-recipes{margin-top:0}
-#jeudis-rafa .rj-price-note{margin:0 0 25px}
-#jeudis-rafa #hours[hidden]{display:none!important}
-#jeudis-rafa #selectedHours{margin-top:16px}
-
-#jeudis-rafa .rj-receipt{border-bottom:0;padding-top:29px}
+#jeudis-rafa #targetTitle{
+  margin:0 0 12px;font-size:clamp(29px,3.6vw,49px);
+  font-weight:500;line-height:1.08;letter-spacing:-.062em;
+}
+#jeudis-rafa #deadline,#jeudis-rafa .rj-pickup-location{
+  font-size:14px;line-height:1.55;margin:0;color:var(--soft);
+}
+#jeudis-rafa .rj-pickup-location{margin-top:7px}
+#jeudis-rafa #remainingPizzas:not(:empty){margin:14px 0 0;color:var(--ink)}
+#jeudis-rafa .rj-columns{display:block}
+#jeudis-rafa .rj-recipes{margin:0 0 clamp(48px,6vw,78px)}
+#jeudis-rafa .rj-section-heading{
+  display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;
+  gap:12px;margin-bottom:25px
+}
+#jeudis-rafa .rj-subtitle,#jeudis-rafa .rj-subtitle-small{
+  font-size:clamp(27px,3vw,38px);font-weight:500;line-height:1.1;
+  letter-spacing:-.06em;margin:0
+}
+#jeudis-rafa .rj-price-note{margin:0;color:var(--soft);font-size:13px}
+#jeudis-rafa .pizza-grid{border:0;display:grid;gap:0}
+#jeudis-rafa .pizza{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:6px 20px;padding:15px 0;min-height:84px;
+  border:0!important;background:transparent;border-radius:0
+}
+#jeudis-rafa .pizza strong{
+  font-size:clamp(22px,2.3vw,30px);line-height:1.15;letter-spacing:-.055em;font-weight:500
+}
+#jeudis-rafa .pizza small{
+  grid-column:1;grid-row:2;font-size:13px;color:var(--soft);line-height:1.45
+}
+#jeudis-rafa .pizza .counter{grid-column:2;grid-row:1/span 2;gap:10px}
+#jeudis-rafa .pizza .stepper{
+  width:38px;height:38px;border:0;border-radius:50%;
+  background:rgba(36,35,33,.055);font-size:20px;color:var(--ink)
+}
+#jeudis-rafa .pizza .stepper:hover:not(:disabled){background:rgba(36,35,33,.12)}
+#jeudis-rafa .pizza .qty{min-width:18px;font-size:16px;font-variant-numeric:tabular-nums}
+#jeudis-rafa .rj-right .rj-checkout-block{
+  border:0!important;margin:0 0 clamp(45px,6vw,75px);padding:0!important
+}
+#jeudis-rafa .rj-right .rj-checkout-block:first-child{border:0;padding:0}
+#jeudis-rafa .rj-checkout-block .rj-subtitle-small{margin-bottom:21px}
+#jeudis-rafa .slots{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;border:0!important
+}
+#jeudis-rafa .slot{
+  display:grid;place-items:center;min-height:56px;padding:10px;
+  background:rgba(36,35,33,.052);border:0!important;border-radius:4px;
+  font-size:14px;font-weight:500;color:var(--ink);transition:background .18s ease
+}
+#jeudis-rafa .slot:hover:not(:disabled):not(.selected){background:rgba(36,35,33,.12)}
+#jeudis-rafa .slot span{display:none}
+#jeudis-rafa .slot.selected{background:var(--ink);color:#fff}
+#jeudis-rafa #selectedHours{
+  margin:16px 0 0;color:var(--soft);font-size:13px;line-height:1.55
+}
+#jeudis-rafa .rj-order-summary{margin:0 0 31px}
+#jeudis-rafa .summary-line{
+  border:0;padding:5px 0;font-size:14px;gap:18px
+}
+#jeudis-rafa .summary-line strong{font-weight:500}
+#jeudis-rafa .total{
+  border:0;padding:20px 0 0;display:flex;
+  align-items:baseline;justify-content:space-between;font-size:15px
+}
+#jeudis-rafa .total span:last-child{font-size:33px;letter-spacing:-.06em}
+#jeudis-rafa .field{font-size:13px;margin:18px 0;gap:7px;font-weight:500}
+#jeudis-rafa .field input,#jeudis-rafa .field select{
+  border:0;border-radius:4px;padding:16px 15px;
+  background:rgba(36,35,33,.045);font-size:15px;min-height:52px;
+}
+#jeudis-rafa .field input:focus,#jeudis-rafa .field select:focus{
+  outline:2px solid var(--ink);outline-offset:1px;border:0
+}
+#jeudis-rafa .rj-consent{
+  display:flex;flex-direction:row;gap:12px;align-items:flex-start;
+  font-size:12px;line-height:1.5;font-weight:400;color:var(--soft);margin-top:28px
+}
+#jeudis-rafa .rj-consent input{
+  width:16px;height:16px;min-height:16px;margin:1px 0 0;accent-color:var(--ink)
+}
+#jeudis-rafa #confirmBtn{
+  display:block;width:100%;min-height:57px;
+  background:var(--ink);color:#fff;border:0;border-radius:999px;
+  text-transform:uppercase;letter-spacing:.055em;font-size:12px;margin:28px 0 0
+}
+#jeudis-rafa #confirmBtn:disabled{opacity:.37}
+#jeudis-rafa .rj-demo-note-bottom{
+  font-size:11px;line-height:1.5;color:var(--soft);margin:20px 0 0
+}
+#jeudis-rafa .rj-receipt{border:0;padding:20px 0 0;background:none}
 #jeudis-rafa .rj-receipt h3{
- font-size:clamp(31px,4vw,53px);font-weight:500;
- line-height:1.08;letter-spacing:-.06em;margin:20px 0 15px
+  font-size:clamp(36px,5vw,59px);line-height:1.05;
+  letter-spacing:-.07em;font-weight:500;margin:16px 0
 }
-#jeudis-rafa .rj-receipt-lede{font-size:16px;line-height:1.55;margin:0 0 24px}
-#jeudis-rafa .rj-receipt-date{font-size:clamp(18px,2vw,27px);font-weight:500;letter-spacing:-.03em;margin:0 0 9px}
-#jeudis-rafa .rj-receipt-id{font-size:12px;color:var(--soft);margin:0 0 37px;overflow-wrap:anywhere}
-#jeudis-rafa .rj-receipt-detail{border-top:1px solid var(--hair);padding:25px 0}
-#jeudis-rafa .rj-receipt-detail h4{font-size:15px;font-weight:500;margin:0 0 15px}
-#jeudis-rafa .rj-receipt-detail p{margin:6px 0;line-height:1.6}
-#jeudis-rafa .rj-receipt-line{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:14px}
-#jeudis-rafa .rj-receipt-total{display:flex;justify-content:space-between;gap:10px;margin-top:18px;padding-top:15px;border-top:1px solid var(--hair);font-size:15px}
-#jeudis-rafa .rj-receipt-demo{font-size:11px;color:var(--soft);line-height:1.6;margin:12px 0}
-
-#jeudis-rafa #confirmBtn{border-radius:999px;text-transform:uppercase;letter-spacing:.07em}
+#jeudis-rafa .rj-receipt-lede{font-size:16px;margin:0 0 23px}
+#jeudis-rafa .rj-receipt-date{font-size:clamp(19px,2.5vw,28px);font-weight:500}
+#jeudis-rafa .rj-receipt-id{color:var(--soft);font-size:12px;margin:10px 0 30px}
+#jeudis-rafa .rj-receipt-detail{border:0;padding:12px 0 24px}
+#jeudis-rafa .rj-receipt-detail h4{font-size:17px;font-weight:500;margin:0 0 12px}
+#jeudis-rafa .rj-receipt-detail p{line-height:1.55;margin:6px 0}
+#jeudis-rafa .rj-receipt-line{padding:4px 0}
+#jeudis-rafa .rj-receipt-total{border:0;margin-top:13px}
+#jeudis-rafa [hidden]{display:none!important}
 @media(max-width:760px){
- .rj-order-header{min-height:74px;padding-top:18px;padding-bottom:18px}
- #jeudis-rafa .rj-order-lead{padding-bottom:56px}
- #jeudis-rafa .rj-order-lead h1{font-size:clamp(53px,13vw,82px)}
- #jeudis-rafa .rj-order-lead p{font-size:14px}
+  .rj-order-header{min-height:65px;padding-top:18px;padding-bottom:15px}
+  #jeudis-rafa.rj-order-page{padding-top:30px}
+  #jeudis-rafa .rj-order-lead{grid-template-columns:1fr;gap:29px;margin-bottom:51px}
+  #jeudis-rafa .rj-order-lead h1{
+    font-size:clamp(55px,12.5vw,82px);margin-bottom:21px;max-width:740px
+  }
+  #jeudis-rafa .rj-order-lead .rj-lead-primary{font-size:20px}
+  #jeudis-rafa .rj-order-lead .rj-lead-secondary{font-size:14px;line-height:1.6;margin-top:11px}
+  #jeudis-rafa .rj-order-photo{
+    width:100%;height:clamp(210px,59vw,355px);aspect-ratio:auto
+  }
+  #jeudis-rafa .rj-order-photo img{object-position:50% 55%}
+  #jeudis-rafa .rj-pickup-header{margin-bottom:49px}
+  #jeudis-rafa #targetTitle{font-size:32px}
+  #jeudis-rafa #deadline,#jeudis-rafa .rj-pickup-location{font-size:13px}
+  #jeudis-rafa .rj-section-heading{margin-bottom:18px}
+  #jeudis-rafa .rj-subtitle,#jeudis-rafa .rj-subtitle-small{font-size:30px}
+  #jeudis-rafa .pizza{padding:13px 0;min-height:78px;gap:5px 13px}
+  #jeudis-rafa .pizza strong{font-size:24px}
+  #jeudis-rafa .pizza small{font-size:12px}
+  #jeudis-rafa .pizza .counter{gap:5px}
+  #jeudis-rafa .pizza .stepper{width:36px;height:36px}
+  #jeudis-rafa .slots{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+  #jeudis-rafa .slot{min-height:54px}
+}
+@media(max-width:355px){
+  #jeudis-rafa .rj-order-lead h1{font-size:52px}
+  #jeudis-rafa .pizza strong{font-size:21px}
 }
 </style>
 </head>
@@ -79,76 +201,76 @@
 </header>
 <section id="jeudis-rafa" class="section wrap rafa-jeudis rj-order-page" aria-labelledby="rjOrderTitle">
   <div class="rj-order-lead">
-    <span class="kicker">COMMANDE POUR EMPORTER · CAP-ROUGE</span>
-    <h1 id="rjOrderTitle">Les Jeudis Rafa.</h1>
-    <p>Choisis tes pizz et ton heure de cueillette. On s'occupe du reste.</p>
-    <figure class="rj-order-photo"><img src="./assets/rafa-jeudis-pizza-commandes.avif" width="620" height="827" loading="lazy" decoding="async" alt="Pizza Rafa garnie de prosciutto, roquette et fromage, présentée sur un plateau"></figure>
+    <div class="rj-order-copy">
+      <h1 id="rjOrderTitle">Les Jeudis Rafa.</h1>
+      <p class="rj-lead-primary">Des pizz à emporter chaque jeudi à Cap-Rouge.</p>
+      <p class="rj-lead-secondary">Commande à l’avance. Passe en voiture et reste au volant : on t’apporte tes boîtes bien chaudes.</p>
+    </div>
+    <figure class="rj-order-photo">
+      <img src="./assets/rafa-jeudis-pizza-commandes.avif" width="620" height="827" loading="eager" decoding="async" alt="Pizza Rafa garnie de prosciutto, roquette et fromage, présentée sur un plateau">
+    </figure>
   </div>
+
   <div id="jeudisOrderFlow" class="rj-order-flow">
-  <div class="rj-pickup-header">
-    <span class="kicker">PROCHAINE CUEILLETTE</span>
-    <h3 id="targetTitle">Jeudi — prochain service</h3>
-    <p id="deadline">De 17 h à 21 h · Cap-Rouge</p>
-    <p class="rj-pickup-location">Cueillette à Cap-Rouge. L’adresse exacte sera affichée après la confirmation de ta commande.</p>
-    <p id="remainingPizzas" class="rj-muted" aria-live="polite"></p>
-  </div>
-
-  <div class="rj-columns">
-    <div class="rj-left">
-      <div class="rj-recipes">
-        <p class="rj-step">01 / LES RECETTES</p>
-        <h3 class="rj-subtitle">Choisis tes pizz.</h3>
-        <p class="rj-price-note"><strong>27 $ / pizza</strong></p>
-        <div id="jeudisPizzaChoices" class="pizza-grid" aria-label="Pizzas disponibles pour emporter"></div>
-      </div>
+    <div class="rj-pickup-header">
+      <h2 id="targetTitle">Jeudi — prochain service</h2>
+      <p id="deadline">17 h à 21 h · Commande avant mercredi midi.</p>
+      <p class="rj-pickup-location">Cueillette chez Rafa, à Cap-Rouge. Adresse exacte après confirmation.</p>
+      <p id="remainingPizzas" class="rj-muted" aria-live="polite"></p>
     </div>
 
-    <div class="rj-right">
-      <div class="rj-checkout-block">
-        <p class="rj-step">02 / LA CUEILLETTE</p>
-        <h3 class="rj-subtitle-small">Choisis ton heure.</h3>
-        <div id="hours" class="slots" aria-label="Heures de cueillette"></div>
-        <p id="selectedHours" aria-live="polite">Ajoute tes pizz pour voir les heures disponibles.</p>
-        <p id="closedMessage" class="alert hidden"></p>
+    <section id="notice" role="status" aria-live="polite"></section>
+    <div class="rj-columns" id="orderColumns">
+      <div class="rj-left">
+        <div class="rj-recipes">
+          <div class="rj-section-heading">
+            <h3 class="rj-subtitle">Choisis tes pizz.</h3>
+            <span class="rj-price-note">27 $ / pizza</span>
+          </div>
+          <div id="jeudisPizzaChoices" class="pizza-grid" aria-label="Pizzas disponibles pour emporter"></div>
+        </div>
       </div>
 
-      <div class="rj-checkout-block">
-        <p class="rj-step">03 / LE RÉCAPITULATIF</p>
-        <h3 class="rj-subtitle-small">Ta commande.</h3>
-        <div id="cart"></div>
-        <div class="total"><span>Total</span><span id="total">0 $</span></div>
-      </div>
+      <div class="rj-right">
+        <div class="rj-checkout-block" id="rjTimeStep" hidden>
+          <h3 class="rj-subtitle-small">Choisis ton heure.</h3>
+          <div id="hours" class="slots" aria-label="Heures proposées pour la cueillette"></div>
+          <p id="selectedHours" aria-live="polite"></p>
+          <p id="closedMessage" class="alert hidden"></p>
+        </div>
 
-      <div class="rj-checkout-block">
-        <p class="rj-step">04 / LA CONFIRMATION</p>
-        <h3 class="rj-subtitle-small">C'est presque prêt.</h3>
-        <form id="orderForm">
-          <label class="field">Prénom et nom
-            <input id="customerName" maxlength="120" autocomplete="name" placeholder="Nom de test" required>
-          </label>
-          <label class="field">Courriel
-            <input type="email" id="customerEmail" maxlength="180" autocomplete="email" placeholder="test@example.com" required>
-          </label>
-          <label class="field">Téléphone
-            <input type="tel" id="customerPhone" maxlength="35" autocomplete="tel" placeholder="555-0100" required>
-          </label>
-          <label class="field">Mode de paiement
-            <select id="payment" required>
-              <option value="interac">Virement Interac (essai)</option>
-              <option value="cash">Comptant à la cueillette</option>
-            </select>
-          </label>
-          <label class="field rj-consent">
-            <input id="contactConsent" type="checkbox" required>
-            <span>J'accepte que Rafa me contacte au sujet de cette commande.</span>
-          </label>
-          <button class="button" id="confirmBtn" type="submit" disabled>Choisis ton heure</button>
-        </form>
-        <section id="notice" role="status" aria-live="polite"></section>
-        <p class="rj-demo-note-bottom">Essai seulement : l'adresse de confirmation est fictive. Aucun déplacement réel n'est demandé.</p>
+        <div class="rj-checkout-block" id="rjDetailsStep" hidden>
+          <h3 class="rj-subtitle-small">On finalise?</h3>
+          <form id="orderForm">
+            <div class="rj-order-summary">
+              <div id="cart"></div>
+              <div class="total"><span>Total</span><span id="total">0 $</span></div>
+            </div>
+            <label class="field">Prénom et nom
+              <input id="customerName" maxlength="120" autocomplete="name" placeholder="Nom de test" required>
+            </label>
+            <label class="field">Courriel
+              <input type="email" id="customerEmail" maxlength="180" autocomplete="email" placeholder="test@example.com" required>
+            </label>
+            <label class="field">Téléphone
+              <input type="tel" id="customerPhone" maxlength="35" autocomplete="tel" placeholder="555-0100" required>
+            </label>
+            <label class="field">Mode de paiement
+              <select id="payment" required>
+                <option value="interac">Virement Interac (essai)</option>
+                <option value="cash">Comptant à la cueillette</option>
+              </select>
+            </label>
+            <label class="field rj-consent">
+              <input id="contactConsent" type="checkbox" required>
+              <span>J'accepte que Rafa me contacte au sujet de cette commande.</span>
+            </label>
+            <button class="button" id="confirmBtn" type="submit" disabled>Confirmer ma commande</button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
+    <p class="rj-demo-note-bottom">Prévisualisation · Aucune commande réelle.</p>
   </div>
 </section>
 </main>
@@ -157,6 +279,6 @@
 <script src="./assets/rafa-pizzas.js?v=2"></script>
 <script src="./assets/jeudis-core.js?v=20261115-3"></script>
 <script src="./assets/jeudis-supabase-api.js?v=2"></script>
-<script src="./assets/jeudis-externe.js?v=20261116-cart"></script>
+<script src="./assets/jeudis-externe.js?v=20261116-simplified"></script>
 </body>
 </html>
