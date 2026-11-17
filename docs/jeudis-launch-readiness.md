@@ -1,3 +1,14 @@
+## Offre de lancement actuellement en maquette (2026-11-16)
+- La précédente proposition **4 pizzas pour 99 $** a été **remplacée** dans le site et la base Supabase de test. Elle n'est plus active, même si son ancien essai est conservé plus bas comme historique.
+- Nouvelle offre expérimentale : **3 pizzas achetées, la 4e offerte** pour le jeudi **19 novembre 2026 seulement**, sans lien avec le jour où le site sera finalement publié.
+- Tarif : 27 $ par pizza, **81 $ pour 4**, réduction de 27 $ (25 %); **une seule gratuité par commande**, même si 8 pizzas sont commandées (8 = 189 $).
+- Offre valable pour n'importe quel mélange de recettes de la carte de ce jeudi, sous réserve des disponibilités.
+- Le menu affiche une courte accroche typographique dès l'ouverture (« Offre de lancement · 19 novembre seulement ») sans encadré. Un indicateur discret à quatre points n'apparaît qu'après le premier ajout et uniquement si quatre pizzas peuvent être réservées ensemble.
+- Dates suivantes : le visuel promotionnel disparaît et le serveur facture le prix normal de 27 $/pizza.
+- Prix calculé côté serveur dans la fonction de réservation atomique (`total_cents=v_qty*2700-(case when p_date=date '2026-11-19' and v_qty>=4 then 2700 else 0 end)`). Le reçu et le panier montrent le même rabais.
+- Tests de transactions avec `anon` et `ROLLBACK` : 1 pizza = 27 $, 3 = 81 $, 4 = 81 $, 5 = 108 $, 8 = 189 $; aucune commande fictive conservée. Test d'interface simulé le 19 novembre et le 26 novembre passé.
+- **Offre non approuvée pour le vrai site** : calculer la marge par pizza, les coûts variables de boîtes, garnitures, déplacement et travail, et confirmer la conformité de l'affichage des prix et taxes. La limite de 25 pizzas par jeudi reste en vigueur. Ne pas publier sur `main` sans approbation.
+
 ## Maquette promotionnelle — À VALIDER (16 novembre 2026)
 - La date de cueillette apparaît dans une capsule à contour fin avec une micro-mention « Prochaine cueillette » et « Une nouvelle date chaque semaine ». **Ce n'est pas un bouton de sélection** : la date est générée automatiquement d'après le prochain jeudi.
 - À partir d'une pizza dans le panier, un indicateur à quatre points rappelle progressivement le forfait, uniquement si la capacité restante permet encore d'atteindre quatre pizzas. Aucun encadré promotionnel permanent.
