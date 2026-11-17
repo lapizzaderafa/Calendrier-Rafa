@@ -98,8 +98,8 @@ function render(){
  if(shouldNudge){
   $("bundleProgress").innerHTML=Array.from({length:J.CONFIG.promoQty},(_,i)=>'<i class="'+(i<Math.min(qty,J.CONFIG.promoQty)?"filled":"")+'"></i>').join("");
   nudgeText.textContent=pricing.savings
-   ? "La 4e pizz est gratuite"
-   : "Encore "+(J.CONFIG.promoQty-qty)+" pizz pour en avoir une gratuite";
+   ? "La 4e pizza est gratuite"
+   : "Encore "+(J.CONFIG.promoQty-qty)+" pizza"+(J.CONFIG.promoQty-qty>1?"s":"")+" pour en avoir une gratuite";
  }else{
   $("bundleProgress").innerHTML="";
   nudgeText.textContent="";
