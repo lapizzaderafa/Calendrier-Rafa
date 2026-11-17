@@ -147,7 +147,8 @@ function loadDemo(){
 function saveDemo(orders){localStorage.setItem(CONFIG.demoStorageKey,JSON.stringify(orders));}
 function formatDate(ymd){
  const [y,m,d]=ymd.split("-").map(Number);
- return new Intl.DateTimeFormat("fr-CA",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(Date.UTC(y,m-1,d,12)));
+ const label=new Intl.DateTimeFormat("fr-CA",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"UTC"}).format(new Date(Date.UTC(y,m-1,d,12)));
+ return label.charAt(0).toLocaleUpperCase("fr-CA")+label.slice(1);
 }
 function niceTime(key){const [h,m]=key.split(":").map(Number);return h+" h"+(m?" "+String(m).padStart(2,"0"):"");}
 global.RafaJeudis={CONFIG,parts,plusDays,weekday,scheduleFor,slots,amount,activeOrders,occupancy,carCounts,settingsKey,loadSettings,saveSettings,scheduleCheck,allocation,allOptions,productionPlan,assignPizzas,loadDemo,saveDemo,formatDate,niceTime};
