@@ -117,7 +117,7 @@ function render(){
   const btn=document.createElement("button");btn.type="button";btn.className="slot"+(slot.pickup_time===selected?" selected":"");
   btn.disabled=sending;
   btn.setAttribute("aria-pressed",String(slot.pickup_time===selected));
-  btn.setAttribute("aria-label","Choisir "+J.niceTime(slot.pickup_time)+" pour "+qty+" pizz");
+  btn.setAttribute("aria-label","Choisir "+J.niceTime(slot.pickup_time)+" pour "+qty+" pizzas");
   btn.textContent=J.niceTime(slot.pickup_time);
   btn.onclick=()=>{selected=slot.pickup_time;render()};
   $("hours").appendChild(btn);
@@ -129,7 +129,7 @@ function render(){
      :"Créneau choisi : "+J.niceTime(selected)+".")
    :fetching?"Chargement des heures..."
    :available.some(checkSlot)?""
-   :"Plus d'heures disponibles pour cette quantité. Essaie avec moins de pizz.";
+   :"Plus d'heures disponibles pour cette quantité. Essaie avec moins de pizzas.";
  const yes=plan.open&&!!selected&&qty>0&&checkSlot(available.find(r=>r.pickup_time===selected))&&!sending&&menu.length;
  $("confirmBtn").disabled=!yes;
  $("confirmBtn").textContent=sending?"Confirmation en cours...":
@@ -158,7 +158,7 @@ function showConfirmation(info,id){
   '<div class="success rj-receipt">'+
    '<span class="kicker">Commande confirmée</span>'+
    '<h3>Merci pour ta commande!</h3>'+
-   '<p class="rj-receipt-lede">Tes pizz seront prêtes pour la cueillette.</p>'+
+   '<p class="rj-receipt-lede">Tes pizzas seront prêtes pour la cueillette.</p>'+
    '<p class="rj-receipt-date">'+safe(J.formatDate(dateValue))+' · '+safe(J.niceTime(hour))+'</p>'+
    '<p class="rj-receipt-id">Numéro de commande : '+safe(id)+'</p>'+
    '<div class="rj-receipt-detail"><h4>Ta commande</h4>'+
