@@ -165,7 +165,7 @@ function showConfirmation(info,id){
    '<p class="rj-receipt-id">Numéro de commande : '+safe(id)+'</p>'+
    '<div class="rj-receipt-detail"><h4>Ta commande</h4>'+
     pizzas+
-    (discount?'<p class="rj-receipt-line">4e pizza offerte · '+discount+' $ économisés</p>':"")+
+    (discount?'<p class="rj-receipt-line">4e pizza offerte</p>':"")+
     '<div class="rj-receipt-total"><span>Total</span><strong>'+confirmedTotal+' $</strong></div>'+
    '</div>'+
    '<div class="rj-receipt-detail"><h4>Cueillette à Cap-Rouge</h4>'+
