@@ -65,6 +65,7 @@
   font-size:14px;line-height:1.55;margin:0;color:var(--soft);
 }
 #jeudis-rafa .rj-pickup-location{margin-top:7px}
+#jeudis-rafa .rj-closed-note{margin:16px 0 0;font-size:13px;line-height:1.55;color:var(--ink)}
 #jeudis-rafa #remainingPizzas:not(:empty){margin:14px 0 0;color:var(--ink)}
 #jeudis-rafa .rj-columns{display:block}
 #jeudis-rafa .rj-recipes{margin:0 0 clamp(54px,6.3vw,86px)}
@@ -239,6 +240,7 @@
       <p id="deadline">17 h à 21 h · Commande avant mercredi midi.</p>
       <p class="rj-pickup-location">Cueillette chez Rafa, à Cap-Rouge. Adresse exacte après confirmation.</p>
       <p id="remainingPizzas" class="rj-muted" aria-live="polite"></p>
+      <p id="closedMessage" class="rj-closed-note hidden" aria-live="polite"></p>
     </div>
 
     <section id="notice" role="status" aria-live="polite"></section>
@@ -258,7 +260,6 @@
           <h3 class="rj-subtitle-small">Choisis ton heure.</h3>
           <div id="hours" class="slots" aria-label="Heures proposées pour la cueillette"></div>
           <p id="selectedHours" aria-live="polite"></p>
-          <p id="closedMessage" class="alert hidden"></p>
         </div>
 
         <div class="rj-checkout-block" id="rjDetailsStep" hidden>
