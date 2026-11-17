@@ -55,7 +55,7 @@
 }
 #jeudis-rafa .rj-order-flow{max-width:830px;margin:0}
 #jeudis-rafa .rj-pickup-header{
-  border:0;padding:0;margin:0 0 clamp(46px,5.1vw,70px)
+  border:0;padding:0;margin:0 0 clamp(33px,4.5vw,58px)
 }
 #jeudis-rafa .rj-date-meta{
   display:flex;align-items:baseline;justify-content:space-between;
@@ -81,15 +81,24 @@
 #jeudis-rafa .rj-columns{display:block}
 #jeudis-rafa .rj-recipes{margin:0 0 clamp(54px,6.3vw,86px)}
 #jeudis-rafa .rj-section-heading{
-  display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;
-  gap:12px;margin-bottom:24px
+  display:block;margin-bottom:27px
+}
+#jeudis-rafa .rj-section-heading .rj-subtitle{margin-bottom:13px}
+#jeudis-rafa .rj-menu-meta{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  flex-wrap:nowrap;gap:10px 18px;
+  max-width:100%;font-size:12px;line-height:1.45
+}
+#jeudis-rafa .rj-format-note{color:var(--soft);font-size:12px;font-weight:400}
+#jeudis-rafa .rj-price-group{
+  display:flex;flex-direction:column;gap:3px;align-items:flex-end;
+  flex-shrink:0;text-align:right
 }
 #jeudis-rafa .rj-subtitle,#jeudis-rafa .rj-subtitle-small{
   font-size:clamp(27px,3vw,38px);font-weight:500;line-height:1.1;
   letter-spacing:-.06em;margin:0
 }
-#jeudis-rafa .rj-menu-meta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;text-align:right}
-#jeudis-rafa .rj-price-note{margin:0;color:var(--soft);font-size:13px}
+#jeudis-rafa .rj-price-note{margin:0;color:var(--ink);font-size:12px;font-weight:500}
 #jeudis-rafa .rj-launch-offer{margin:0;color:var(--soft);font-size:11px;line-height:1.35;letter-spacing:-.01em;font-weight:400}
 #jeudis-rafa .pizza-grid{border:0;display:grid;gap:0}
 #jeudis-rafa .rj-bundle{
@@ -124,7 +133,7 @@
 }
 /* Une seule étiquette typographique, sans carte ni couleur criarde. */
 #jeudis-rafa .pizza.rj-weekly{
-  padding-top:8px;padding-bottom:25px;margin-bottom:15px
+  padding-top:8px;padding-bottom:19px;margin-bottom:7px
 }
 #jeudis-rafa .rj-weekly-tag{
   display:block;width:max-content;max-width:100%;
@@ -229,7 +238,7 @@
     max-height:none
   }
   #jeudis-rafa .rj-order-photo img{object-position:50% 50%}
-  #jeudis-rafa .rj-pickup-header{margin-bottom:43px}
+  #jeudis-rafa .rj-pickup-header{margin-bottom:32px}
   #jeudis-rafa #targetTitle{font-size:clamp(24px,6.5vw,31px);padding:13px 18px 15px;margin-bottom:18px}
   #jeudis-rafa .rj-date-meta{margin-bottom:12px}
   #jeudis-rafa .rj-bundle{gap:10px;font-size:12px;margin-top:20px}
@@ -237,8 +246,13 @@
   #jeudis-rafa #total .rj-previous{font-size:16px}
   #jeudis-rafa #deadline,#jeudis-rafa .rj-pickup-location{font-size:13px}
   #jeudis-rafa .rj-section-heading{margin-bottom:18px}
+  #jeudis-rafa .rj-section-heading .rj-subtitle{margin-bottom:12px}
+  #jeudis-rafa .rj-format-note{font-size:12px}
+  #jeudis-rafa .rj-price-note{font-size:12px}
+  #jeudis-rafa .rj-menu-meta{gap:8px 14px}
   #jeudis-rafa .rj-subtitle,#jeudis-rafa .rj-subtitle-small{font-size:30px}
-  #jeudis-rafa .pizza{padding:16px 0;min-height:88px;gap:5px 13px}
+  #jeudis-rafa .pizza{padding:14px 0;min-height:80px;gap:5px 13px}
+  #jeudis-rafa .pizza.rj-weekly{padding-top:8px;padding-bottom:15px;margin-bottom:4px}
   #jeudis-rafa .pizza strong{font-size:24px}
   #jeudis-rafa .pizza small{font-size:12px}
   #jeudis-rafa .pizza .counter{gap:5px}
@@ -287,8 +301,11 @@
           <div class="rj-section-heading">
             <h3 class="rj-subtitle">Choisis tes pizzas.</h3>
             <div class="rj-menu-meta">
-              <span class="rj-price-note">11 pouces · 27 $ / pizza</span>
-              <span id="launchOffer" class="rj-launch-offer" hidden>4e gratuite</span>
+              <span class="rj-format-note">Pizza médium · 11 pouces</span>
+              <div class="rj-price-group">
+                <span class="rj-price-note">27 $ / pizza</span>
+                <span id="launchOffer" class="rj-launch-offer" hidden>4e gratuite</span>
+              </div>
             </div>
           </div>
           <div id="jeudisPizzaChoices" class="pizza-grid" aria-label="Pizzas disponibles pour emporter"></div>
