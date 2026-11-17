@@ -100,7 +100,7 @@ function render(){
   nudgeText.textContent=pricing.savings
    ? "La 4e pizz est offerte"
    : qty===J.CONFIG.promoQty-1
-    ? "La 4e pizz ne change pas le total"
+    ? "La 4e pizz est gratuite"
     : "La 4e pizz est offerte dès 3 achetées";
  }else{
   $("bundleProgress").innerHTML="";
