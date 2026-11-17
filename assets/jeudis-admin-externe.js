@@ -6,7 +6,7 @@ const J=window.RafaJeudis,API=window.RafaJeudisApi,$=id=>document.getElementById
 const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const plan=J.scheduleFor(),today=plan.today;
 let date=J.weekday(today)===4?today:plan.target;
-let view="prep",orders=[],settings=null,currentId=null,showArchived=false,busy=false,isAuthenticated=false;
+let view="prep",orders=[],settings=null,featured="",currentId=null,showArchived=false,busy=false,isAuthenticated=false;
 const current=()=>orders.filter(o=>o.status!=="cancelled");
 const pending=()=>current().filter(o=>o.status!=="delivered").sort(compare);
 const compare=(a,b)=>String(a.pickups?.[0]?.time||"").localeCompare(b.pickups?.[0]?.time||"")||
@@ -23,6 +23,7 @@ async function reload(){
  try{
   orders=await API.adminOrders(date);
   settings=await API.adminSettings(date);
+  featured=await API.adminFeatured(date);
   render();
  }catch(e){showError(e)}
 }
@@ -154,11 +155,28 @@ function reportView(){
 }
 function settingsView(){
  const s=settings||{paused:false,closed_slots:[],pickup_address:"",pickup_instructions:""},area=$("view");
- area.innerHTML='<h2>Réglages du jeudi</h2><p class="muted">Ici, tu peux suspendre les nouvelles commandes et saisir l’adresse affichée aux clients APRÈS leur confirmation.</p>'+
+ const recipes=[...new Set((window.RAFA_PIZZA_GROUPS||[]).flatMap(group=>group[1].map(item=>item[0])))].sort((a,b)=>a.localeCompare(b,"fr"));
+ const choices=recipes.map(name=>'<option value="'+safe(name)+'">'+safe(name)+'</option>').join("");
+ area.innerHTML='<h2>Réglages du jeudi</h2><p class="muted">Choisis la recette spéciale pour ce jeudi, puis règle les réservations et la cueillette.</p>'+
+ '<label class="field">Pizza de la semaine <select id="weeklyPizza"><option value="">Aucune pizza spéciale</option>'+choices+'</select></label>'+
+ '<p class="muted">Une seule recette mise en avant pour la date sélectionnée. Les cinq permanentes restent disponibles.</p>'+
+ '<button class="button secondary" type="button" id="saveWeekly">Enregistrer la pizza de la semaine</button>'+
  '<label class="field">Adresse de cueillette <input id="pickupAddress" maxlength="240"></label>'+
  '<label class="field">Instructions de stationnement <textarea id="pickupInstructions" rows="3" maxlength="750"></textarea></label>'+
  '<label class="checkrow"><span>Suspendre les nouvelles commandes</span><input type="checkbox" id="paused"></label>'+
  '<h3 class="section-spacer">Bloquer des heures pour les nouvelles commandes</h3>';
+ $("weeklyPizza").value=featured||"";
+ $("saveWeekly").onclick=async()=>{
+  if(busy)return;
+  const button=$("saveWeekly"),pizza=$("weeklyPizza").value;
+  setBusy(true);button.disabled=true;
+  try{
+   await API.adminSaveFeatured(date,pizza);
+   featured=await API.adminFeatured(date);
+   alert(pizza?"Pizza de la semaine enregistrée pour "+J.formatDate(date)+" : "+pizza+".":"Pizza spéciale retirée pour "+J.formatDate(date)+".");
+  }catch(e){alert("Enregistrement impossible : "+e.message)}
+  finally{setBusy(false);button.disabled=false}
+ };
  $("pickupAddress").value=s.pickup_address||"";
  $("pickupInstructions").value=s.pickup_instructions||"";
  $("paused").checked=!!s.paused;
