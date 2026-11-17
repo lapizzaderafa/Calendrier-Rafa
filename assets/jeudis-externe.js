@@ -88,7 +88,9 @@ function render(){
  $("launchOffer").hidden=!pricing.promoActive;
  $("cart").innerHTML=items().map(x=>'<div class="summary-line"><span>'+safe(x.pizza)+' × '+x.qty+'</span><strong>'+(x.qty*J.CONFIG.unitPrice)+' $</strong></div>').join("")+
    (pricing.savings?'<div class="summary-line rj-discount"><span>4e pizza offerte</span><strong>−'+pricing.savings+' $</strong></div>':"");
- $("total").textContent=pricing.total+" $";
+ $("total").innerHTML=pricing.savings
+  ? '<del class="rj-previous">'+pricing.regular+' $</del> '+pricing.total+' $'
+  : pricing.total+" $";
  const nudge=$("bundleNudge"),nudgeText=$("bundleText");
  const hasBundleCapacity=dayLimit()>=J.CONFIG.promoQty&&available.some(s=>!s.blocked&&Number(s.pizzas_left)>=J.CONFIG.promoQty&&Number(s.cars_used)<2);
  const shouldNudge=pricing.promoActive&&qty>0&&plan.open&&(qty>=J.CONFIG.promoQty||hasBundleCapacity);
@@ -96,10 +98,10 @@ function render(){
  if(shouldNudge){
   $("bundleProgress").innerHTML=Array.from({length:J.CONFIG.promoQty},(_,i)=>'<i class="'+(i<Math.min(qty,J.CONFIG.promoQty)?"filled":"")+'"></i>').join("");
   nudgeText.textContent=pricing.savings
-   ? "La 4e pizz est offerte · 27 $ économisés"
+   ? "La 4e pizz est offerte"
    : qty===J.CONFIG.promoQty-1
-    ? "Plus qu’une pizz et la prochaine est offerte"
-    : "Encore "+(J.CONFIG.promoQty-qty)+" pizz pour en avoir une offerte";
+    ? "La 4e pizz ne change pas le total"
+    : "La 4e pizz est offerte dès 3 achetées";
  }else{
   $("bundleProgress").innerHTML="";
   nudgeText.textContent="";
