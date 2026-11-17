@@ -4,6 +4,7 @@
 "use strict";
 const J=window.RafaJeudis,API=window.RafaJeudisApi,$=id=>document.getElementById(id);
 const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const shortOrderId=id=>String(id||"").replace(/-/g,"").slice(-6).toUpperCase();
 const plan=J.scheduleFor(),today=plan.today;
 let date=J.weekday(today)===4?today:plan.target;
 let view="prep",orders=[],settings=null,featured="",currentId=null,showArchived=false,busy=false,isAuthenticated=false;
@@ -76,7 +77,7 @@ function serviceView(){
  const card=document.createElement("article");card.className="order";
  card.innerHTML='<span class="kicker">Commande en cours</span><h2 style="font-size:35px;margin:12px 0">'+safe(times(o))+'</h2>'+
  '<h3>'+safe(o.customer_name)+' · '+count(o)+' pizza(s)</h3>'+
- '<p class="muted">'+safe(o.customer_phone)+' · '+safe(o.id)+'</p>'+
+ '<p class="muted">'+safe(o.customer_phone)+' · Commande #'+safe(shortOrderId(o.id))+'</p>'+
  pizzaRows(o)+
  '<p class="muted section-spacer">'+(o.payment_method==="cash"?"Comptant":"Interac")+' · '+(o.paid?"Payé":"Paiement à vérifier")+'</p>'+
  '<button class="button" type="button" id="complete">✓ Commande remise — suivante</button>'+
@@ -108,7 +109,7 @@ function orderView(){
   const block=document.createElement("article");block.className="order";
   block.innerHTML='<div class="order-top"><strong>'+safe(times(o))+' · '+safe(o.customer_name)+'</strong>'+
    '<span class="pill">'+safe(o.status==="cancelled"?"Annulée":o.status==="delivered"?"Remise":o.status==="ready"?"Prête":"À préparer")+'</span></div>'+
-   '<p class="muted">'+safe(o.id)+' · '+safe(o.customer_phone)+' · '+safe(o.customer_email)+'</p>'+
+   '<p class="muted">Commande #'+safe(shortOrderId(o.id))+' · '+safe(o.customer_phone)+' · '+safe(o.customer_email)+'</p>'+
    pizzaRows(o)+
    '<div class="muted section-spacer">'+cost(o)+' $ · '+(o.paid?"Payé":"Non payé")+'</div>'+
    '<div class="order-actions"><button data-k="open" type="button">Ouvrir</button>'+
