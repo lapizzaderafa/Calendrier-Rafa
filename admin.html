@@ -20,6 +20,12 @@ const marker='\nsessionGate();';
 const pos=html.lastIndexOf(marker);
 if(pos<0) throw new Error('admin_hook_marker_missing');
 const hook=`
+try{
+ const nav=document.querySelector('.admin-nav');
+ if(nav&&!document.getElementById('frozenOrderNav')){
+ const link=document.createElement('a');link.id='frozenOrderNav';link.href='./congelees-admin.html';link.className='btn secondary';link.textContent='Commandes congelées';nav.appendChild(link);
+ }
+}catch(_frozenNavError){}
 
 async function sendRafaConfirmationEmail(reservationId,force=false){
   const {data,error}=await db.functions.invoke('send-confirmation',{body:{reservation_id:reservationId,force}});
