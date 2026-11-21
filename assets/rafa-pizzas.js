@@ -45,6 +45,10 @@ window.RAFA_PIZZA_GROUPS = [
     "Blanches",
     [
       [
+        "Chèvre et poireaux",
+        "Crème légère, mozza fraîche, chèvre, poireaux fondants, thym, poivre noir, huile d'olive"
+      ],
+      [
         "Quattro",
         "Mozza fraîche, pecorino, gorgonzola, comté, poivre noir"
       ],
