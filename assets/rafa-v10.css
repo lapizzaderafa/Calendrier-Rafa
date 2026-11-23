@@ -83,8 +83,8 @@
   color:var(--soft)!important;
 }
 #prix.price-standalone .estimate-total strong{
-  font-size:21px!important;
-  line-height:1.25!important;
+  font-size:clamp(30px,3vw,40px)!important;
+  line-height:1.15!important;
   letter-spacing:-.026em!important;
   font-weight:500!important;
   color:#38342f!important;
@@ -125,5 +125,5 @@
  #prix.price-standalone .price-estimator{padding-top:0;margin-top:45px}
  #prix.price-standalone .estimator{margin:0;padding:0}
  #prix.price-standalone .estimate-total{margin-top:27px}
- #prix.price-standalone .estimate-total strong{font-size:19px!important}
+ #prix.price-standalone .estimate-total strong{font-size:34px!important}
 }
