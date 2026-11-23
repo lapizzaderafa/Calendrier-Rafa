@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="./assets/rafa-editorial.css?v=6">
-<link rel="stylesheet" href="./assets/rafa-v10.css?v=1">
+<link rel="stylesheet" href="./assets/rafa-v10.css?v=2">
 <link rel="stylesheet" href="./assets/rafa-home-signature.css?v=5">
 <link rel="stylesheet" href="./assets/rafa-carte.css?v=2">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FoodEstablishment","name":"Rafa Pizza","url":"https://rafapizza.ca/","image":"https://rafapizza.ca/assets/01-preparation-signature.jpeg","description":"Service de pizzas préparées et cuites sur place pour des événements privés à Québec.","servesCuisine":"Pizza","areaServed":"Québec, QC"}</script>
@@ -148,13 +148,14 @@
 <div class="price-heading"><h2 id="prixTitle">Le prix.</h2><a class="rafa-carte-button" href="#disponibilites">Voir les disponibilités</a></div>
 <div class="price-estimator"><div class="estimator">
 <div class="estimate-top"><span>Nombre d'invités</span><strong><span id="guestNumber">20</span></strong></div>
-<input class="price-slider" id="guestSlider" type="range" min="1" max="100" step="1" value="20" aria-label="Nombre d'invités pour le calcul du prix">
+<input class="price-slider" id="guestSlider" type="range" min="10" max="100" step="1" value="20" aria-label="Nombre d'invités pour le calcul du prix">
 <div class="estimate-breakdown">
-<div><span class="breakdown-label">Pizzas</span><span class="breakdown-value" id="personPrice">30 $ / personne</span></div>
-<div><span class="breakdown-label">Service et installation</span><span class="breakdown-value" id="eventFee">400 $</span></div>
+<div><span class="breakdown-label">Formule Rafa</span><span class="breakdown-value">1 pizza de 11 po par invité</span></div>
+<div><span class="breakdown-label">Prix moyen par invité</span><span class="breakdown-value" id="personPrice">38,75 $ / personne</span></div>
 </div>
-<p class="estimate-note">Estimation seulement. Les frais peuvent varier selon les particularités de l'événement.</p>
-<p id="largeEventNote" class="large-event-note">Plus de 50 invités? Nous confirmerons la formule avec vous.</p>
+<div class="estimate-total"><span>Estimation de votre événement</span><strong id="eventTotal" aria-live="polite">775 $</strong></div>
+<p class="estimate-note">Installation, cuisson et service sur place inclus. Forfait minimum de 500 $. Prix avant taxes; le montant final peut varier selon le déplacement et les particularités de l'événement.</p>
+<p id="largeEventNote" class="large-event-note">Pour plus de 60 invités, contactez-nous pour un devis personnalisé.</p>
 </div>
 </div>
 </div>
@@ -237,7 +238,7 @@
 <footer class="footer"><span>Rafa Pizza · Québec</span><span>Pizza à domicile pour vos événements</span></footer>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./assets/site.js?v=25"></script>
+<script src="./assets/site.js?v=26"></script>
 <script src="./assets/contact.js?v=6" defer></script>
 <script src="./assets/rafa-home-menu.js?v=6" defer></script>
 
