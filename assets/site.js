@@ -25,48 +25,21 @@ function isPubliclyClosedDate(iso) {
 }
 const MONTHS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
 const $ = id => document.getElementById(id);
-// Tarifs événementiels Rafa — prix avant taxes, forfait minimum pour 10 invités.
+// Tarifs événementiels Rafa — montants avant taxes.
 function calculateEventPrice(guests) {
   const count = Math.max(10, Math.floor(Number(guests) || 10));
-  if (count > 60) return null; // Au-delà de 60 invités : devis personnalisé.
+  if (count > 60) return null;
   let total;
   if (count <= 10) total = 500;
   else if (count <= 15) total = 500 + 25 * (count - 10);
   else if (count <= 40) total = 625 + 30 * (count - 15);
   else total = 1375 + 35 * (count - 40);
-  return { total, averagePerPerson: total / count };
+  return {total, averagePerPerson: total / count};
 }
-const formatCAD = value => `${new Intl.NumberFormat("fr-CA", {
+const formatCAD = value => new Intl.NumberFormat("fr-CA", {
   minimumFractionDigits: Number.isInteger(value) ? 0 : 2,
   maximumFractionDigits: 2
-}).format(value)} const SUPABASE_URL = "https://jetogsbyptglaihktdel.supabase.co";
-const SUPABASE_KEY = "sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja";
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-const BOOKING_START = new Date(2026, 8, 1);
-const BOOKING_END = new Date(2027, 5, 30);
-// External reservations are confirmed separately from the website's database.
-const EXTERNAL_BOOKED_DATES = new Set(["2026-11-09","2026-11-17","2026-11-21","2026-11-24","2026-11-25","2026-11-28","2027-06-23"]);
-// Personal closures in November (all other Mondays, Tuesdays and Wednesdays).
-const NOVEMBER_UNAVAILABLE_DATES = new Set(["2026-11-02","2026-11-03","2026-11-04","2026-11-10","2026-11-11","2026-11-16","2026-11-18","2026-11-23","2026-11-30"]);
-const OTHER_CLOSED_MONDAYS = new Set(["2026-10-26","2026-12-07","2026-12-21"]);
-function manualCalendarStatus(iso) {
-  if (EXTERNAL_BOOKED_DATES.has(iso)) return "booked";
-  if (NOVEMBER_UNAVAILABLE_DATES.has(iso)) return "unavailable";
-  // November: no recurring rule beyond the exact dates approved by the owner.
-  if (iso.startsWith("2026-11-")) return null;
-  if (iso < "2026-10-19" || iso > "2026-12-31") return null;
-  // Preserve already published October/December closures until separately reviewed.
-  const [year, month, day] = iso.split("-").map(Number);
-  const weekday = new Date(year, month - 1, day).getDay();
-  return weekday === 2 || weekday === 3 || OTHER_CLOSED_MONDAYS.has(iso)
-    ? "unavailable" : null;
-}
-function isPubliclyClosedDate(iso) {
-  return manualCalendarStatus(iso) !== null;
-}
-const MONTHS = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
-const $ = id => document.getElementById(id);
-;
+}).format(value) + " $";
 function updateEstimator(){
   const guests = Number($("guestSlider").value);
   const pricing = calculateEventPrice(guests);
