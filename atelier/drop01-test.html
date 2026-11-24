@@ -201,7 +201,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
 <span class="micro" style="display:block;margin-top:43px">02 / FINALISER</span><h2>Presque<br/>chez toi.</h2>
 <div class="form-grid"><div>
 <section class="form-section"><span class="micro">01 / TES COORDONNÉES</span><h3>On te rejoint comment?</h3>
-<div class="fieldgrid"><label class="field full">Nom complet<input autocomplete="name" id="customerName" placeholder="Prénom et nom"/></label><label class="field">Téléphone<input autocomplete="tel" id="customerPhone" placeholder="418 555-0000" type="tel"/></label><label class="field">Courriel<input autocomplete="email" id="customerEmail" placeholder="toi@exemple.com" type="email"/></label></div>
+<div class="fieldgrid"><label class="field full">Nom complet<input autocomplete="name" id="customerName" placeholder="Prénom et nom"/></label><label class="field">Téléphone<input autocomplete="tel" id="customerPhone" placeholder="418 555-0000" type="tel"/></label><label class="field">Courriel<input autocomplete="email" id="customerEmail" placeholder="toi@exemple.com" type="email"/></label></div><label class="field full" style="margin-top:25px">Paiement à la réception<select id="paymentMethod"><option value="interac">Interac à la réception</option><option value="cash">Comptant à la réception</option></select></label>
 </section>
 <section class="form-section"><span class="micro">02 / RÉCEPTION</span><h3>Comment tu les veux?</h3>
 <div class="methodrow"><button aria-pressed="true" class="pill small" data-mode="pickup" type="button">Cueillette · 0 $</button><button aria-pressed="false" class="pill small" data-mode="delivery" type="button">Livraison</button></div>
@@ -251,7 +251,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
    const issue=p.error||o.error||c.error;
    if(issue){serverReady=false;setBackendNote('Erreur de synchronisation : '+issue.message);return;}
    products=p.data.filter(x=>x.active).map(x=>({name:x.sku,price:(x.price_cents??0)/100,stock:x.stock_total,desc:x.description,unpriced:x.price_cents==null}));
-   orders=o.data.filter(x=>x.status!=='cancelled').map(x=>({id:x.id,date:x.visit_date,time:x.visit_time.slice(0,5),mode:x.mode,sector:x.delivery_sector||'',address:x.delivery_address||'',name:x.customer_name,phone:x.customer_phone,email:x.customer_email,items:x.items.map(i=>({name:i.sku,qty:i.qty,sum:(products.find(p=>p.name===i.sku)?.price||0)*i.qty})),discount:x.discount_cents/100,freePizzas:Math.floor(x.pizza_qty/4),total:x.total_cents/100,travel_minutes:x.travel_minutes}));
+   orders=o.data.filter(x=>x.status!=='cancelled').map(x=>({id:x.id,date:x.visit_date,time:x.visit_time.slice(0,5),mode:x.mode,sector:x.delivery_sector||'',address:x.delivery_address||'',name:x.customer_name,phone:x.customer_phone,email:x.customer_email,items:x.items.map(i=>({name:i.sku,qty:i.qty,sum:(products.find(p=>p.name===i.sku)?.price||0)*i.qty})),discount:x.discount_cents/100,freePizzas:Math.floor(x.pizza_qty/4),total:x.total_cents/100,travel_minutes:x.travel_minutes,payment:x.payment_method||'interac'}));
    const cfg=c.data;priceWarning=!cfg.prices_approved;serverReady=cfg.test_enabled&&!cfg.public_enabled;
    setBackendNote(serverReady?'TEST CONNECTÉ AU BACK-OFFICE · Commandes partagées · Ventes publiques fermées':'TEST INACTIF · Vérifie la configuration du drop.');
    $('pricingWarning').textContent=priceWarning?'Prix indicatifs : à valider avant l’ouverture des ventes.':'Prix enregistrés dans le catalogue Rafa.';
@@ -374,9 +374,9 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
   if(!loggedIn||!serverReady){openAuth();return error('Connecte-toi à ton compte Rafa pour enregistrer une vraie commande de test.');}
   const button=$('simulateBtn');button.disabled=true;button.textContent='Enregistrement du test…';$('formError').hidden=true;
   const request_id=typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{let r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)}));
-  const payload={p_request_id:request_id,p_name:name,p_phone:phone,p_email:email,p_mode:mode,p_date:date,p_time:time,p_address:address,p_sector:sector,p_items:lines().map(i=>({sku:i.name,qty:i.qty}))};
+  const payload={p_request_id:request_id,p_name:name,p_phone:phone,p_email:email,p_mode:mode,p_date:date,p_time:time,p_address:address,p_sector:sector,p_items:lines().map(i=>({sku:i.name,qty:i.qty})),p_payment:$('#paymentMethod').value};
   try{
-   const {data,error:dbError}=await db.rpc('rafa_drop01_test_checkout',payload);
+   const {data,error:dbError}=await db.rpc('rafa_drop01_test_checkout_v2',payload);
    if(dbError)throw dbError;
    await refreshBackend();
    const saved=orders.find(o=>o.id===data);if(!saved)throw new Error('Commande enregistrée, mais son affichage n’a pas été synchronisé. Vérifie l’agenda.');
@@ -384,7 +384,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
    const details=[saved.name,saved.mode==='pickup'?'Cueillette à Cap-Rouge':'Livraison à '+saved.address,
     new Date(saved.date+'T12:00:00Z').toLocaleDateString('fr-CA',{timeZone:'UTC',weekday:'long',day:'numeric',month:'long'})+' à '+timeText(saved.time),
     ...saved.items.map(i=>i.qty+' × '+i.name),...(saved.freePizzas?['Offre 3 + 1 : '+saved.freePizzas+' offerte(s) (− '+fmt(saved.discount)+')']:[]),
-    'Total du test : '+fmt(saved.total),'Référence : '+saved.id.slice(0,8)];
+    'Paiement : '+(saved.payment==='cash'?'Comptant':'Interac')+' à la réception','Total du test : '+fmt(saved.total),'Référence : '+saved.id.slice(0,8)];
    details.forEach(t=>{const p=el('p',null,t);p.style.margin='6px 0';list.append(p)});
    $('checkoutStage').hidden=true;$('receiptStage').hidden=false;$('receiptStage').scrollIntoView({behavior:'smooth',block:'start'});
   }catch(e){const map={stock_exceeded:'Stock insuffisant. Actualise la sélection.',pickup_slot_full:'Cette cueillette vient d’être réservée. Choisis une autre heure.',delivery_slot_conflict:'Cette heure est maintenant incompatible avec une livraison. Choisis-en une autre.',wrong_day_for_mode:'Cette journée est réservée à l’autre mode de réception.',test_mode_disabled:'Le mode test est fermé.',unpriced_product:'Une recette n’a pas de prix.'};error(map[e.message]||'Impossible de confirmer : '+e.message);await refreshBackend();}
@@ -410,7 +410,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
     who.append(el('strong',null,o.name),el('div','sub',o.phone+' · '+o.email));
     kind.append(el('strong',null,o.mode==='pickup'?'Cueillette · Cap-Rouge':'Livraison · '+(o.sector||'secteur')),
      el('div','sub',o.mode==='delivery'?o.address:o.items.map(i=>i.qty+' × '+i.name).join(', ')));
-    if(o.mode==='delivery')kind.append(el('div','sub',o.items.map(i=>i.qty+' × '+i.name).join(', ')));
+    if(o.mode==='delivery')kind.append(el('div','sub',o.items.map(i=>i.qty+' × '+i.name).join(', ')));if(o.payment)kind.append(el('div','sub','Paiement : '+(o.payment==='cash'?'Comptant':'Interac')+' à la réception'));
     if(o.id){const cancel=el('button','cancel-test','Annuler ce test');cancel.type='button';cancel.onclick=()=>cancelTestOrder(o.id);kind.append(cancel)}row.append(when,who,kind,price);group.append(row);
    });pane.append(group);
   });
