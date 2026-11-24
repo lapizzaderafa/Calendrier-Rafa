@@ -1,37 +1,115 @@
-<!doctype html><html lang="fr-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Rafa Pizza · Commandes congelées</title>
+<!doctype html><html lang="fr-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Rafa — DROP 01 | Administration</title>
 <style>
-:root{--wine:#5b1f2a;--cream:#faf8f3;--ink:#292523;--muted:#79706b;--line:#e6ded6}*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,"Helvetica Neue",Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}header{display:flex;gap:20px;justify-content:space-between;align-items:center;padding:27px max(22px,calc((100vw - 1170px)/2));background:var(--wine);color:white}header h1{font-size:29px;letter-spacing:-.07em;margin:0}header a{color:white;font-size:13px;text-decoration:none;border-bottom:1px solid #bba3a6;padding-bottom:5px}main{max-width:1170px;margin:0 auto;padding:42px 24px 110px}h2{font-size:clamp(39px,6vw,72px);font-weight:450;letter-spacing:-.08em;line-height:.99;margin:16px 0 13px}.lead{color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:32px}.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:11px;color:var(--wine)}.tabs{display:flex;gap:26px;border-bottom:1px solid var(--line);margin:32px 0}.tabs button{border:0;border-bottom:2px solid transparent;background:transparent;padding:14px 0;color:var(--muted)}.tabs button.current{border-color:var(--wine);color:var(--wine)}.section[hidden]{display:none}.bar{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:24px 0}.button{background:var(--wine);border:1px solid var(--wine);color:white;padding:11px 17px;border-radius:0}.secondary{background:transparent;color:var(--wine)}.formline{display:flex;flex-wrap:wrap;gap:10px;align-items:end}.field{display:grid;gap:7px;font-size:11px;color:var(--muted)}input,select{min-height:42px;background:white;border:1px solid #d7cdc5;padding:9px 10px;color:var(--ink)}input[type="number"]{max-width:92px}.data{overflow:auto;width:100%}table{width:100%;border-collapse:collapse;min-width:700px}th{text-align:left;font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;padding:15px 10px;border-bottom:1px solid #bfb5ae}td{padding:18px 10px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:top;line-height:1.55}td strong{display:block;font-size:14px;font-weight:550}td small{color:var(--muted)}.compact{min-width:115px}.stat{display:flex;gap:25px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:12px}.stat strong{display:block;color:var(--wine);font-size:26px;letter-spacing:-.05em}.muted{color:var(--muted)}.notice{padding:17px 20px;background:#f4efe7;font-size:13px;line-height:1.65;margin:20px 0}.error{color:#b03642}.ok{color:#27633b}.panel{margin:30px 0 45px}.product-line,.slot-line{display:grid;grid-template-columns:minmax(140px,1fr) auto auto;gap:12px;align-items:center;border-bottom:1px solid var(--line);padding:14px 0}.slot-line{grid-template-columns:minmax(140px,1fr) auto auto auto}.product-line small{display:block;color:var(--muted);margin-top:4px}.slot-line span{font-size:13px}.login{max-width:380px;margin:95px auto;text-align:left}.login input{width:100%}.login .button{margin-top:20px;width:100%}#message{min-height:22px;font-size:13px}#shell[hidden],#login[hidden]{display:none!important}@media(max-width:680px){header{padding:21px 23px}header h1{font-size:23px}header a{font-size:11px}main{padding:35px 21px 90px}.product-line{grid-template-columns:1fr 95px auto}.slot-line{grid-template-columns:1fr auto auto}.slot-line .action{grid-column:2 / 4}.formline{align-items:start}.formline .field{flex:1 1 40%}}
-</style></head><body><header><h1>RAFA <small style="font-size:11px;letter-spacing:.15em;font-weight:400">PIZZA</small></h1><a href="./admin.html">← Tableau de bord</a></header>
-<div id="login" class="login" hidden><span class="eyebrow">ACCÈS ADMINISTRATEUR</span><h2>Connexion.</h2><p class="lead">Utilise ton mot de passe habituel du back-office Rafa.</p><label class="field">Mot de passe<input type="password" id="password" autocomplete="current-password"></label><button class="button" id="signIn">Se connecter</button><p id="loginMsg" class="error"></p></div>
-<main id="shell" hidden><span class="eyebrow">BACK-OFFICE · RAFA</span><h2>Commandes<br>congelées.</h2><p class="lead">Retrouve tes précommandes, gère la préparation et les heures de cueillette.</p><div class="tabs"><button id="tabOrders" class="current" onclick="setTab('orders')">Commandes</button><button id="tabSettings" onclick="setTab('settings')">Réglages & horaires</button></div>
-<section class="section" id="orders"><div class="stat"><span><strong id="countOrders">0</strong> Commandes</span><span><strong id="countPizzas">0</strong> Pizzas</span><span><strong id="countPending">0</strong> À préparer</span></div><div class="bar"><label class="field">Afficher<select id="orderFilter" onchange="renderOrders()"><option value="all">Toutes les commandes</option><option value="pending">Nouvelles</option><option value="preparing">En préparation</option><option value="ready">Prêtes</option><option value="collected">Récupérées</option><option value="cancelled">Annulées</option></select></label><button class="button secondary" onclick="loadOrders()">Actualiser</button></div><div class="data"><table><thead><tr><th>Cueillette</th><th>Client</th><th>Pizzas</th><th>Total</th><th>Suivi</th></tr></thead><tbody id="orderRows"></tbody></table></div></section>
-<section class="section" id="settings" hidden><div class="notice"><strong>Ouverture contrôlée.</strong> Aucune commande réelle ne peut être passée tant que les prix ne sont pas définis et qu’aucun créneau n’est ouvert. Les réservations événementielles de Rafa ne sont pas touchées.</div>
-<div class="panel"><span class="eyebrow">01 · CARTE</span><h3>Prix des pizzas congelées</h3><p class="lead">Prix en dollars canadiens. Laisse vide une recette que tu ne veux pas encore vendre.</p><div id="productRows"></div></div>
-<div class="panel"><span class="eyebrow">02 · DISPONIBILITÉS</span><h3>Heures de cueillette</h3><p class="lead">Ajoute seulement les journées où tu peux recevoir des clients. Aucun horaire n’est ouvert par défaut.</p><div class="formline"><label class="field">Date<input type="date" id="newDate"></label><label class="field">Heure<input type="time" id="newTime" value="17:00" step="1800"></label><label class="field">Max commandes<input type="number" id="newMaxOrders" min="1" max="50" value="4"></label><label class="field">Max pizzas<input type="number" id="newMaxPizzas" min="2" max="500" value="30"></label><button class="button" onclick="addSlot()">Ouvrir ce créneau</button></div><div id="slotRows" style="margin-top:25px"></div></div>
-</section><p id="message" aria-live="polite"></p></main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script><script>
-const url='https://jetogsbyptglaihktdel.supabase.co',key='sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja',db=window.supabase.createClient(url,key);
-const $=id=>document.getElementById(id);
-const allowed=['3c15d282-f724-45f7-84ee-d75206159cc3','08e38c3c-f31c-4ada-9498-48f5ad3f830d'];
-const statuses={pending:'Nouvelle',preparing:'En préparation',ready:'Prête',collected:'Récupérée',cancelled:'Annulée'};
-let orders=[],products=[],slots=[];
-function msg(s,bad=false){$('message').textContent=s;$('message').className=bad?'error':'ok'}
-function money(c){return (c/100).toLocaleString('fr-CA',{style:'currency',currency:'CAD'})}
-function dateLong(d){return new Date(d+'T12:00:00').toLocaleDateString('fr-CA',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}
-function el(t,txt){const x=document.createElement(t);if(txt!==undefined)x.textContent=String(txt);return x}
-function setTab(t){$('orders').hidden=t!=='orders';$('settings').hidden=t!=='settings';$('tabOrders').classList.toggle('current',t==='orders');$('tabSettings').classList.toggle('current',t==='settings');if(t==='settings')loadSettings()}
-async function boot(){try{const {data,error}=await db.auth.getUser();if(error||!data.user||!allowed.includes(data.user.id))throw Error('unauthorized');$('login').hidden=true;$('shell').hidden=false;await loadOrders()}catch(e){$('shell').hidden=true;$('login').hidden=false}}
-$('signIn').onclick=async()=>{const {error}=await db.auth.signInWithPassword({email:'raphael.frenette@gmail.com',password:$('password').value});if(error){$('loginMsg').textContent='Connexion refusée. Vérifie le mot de passe.';return}await boot()};
-async function loadOrders(){const {data,error}=await db.from('rafa_congelees_orders').select('*').order('created_at',{ascending:false}).limit(500);if(error){msg('Impossible de charger les commandes : '+error.message,true);return}orders=data||[];renderOrders();msg('Commandes à jour.')}
-function renderOrders(){const f=$('orderFilter').value,v=orders.filter(o=>f==='all'||o.status===f);$('countOrders').textContent=orders.length;$('countPizzas').textContent=orders.filter(o=>o.status!=='cancelled').reduce((s,o)=>s+o.pizza_qty,0);$('countPending').textContent=orders.filter(o=>o.status==='pending'||o.status==='preparing').length;
-const root=$('orderRows');root.replaceChildren();if(!v.length){const tr=el('tr'),td=el('td','Aucune commande pour le moment.');td.colSpan=5;tr.append(td);root.append(tr);return}
-for(const o of v){const tr=el('tr');const a=el('td');a.append(el('strong',dateLong(o.pickup_date)),el('small',String(o.pickup_time).slice(0,5)));const b=el('td');b.append(el('strong',o.customer_name),el('small',o.customer_phone),el('br'),el('small',o.customer_email));const c=el('td');for(const i of o.items||[])c.append(el('div',i.qty+' × '+i.name));const d=el('td');d.append(el('strong',money(o.total_cents)),el('small',o.payment_method==='cash'?'Comptant':'Interac'));const e=el('td');const sel=el('select');sel.className='compact';for(const [k,l] of Object.entries(statuses)){const opt=el('option',l);opt.value=k;opt.selected=o.status===k;sel.append(opt)}sel.onchange=()=>setOrder(o.id,{status:sel.value});const label=el('label');label.style.cssText='display:block;margin-top:10px;white-space:nowrap';const check=document.createElement('input');check.type='checkbox';check.checked=!!o.paid;check.style.minHeight='auto';check.onchange=()=>setOrder(o.id,{paid:check.checked});label.append(check,document.createTextNode(' Payée'));e.append(sel,label);tr.append(a,b,c,d,e);root.append(tr)}}
-async function setOrder(id,patch){const {error}=await db.from('rafa_congelees_orders').update(patch).eq('id',id);if(error){msg('Modification refusée : '+error.message,true);await loadOrders();return}msg('Commande mise à jour.');await loadOrders()}
-async function loadSettings(){const [pr,sl]=await Promise.all([db.from('rafa_congelees_products').select('*').order('position'),db.from('rafa_congelees_slots').select('*').order('pickup_date').order('pickup_time')]);if(pr.error||sl.error){msg('Impossible de charger les réglages.',true);return}products=pr.data||[];slots=sl.data||[];renderSettings()}
-function renderSettings(){const p=$('productRows');p.replaceChildren();for(const x of products){const line=el('div');line.className='product-line';const n=el('div');n.append(el('strong',x.name),el('small',x.description));const inp=document.createElement('input');inp.type='number';inp.min='1';inp.step='0.01';inp.placeholder='Prix';inp.value=x.price_cents===null?'':(x.price_cents/100).toFixed(2);const b=el('button','Enregistrer');b.className='button secondary';b.onclick=()=>savePrice(x.name,inp.value);line.append(n,inp,b);p.append(line)}
-const sr=$('slotRows');sr.replaceChildren();if(!slots.length)sr.append(el('p','Aucun créneau ouvert.'));for(const s of slots){const l=el('div');l.className='slot-line';l.append(el('span',dateLong(s.pickup_date)+' · '+String(s.pickup_time).slice(0,5)),el('span',s.max_orders+' clients · '+s.max_pizzas+' pizzas'));const badge=el('span',s.enabled?'Ouvert':'Fermé');badge.className=s.enabled?'ok':'muted';const btn=el('button',s.enabled?'Fermer':'Réouvrir');btn.className='button secondary action';btn.onclick=()=>toggleSlot(s);l.append(badge,btn);sr.append(l)}}
-async function savePrice(name,value){const cents=value.trim()===''?null:Math.round(Number(value)*100);if(cents!==null&&(!Number.isInteger(cents)||cents<100||cents>20000)){msg('Prix non valide.',true);return}const {error}=await db.from('rafa_congelees_products').update({price_cents:cents}).eq('name',name);if(error){msg(error.message,true);return}msg('Prix enregistré.');await loadSettings()}
-async function addSlot(){const d=$('newDate').value,t=$('newTime').value,mo=Number($('newMaxOrders').value),mp=Number($('newMaxPizzas').value);if(!d||!t||!Number.isInteger(mo)||mo<1||mo>50||!Number.isInteger(mp)||mp<2||mp>500){msg('Vérifie la date, l’heure et les quantités.',true);return}const {error}=await db.from('rafa_congelees_slots').upsert({pickup_date:d,pickup_time:t,enabled:true,max_orders:mo,max_pizzas:mp},{onConflict:'pickup_date,pickup_time'});if(error){msg('Impossible d’ouvrir ce créneau : '+error.message,true);return}msg('Créneau ouvert.');await loadSettings()}
-async function toggleSlot(s){const {error}=await db.from('rafa_congelees_slots').update({enabled:!s.enabled}).eq('pickup_date',s.pickup_date).eq('pickup_time',s.pickup_time);if(error){msg(error.message,true);return}msg('Créneau modifié.');await loadSettings()}
+:root{--ink:#171717;--gray:#777;--line:#dadada;--paper:#fff;--subtle:#f6f6f5}*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}
+header{padding:28px clamp(22px,5vw,75px);display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1px solid var(--line)}
+.brand{font-size:24px;font-weight:650;letter-spacing:-.085em}.brand small{font-size:10px;letter-spacing:.17em;font-weight:400;margin-left:15px}
+header nav{display:flex;gap:19px;align-items:center;font-size:12px;color:#444}header nav a{text-decoration:none;border-bottom:1px solid #bbb;padding:6px 0}
+main{max-width:1180px;margin:auto;padding:clamp(48px,7vw,100px) clamp(22px,5vw,65px) 150px}
+.eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#777}h1{font-size:clamp(52px,7vw,103px);line-height:.96;font-weight:450;letter-spacing:-.085em;margin:18px 0 24px}h2{font-size:clamp(28px,4vw,51px);font-weight:430;letter-spacing:-.06em;margin:15px 0 16px}
+p{font-size:14px;line-height:1.65}.muted{color:#777}.notice{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;margin:20px 0 42px;font-size:12px;line-height:1.7}
+.statrow{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:36px 0 55px}.stat{border-top:1px solid var(--line);padding-top:16px}.stat strong{font-size:clamp(38px,5vw,66px);font-weight:440;letter-spacing:-.07em;display:block}.stat span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#777}
+.tabs{display:flex;border-bottom:1px solid var(--line);gap:30px;margin-bottom:26px}.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:16px 0;font-size:13px;color:#777}.tabs button.active{border-color:#171717;color:#171717}
+.pill{background:rgba(255,255,255,.76);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid #9a9a9a;border-radius:999px;padding:12px 23px;color:var(--ink);font-size:12px;min-height:42px}.pill.primary{background:#171717;color:#fff;border-color:#171717}
+.row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.stack{display:grid;gap:6px}.entry{border-bottom:1px solid #e6e6e6;padding:23px 0;display:grid;grid-template-columns:120px minmax(0,1.5fr) minmax(0,1fr) auto;gap:18px}.entry strong{font-weight:550;font-size:16px}.entry small{font-size:12px;color:#777;display:block;margin-top:6px;line-height:1.7}.entry .time{font-size:23px;letter-spacing:-.05em}.entry .price{white-space:nowrap;font-size:18px}.empty{padding:50px 0;color:#777}
+.product{display:grid;grid-template-columns:minmax(0,1fr) 90px 115px auto;gap:15px;align-items:center;border-bottom:1px solid #e6e6e6;padding:17px 0}.product strong{font-weight:540;font-size:17px}.product small{font-size:11px;line-height:1.6;color:#777;display:block;margin-top:5px}
+input,select{padding:11px 12px;border:1px solid #cfcfcf;border-radius:0;background:#fff;color:#171717;min-height:42px;max-width:100%}
+.label{display:grid;gap:9px;font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.06em}.label input{font-size:14px;color:#171717;letter-spacing:0;text-transform:none}
+.addressgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:23px 0}.schedule{margin:25px 0 32px}.schedule .day{display:grid;grid-template-columns:115px 1fr;gap:16px;border-bottom:1px solid #e6e6e6;padding:15px 0;font-size:13px}.schedule .day span:last-child{color:#666}
+.panel[hidden],#app[hidden],#login[hidden]{display:none!important}
+.login{max-width:390px;margin:55px auto 100px}.login .label{margin:22px 0}.login button{width:100%}
+.feedback{min-height:30px;margin:20px 0;color:#555;font-size:12px}.section-space{padding-top:62px}
+@media(max-width:720px){header{padding:23px}header nav{gap:10px;font-size:10px}.brand small{display:block;margin:6px 0 0}.statrow{gap:12px}.entry{grid-template-columns:75px 1fr;gap:10px}.entry .time{font-size:19px}.entry .price{grid-column:2}.entry .details{grid-column:2}.product{grid-template-columns:1fr 100px;gap:10px}.product .product-name{grid-column:1/-1}.product .pill{grid-column:2}.addressgrid{grid-template-columns:1fr}.tabs{gap:17px}.tabs button{font-size:12px}}
+</style></head><body>
+<header><div class="brand">Rafa <small>PIZZA / ATELIER</small></div><nav><a href="./admin.html">Back-office</a><a href="./atelier/drop01-test.html#commander-congele">Tester une commande</a></nav></header>
+<main><div id="login" class="login" hidden><span class="eyebrow">ADMINISTRATION / ACCÈS PRIVÉ</span><h1>Bonjour.</h1><p>Utilise tes identifiants du back-office Rafa.</p><label class="label">Courriel<input id="email" type="email" autocomplete="username"></label><label class="label">Mot de passe<input id="password" type="password" autocomplete="current-password"></label><button id="signIn" class="pill primary">Se connecter</button><p id="loginError" class="feedback"></p></div>
+<div id="app" hidden><span class="eyebrow">COMMANDES CONGELÉES / DROP 01</span><h1>Les commandes.<br>Les dates.</h1><div id="closedNotice" class="notice">Mode test uniquement. Les ventes publiques sont fermées. Les délais de trajet sont encore simulés, et les prix doivent être validés avant le lancement.</div>
+<div class="statrow"><div class="stat"><strong id="ordersNum">0</strong><span>Commandes test actives</span></div><div class="stat"><strong id="pizzasNum">0</strong><span>Pizzas réservées</span></div><div class="stat"><strong id="remainingNum">50</strong><span>Pizzas restantes</span></div></div>
+<div class="tabs"><button type="button" class="active" id="tabOrders">Commandes</button><button type="button" id="tabCatalog">Pizzas et prix</button><button type="button" id="tabSchedule">Calendrier et adresses</button></div>
+<section class="panel" id="panelOrders"><div class="row"><p class="muted">Les commandes sont classées par date et heure de réception.</p><button class="pill" type="button" id="refreshOrders">Actualiser</button></div><div id="ordersList"></div></section>
+<section class="panel" id="panelCatalog" hidden><div class="row"><div><span class="eyebrow">LA COLLECTION / 11 POUCES</span><h2>Les cinq pizzas.</h2></div><span class="muted" id="catalogNote">50 pizzas par drop.</span></div><div id="catalogList"></div><p class="muted">Les nouveaux prix s’appliquent aux prochaines commandes. Les commandes déjà confirmées conservent leur total.</p></section>
+<section class="panel" id="panelSchedule" hidden><span class="eyebrow">HEBDOMADAIRE / AUTOMATIQUE</span><h2>Les créneaux.</h2><p class="muted">Créneaux aux 30 minutes de 16 h à 20 h. Aucune ouverture manuelle requise. Mardi et vendredi, les cueillettes ne sont proposées que si elles sont compatibles avec les livraisons confirmées.</p>
+<div class="schedule"><div class="day"><strong>Mardi</strong><span>Livraison prioritaire · Cueillette à Cap-Rouge si disponible</span></div><div class="day"><strong>Mercredi</strong><span>Cueillette uniquement · Montcalm, Québec</span></div><div class="day"><strong>Jeudi</strong><span>Cueillette uniquement · Cap-Rouge</span></div><div class="day"><strong>Vendredi</strong><span>Livraison prioritaire · Cueillette à Cap-Rouge si disponible</span></div></div>
+<div class="section-space"><span class="eyebrow">POINTS DE CUEILLETTE</span><h2>Adresses privées.</h2><p class="muted">Ces adresses restent dans l’administration et seront transmises sur le site uniquement après confirmation de la commande. L’adresse de Montcalm est encore à préciser.</p><div class="addressgrid"><label class="label">Cap-Rouge<input id="addressCapRouge" placeholder="Adresse complète, Québec" autocomplete="off"></label><label class="label">Montcalm<input id="addressMontcalm" placeholder="Adresse complète, Québec" autocomplete="off"></label></div><button class="pill primary" id="saveAddresses" type="button">Enregistrer les adresses</button></div>
+<div class="section-space"><span class="eyebrow">SÉCURITÉ DU LANCEMENT</span><p>Les livraisons fonctionnent avec des durées par secteur pour les essais. Le rayon réel de 30 km et les itinéraires doivent être validés avant l'ouverture des ventes.</p></div>
+</section><p id="feedback" class="feedback" role="status"></p></div></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+const SUPABASE_URL='https://jetogsbyptglaihktdel.supabase.co',KEY='sb_publishable_YQndqxq2W7Bq2C-0crv0rQ_V4Upvbja';
+const authorized=new Set(['3c15d282-f724-45f7-84ee-d75206159cc3','08e38c3c-f31c-4ada-9498-48f5ad3f830d']);
+const db=window.supabase&&window.supabase.createClient(SUPABASE_URL,KEY),$=id=>document.getElementById(id);
+let orders=[],products=[],settings=null;
+const money=c=>(Number(c||0)/100).toLocaleString('fr-CA',{style:'currency',currency:'CAD'});
+const dateText=s=>new Date(s+'T12:00:00Z').toLocaleDateString('fr-CA',{timeZone:'UTC',weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const node=(tag,txt,cls)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(txt!==undefined&&txt!==null)x.textContent=String(txt);return x};
+const feedback=(s,bad)=>{$('feedback').textContent=s;$('feedback').style.color=bad?'#a22':'#555'};
+function showTab(id){for(const x of ['Orders','Catalog','Schedule']){$('panel'+x).hidden=x!==id;$('tab'+x).classList.toggle('active',x===id)}}
+$('tabOrders').onclick=()=>showTab('Orders');$('tabCatalog').onclick=()=>showTab('Catalog');$('tabSchedule').onclick=()=>showTab('Schedule');
+async function refresh(){
+const [o,p,s]=await Promise.all([
+ db.from('rafa_drop01_orders').select('*').order('visit_date',{ascending:true}).order('visit_time',{ascending:true}).limit(500),
+ db.from('rafa_drop01_products').select('*').order('position'),
+ db.from('rafa_drop01_settings').select('*').eq('id',1).single()
+]);
+if(o.error||p.error||s.error)throw new Error(o.error?.message||p.error?.message||s.error?.message);
+orders=o.data||[];products=(p.data||[]).filter(x=>x.active);settings=s.data;
+if(products.length!==5)feedback('Attention : le catalogue devrait contenir exactement cinq recettes.',true);
+$('closedNotice').textContent=settings.public_enabled?'ATTENTION : le mode public indique une ouverture. Vérifie les réglages avant de continuer.': 'Mode test uniquement · Ventes publiques fermées · Livraison calculée provisoirement par secteur.';
+renderOrders();renderCatalog();
+$('addressCapRouge').value=settings.pickup_cap_rouge_address||'';
+$('addressMontcalm').value=settings.pickup_montcalm_address||'';
+}
+function renderOrders(){
+const live=orders.filter(o=>o.status!=='cancelled');$('ordersNum').textContent=live.length;
+$('pizzasNum').textContent=live.reduce((n,o)=>n+o.pizza_qty,0);
+const remaining=products.reduce((n,p)=>n+p.stock_total,0)-live.reduce((n,o)=>n+o.pizza_qty,0);$('remainingNum').textContent=remaining;
+const root=$('ordersList');root.replaceChildren();
+if(!orders.length){root.append(node('div','Aucune commande de test pour le moment.','empty'));return}
+for(const o of orders){
+ const row=node('div',null,'entry'),when=node('div',null,'time'),client=node('div',null,'stack'),details=node('div',null,'stack details'),amount=node('div',null,'price');
+ when.append(node('strong',String(o.visit_time).slice(0,5)),node('small',dateText(o.visit_date)));
+ client.append(node('strong',o.customer_name),node('small',o.customer_phone),node('small',o.customer_email));
+ const place=o.mode==='delivery'?'Livraison · '+(o.delivery_sector||'secteur'):'Cueillette · '+(o.pickup_site==='montcalm'?'Montcalm':'Cap-Rouge');
+ details.append(node('strong',place),node('small',o.mode==='delivery'?o.delivery_address:(o.pickup_address_snapshot||'Adresse à fournir')));
+ for(const item of o.items||[])details.append(node('small',item.qty+' × '+item.sku));
+ details.append(node('small','Paiement : '+(o.payment_method==='cash'?'comptant':'Interac')+' à la réception'));
+ if(o.status==='cancelled')details.append(node('small','Commande test annulée'));else{
+  const cancel=node('button','Annuler le test','pill');cancel.style.marginTop='8px';
+  cancel.onclick=async()=>{if(!confirm('Annuler cette commande test?'))return;const{error}=await db.from('rafa_drop01_orders').update({status:'cancelled'}).eq('id',o.id);if(error)feedback(error.message,true);else{await refresh();feedback('Commande test annulée.')}};
+  details.append(cancel);
+ }
+ amount.textContent=money(o.total_cents);
+ row.append(when,client,details,amount);root.append(row);
+}
+}
+function renderCatalog(){
+const activeOrders=orders.filter(o=>o.status!=='cancelled');const root=$('catalogList');root.replaceChildren();
+for(const p of products){
+ const reserved=activeOrders.reduce((sum,o)=>sum+(o.items||[]).reduce((n,i)=>n+(i.sku===p.sku?i.qty:0),0),0);
+ const line=node('div',null,'product'),info=node('div',null,'product-name'),stock=node('div',p.stock_total-reserved+' restantes'),price=node('input'),save=node('button','Enregistrer','pill');
+ info.append(node('strong',p.sku),node('small',p.description));price.type='number';price.min='1';price.max='200';price.step='0.01';price.value=p.price_cents===null?'':(p.price_cents/100).toFixed(2);price.setAttribute('aria-label','Prix '+p.sku);
+ save.onclick=async()=>{const v=Number(price.value);if(!Number.isFinite(v)||v<1||v>200)return feedback('Entre un prix valide entre 1 $ et 200 $.',true);const {error}=await db.from('rafa_drop01_products').update({price_cents:Math.round(v*100)}).eq('sku',p.sku);if(error)feedback(error.message,true);else{await refresh();feedback('Prix enregistré pour '+p.sku+'.')}};
+ line.append(info,stock,price,save);root.append(line);
+}
+$('catalogNote').textContent=products.reduce((sum,p)=>sum+p.stock_total,0)+' pizzas · Stock du DROP 01';
+}
+$('refreshOrders').onclick=async()=>{try{await refresh();feedback('Données actualisées.')}catch(e){feedback(e.message,true)}};
+$('saveAddresses').onclick=async()=>{
+const cap=$('addressCapRouge').value.trim(),mont=$('addressMontcalm').value.trim();
+const{error}=await db.from('rafa_drop01_settings').update({pickup_cap_rouge_address:cap||null,pickup_montcalm_address:mont||null,updated_at:new Date().toISOString()}).eq('id',1);
+if(error)feedback(error.message,true);else{await refresh();feedback('Adresses enregistrées de façon privée. Elles ne sont montrées au client qu’après confirmation.')}
+};
+async function boot(){
+if(!db){$('login').hidden=false;$('loginError').textContent='Connexion à Rafa indisponible.';return}
+const{data,error}=await db.auth.getUser();
+if(error||!data.user||!authorized.has(data.user.id)){$('app').hidden=true;$('login').hidden=false;return}
+$('login').hidden=true;$('app').hidden=false;try{await refresh()}catch(e){feedback('Impossible de charger le back-office : '+e.message,true)}
+}
+$('signIn').onclick=async()=>{if(!db)return;const email=$('email').value.trim(),password=$('password').value;if(!email||!password){$('loginError').textContent='Inscris le courriel et le mot de passe.';return}
+const {error}=await db.auth.signInWithPassword({email,password});if(error){$('loginError').textContent='Connexion refusée.';return}await boot()};
+$('password').onkeydown=e=>{if(e.key==='Enter')$('signIn').click()};
 boot();
+})();
 </script></body></html>
