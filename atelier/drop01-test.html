@@ -251,7 +251,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
    const issue=p.error||o.error||c.error;
    if(issue){serverReady=false;setBackendNote('Erreur de synchronisation : '+issue.message);return;}
    products=p.data.filter(x=>x.active).map(x=>({name:x.sku,price:(x.price_cents??0)/100,stock:x.stock_total,desc:x.description,unpriced:x.price_cents==null}));
-   orders=o.data.filter(x=>x.status!=='cancelled').map(x=>({id:x.id,date:x.visit_date,time:x.visit_time.slice(0,5),mode:x.mode,sector:x.delivery_sector||'',address:x.delivery_address||'',name:x.customer_name,phone:x.customer_phone,email:x.customer_email,items:x.items.map(i=>({name:i.sku,qty:i.qty,sum:(products.find(p=>p.name===i.sku)?.price||0)*i.qty})),discount:x.discount_cents/100,freePizzas:Math.floor(x.pizza_qty/4),total:x.total_cents/100,travel_minutes:x.travel_minutes,payment:x.payment_method||'interac'}));
+   orders=o.data.filter(x=>x.status!=='cancelled').map(x=>({id:x.id,date:x.visit_date,time:x.visit_time.slice(0,5),mode:x.mode,sector:x.delivery_sector||'',address:x.delivery_address||'',pickupSite:x.pickup_site||'',pickupAddress:x.pickup_address_snapshot||'',name:x.customer_name,phone:x.customer_phone,email:x.customer_email,items:x.items.map(i=>({name:i.sku,qty:i.qty,sum:(products.find(p=>p.name===i.sku)?.price||0)*i.qty})),discount:x.discount_cents/100,freePizzas:Math.floor(x.pizza_qty/4),total:x.total_cents/100,travel_minutes:x.travel_minutes,payment:x.payment_method||'interac'}));
    const cfg=c.data;priceWarning=!cfg.prices_approved;serverReady=cfg.test_enabled&&!cfg.public_enabled;
    setBackendNote(serverReady?'TEST CONNECTÉ AU BACK-OFFICE · Commandes partagées · Ventes publiques fermées':'TEST INACTIF · Vérifie la configuration du drop.');
    $('pricingWarning').textContent=priceWarning?'Prix indicatifs : à valider avant l’ouverture des ventes.':'Prix enregistrés dans le catalogue Rafa.';
@@ -297,7 +297,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
  ];
  // Durées ROUTIÈRES FICTIVES, en minutes ; la mise en production exige un véritable moteur d'itinéraires.
  const sectors={'cap-rouge':[12,0],'ste-foy':[20,1],'ancienne-lorette':[18,1],'sillery':[23,1],'centre':[33,2],'charlesbourg':[38,2],'beauport':[42,2],'stoneham':[50,2]};
- const storage='rafa-drop01-section-only-v1', freeAt=120, fees=[9,15,21], weekdayModes={2:'delivery',3:'pickup',4:'pickup',5:'delivery'}, pickupCapacity=3;
+ const storage='rafa-drop01-section-only-v1', freeAt=120, fees=[9,15,21], weekdayModes={2:'both',3:'pickup',4:'pickup',5:'both'}, pickupCapacity=3;
  let orders=[];
  let cart={},mode='pickup',sector='',date='',time='';
  const fmt=n=>Number(n).toLocaleString('fr-CA',{style:'currency',currency:'CAD',maximumFractionDigits:0});
@@ -339,7 +339,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
  $('promoCheckoutRow').hidden=!earned;
  $('promoFreeCount').textContent=earned+' offerte'+(earned>1?'s':'');
  $('promoDiscountCheckout').textContent='− '+fmt(discount());
- const fee=shipping();$('feeCheckout').textContent=mode==='pickup'?'Gratuite':fee===null?'Selon le secteur':fee===0?'Offerte':fmt(fee)+'*';$('totalCheckout').textContent=fmt(netSubtotal()+(fee||0))+(fee===null?' + livraison':'');$('modeHelp').textContent=mode==='pickup'?'Mercredi et jeudi · Cap-Rouge · 12 h à 20 h':'Mardi et vendredi · 12 h à 20 h · Gratuite dès '+fmt(freeAt)+' après réduction';$('deliveryFields').hidden=mode!=='delivery';document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));
+ const fee=shipping();$('feeCheckout').textContent=mode==='pickup'?'Gratuite':fee===null?'Selon le secteur':fee===0?'Offerte':fmt(fee)+'*';$('totalCheckout').textContent=fmt(netSubtotal()+(fee||0))+(fee===null?' + livraison':'');$('modeHelp').textContent=mode==='pickup'?'Mardi et vendredi : selon les livraisons · Mercredi : Montcalm · Jeudi : Cap-Rouge · 16 h à 20 h':'Mardi et vendredi · 16 h à 20 h · Livraison prioritaire · Gratuite dès '+fmt(freeAt)+' après réduction';$('deliveryFields').hidden=mode!=='delivery';document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));
  }
  function switchPage(showOrder){$('testAgendaStage').hidden=true;document.body.classList.toggle('rafa-order-open',showOrder);$('congele').hidden=showOrder;$('commander-congele').hidden=false;if(showOrder){$('chooseStage').hidden=false;$('checkoutStage').hidden=true;$('receiptStage').hidden=true;render()}try{history.replaceState(null,'',showOrder?'#commander-congele':'#congele')}catch(err){location.hash=showOrder?'commander-congele':'congele'}window.scrollTo(0,0)}
  $('enterOrder').addEventListener('click',ev=>{ev.preventDefault();switchPage(true)});$('backCollection').addEventListener('click',ev=>{ev.preventDefault();switchPage(false)});
@@ -347,21 +347,34 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
  $('editCart').onclick=()=>{$('checkoutStage').hidden=true;$('chooseStage').hidden=false;render();$('chooseStage').scrollIntoView({behavior:'smooth'})};
  document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{$('formError').hidden=true;mode=b.dataset.mode;date='';time='';render();renderDates()});
  $('sector').onchange=()=>{$('formError').hidden=true;sector=$('sector').value;date='';time='';render();renderDates()};
- const dates=()=>{const todayStr=today(),arr=[];for(let i=0;i<35;i++){const d=addDays(todayStr,i);if(weekdayModes[dayOfWeek(d)]===mode)arr.push(d)}return arr};
- const choices=()=>Array.from({length:17},(_,i)=>minsToTime(12*60+i*30));
- function isAvailable(d,t){if(!d||!t||weekdayModes[dayOfWeek(d)]!==mode||d<today()||(d===today()&&timeToMins(t)<currentMinutes()+45))return false;const same=orders.filter(o=>o.date===d&&o.mode===mode);if(mode==='pickup')return same.filter(o=>o.time===t).length<pickupCapacity;
-  if(!sectors[sector])return false;const travel=sectors[sector][0],dep=timeToMins(t)-travel-10,back=timeToMins(t)+travel+10;return same.every(o=>{const prev=sectors[o.sector]?.[0]||30,from=timeToMins(o.time)-prev-10,to=timeToMins(o.time)+prev+10;return back+10<=from||dep>=to+10});
+ const dates=()=>{const todayStr=today(),arr=[];for(let i=0;i<35;i++){const d=addDays(todayStr,i);if(weekdayModes[dayOfWeek(d)]===mode||weekdayModes[dayOfWeek(d)]==='both')arr.push(d)}return arr};
+ const choices=()=>Array.from({length:9},(_,i)=>minsToTime(16*60+i*30));
+ function isAvailable(d,t){
+  if(!d||!t||(weekdayModes[dayOfWeek(d)]!==mode&&weekdayModes[dayOfWeek(d)]!=='both')||d<today()||(d===today()&&timeToMins(t)<currentMinutes()+45))return false;
+  const m=timeToMins(t),day=dayOfWeek(d);
+  if(m<960||m>1200||m%30!==0)return false;
+  if(mode==='delivery'&&!sectors[sector])return false;
+  const same=orders.filter(o=>o.date===d);
+  if(mode==='pickup'&&same.filter(o=>o.mode==='pickup'&&o.time===t).length>=(day===2||day===5?1:pickupCapacity))return false;
+  const travel=mode==='delivery'?sectors[sector][0]:0;
+  const from=mode==='delivery'?m-travel-10:m-5,until=mode==='delivery'?m+travel+20:m+20;
+  return same.every(o=>{
+   if(mode==='pickup'&&o.mode==='pickup')return true;
+   const om=timeToMins(o.time),ot=o.mode==='delivery'?(o.travel_minutes||sectors[o.sector]?.[0]||50):0;
+   const os=o.mode==='delivery'?om-ot-10:om-5,oe=o.mode==='delivery'?om+ot+20:om+20;
+   return !(from<oe&&until>os);
+  });
  }
  function renderDates(){let ds=dates();if(date&&(!ds.includes(date)||!choices().some(t=>isAvailable(date,t)))){date='';time=''}if(time&&!isAvailable(date,time))time='';const grid=$('dateGrid');grid.replaceChildren();ds.slice(0,12).forEach(d=>{const dateObj=new Date(d+'T12:00:00Z'),b=el('button','date-chip'),enabled=(mode==='pickup'||!!sector)&&choices().some(t=>isAvailable(d,t));b.type='button';b.disabled=!enabled;b.setAttribute('aria-pressed',String(d===date));b.append(el('small',null,dateObj.toLocaleDateString('fr-CA',{timeZone:'UTC',weekday:'short'})),el('strong',null,String(+d.slice(8))),el('small',null,dateObj.toLocaleDateString('fr-CA',{timeZone:'UTC',month:'short'})));b.onclick=()=>{date=d;time='';renderDates()};grid.append(b)});
   const tgrid=$('timeGrid');tgrid.replaceChildren();if(date){
-   const groupLabels=[[12*60,'Midi'],[14*60,'Après-midi'],[17*60,'Soir']];
+   const groupLabels=[[16*60,'Fin d’après-midi'],[18*60,'Soir']];
    choices().forEach(t=>{
     const tm=timeToMins(t),g=groupLabels.find(g=>g[0]===tm);
     if(g)tgrid.append(el('div','slot-group',g[1]));
     const b=el('button','time-chip',timeText(t));b.type='button';b.disabled=!isAvailable(date,t);b.setAttribute('aria-pressed',String(time===t));b.setAttribute('aria-label',timeText(t)+(b.disabled?' indisponible':''));b.onclick=()=>{time=t;renderDates()};tgrid.append(b)
    });
   }else tgrid.append(el('div','slot-empty',mode==='delivery'&&!sector?'Choisis ton secteur pour voir les créneaux.':'Choisis une date pour afficher les créneaux disponibles.'));
-  $('dateNote').textContent=mode==='pickup'?'Cueillette à Cap-Rouge · mercredi et jeudi':'Livraison · mardi et vendredi · horaires ajustés aux réservations';$('timeHint').textContent=mode==='delivery'?'Tests de créneaux : durée routière simulée. L’itinéraire réel et la validation des 30 km restent requis pour le public.':'Choisis une heure entre midi et 20 h.';
+  $('dateNote').textContent=mode==='pickup'?'Mercredi · Montcalm / Jeudi · Cap-Rouge / Mardi et vendredi · selon les livraisons':'Livraisons mardi et vendredi · créneaux automatiquement adaptés';$('timeHint').textContent=mode==='delivery'?'Tests de créneaux : durée routière simulée. L’itinéraire réel et la validation des 30 km restent requis pour le public.':'Créneaux de 30 minutes entre 16 h et 20 h. L’adresse précise est dévoilée après confirmation.';
  }
  const error=message=>{$('formError').hidden=false;$('formError').textContent=message};
  $('simulateBtn').onclick=async()=>{
@@ -381,7 +394,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
    await refreshBackend();
    const saved=orders.find(o=>o.id===data);if(!saved)throw new Error('Commande enregistrée, mais son affichage n’a pas été synchronisé. Vérifie l’agenda.');
    const list=$('receiptDetails');list.replaceChildren();
-   const details=[saved.name,saved.mode==='pickup'?'Cueillette à Cap-Rouge':'Livraison à '+saved.address,
+   const details=[saved.name,saved.mode==='pickup'?'Cueillette à '+(saved.pickupSite==='montcalm'?'Montcalm':'Cap-Rouge')+(saved.pickupAddress?' · '+saved.pickupAddress:' · adresse détaillée à confirmer'):'Livraison à '+saved.address,
     new Date(saved.date+'T12:00:00Z').toLocaleDateString('fr-CA',{timeZone:'UTC',weekday:'long',day:'numeric',month:'long'})+' à '+timeText(saved.time),
     ...saved.items.map(i=>i.qty+' × '+i.name),...(saved.freePizzas?['Offre 3 + 1 : '+saved.freePizzas+' offerte(s) (− '+fmt(saved.discount)+')']:[]),
     'Paiement : '+(saved.payment==='cash'?'Comptant':'Interac')+' à la réception','Total du test : '+fmt(saved.total),'Référence : '+saved.id.slice(0,8)];
@@ -408,8 +421,8 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
    sorted.filter(o=>o.date===d).forEach(o=>{
     const row=el('div','demoagenda-entry'),when=el('div','demoagenda-time',timeText(o.time)),who=el('div'),kind=el('div'),price=el('div',null,fmt(o.total));
     who.append(el('strong',null,o.name),el('div','sub',o.phone+' · '+o.email));
-    kind.append(el('strong',null,o.mode==='pickup'?'Cueillette · Cap-Rouge':'Livraison · '+(o.sector||'secteur')),
-     el('div','sub',o.mode==='delivery'?o.address:o.items.map(i=>i.qty+' × '+i.name).join(', ')));
+    kind.append(el('strong',null,o.mode==='pickup'?'Cueillette · '+(o.pickupSite==='montcalm'?'Montcalm':'Cap-Rouge'):'Livraison · '+(o.sector||'secteur')),
+     el('div','sub',o.mode==='delivery'?o.address:(o.pickupAddress||'Adresse à confirmer')));
     if(o.mode==='delivery')kind.append(el('div','sub',o.items.map(i=>i.qty+' × '+i.name).join(', ')));if(o.payment)kind.append(el('div','sub','Paiement : '+(o.payment==='cash'?'Comptant':'Interac')+' à la réception'));
     if(o.id){const cancel=el('button','cancel-test','Annuler ce test');cancel.type='button';cancel.onclick=()=>cancelTestOrder(o.id);kind.append(cancel)}row.append(when,who,kind,price);group.append(row);
    });pane.append(group);
