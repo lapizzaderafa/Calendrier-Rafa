@@ -246,7 +246,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
    if(!db)return setBackendNote('Connexion indisponible dans cet aperçu. Ouvre le fichier dans Safari.');
    const {data:{session}}=await db.auth.getSession();
    loggedIn=!!session&&OWNER_IDS.has(session.user?.id);
-   if(!loggedIn){serverReady=false;setBackendNote('Mode test · Connexion Rafa requise pour enregistrer une commande.');return;}
+   if(!loggedIn){serverReady=false;setBackendNote('Mode test · Connexion Rafa requise pour enregistrer une commande.');if(location.hash==='#agenda-test')openAuth();return;}
    const [p,o,c]=await Promise.all([db.from('rafa_drop01_products').select('*').order('position'),db.from('rafa_drop01_orders').select('*').order('created_at',{ascending:false}),db.from('rafa_drop01_settings').select('*').eq('id',1).single()]);
    const issue=p.error||o.error||c.error;
    if(issue){serverReady=false;setBackendNote('Erreur de synchronisation : '+issue.message);return;}
