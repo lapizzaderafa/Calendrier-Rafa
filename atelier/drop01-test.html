@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html lang="fr-CA"><head><meta name="robots" content="noindex,nofollow"><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="#ffffff" name="theme-color"/>
-<title>RAFA · DROP 01 · Commander congelé — Test V6</title>
+<title>RAFA · DROP 01 · Atelier de commande connecté</title>
 <style>
 /* Instrument Sans est fourni par rafapizza.ca; la démonstration conserve une police système de secours. */
 :root{--ink:#171717;--muted:#777;--line:#dedede;--paper:#fff;--soft:#f8f8f8;--edge:clamp(22px,5.1vw,78px)}
@@ -423,6 +423,11 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
 
  $('anotherOrder').onclick=()=>{cart={};date='';time='';sector='';mode='pickup';$('sector').value='';$('address').value='';$('formError').hidden=true;$('chooseStage').hidden=false;$('checkoutStage').hidden=true;$('receiptStage').hidden=true;render();$('chooseStage').scrollIntoView({behavior:'smooth'})};
  $('resetDemo').onclick=()=>{cart={};date='';time='';render();renderDates();switchPage(false)};
- render();refreshBackend().catch(e=>setBackendNote('Connexion impossible : '+e.message));if(location.hash==='#commander-congele')switchPage(true);else if(location.hash==='#agenda-test')openAgenda();
+ render();refreshBackend().catch(e=>setBackendNote('Connexion impossible : '+e.message));
+ // Synchronise le compteur et les créneaux d'un appareil à l'autre sans réenregistrer les commandes.
+ window.addEventListener('focus',()=>{if(loggedIn)refreshBackend().catch(()=>{})});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&loggedIn)refreshBackend().catch(()=>{})});
+ setInterval(()=>{if(loggedIn&&!document.hidden&&!document.activeElement?.closest('#priceSettings'))refreshBackend().catch(()=>{})},30000);
+ if(location.hash==='#commander-congele')switchPage(true);else if(location.hash==='#agenda-test')openAgenda();
 })();
 </script></body></html>
