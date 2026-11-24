@@ -150,6 +150,15 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
 .rafa-auth{max-width:590px;margin:50px auto;padding:40px 30px;background:#f7f7f7;border:1px solid #dedede}
 .rafa-auth[hidden]{display:none}.rafa-auth h2{font-size:clamp(34px,6vw,62px);font-weight:450;letter-spacing:-.06em;margin:17px 0}.rafa-auth p{font-size:13px;line-height:1.6;color:#777}.rafa-auth label{display:block;font-size:12px;margin:16px 0}.rafa-auth input{width:100%;display:block;border:0;border-bottom:1px solid #bbb;background:transparent;margin-top:8px;padding:12px 0;font-size:16px;color:#222}.rafa-auth button{margin:9px 7px 0 0}
 .preview-prices{padding:30px 0 24px;border-bottom:1px solid #ddd}.price-setting{display:grid;grid-template-columns:minmax(0,1fr) 100px;align-items:center;gap:15px;border-bottom:1px solid #e5e5e5;padding:10px 0;font-size:14px}.price-setting input{width:100%;border:1px solid #ccc;border-radius:30px;padding:10px;background:transparent;text-align:center}.preview-prices .pill{margin-top:17px}.cancel-test{border:0;border-bottom:1px solid #bbb;background:none;color:#888;padding:5px 0;margin-top:8px;font-size:10px;cursor:pointer}
+
+/* DROP 01 / V12 — contrastes fiables pour Safari iOS */
+.methodrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.methodrow .pill{min-width:0!important;width:100%;background:rgba(255,255,255,.75)!important;color:#171717!important;-webkit-text-fill-color:#171717!important;border:1px solid #ababab!important;box-shadow:0 8px 25px rgba(0,0,0,.045)}
+.methodrow .pill[aria-pressed="true"]{background:#171717!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border:1px solid #171717!important;box-shadow:0 9px 24px rgba(0,0,0,.1)}
+.methodrow .pill:focus-visible,.date-chip:focus-visible,.time-chip:focus-visible{outline:2px solid #171717;outline-offset:3px}
+.date-chip:disabled,.time-chip:disabled{opacity:.37;cursor:not-allowed}
+.date-chip[aria-pressed="true"],.time-chip[aria-pressed="true"]{background:#171717!important;color:#fff!important;border-color:#171717!important;-webkit-text-fill-color:#fff!important}
+@media(max-width:390px){.methodrow{gap:9px}.methodrow .pill{padding:0 11px;min-height:54px;font-size:11px;letter-spacing:0}}
 </style></head>
 <body>
 <!-- Cette section est prévue pour être intégrée à rafapizza.ca/#congele. L'accueil et le menu du site ne sont pas recréés ici. -->
@@ -339,7 +348,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
  $('promoCheckoutRow').hidden=!earned;
  $('promoFreeCount').textContent=earned+' offerte'+(earned>1?'s':'');
  $('promoDiscountCheckout').textContent='− '+fmt(discount());
- const fee=shipping();$('feeCheckout').textContent=mode==='pickup'?'Gratuite':fee===null?'Selon le secteur':fee===0?'Offerte':fmt(fee)+'*';$('totalCheckout').textContent=fmt(netSubtotal()+(fee||0))+(fee===null?' + livraison':'');$('modeHelp').textContent=mode==='pickup'?'Mardi et vendredi : selon les livraisons · Mercredi : Montcalm · Jeudi : Cap-Rouge · 16 h à 20 h':'Mardi et vendredi · 16 h à 20 h · Livraison prioritaire · Gratuite dès '+fmt(freeAt)+' après réduction';$('deliveryFields').hidden=mode!=='delivery';document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));
+ const fee=shipping();$('feeCheckout').textContent=mode==='pickup'?'Gratuite':fee===null?'Selon le secteur':fee===0?'Offerte':fmt(fee)+'*';$('totalCheckout').textContent=fmt(netSubtotal()+(fee||0))+(fee===null?' + livraison':'');$('modeHelp').textContent=mode==='pickup'?'Mardi au vendredi · Cueillette à Cap-Rouge · 16 h à 20 h · Mardi et vendredi selon les livraisons':'Mardi et vendredi · 16 h à 20 h · Livraison prioritaire · Gratuite dès '+fmt(freeAt)+' après réduction';$('deliveryFields').hidden=mode!=='delivery';document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));
  }
  function switchPage(showOrder){$('testAgendaStage').hidden=true;document.body.classList.toggle('rafa-order-open',showOrder);$('congele').hidden=showOrder;$('commander-congele').hidden=false;if(showOrder){$('chooseStage').hidden=false;$('checkoutStage').hidden=true;$('receiptStage').hidden=true;render()}try{history.replaceState(null,'',showOrder?'#commander-congele':'#congele')}catch(err){location.hash=showOrder?'commander-congele':'congele'}window.scrollTo(0,0)}
  $('enterOrder').addEventListener('click',ev=>{ev.preventDefault();switchPage(true)});$('backCollection').addEventListener('click',ev=>{ev.preventDefault();switchPage(false)});
@@ -365,7 +374,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
    return !(from<oe&&until>os);
   });
  }
- function renderDates(){let ds=dates();if(date&&(!ds.includes(date)||!choices().some(t=>isAvailable(date,t)))){date='';time=''}if(time&&!isAvailable(date,time))time='';const grid=$('dateGrid');grid.replaceChildren();ds.slice(0,12).forEach(d=>{const dateObj=new Date(d+'T12:00:00Z'),b=el('button','date-chip'),enabled=(mode==='pickup'||!!sector)&&choices().some(t=>isAvailable(d,t));b.type='button';b.disabled=!enabled;b.setAttribute('aria-pressed',String(d===date));b.append(el('small',null,dateObj.toLocaleDateString('fr-CA',{timeZone:'UTC',weekday:'short'})),el('strong',null,String(+d.slice(8))),el('small',null,dateObj.toLocaleDateString('fr-CA',{timeZone:'UTC',month:'short'})));b.onclick=()=>{date=d;time='';renderDates()};grid.append(b)});
+ function renderDates(){let ds=dates();if(date&&(!ds.includes(date)||!choices().some(t=>isAvailable(date,t)))){date='';time=''}if(!date){date=ds.find(d=>choices().some(t=>isAvailable(d,t)))||'';time='';}if(time&&!isAvailable(date,time))time='';const grid=$('dateGrid');grid.replaceChildren();ds.slice(0,12).forEach(d=>{const dateObj=new Date(d+'T12:00:00Z'),b=el('button','date-chip'),enabled=(mode==='pickup'||!!sector)&&choices().some(t=>isAvailable(d,t));b.type='button';b.disabled=!enabled;b.setAttribute('aria-pressed',String(d===date));b.append(el('small',null,dateObj.toLocaleDateString('fr-CA',{timeZone:'UTC',weekday:'short'})),el('strong',null,String(+d.slice(8))),el('small',null,dateObj.toLocaleDateString('fr-CA',{timeZone:'UTC',month:'short'})));b.onclick=()=>{date=d;time='';renderDates()};grid.append(b)});
   const tgrid=$('timeGrid');tgrid.replaceChildren();if(date){
    const groupLabels=[[16*60,'Fin d’après-midi'],[18*60,'Soir']];
    choices().forEach(t=>{
@@ -374,7 +383,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
     const b=el('button','time-chip',timeText(t));b.type='button';b.disabled=!isAvailable(date,t);b.setAttribute('aria-pressed',String(time===t));b.setAttribute('aria-label',timeText(t)+(b.disabled?' indisponible':''));b.onclick=()=>{time=t;renderDates()};tgrid.append(b)
    });
   }else tgrid.append(el('div','slot-empty',mode==='delivery'&&!sector?'Choisis ton secteur pour voir les créneaux.':'Choisis une date pour afficher les créneaux disponibles.'));
-  $('dateNote').textContent=mode==='delivery'?'Livraison · mardi ou vendredi · disponibilité calculée selon les rendez-vous':!date?'Cueillette · mercredi à Montcalm, jeudi à Cap-Rouge; mardi et vendredi si compatible avec les livraisons':dayOfWeek(date)===3?'Cueillette à Montcalm, Québec · adresse après confirmation':dayOfWeek(date)===4?'Cueillette à Cap-Rouge · adresse après confirmation':'Cueillette à Cap-Rouge · selon les livraisons déjà réservées';$('timeHint').textContent=mode==='delivery'?'Tests de créneaux : durée routière simulée. L’itinéraire réel et la validation des 30 km restent requis pour le public.':'Créneaux de 30 minutes entre 16 h et 20 h. L’adresse précise est dévoilée après confirmation.';
+  $('dateNote').textContent=mode==='delivery'?'Livraison · mardi et vendredi · disponibilités selon les réservations':!date?'Cueillette à Cap-Rouge · mardi au vendredi · adresse après confirmation':(dayOfWeek(date)===2||dayOfWeek(date)===5)?'Cueillette à Cap-Rouge · selon les livraisons · adresse après confirmation':'Cueillette à Cap-Rouge · adresse après confirmation';$('timeHint').textContent=mode==='delivery'?'Tests de créneaux : durée routière simulée. L’itinéraire réel et la validation des 30 km restent requis pour le public.':'Créneaux de 30 minutes entre 16 h et 20 h. L’adresse précise est dévoilée après confirmation.';
  }
  const error=message=>{$('formError').hidden=false;$('formError').textContent=message};
  $('simulateBtn').onclick=async()=>{
@@ -394,7 +403,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
    await refreshBackend();
    const saved=orders.find(o=>o.id===data);if(!saved)throw new Error('Commande enregistrée, mais son affichage n’a pas été synchronisé. Vérifie l’agenda.');
    const list=$('receiptDetails');list.replaceChildren();
-   const details=[saved.name,saved.mode==='pickup'?'Cueillette à '+(saved.pickupSite==='montcalm'?'Montcalm':'Cap-Rouge')+(saved.pickupAddress?' · '+saved.pickupAddress:' · adresse détaillée à confirmer'):'Livraison à '+saved.address,
+   const details=[saved.name,saved.mode==='pickup'?'Cueillette à Cap-Rouge'+(saved.pickupAddress?' · '+saved.pickupAddress:' · adresse détaillée à confirmer'):'Livraison à '+saved.address,
     new Date(saved.date+'T12:00:00Z').toLocaleDateString('fr-CA',{timeZone:'UTC',weekday:'long',day:'numeric',month:'long'})+' à '+timeText(saved.time),
     ...saved.items.map(i=>i.qty+' × '+i.name),...(saved.freePizzas?['Offre 3 + 1 : '+saved.freePizzas+' offerte(s) (− '+fmt(saved.discount)+')']:[]),
     'Paiement : '+(saved.payment==='cash'?'Comptant':'Interac')+' à la réception','Total du test : '+fmt(saved.total),'Référence : '+saved.id.slice(0,8)];
@@ -421,7 +430,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
    sorted.filter(o=>o.date===d).forEach(o=>{
     const row=el('div','demoagenda-entry'),when=el('div','demoagenda-time',timeText(o.time)),who=el('div'),kind=el('div'),price=el('div',null,fmt(o.total));
     who.append(el('strong',null,o.name),el('div','sub',o.phone+' · '+o.email));
-    kind.append(el('strong',null,o.mode==='pickup'?'Cueillette · '+(o.pickupSite==='montcalm'?'Montcalm':'Cap-Rouge'):'Livraison · '+(o.sector||'secteur')),
+    kind.append(el('strong',null,o.mode==='pickup'?'Cueillette · Cap-Rouge':'Livraison · '+(o.sector||'secteur')),
      el('div','sub',o.mode==='delivery'?o.address:(o.pickupAddress||'Adresse à confirmer')));
     if(o.mode==='delivery')kind.append(el('div','sub',o.items.map(i=>i.qty+' × '+i.name).join(', ')));if(o.payment)kind.append(el('div','sub','Paiement : '+(o.payment==='cash'?'Comptant':'Interac')+' à la réception'));
     if(o.id){const cancel=el('button','cancel-test','Annuler ce test');cancel.type='button';cancel.onclick=()=>cancelTestOrder(o.id);kind.append(cancel)}row.append(when,who,kind,price);group.append(row);
