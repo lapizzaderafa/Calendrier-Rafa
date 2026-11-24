@@ -374,7 +374,7 @@ body:has(#commander-congele:target) #congele,body.rafa-order-open #congele{displ
   if(!loggedIn||!serverReady){openAuth();return error('Connecte-toi à ton compte Rafa pour enregistrer une vraie commande de test.');}
   const button=$('simulateBtn');button.disabled=true;button.textContent='Enregistrement du test…';$('formError').hidden=true;
   const request_id=typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{let r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)}));
-  const payload={p_request_id:request_id,p_name:name,p_phone:phone,p_email:email,p_mode:mode,p_date:date,p_time:time,p_address:address,p_sector:sector,p_items:lines().map(i=>({sku:i.name,qty:i.qty})),p_payment:$('#paymentMethod').value};
+  const payload={p_request_id:request_id,p_name:name,p_phone:phone,p_email:email,p_mode:mode,p_date:date,p_time:time,p_address:address,p_sector:sector,p_items:lines().map(i=>({sku:i.name,qty:i.qty})),p_payment:$('paymentMethod').value};
   try{
    const {data,error:dbError}=await db.rpc('rafa_drop01_test_checkout_v2',payload);
    if(dbError)throw dbError;
