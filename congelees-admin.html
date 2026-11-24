@@ -22,7 +22,7 @@ input,select{padding:11px 12px;border:1px solid #cfcfcf;border-radius:0;backgrou
 .feedback{min-height:30px;margin:20px 0;color:#555;font-size:12px}.section-space{padding-top:62px}
 @media(max-width:720px){header{padding:23px}header nav{gap:10px;font-size:10px}.brand small{display:block;margin:6px 0 0}.statrow{gap:12px}.entry{grid-template-columns:75px 1fr;gap:10px}.entry .time{font-size:19px}.entry .price{grid-column:2}.entry .details{grid-column:2}.product{grid-template-columns:1fr 100px;gap:10px}.product .product-name{grid-column:1/-1}.product .pill{grid-column:2}.addressgrid{grid-template-columns:1fr}.tabs{gap:17px}.tabs button{font-size:12px}}
 </style></head><body>
-<header><div class="brand">Rafa <small>PIZZA / ATELIER</small></div><nav><a href="./admin.html">Back-office</a><a href="./atelier/drop01-test.html#commander-congele">Tester une commande</a></nav></header>
+<header><div class="brand">Rafa <small>PIZZA / ATELIER</small></div><nav><a href="./admin.html">Back-office</a><a href="./atelier/drop01-v12-test.html#commander-congele">Tester une commande</a></nav></header>
 <main><div id="login" class="login" hidden><span class="eyebrow">ADMINISTRATION / ACCÈS PRIVÉ</span><h1>Bonjour.</h1><p>Utilise tes identifiants du back-office Rafa.</p><label class="label">Courriel<input id="email" type="email" autocomplete="username"></label><label class="label">Mot de passe<input id="password" type="password" autocomplete="current-password"></label><button id="signIn" class="pill primary">Se connecter</button><p id="loginError" class="feedback"></p></div>
 <div id="app" hidden><span class="eyebrow">COMMANDES CONGELÉES / DROP 01</span><h1>Les commandes.<br>Les dates.</h1><div id="closedNotice" class="notice">Mode test uniquement. Les ventes publiques sont fermées. Les délais de trajet sont encore simulés, et les prix doivent être validés avant le lancement.</div>
 <div class="statrow"><div class="stat"><strong id="ordersNum">0</strong><span>Commandes test actives</span></div><div class="stat"><strong id="pizzasNum">0</strong><span>Pizzas réservées</span></div><div class="stat"><strong id="remainingNum">50</strong><span>Pizzas restantes</span></div></div>
@@ -30,8 +30,8 @@ input,select{padding:11px 12px;border:1px solid #cfcfcf;border-radius:0;backgrou
 <section class="panel" id="panelOrders"><div class="row"><p class="muted">Les commandes sont classées par date et heure de réception.</p><button class="pill" type="button" id="refreshOrders">Actualiser</button></div><div id="ordersList"></div></section>
 <section class="panel" id="panelCatalog" hidden><div class="row"><div><span class="eyebrow">LA COLLECTION / 11 POUCES</span><h2>Les cinq pizzas.</h2></div><span class="muted" id="catalogNote">50 pizzas par drop.</span></div><div id="catalogList"></div><p class="muted">Les nouveaux prix s’appliquent aux prochaines commandes. Les commandes déjà confirmées conservent leur total.</p></section>
 <section class="panel" id="panelSchedule" hidden><span class="eyebrow">HEBDOMADAIRE / AUTOMATIQUE</span><h2>Les créneaux.</h2><p class="muted">Créneaux aux 30 minutes de 16 h à 20 h. Aucune ouverture manuelle requise. Mardi et vendredi, les cueillettes ne sont proposées que si elles sont compatibles avec les livraisons confirmées.</p>
-<div class="schedule"><div class="day"><strong>Mardi</strong><span>Livraison prioritaire · Cueillette à Cap-Rouge si disponible</span></div><div class="day"><strong>Mercredi</strong><span>Cueillette uniquement · Montcalm, Québec</span></div><div class="day"><strong>Jeudi</strong><span>Cueillette uniquement · Cap-Rouge</span></div><div class="day"><strong>Vendredi</strong><span>Livraison prioritaire · Cueillette à Cap-Rouge si disponible</span></div></div>
-<div class="section-space"><span class="eyebrow">POINTS DE CUEILLETTE</span><h2>Adresses privées.</h2><p class="muted">Ces adresses restent dans l’administration et seront transmises sur le site uniquement après confirmation de la commande. L’adresse de Montcalm est encore à préciser.</p><div class="addressgrid"><label class="label">Cap-Rouge<input id="addressCapRouge" placeholder="Adresse complète, Québec" autocomplete="off"></label><label class="label">Montcalm<input id="addressMontcalm" placeholder="Adresse complète, Québec" autocomplete="off"></label></div><button class="pill primary" id="saveAddresses" type="button">Enregistrer les adresses</button></div>
+<div class="schedule"><div class="day"><strong>Mardi</strong><span>Livraison prioritaire · Cueillette à Cap-Rouge si disponible</span></div><div class="day"><strong>Mercredi</strong><span>Cueillette uniquement · Cap-Rouge</span></div><div class="day"><strong>Jeudi</strong><span>Cueillette uniquement · Cap-Rouge</span></div><div class="day"><strong>Vendredi</strong><span>Livraison prioritaire · Cueillette à Cap-Rouge si disponible</span></div></div>
+<div class="section-space"><span class="eyebrow">POINTS DE CUEILLETTE</span><h2>Adresses privées.</h2><p class="muted">Ces adresses restent dans l’administration et seront transmises sur le site uniquement après confirmation de la commande. Toutes les cueillettes se font à Cap-Rouge.</p><div class="addressgrid" style="grid-template-columns:1fr"><label class="label">Cueillette à Cap-Rouge<input id="addressCapRouge" placeholder="Adresse complète, Québec" autocomplete="off"></label></div><button class="pill primary" id="saveAddresses" type="button">Enregistrer les adresses</button></div>
 <div class="section-space"><span class="eyebrow">SÉCURITÉ DU LANCEMENT</span><p>Les livraisons fonctionnent avec des durées par secteur pour les essais. Le rayon réel de 30 km et les itinéraires doivent être validés avant l'ouverture des ventes.</p></div>
 </section><p id="feedback" class="feedback" role="status"></p></div></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
@@ -59,7 +59,7 @@ if(products.length!==5)feedback('Attention : le catalogue devrait contenir exact
 $('closedNotice').textContent=settings.public_enabled?'ATTENTION : le mode public indique une ouverture. Vérifie les réglages avant de continuer.': 'Mode test uniquement · Ventes publiques fermées · Livraison calculée provisoirement par secteur.';
 renderOrders();renderCatalog();
 $('addressCapRouge').value=settings.pickup_cap_rouge_address||'';
-$('addressMontcalm').value=settings.pickup_montcalm_address||'';
+
 }
 function renderOrders(){
 const live=orders.filter(o=>o.status!=='cancelled');$('ordersNum').textContent=live.length;
@@ -71,7 +71,7 @@ for(const o of orders){
  const row=node('div',null,'entry'),when=node('div',null,'time'),client=node('div',null,'stack'),details=node('div',null,'stack details'),amount=node('div',null,'price');
  when.append(node('strong',String(o.visit_time).slice(0,5)),node('small',dateText(o.visit_date)));
  client.append(node('strong',o.customer_name),node('small',o.customer_phone),node('small',o.customer_email));
- const place=o.mode==='delivery'?'Livraison · '+(o.delivery_sector||'secteur'):'Cueillette · '+(o.pickup_site==='montcalm'?'Montcalm':'Cap-Rouge');
+ const place=o.mode==='delivery'?'Livraison · '+(o.delivery_sector||'secteur'):'Cueillette · Cap-Rouge';
  details.append(node('strong',place),node('small',o.mode==='delivery'?o.delivery_address:(o.pickup_address_snapshot||'Adresse à fournir')));
  for(const item of o.items||[])details.append(node('small',item.qty+' × '+item.sku));
  details.append(node('small','Paiement : '+(o.payment_method==='cash'?'comptant':'Interac')+' à la réception'));
@@ -97,8 +97,8 @@ $('catalogNote').textContent=products.reduce((sum,p)=>sum+p.stock_total,0)+' piz
 }
 $('refreshOrders').onclick=async()=>{try{await refresh();feedback('Données actualisées.')}catch(e){feedback(e.message,true)}};
 $('saveAddresses').onclick=async()=>{
-const cap=$('addressCapRouge').value.trim(),mont=$('addressMontcalm').value.trim();
-const{error}=await db.from('rafa_drop01_settings').update({pickup_cap_rouge_address:cap||null,pickup_montcalm_address:mont||null,updated_at:new Date().toISOString()}).eq('id',1);
+const cap=$('addressCapRouge').value.trim();
+const{error}=await db.from('rafa_drop01_settings').update({pickup_cap_rouge_address:cap||null,updated_at:new Date().toISOString()}).eq('id',1);
 if(error)feedback(error.message,true);else{await refresh();feedback('Adresses enregistrées de façon privée. Elles ne sont montrées au client qu’après confirmation.')}
 };
 async function boot(){
