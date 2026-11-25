@@ -29,18 +29,14 @@ const $ = id => document.getElementById(id);
 function calculateEventPrice(guests) {
   const count = Math.max(10, Math.floor(Number(guests) || 10));
   if (count > 60) return null;
-  let total;
-  if (count <= 10) total = 500;
-  else if (count <= 15) total = 500 + 25 * (count - 10);
-  else if (count <= 40) total = 625 + 30 * (count - 15);
-  else total = 1375 + 35 * (count - 40);
-  // Interpolate logistics between approved tiers, then reconcile to the cent.
-  const tiers = [[10,170],[15,175],[20,195],[30,235],[40,295],[50,425],[60,575]];
+  // Approved tiers: guest count, per-person rate in cents, event total in dollars.
+  const tiers = [[10,3300,500],[15,3100,650],[20,3000,800],[30,2900,1150],[40,2800,1500],[50,2700,1900],[60,2600,2300]];
   const upper = tiers.findIndex(([n]) => n >= count);
-  const targetLogistics = upper === 0 ? tiers[0][1] :
-    tiers[upper-1][1] + (tiers[upper][1]-tiers[upper-1][1]) *
-    (count-tiers[upper-1][0]) / (tiers[upper][0]-tiers[upper-1][0]);
-  const personCents = Math.round((total-targetLogistics)*100/count);
+  const [highCount, highRate, highTotal] = tiers[upper];
+  const [lowCount, lowRate, lowTotal] = tiers[Math.max(0, upper-1)];
+  const fraction = highCount === lowCount ? 0 : (count-lowCount)/(highCount-lowCount);
+  const personCents = Math.round(lowRate+(highRate-lowRate)*fraction);
+  const total = Math.round(lowTotal+(highTotal-lowTotal)*fraction);
   return {total, perPerson: personCents/100, logistics: (total*100-count*personCents)/100};
 }
 const formatCAD = value => new Intl.NumberFormat("fr-CA", {
