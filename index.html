@@ -150,11 +150,12 @@
 <div class="estimate-top"><span>Nombre d'invités</span><strong><span id="guestNumber">20</span></strong></div>
 <input class="price-slider" id="guestSlider" type="range" min="10" max="100" step="1" value="20" aria-label="Nombre d'invités pour le calcul du prix">
 <div class="estimate-breakdown">
-<div><span class="breakdown-label">Formule Rafa</span><span class="breakdown-value">1 pizza de 11 po par invité</span></div>
-<div><span class="breakdown-label">Prix moyen par invité</span><span class="breakdown-value" id="personPrice">38,75 $ / personne</span></div>
+<div style="grid-column:1 / -1"><span class="breakdown-label">Formule Rafa</span><span class="breakdown-value">1 pizza de 11 po par invité</span></div>
+<div><span class="breakdown-label">Prix par invité</span><span class="breakdown-value" id="personPrice">29 $ / personne</span></div>
+<div><span class="breakdown-label">Frais de logistique</span><span class="breakdown-value" id="logisticsPrice">195 $</span></div>
 </div>
 <div class="estimate-total"><span>Estimation de votre événement</span><strong id="eventTotal" aria-live="polite">775 $</strong></div>
-<p class="estimate-note">Installation, cuisson et service sur place inclus. Forfait minimum de 500 $. Prix avant taxes; le montant final peut varier selon le déplacement et les particularités de l'événement.</p>
+<p class="estimate-note">Les frais de logistique couvrent la préparation, le déplacement, l'équipement, l'installation et le service sur place. Forfait minimum de 500 $. Prix avant taxes; le montant final peut varier selon le déplacement et les particularités de l'événement.</p>
 <p id="largeEventNote" class="large-event-note">Pour plus de 60 invités, contactez-nous pour un devis personnalisé.</p>
 </div>
 </div>
@@ -238,7 +239,7 @@
 <footer class="footer"><span>Rafa Pizza · Québec</span><span>Pizza à domicile pour vos événements</span></footer>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./assets/site.js?v=27"></script>
+<script src="./assets/site.js?v=28"></script>
 <script src="./assets/contact.js?v=6" defer></script>
 <script src="./assets/rafa-home-menu.js?v=6" defer></script>
 

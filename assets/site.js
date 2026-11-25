@@ -34,7 +34,14 @@ function calculateEventPrice(guests) {
   else if (count <= 15) total = 500 + 25 * (count - 10);
   else if (count <= 40) total = 625 + 30 * (count - 15);
   else total = 1375 + 35 * (count - 40);
-  return {total, averagePerPerson: total / count};
+  // Interpolate logistics between approved tiers, then reconcile to the cent.
+  const tiers = [[10,170],[15,175],[20,195],[30,235],[40,295],[50,425],[60,575]];
+  const upper = tiers.findIndex(([n]) => n >= count);
+  const targetLogistics = upper === 0 ? tiers[0][1] :
+    tiers[upper-1][1] + (tiers[upper][1]-tiers[upper-1][1]) *
+    (count-tiers[upper-1][0]) / (tiers[upper][0]-tiers[upper-1][0]);
+  const personCents = Math.round((total-targetLogistics)*100/count);
+  return {total, perPerson: personCents/100, logistics: (total*100-count*personCents)/100};
 }
 const formatCAD = value => new Intl.NumberFormat("fr-CA", {
   minimumFractionDigits: Number.isInteger(value) ? 0 : 2,
@@ -44,7 +51,8 @@ function updateEstimator(){
   const guests = Number($("guestSlider").value);
   const pricing = calculateEventPrice(guests);
   $("guestNumber").textContent = guests;
-  $("personPrice").textContent = pricing ? `${formatCAD(pricing.averagePerPerson)} / personne` : "Sur devis";
+  $("personPrice").textContent = pricing ? `${formatCAD(pricing.perPerson)} / personne` : "Sur devis";
+  $("logisticsPrice").textContent = pricing ? formatCAD(pricing.logistics) : "Sur devis";
   $("eventTotal").textContent = pricing ? formatCAD(pricing.total) : "Sur devis";
   $("largeEventNote").classList.toggle("show", !pricing);
 }
