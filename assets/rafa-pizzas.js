@@ -77,8 +77,8 @@ window.RAFA_PIZZA_GROUPS = [
         "Mozza fraîche, mortadelle, pistaches, ricotta citronnée"
       ],
       [
-        "Zucca e Salsiccia",
-        "Crème de courge butternut, mozza fraîche, saucisse italienne, sauge"
+        "Caprina",
+        "Crème fraîche, fromage de chèvre, saucisse italienne douce, oignons caramélisés"
       ],
       [
         "Speck",
